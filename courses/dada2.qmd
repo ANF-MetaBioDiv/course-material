@@ -1,0 +1,38 @@
+---
+title: "Analysing metabarcoding sequencing data with dada2"
+author: "Nicolas Henry"
+format:
+  revealjs: 
+    theme: sky
+editor: visual
+---
+
+# Introduction
+
+## From the sequencing platform?
+
+Two files (R1 and R2) per sequencing run or per sample
+
+* R1 (60 first base pairs):
+
+```default
+    @M05074:31:000000000-BC3R3:1:1101:13622:1477 1:N:0:1
+    TAACAACCCAGCAGCTGCGGTAATTCCAGCTCCAATAGCGTATATTTAAGTTGTTGCAGT
+    +
+    ---A99EBC-,C,,CF,@++F7,CFFF9,CEFF8,E,,C+B7F<FFF9,,CE,CF,;,,C
+```
+
+* R2:
+
+```default
+    @M05074:31:000000000-BC3R3:1:1101:13622:1477 2:N:0:1
+    ACAACACTTTCGTTCTTGCTTGATGAAAACATCCTTGGCAAATGCTTTCGCATTAGTTCG
+    +
+    -86@BCFFFGF@FGGFG9,CF,,C6,<A<F@FGGGGA,C,C8C<<FEFG:@,,B,,CFE:
+```
+
+:::{.callout-warning}
+## Reads can be mix-orientated
+
+:::
+
