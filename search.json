@@ -2,9 +2,23 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "anf-metabarcoding",
+    "title": "Exploration de la Diversité Taxonomique des Ecosystèmes par Metabarcoding",
     "section": "",
-    "text": "To learn more about Quarto websites visit https://quarto.org/docs/websites.\n\n1 + 1\n\n[1] 2"
+    "text": "Monday\n\nR initiation\n\nTuesday\n\nDada2 presentation\nPhyloseq presentation\n\nWednesday\nThursday\nFriday\n\n\n\n\n\nTuesday\nWednesday\nThursday\nFriday"
+  },
+  {
+    "objectID": "courses/dada2.html#from-the-sequencing-platform",
+    "href": "courses/dada2.html#from-the-sequencing-platform",
+    "title": "Analysing metabarcoding data with dada2",
+    "section": "From the sequencing platform",
+    "text": "From the sequencing platform\nTwo files (R1 and R2) per sequencing run or per sample\n\nR1 (60 first base pairs):\n\n    @M05074:31:000000000-BC3R3:1:1101:13622:1477 1:N:0:1\n    TAACAACCCAGCAGCTGCGGTAATTCCAGCTCCAATAGCGTATATTTAAGTTGTTGCAGT\n    +\n    ---A99EBC-,C,,CF,@++F7,CFFF9,CEFF8,E,,C+B7F<FFF9,,CE,CF,;,,C\n\nR2:\n\n    @M05074:31:000000000-BC3R3:1:1101:13622:1477 2:N:0:1\n    ACAACACTTTCGTTCTTGCTTGATGAAAACATCCTTGGCAAATGCTTTCGCATTAGTTCG\n    +\n    -86@BCFFFGF@FGGFG9,CF,,C6,<A<F@FGGGGA,C,C8C<<FEFG:@,,B,,CFE:\n\n\n\n\n\n\nReads can be mix-orientated"
+  },
+  {
+    "objectID": "courses/dada2.html#blabla",
+    "href": "courses/dada2.html#blabla",
+    "title": "Analysing metabarcoding data with dada2",
+    "section": "blabla",
+    "text": "blabla"
   },
   {
     "objectID": "about.html",
