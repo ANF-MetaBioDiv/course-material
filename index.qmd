@@ -1,11 +1,24 @@
 ---
-title: "anf-metabarcoding"
+title: "Exploration de la Diversité Taxonomique des Ecosystèmes par Metabarcoding"
 ---
 
-This is a Quarto website.
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+# Formation material
 
-```{r}
-1 + 1
-```
+## Courses
+
+* Monday
+  - R initiation
+* Tuesday
+  - <a href="courses/dada2.html" target="_blank">Dada2 presentation</a>
+  - Phyloseq presentation
+* Wednesday
+* Thursday
+* Friday
+
+## Practicals
+
+* Tuesday
+* Wednesday
+* Thursday
+* Friday
