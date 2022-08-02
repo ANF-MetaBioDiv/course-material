@@ -392,42 +392,148 @@
 <h1>Introduction</h1>
 
 </section>
-<section id="from-the-sequencing-platform" class="slide level2">
-<h2>From the sequencing platform</h2>
-<p>Two files (R1 and R2) per sequencing run or per sample</p>
-<ul>
-<li>R1 (60 first base pairs):</li>
-</ul>
+<section id="fastq-records" class="slide level2">
+<h2>FASTQ records</h2>
+<p>Two files (R1 and R2) per sequencing run or per sample (60 first nucleotides):</p>
+<p>R1:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode numberSource default number-lines code-with-copy"><code class="sourceCode default"><span id="cb1-1"><a href="#cb1-1"></a>    @M05074:31:000000000-BC3R3:1:1101:13622:1477 1:N:0:1</span>
 <span id="cb1-2"><a href="#cb1-2"></a>    TAACAACCCAGCAGCTGCGGTAATTCCAGCTCCAATAGCGTATATTTAAGTTGTTGCAGT</span>
 <span id="cb1-3"><a href="#cb1-3"></a>    +</span>
 <span id="cb1-4"><a href="#cb1-4"></a>    ---A99EBC-,C,,CF,@++F7,CFFF9,CEFF8,E,,C+B7F&lt;FFF9,,CE,CF,;,,C</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ul>
-<li>R2:</li>
-</ul>
+<p>R2:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode numberSource default number-lines code-with-copy"><code class="sourceCode default"><span id="cb2-1"><a href="#cb2-1"></a>    @M05074:31:000000000-BC3R3:1:1101:13622:1477 2:N:0:1</span>
 <span id="cb2-2"><a href="#cb2-2"></a>    ACAACACTTTCGTTCTTGCTTGATGAAAACATCCTTGGCAAATGCTTTCGCATTAGTTCG</span>
 <span id="cb2-3"><a href="#cb2-3"></a>    +</span>
 <span id="cb2-4"><a href="#cb2-4"></a>    -86@BCFFFGF@FGGFG9,CF,,C6,&lt;A&lt;F@FGGGGA,C,C8C&lt;&lt;FEFG:@,,B,,CFE:</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="callout callout-warning callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Reads can be mix-orientated</strong></p>
-</div>
-<div class="callout-content">
-
-</div>
-</div>
-</div>
+<p>3 types of information per record: identifier, sequence, quality</p>
 </section>
-<section id="blabla" class="slide level2">
-<h2>blabla</h2>
+<section id="identifier" class="slide level2">
+<h2>Identifier</h2>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource default number-lines code-with-copy"><code class="sourceCode default"><span id="cb3-1"><a href="#cb3-1"></a>    @M05074:31:000000000-BC3R3:1:1101:13622:1477 1:N:0:1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>M05074</td>
+<td>the unique instrument id</td>
+</tr>
+<tr class="even">
+<td>31</td>
+<td>the run id</td>
+</tr>
+<tr class="odd">
+<td>000000000-BC3R3</td>
+<td>the flowcell id</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>flowcell lane</td>
+</tr>
+<tr class="odd">
+<td>1101</td>
+<td>tile number within the flowcell lane</td>
+</tr>
+<tr class="even">
+<td>13622</td>
+<td>‘x’-coordinate within the tile</td>
+</tr>
+<tr class="odd">
+<td>1477</td>
+<td>‘y’-coordinate within the tile</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>the member of a pair</td>
+</tr>
+<tr class="odd">
+<td>N</td>
+<td>Y if the read is filtered (did not pass)</td>
+</tr>
+<tr class="even">
+<td>0</td>
+<td>0: none of the control bits are on</td>
+</tr>
+<tr class="odd">
+<td>1</td>
+<td>index sequence</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="sequence" class="slide level2">
+<h2>Sequence</h2>
+<p>3 main parts:</p>
+<ul>
+<li><p>The tag, informs you from which sample the read come from</p></li>
+<li><p>The primer used for the amplification</p></li>
+<li><p>The targeted sequence (metabarcode), the sequence we are interested in.</p></li>
+</ul>
 
+<img data-src="../img/read_example_1.svg" class="r-stretch"></section>
+<section id="quality" class="slide level2">
+<h2>Quality</h2>
+<p>Quality score encoded using ASCII characters:</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<table>
+<thead>
+<tr class="header">
+<th>ASCII character</th>
+<th>Quality score</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>!</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>”</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>…</td>
+<td>…</td>
+</tr>
+</tbody>
+</table>
+</div><div class="column" style="width:50%;">
+<table>
+<thead>
+<tr class="header">
+<th>ASCII character</th>
+<th>Quality score</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>…</td>
+<td>…</td>
+</tr>
+<tr class="even">
+<td>}</td>
+<td>92</td>
+</tr>
+<tr class="odd">
+<td>~</td>
+<td>93</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>The Phred quality score Q is related to the base calling error probability P according to the following formula:</p>
+<p><span class="math display">\[Q = -10\log_{10}P\]</span></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource default number-lines code-with-copy"><code class="sourceCode default"><span id="cb4-1"><a href="#cb4-1"></a>---A99EBC-,C,,CF,@++F7,CFFF9,CEFF8,E,,C+B7F&lt;FFF9,,CE,CF,;,,C</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>For the ASCII character <code>-</code>, <span class="math inline">\(Q=12\)</span></p>
+<p>So, <span class="math inline">\(P=10^{Q/-10}=10^{-1.2}\)</span></p>
 
-<img data-src="img/read_example_1.svg" class="r-stretch"><div class="footer footer-default">
+<div class="footer footer-default">
 
 </div>
 </section></section>

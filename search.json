@@ -7,18 +7,32 @@
     "text": "Monday\n\nR initiation\n\nTuesday\n\nDada2 presentation\nPhyloseq presentation\n\nWednesday\nThursday\nFriday\n\n\n\n\n\nTuesday\nWednesday\nThursday\nFriday"
   },
   {
-    "objectID": "courses/dada2.html#from-the-sequencing-platform",
-    "href": "courses/dada2.html#from-the-sequencing-platform",
+    "objectID": "courses/dada2.html#fastq-records",
+    "href": "courses/dada2.html#fastq-records",
     "title": "Analysing metabarcoding data with dada2",
-    "section": "From the sequencing platform",
-    "text": "From the sequencing platform\nTwo files (R1 and R2) per sequencing run or per sample\n\nR1 (60 first base pairs):\n\n    @M05074:31:000000000-BC3R3:1:1101:13622:1477 1:N:0:1\n    TAACAACCCAGCAGCTGCGGTAATTCCAGCTCCAATAGCGTATATTTAAGTTGTTGCAGT\n    +\n    ---A99EBC-,C,,CF,@++F7,CFFF9,CEFF8,E,,C+B7F<FFF9,,CE,CF,;,,C\n\nR2:\n\n    @M05074:31:000000000-BC3R3:1:1101:13622:1477 2:N:0:1\n    ACAACACTTTCGTTCTTGCTTGATGAAAACATCCTTGGCAAATGCTTTCGCATTAGTTCG\n    +\n    -86@BCFFFGF@FGGFG9,CF,,C6,<A<F@FGGGGA,C,C8C<<FEFG:@,,B,,CFE:\n\n\n\n\n\n\nReads can be mix-orientated"
+    "section": "FASTQ records",
+    "text": "FASTQ records\nTwo files (R1 and R2) per sequencing run or per sample (60 first nucleotides):\nR1:\n    @M05074:31:000000000-BC3R3:1:1101:13622:1477 1:N:0:1\n    TAACAACCCAGCAGCTGCGGTAATTCCAGCTCCAATAGCGTATATTTAAGTTGTTGCAGT\n    +\n    ---A99EBC-,C,,CF,@++F7,CFFF9,CEFF8,E,,C+B7F<FFF9,,CE,CF,;,,C\nR2:\n    @M05074:31:000000000-BC3R3:1:1101:13622:1477 2:N:0:1\n    ACAACACTTTCGTTCTTGCTTGATGAAAACATCCTTGGCAAATGCTTTCGCATTAGTTCG\n    +\n    -86@BCFFFGF@FGGFG9,CF,,C6,<A<F@FGGGGA,C,C8C<<FEFG:@,,B,,CFE:\n3 types of information per record: identifier, sequence, quality"
   },
   {
-    "objectID": "courses/dada2.html#blabla",
-    "href": "courses/dada2.html#blabla",
+    "objectID": "courses/dada2.html#identifier",
+    "href": "courses/dada2.html#identifier",
     "title": "Analysing metabarcoding data with dada2",
-    "section": "blabla",
-    "text": "blabla"
+    "section": "Identifier",
+    "text": "Identifier\n    @M05074:31:000000000-BC3R3:1:1101:13622:1477 1:N:0:1\n\n\n\nValue\nDescription\n\n\n\n\nM05074\nthe unique instrument id\n\n\n31\nthe run id\n\n\n000000000-BC3R3\nthe flowcell id\n\n\n1\nflowcell lane\n\n\n1101\ntile number within the flowcell lane\n\n\n13622\n‘x’-coordinate within the tile\n\n\n1477\n‘y’-coordinate within the tile\n\n\n1\nthe member of a pair\n\n\nN\nY if the read is filtered (did not pass)\n\n\n0\n0: none of the control bits are on\n\n\n1\nindex sequence"
+  },
+  {
+    "objectID": "courses/dada2.html#sequence",
+    "href": "courses/dada2.html#sequence",
+    "title": "Analysing metabarcoding data with dada2",
+    "section": "Sequence",
+    "text": "Sequence\n3 main parts:\n\nThe tag, informs you from which sample the read come from\nThe primer used for the amplification\nThe targeted sequence (metabarcode), the sequence we are interested in."
+  },
+  {
+    "objectID": "courses/dada2.html#quality",
+    "href": "courses/dada2.html#quality",
+    "title": "Analysing metabarcoding data with dada2",
+    "section": "Quality",
+    "text": "Quality\nQuality score encoded using ASCII characters:\n\n\n\n\n\nASCII character\nQuality score\n\n\n\n\n!\n0\n\n\n”\n1\n\n\n…\n…\n\n\n\n\n\n\n\nASCII character\nQuality score\n\n\n\n\n…\n…\n\n\n}\n92\n\n\n~\n93\n\n\n\n\n\nThe Phred quality score Q is related to the base calling error probability P according to the following formula:\n\\[Q = -10\\log_{10}P\\]\n---A99EBC-,C,,CF,@++F7,CFFF9,CEFF8,E,,C+B7F<FFF9,,CE,CF,;,,C\nFor the ASCII character -, \\(Q=12\\)\nSo, \\(P=10^{Q/-10}=10^{-1.2}\\)"
   },
   {
     "objectID": "about.html",
