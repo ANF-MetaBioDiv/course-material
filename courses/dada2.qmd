@@ -1,38 +1,101 @@
 ---
-title: "Analysing metabarcoding sequencing data with dada2"
+title: "Analysing metabarcoding data with dada2"
 author: "Nicolas Henry"
 format:
-  revealjs: 
-    theme: sky
+  revealjs:
+    theme: ../simple_nico.scss
 editor: visual
 ---
 
 # Introduction
 
-## From the sequencing platform?
+## FASTQ records
 
-Two files (R1 and R2) per sequencing run or per sample
+Two files (R1 and R2) per sequencing run or per sample (60 first nucleotides):
 
-* R1 (60 first base pairs):
+R1:
 
-```default
+``` default
     @M05074:31:000000000-BC3R3:1:1101:13622:1477 1:N:0:1
     TAACAACCCAGCAGCTGCGGTAATTCCAGCTCCAATAGCGTATATTTAAGTTGTTGCAGT
     +
     ---A99EBC-,C,,CF,@++F7,CFFF9,CEFF8,E,,C+B7F<FFF9,,CE,CF,;,,C
 ```
 
-* R2:
+R2:
 
-```default
+``` default
     @M05074:31:000000000-BC3R3:1:1101:13622:1477 2:N:0:1
     ACAACACTTTCGTTCTTGCTTGATGAAAACATCCTTGGCAAATGCTTTCGCATTAGTTCG
     +
     -86@BCFFFGF@FGGFG9,CF,,C6,<A<F@FGGGGA,C,C8C<<FEFG:@,,B,,CFE:
 ```
 
-:::{.callout-warning}
-## Reads can be mix-orientated
+3 types of information per record: identifier, sequence, quality
 
+## Identifier
+
+``` default
+    @M05074:31:000000000-BC3R3:1:1101:13622:1477 1:N:0:1
+```
+
+| Value           | Description                              |
+|-----------------|------------------------------------------|
+| M05074          | the unique instrument id                 |
+| 31              | the run id                               |
+| 000000000-BC3R3 | the flowcell id                          |
+| 1               | flowcell lane                            |
+| 1101            | tile number within the flowcell lane     |
+| 13622           | 'x'-coordinate within the tile           |
+| 1477            | 'y'-coordinate within the tile           |
+| 1               | the member of a pair                     |
+| N               | Y if the read is filtered (did not pass) |
+| 0               | 0: none of the control bits are on       |
+| 1               | index sequence                           |
+
+## Sequence
+
+3 main parts:
+
+-   The tag, informs you from which sample the read come from
+
+-   The primer used for the amplification
+
+-   The targeted sequence (metabarcode), the sequence we are interested in.
+
+![](../img/read_example_1.svg)
+
+## Quality
+
+Quality score encoded using ASCII characters:
+
+::: columns
+::: {.column width="50%"}
+| ASCII character | Quality score |
+|-----------------|---------------|
+| !               | 0             |
+| "               | 1             |
+| ...             | ...           |
 :::
+
+::: {.column width="50%"}
+| ASCII character | Quality score |
+|-----------------|---------------|
+| ...             | ...           |
+| }               | 92            |
+| \~              | 93            |
+:::
+:::
+
+The Phred quality score Q is related to the base calling error probability P according to the following formula:
+
+$$Q = -10\log_{10}P$$
+
+``` default
+---A99EBC-,C,,CF,@++F7,CFFF9,CEFF8,E,,C+B7F<FFF9,,CE,CF,;,,C
+```
+
+For the ASCII character `-`, $Q=12$
+
+So, $P=10^{Q/-10}=10^{-1.2}$
 
