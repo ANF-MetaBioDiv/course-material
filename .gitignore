@@ -3,6 +3,7 @@
 .RData
 .Ruserdata
 
+/.vscode/
 /.quarto/
 /_site/
 /tmp/
