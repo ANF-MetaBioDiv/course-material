@@ -7,11 +7,25 @@
     "text": "Monday\n\nR initiation\n\nTuesday\n\nDada2 presentation\nPhyloseq presentation\n\nWednesday\nThursday\nFriday\n\n\n\n\n\nTuesday\nWednesday\nThursday\nFriday"
   },
   {
-    "objectID": "courses/dada2.html#fastq-records",
-    "href": "courses/dada2.html#fastq-records",
+    "objectID": "courses/dada2.html#i-received-data",
+    "href": "courses/dada2.html#i-received-data",
     "title": "Analysing metabarcoding data with dada2",
-    "section": "FASTQ records",
-    "text": "FASTQ records\nTwo files (R1 and R2) per sequencing run or per sample (60 first nucleotides):\nR1:\n    @M05074:31:000000000-BC3R3:1:1101:13622:1477 1:N:0:1\n    TAACAACCCAGCAGCTGCGGTAATTCCAGCTCCAATAGCGTATATTTAAGTTGTTGCAGT\n    +\n    ---A99EBC-,C,,CF,@++F7,CFFF9,CEFF8,E,,C+B7F<FFF9,,CE,CF,;,,C\nR2:\n    @M05074:31:000000000-BC3R3:1:1101:13622:1477 2:N:0:1\n    ACAACACTTTCGTTCTTGCTTGATGAAAACATCCTTGGCAAATGCTTTCGCATTAGTTCG\n    +\n    -86@BCFFFGF@FGGFG9,CF,,C6,<A<F@FGGGGA,C,C8C<<FEFG:@,,B,,CFE:\n3 types of information per record: identifier, sequence, quality"
+    "section": "I received data",
+    "text": "I received data"
+  },
+  {
+    "objectID": "courses/dada2.html#what-am-i-going-to-do-with-that",
+    "href": "courses/dada2.html#what-am-i-going-to-do-with-that",
+    "title": "Analysing metabarcoding data with dada2",
+    "section": "What am I going to do with that?",
+    "text": "What am I going to do with that?\nLet’s have a closer look of what we have\nzcat 18S-NG080819-3_TTAGCT-CMKL6_L001_R1.fastq.gz | head -n 8\n\nWe need a bioinformatic pipeline to:\n\nFilter out wrong sequences, such as sequencing errors\nGet a format suitable for diversity and community composition analyses of our samples"
+  },
+  {
+    "objectID": "courses/dada2.html#overview",
+    "href": "courses/dada2.html#overview",
+    "title": "Analysing metabarcoding data with dada2",
+    "section": "Overview",
+    "text": "Overview\nTwo files (R1 and R2) per sequencing run or per sample (60 first nucleotides):\nR1:\n    @M05074:31:000000000-BC3R3:1:1101:13622:1477 1:N:0:1\n    TAACAACCCAGCAGCTGCGGTAATTCCAGCTCCAATAGCGTATATTTAAGTTGTTGCAGT\n    +\n    ---A99EBC-,C,,CF,@++F7,CFFF9,CEFF8,E,,C+B7F<FFF9,,CE,CF,;,,C\nR2:\n    @M05074:31:000000000-BC3R3:1:1101:13622:1477 2:N:0:1\n    ACAACACTTTCGTTCTTGCTTGATGAAAACATCCTTGGCAAATGCTTTCGCATTAGTTCG\n    +\n    -86@BCFFFGF@FGGFG9,CF,,C6,<A<F@FGGGGA,C,C8C<<FEFG:@,,B,,CFE:\nPer record: identifier, sequence, quality"
   },
   {
     "objectID": "courses/dada2.html#identifier",
@@ -25,14 +39,147 @@
     "href": "courses/dada2.html#sequence",
     "title": "Analysing metabarcoding data with dada2",
     "section": "Sequence",
-    "text": "Sequence\n3 main parts:\n\nThe tag, informs you from which sample the read come from\nThe primer used for the amplification\nThe targeted sequence (metabarcode), the sequence we are interested in."
+    "text": "Sequence\n\n\n\nThe tag, informs you from which sample the read come from\nThe primer used for the amplification\nThe targeted sequence (metabarcode)"
   },
   {
     "objectID": "courses/dada2.html#quality",
     "href": "courses/dada2.html#quality",
     "title": "Analysing metabarcoding data with dada2",
     "section": "Quality",
-    "text": "Quality\nQuality score encoded using ASCII characters:\n\n\n\n\n\nASCII character\nQuality score\n\n\n\n\n!\n0\n\n\n”\n1\n\n\n…\n…\n\n\n\n\n\n\n\nASCII character\nQuality score\n\n\n\n\n…\n…\n\n\n}\n92\n\n\n~\n93\n\n\n\n\n\nThe Phred quality score Q is related to the base calling error probability P according to the following formula:\n\\[Q = -10\\log_{10}P\\]\n---A99EBC-,C,,CF,@++F7,CFFF9,CEFF8,E,,C+B7F<FFF9,,CE,CF,;,,C\nFor the ASCII character -, \\(Q=12\\)\nSo, \\(P=10^{Q/-10}=10^{-1.2}\\)"
+    "text": "Quality\nQuality score encoded using ASCII characters:\n\n\n\n\n\nASCII character\nQuality score\n\n\n\n\n!\n0\n\n\n”\n1\n\n\n#\n2\n\n\n\n\n\n\n\nASCII character\nQuality score\n\n\n\n\nG\n38\n\n\nH\n39\n\n\nI\n40\n\n\n\n\n\nThe Phred quality score Q is related to the base calling error probability P according to the following formula:\n\\[Q = -10\\log_{10}P\\]\n\\[P=10^{Q/-10}\\]\n\nIn raw data reads, the quality score rarely exceed 40, but higher scores are possible when different raw reads are assembled"
+  },
+  {
+    "objectID": "courses/dada2.html#strategies",
+    "href": "courses/dada2.html#strategies",
+    "title": "Analysing metabarcoding data with dada2",
+    "section": "Strategies",
+    "text": "Strategies\n\nGenetic clustering based approaches producing OTUs:\n\nUCLUST\nSwarm (could be seen as denoising too)\n\nDenoising approaches producing ASVs:\n\nDeblur\nUNOISE\nDADA2"
+  },
+  {
+    "objectID": "courses/dada2.html#dada2-quest-ce-que-cest",
+    "href": "courses/dada2.html#dada2-quest-ce-que-cest",
+    "title": "Analysing metabarcoding data with dada2",
+    "section": "DADA2, qu’est-ce que c’est?",
+    "text": "DADA2, qu’est-ce que c’est?\n\n\nDADA (Divisive Amplicon Denoising Algorithm) an algorithm to denoise Roche’s 454 platform errors (Rosen et al. 2012)\nDADA2 implements a new quality-aware model of Illumina amplicon errors (Callahan et al. 2016)\nDADA2 is an open-source R package https://github.com/benjjneb/dada2"
+  },
+  {
+    "objectID": "courses/dada2.html#dada2-the-full-amplicon-workflow",
+    "href": "courses/dada2.html#dada2-the-full-amplicon-workflow",
+    "title": "Analysing metabarcoding data with dada2",
+    "section": "DADA2, the full amplicon workflow",
+    "text": "DADA2, the full amplicon workflow\n\nQuality assessment → plotQualityProfile()\nLength trimming → filterAndTrim()\nQuality filtering → filterAndTrim()\nDenoising → dada()\nMerging pair-end reads → mergePairs()\nChimera identification → removeBimeraDenovo()\nTaxonomic assignment → assignTaxonomy()\n\nBut some preliminary steps are missing…"
+  },
+  {
+    "objectID": "courses/dada2.html#artificial-sequences",
+    "href": "courses/dada2.html#artificial-sequences",
+    "title": "Analysing metabarcoding data with dada2",
+    "section": "Artificial sequences",
+    "text": "Artificial sequences\n\nTags are used to encode the sample provenance of the reads. Reads need to be grouped by sample provenance (demultiplexing)\nPrimer sequences will bias the error model built by DADA2 and need to be removed (primer trimming).\nBoth task can be achieved using Cutadapt, a command line-tool to find and remove error-tolerantly adapters from reads (Martin et al. 2011)."
+  },
+  {
+    "objectID": "courses/dada2.html#demultiplexing-using-cutadapt",
+    "href": "courses/dada2.html#demultiplexing-using-cutadapt",
+    "title": "Analysing metabarcoding data with dada2",
+    "section": "Demultiplexing using cutadapt",
+    "text": "Demultiplexing using cutadapt\nIf your tags are in a fasta file with corresponding sample names as header, you can use this command-line:\n\n\ncutadapt \\\n    -g file:${BARCODES} \\\n    -o {name}_R1.fastq.gz \\\n    -p {name}_R2.fastq.gz \\\n    ${R1_FILE} \\\n    ${R2_FILE}\n\n# blabla\n# fff\n\n\nYou end up with as many R1 and R2 files as samples you have\n\n\n\n\n\n\nHelp! My reads are mixed-orientated\n\n\nRun cutadapt a second time, looking for tags in R2.\nKeep the outputs of the two rounds separated for the rest of the workflow."
+  },
+  {
+    "objectID": "courses/dada2.html#primer-removal-using-cutadapt",
+    "href": "courses/dada2.html#primer-removal-using-cutadapt",
+    "title": "Analysing metabarcoding data with dada2",
+    "section": "Primer removal using cutadapt",
+    "text": "Primer removal using cutadapt\nTo remove forward and reverse primer sequences form pair-end read files:\n\n\ncutadapt \\\n    -e 0.1 \\\n    -g ${PRIMER_FORWARD} \\\n    -G ${PRIMER_REVERSE} \\\n    --report=minimal \\\n    --discard-untrimmed \\\n    --minimum-length ${MIN_LENGTH} \\\n    --no-indels \\\n    -o ${FORWARD} \\\n    -p ${REVERSE} \\\n    ${R1_FILE} \\\n    ${R2_FILE} 1> ${LOG}\n\n# \n# error tolerance (default value)\n\n\nAs for demultiplexing, if reads are mix-orientated, run cutadapt twice"
+  },
+  {
+    "objectID": "courses/dada2.html#check-reads-quality",
+    "href": "courses/dada2.html#check-reads-quality",
+    "title": "Analysing metabarcoding data with dada2",
+    "section": "Check reads quality",
+    "text": "Check reads quality\n\n\nThe overall quality of the sequencing is checked using plotQualityProfile()\nOutside of DADA2, you can also use FASTQC\nIf the overall quality is too low, you will probably have to resequence your samples\n\n\n\n\nA quality drop is often observed by the end of the reads\n\n\ngreen line: mean\norange line (plain): median\norange line (dashed): 25th and 75th quantiles"
+  },
+  {
+    "objectID": "courses/dada2.html#trimming-and-filtering",
+    "href": "courses/dada2.html#trimming-and-filtering",
+    "title": "Analysing metabarcoding data with dada2",
+    "section": "Trimming and filtering",
+    "text": "Trimming and filtering\nTrimming, at a given length, will improve the overall read quality\n\n\n\n\n\n\nDanger\n\n\nAfter trimming, make sure that forward and reverse reads still overlap\n\n\n\nReads of low quality and/or with ambiguous nucleotides (N) after trimming are filtered out.\nBoth length trimming and quality filtering are achieved using the function filterAndTrim()"
+  },
+  {
+    "objectID": "courses/dada2.html#denoising",
+    "href": "courses/dada2.html#denoising",
+    "title": "Analysing metabarcoding data with dada2",
+    "section": "Denoising",
+    "text": "Denoising\nIs sequence \\(i\\) generated by sequence \\(j\\) because of sequencing errors?\n\nIn order to define if \\(i\\) is an error of \\(j\\) and perform denoising using DADA2, we need to compute:\n\nthe error rate \\(\\lambda_{ji}\\)\nthe abundance p-value \\(p_A(j \\rightarrow i)\\)"
+  },
+  {
+    "objectID": "courses/dada2.html#error-rate",
+    "href": "courses/dada2.html#error-rate",
+    "title": "Analysing metabarcoding data with dada2",
+    "section": "Error rate",
+    "text": "Error rate\n\nThe rate at which an amplicon read with sequence i is produced from sample sequence j is reduced to the product over the transition probabilities between the L aligned nucleotides:\n\n\\[\\lambda_{ji} = \\prod_{l=0}^L p(j(l) \\rightarrow i(l),q_i(l))\\]"
+  },
+  {
+    "objectID": "courses/dada2.html#the-abundance-p-value",
+    "href": "courses/dada2.html#the-abundance-p-value",
+    "title": "Analysing metabarcoding data with dada2",
+    "section": "The abundance p-value",
+    "text": "The abundance p-value\nThe abundance p-value (\\(p_A\\)) is the probability of all reads of \\(i\\) (\\(a_i\\)) or more being produced from \\(j\\) during amplification ore sequencing.\n\\[p_A(j \\rightarrow i) = \\frac{1}{1- \\rho_{\\mathrm{pois}}(n_j\\lambda_{ji},0)} \\sum_{a=a_i}^\\infty \\rho_{\\mathrm{pois}}(n_j\\lambda_{ji},a)\\]\nA low p-value indicate that it is unlikely that \\(i\\) is noise from amplifying and sequencing \\(j\\)\n\nThe discrete nature of the Poisson distribution is also why this is a probability mass function and not a density function"
+  },
+  {
+    "objectID": "courses/dada2.html#the-divisive-partitioning-algorithm",
+    "href": "courses/dada2.html#the-divisive-partitioning-algorithm",
+    "title": "Analysing metabarcoding data with dada2",
+    "section": "The divisive partitioning algorithm",
+    "text": "The divisive partitioning algorithm\n\nall unique sequences into a single partition\n\\(p_A\\) of all sequences against most abundant sequence (center)\nif smallest p-value below \\(\\Omega_A\\): new partition\n\\(p_A\\) of all sequences against center of new partition\nevery sequence join the partition most likely to have produced it\n\nRepeat steps 3 to 5 until all abundance p-values are greater than \\(\\Omega_A\\)"
+  },
+  {
+    "objectID": "courses/dada2.html#learn-the-error-model",
+    "href": "courses/dada2.html#learn-the-error-model",
+    "title": "Analysing metabarcoding data with dada2",
+    "section": "Learn the error model",
+    "text": "Learn the error model\nHow do we compute \\(\\lambda_{ji}\\) if we don’t know the error rate for each possible transition?\nThe error rates will be learned from the data using learnErrors()\n\nThe learnErrors method learns this error model from the data, by alternating estimation of the error rates and inference of sample composition until they converge on a jointly consistent solution"
+  },
+  {
+    "objectID": "courses/dada2.html#visualise-the-error-model",
+    "href": "courses/dada2.html#visualise-the-error-model",
+    "title": "Analysing metabarcoding data with dada2",
+    "section": "Visualise the error model",
+    "text": "Visualise the error model\nYou can visualise the estimated error rates using the function plotErrors()"
+  },
+  {
+    "objectID": "courses/dada2.html#run-the-dada2-algorithm",
+    "href": "courses/dada2.html#run-the-dada2-algorithm",
+    "title": "Analysing metabarcoding data with dada2",
+    "section": "Run the DADA2 algorithm",
+    "text": "Run the DADA2 algorithm\n\nAfter dereplicating your sequences (derepFastq()), denoise using the function dada()\nBy default sample inference is performed on each sample individually (pool = FALSE).\nIf you are interested in rare variants present in several samples use pool = TRUE\nWhen working on big data, pool = \"pseudo\" is an interesting alternative to pool = TRUE"
+  },
+  {
+    "objectID": "courses/dada2.html#merge-paired-reads",
+    "href": "courses/dada2.html#merge-paired-reads",
+    "title": "Analysing metabarcoding data with dada2",
+    "section": "Merge paired reads",
+    "text": "Merge paired reads\nMerge forward and reverse reads using mergePairs()\n\n\nminOverlap: minimum size of overlap\nmaxMismatch: maximum number of mismatches\njustConcatenate: in case your reads don’t overlap"
+  },
+  {
+    "objectID": "courses/dada2.html#remove-chimeras",
+    "href": "courses/dada2.html#remove-chimeras",
+    "title": "Analysing metabarcoding data with dada2",
+    "section": "Remove chimeras",
+    "text": "Remove chimeras\n\nChimeras are artifact sequences formed by two or more biological sequences incorrectly joined together.\nWe find and remove bimeras (two-parent chimeras) using the function removeBimeraDenovo()\nChimeric sequences are identified if they can be exactly reconstructed by combining a left-segment and a right-segment from two more abundant “parent” sequences.\nCan be done per sample (method=\"per-sample\"), for the entire dataset (method=\"pooled\") or in a consensus way (method=\"consensus\")\n\n\nChimeras are artifact sequences formed by two or more biological sequences incorrectly joined together. This often occurs during PCR reactions using mixed templates (i.e., uncultured environmental samples). Incomplete extensions during PCR allow subsequent PCR cycles to use a partially extended strand to bind to the template of a different, but similar, sequence. This partially extended strand then acts as a primer to extend and form a chimeric sequence. Once created, the chimeric sequence is then further amplified in subsequent cycles. The end result is a PCR artifact that does not represent a sequence that exists in nature."
+  },
+  {
+    "objectID": "courses/dada2.html#taxonomic-assignment",
+    "href": "courses/dada2.html#taxonomic-assignment",
+    "title": "Analysing metabarcoding data with dada2",
+    "section": "Taxonomic assignment",
+    "text": "Taxonomic assignment\n\nTaxonomic assignment within DADA2 workflow, assignTaxonomy(), is achieved using a native implementation of the naive Bayesian classifier method (Wang et al. 2007).\nReference fastas for the three most common 16S databases: Silva, RDP and GreenGenes are maintained by dada2’s team.\nFor eukaryotes, a dada2 formatted version of PR2 can be found here."
+  },
+  {
+    "objectID": "courses/dada2.html#extra-filtering-steps",
+    "href": "courses/dada2.html#extra-filtering-steps",
+    "title": "Analysing metabarcoding data with dada2",
+    "section": "Extra filtering steps",
+    "text": "Extra filtering steps\n\nASVs can be filtered out if:\n\nsequence has an unexpected length\nnot assigned to the desired taxonomic group\nconsidered as contaminant (present in negative controls)"
   },
   {
     "objectID": "about.html",

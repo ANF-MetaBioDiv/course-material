@@ -392,24 +392,44 @@
 <h1>Introduction</h1>
 
 </section>
-<section id="fastq-records" class="slide level2">
-<h2>FASTQ records</h2>
+<section id="i-received-data" class="slide level2">
+<h2>I received data</h2>
+
+<img data-src="../img/fastq_files.png" class="r-stretch"></section>
+<section id="what-am-i-going-to-do-with-that" class="slide level2">
+<h2>What am I going to do with that?</h2>
+<p>Let’s have a closer look of what we have</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">zcat</span> 18S-NG080819-3_TTAGCT-CMKL6_L001_R1.fastq.gz <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 8</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+<img data-src="../img/fastq_head.png" class="r-stretch"><p>We need a bioinformatic pipeline to:</p>
+<ul>
+<li>Filter out wrong sequences, such as sequencing errors</li>
+<li>Get a format suitable for diversity and community composition analyses of our samples</li>
+</ul>
+</section></section>
+<section>
+<section id="fastq-records" class="title-slide slide level1 center">
+<h1>FASTQ records</h1>
+
+</section>
+<section id="overview" class="slide level2">
+<h2>Overview</h2>
 <p>Two files (R1 and R2) per sequencing run or per sample (60 first nucleotides):</p>
 <p>R1:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource default number-lines code-with-copy"><code class="sourceCode default"><span id="cb1-1"><a href="#cb1-1"></a>    @M05074:31:000000000-BC3R3:1:1101:13622:1477 1:N:0:1</span>
-<span id="cb1-2"><a href="#cb1-2"></a>    TAACAACCCAGCAGCTGCGGTAATTCCAGCTCCAATAGCGTATATTTAAGTTGTTGCAGT</span>
-<span id="cb1-3"><a href="#cb1-3"></a>    +</span>
-<span id="cb1-4"><a href="#cb1-4"></a>    ---A99EBC-,C,,CF,@++F7,CFFF9,CEFF8,E,,C+B7F&lt;FFF9,,CE,CF,;,,C</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>R2:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource default number-lines code-with-copy"><code class="sourceCode default"><span id="cb2-1"><a href="#cb2-1"></a>    @M05074:31:000000000-BC3R3:1:1101:13622:1477 2:N:0:1</span>
-<span id="cb2-2"><a href="#cb2-2"></a>    ACAACACTTTCGTTCTTGCTTGATGAAAACATCCTTGGCAAATGCTTTCGCATTAGTTCG</span>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource default number-lines code-with-copy"><code class="sourceCode default"><span id="cb2-1"><a href="#cb2-1"></a>    @M05074:31:000000000-BC3R3:1:1101:13622:1477 1:N:0:1</span>
+<span id="cb2-2"><a href="#cb2-2"></a>    TAACAACCCAGCAGCTGCGGTAATTCCAGCTCCAATAGCGTATATTTAAGTTGTTGCAGT</span>
 <span id="cb2-3"><a href="#cb2-3"></a>    +</span>
-<span id="cb2-4"><a href="#cb2-4"></a>    -86@BCFFFGF@FGGFG9,CF,,C6,&lt;A&lt;F@FGGGGA,C,C8C&lt;&lt;FEFG:@,,B,,CFE:</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>3 types of information per record: identifier, sequence, quality</p>
+<span id="cb2-4"><a href="#cb2-4"></a>    ---A99EBC-,C,,CF,@++F7,CFFF9,CEFF8,E,,C+B7F&lt;FFF9,,CE,CF,;,,C</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>R2:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource default number-lines code-with-copy"><code class="sourceCode default"><span id="cb3-1"><a href="#cb3-1"></a>    @M05074:31:000000000-BC3R3:1:1101:13622:1477 2:N:0:1</span>
+<span id="cb3-2"><a href="#cb3-2"></a>    ACAACACTTTCGTTCTTGCTTGATGAAAACATCCTTGGCAAATGCTTTCGCATTAGTTCG</span>
+<span id="cb3-3"><a href="#cb3-3"></a>    +</span>
+<span id="cb3-4"><a href="#cb3-4"></a>    -86@BCFFFGF@FGGFG9,CF,,C6,&lt;A&lt;F@FGGGGA,C,C8C&lt;&lt;FEFG:@,,B,,CFE:</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Per record: identifier, sequence, quality</p>
 </section>
 <section id="identifier" class="slide level2">
 <h2>Identifier</h2>
-<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource default number-lines code-with-copy"><code class="sourceCode default"><span id="cb3-1"><a href="#cb3-1"></a>    @M05074:31:000000000-BC3R3:1:1101:13622:1477 1:N:0:1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource default number-lines code-with-copy"><code class="sourceCode default"><span id="cb4-1"><a href="#cb4-1"></a>    @M05074:31:000000000-BC3R3:1:1101:13622:1477 1:N:0:1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -467,14 +487,14 @@
 </section>
 <section id="sequence" class="slide level2">
 <h2>Sequence</h2>
-<p>3 main parts:</p>
-<ul>
+<p><br></p>
+
+<img data-src="../img/read_example_1.svg" class="r-stretch"><ul>
 <li><p>The tag, informs you from which sample the read come from</p></li>
 <li><p>The primer used for the amplification</p></li>
-<li><p>The targeted sequence (metabarcode), the sequence we are interested in.</p></li>
+<li><p>The targeted sequence (metabarcode)</p></li>
 </ul>
-
-<img data-src="../img/read_example_1.svg" class="r-stretch"></section>
+</section>
 <section id="quality" class="slide level2">
 <h2>Quality</h2>
 <p>Quality score encoded using ASCII characters:</p>
@@ -483,22 +503,22 @@
 <table>
 <thead>
 <tr class="header">
-<th>ASCII character</th>
-<th>Quality score</th>
+<th style="text-align: center;">ASCII character</th>
+<th style="text-align: center;">Quality score</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>!</td>
-<td>0</td>
+<td style="text-align: center;">!</td>
+<td style="text-align: center;">0</td>
 </tr>
 <tr class="even">
-<td>”</td>
-<td>1</td>
+<td style="text-align: center;">”</td>
+<td style="text-align: center;">1</td>
 </tr>
 <tr class="odd">
-<td>…</td>
-<td>…</td>
+<td style="text-align: center;">#</td>
+<td style="text-align: center;">2</td>
 </tr>
 </tbody>
 </table>
@@ -506,22 +526,22 @@
 <table>
 <thead>
 <tr class="header">
-<th>ASCII character</th>
-<th>Quality score</th>
+<th style="text-align: center;">ASCII character</th>
+<th style="text-align: center;">Quality score</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>…</td>
-<td>…</td>
+<td style="text-align: center;">G</td>
+<td style="text-align: center;">38</td>
 </tr>
 <tr class="even">
-<td>}</td>
-<td>92</td>
+<td style="text-align: center;">H</td>
+<td style="text-align: center;">39</td>
 </tr>
 <tr class="odd">
-<td>~</td>
-<td>93</td>
+<td style="text-align: center;">I</td>
+<td style="text-align: center;">40</td>
 </tr>
 </tbody>
 </table>
@@ -529,14 +549,327 @@
 </div>
 <p>The Phred quality score Q is related to the base calling error probability P according to the following formula:</p>
 <p><span class="math display">\[Q = -10\log_{10}P\]</span></p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource default number-lines code-with-copy"><code class="sourceCode default"><span id="cb4-1"><a href="#cb4-1"></a>---A99EBC-,C,,CF,@++F7,CFFF9,CEFF8,E,,C+B7F&lt;FFF9,,CE,CF,;,,C</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>For the ASCII character <code>-</code>, <span class="math inline">\(Q=12\)</span></p>
-<p>So, <span class="math inline">\(P=10^{Q/-10}=10^{-1.2}\)</span></p>
+<p><span class="math display">\[P=10^{Q/-10}\]</span></p>
+<aside class="notes">
+<p>In raw data reads, the quality score rarely exceed 40, but higher scores are possible when different raw reads are assembled</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section id="bioinformatic-pipeline" class="title-slide slide level1 center">
+<h1>Bioinformatic pipeline</h1>
+
+</section>
+<section id="strategies" class="slide level2">
+<h2>Strategies</h2>
+<ul>
+<li>Genetic clustering based approaches producing OTUs:
+<ul>
+<li>UCLUST</li>
+<li>Swarm (could be seen as denoising too)</li>
+</ul></li>
+<li>Denoising approaches producing ASVs:
+<ul>
+<li>Deblur</li>
+<li>UNOISE</li>
+<li>DADA2</li>
+</ul></li>
+</ul>
+</section>
+<section id="dada2-quest-ce-que-cest" class="slide level2">
+<h2>DADA2, qu’est-ce que c’est?</h2>
+<p><br></p>
+<ul>
+<li><p>DADA (Divisive Amplicon Denoising Algorithm) an algorithm to denoise Roche’s 454 platform errors (<a href="https://doi.org/10.1186/1471-2105-13-283" target="_blank">Rosen et al.&nbsp;2012</a>)</p></li>
+<li><p>DADA2 implements a new quality-aware model of Illumina amplicon errors (<a href="https://doi.org/10.1038/nmeth.3869" target="_blank">Callahan et al.&nbsp;2016</a>)</p></li>
+<li><p>DADA2 is an open-source R package <a href="https://github.com/benjjneb/dada2">https://github.com/benjjneb/dada2</a></p></li>
+</ul>
+</section>
+<section id="dada2-the-full-amplicon-workflow" class="slide level2">
+<h2>DADA2, the full amplicon workflow</h2>
+<ul>
+<li>Quality assessment → <code>plotQualityProfile()</code></li>
+<li>Length trimming → <code>filterAndTrim()</code></li>
+<li>Quality filtering → <code>filterAndTrim()</code></li>
+<li>Denoising → <code>dada()</code></li>
+<li>Merging pair-end reads → <code>mergePairs()</code></li>
+<li>Chimera identification → <code>removeBimeraDenovo()</code></li>
+<li>Taxonomic assignment → <code>assignTaxonomy()</code></li>
+</ul>
+<p>But some preliminary steps are missing…</p>
+</section></section>
+<section>
+<section id="before-using-dada2" class="title-slide slide level1 center">
+<h1>Before using Dada2</h1>
+
+</section>
+<section id="artificial-sequences" class="slide level2">
+<h2>Artificial sequences</h2>
+
+<img data-src="../img/read_example_1.svg" class="r-stretch"><p><strong>Tags</strong> are used to encode the sample provenance of the reads. Reads need to be grouped by sample provenance (demultiplexing)</p>
+<p><strong>Primer</strong> sequences will bias the error model built by DADA2 and need to be removed (primer trimming).</p>
+<p>Both task can be achieved using <strong>Cutadapt</strong>, a command line-tool to find and remove error-tolerantly adapters from reads (<a href="https://doi.org/10.14806/ej.17.1.200" target="_blank">Martin et al.&nbsp;2011</a>).</p>
+</section>
+<section id="demultiplexing-using-cutadapt" class="slide level2">
+<h2>Demultiplexing using cutadapt</h2>
+<p>If your tags are in a fasta file with corresponding sample names as header, you can use this command-line:</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1"></a><span class="ex">cutadapt</span> <span class="dt">\</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a>    <span class="at">-g</span> file:<span class="va">${BARCODES}</span> <span class="dt">\</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a>    <span class="at">-o</span> {name}_R1.fastq.gz <span class="dt">\</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a>    <span class="at">-p</span> {name}_R2.fastq.gz <span class="dt">\</span></span>
+<span id="cb5-5"><a href="#cb5-5"></a>    <span class="va">${R1_FILE}</span> <span class="dt">\</span></span>
+<span id="cb5-6"><a href="#cb5-6"></a>    <span class="va">${R2_FILE}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column" style="width:50%;">
+<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># blabla</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="co"># fff</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<p>You end up with as many R1 and R2 files as samples you have</p>
+<div class="callout callout-warning callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Help! My reads are mixed-orientated</strong></p>
+</div>
+<div class="callout-content">
+<p>Run <code>cutadapt</code> a second time, looking for tags in R2.</p>
+<p>Keep the outputs of the two rounds separated for the rest of the workflow.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="primer-removal-using-cutadapt" class="slide level2">
+<h2>Primer removal using cutadapt</h2>
+<p>To remove forward and reverse primer sequences form pair-end read files:</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1"></a><span class="ex">cutadapt</span> <span class="dt">\</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a>    <span class="at">-e</span> 0.1 <span class="dt">\</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a>    <span class="at">-g</span> <span class="va">${PRIMER_FORWARD}</span> <span class="dt">\</span></span>
+<span id="cb7-4"><a href="#cb7-4"></a>    <span class="at">-G</span> <span class="va">${PRIMER_REVERSE}</span> <span class="dt">\</span></span>
+<span id="cb7-5"><a href="#cb7-5"></a>    <span class="at">--report</span><span class="op">=</span>minimal <span class="dt">\</span></span>
+<span id="cb7-6"><a href="#cb7-6"></a>    <span class="at">--discard-untrimmed</span> <span class="dt">\</span></span>
+<span id="cb7-7"><a href="#cb7-7"></a>    <span class="at">--minimum-length</span> <span class="va">${MIN_LENGTH}</span> <span class="dt">\</span></span>
+<span id="cb7-8"><a href="#cb7-8"></a>    <span class="at">--no-indels</span> <span class="dt">\</span></span>
+<span id="cb7-9"><a href="#cb7-9"></a>    <span class="at">-o</span> <span class="va">${FORWARD}</span> <span class="dt">\</span></span>
+<span id="cb7-10"><a href="#cb7-10"></a>    <span class="at">-p</span> <span class="va">${REVERSE}</span> <span class="dt">\</span></span>
+<span id="cb7-11"><a href="#cb7-11"></a>    <span class="va">${R1_FILE}</span> <span class="dt">\</span></span>
+<span id="cb7-12"><a href="#cb7-12"></a>    <span class="va">${R2_FILE}</span> <span class="dv">1</span><span class="op">&gt;</span> <span class="va">${LOG}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column" style="width:50%;">
+<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1"></a><span class="co"># </span></span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="co"># error tolerance (default value)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<p>As for demultiplexing, if reads are mix-orientated, run <code>cutadapt</code> twice</p>
+</section></section>
+<section>
+<section id="dada2-workflow-read-preparation" class="title-slide slide level1 center">
+<h1>DADA2 workflow: read preparation</h1>
+
+</section>
+<section id="check-reads-quality" class="slide level2">
+<h2>Check reads quality</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>The overall quality of the sequencing is checked using <code>plotQualityProfile()</code></p>
+<p>Outside of DADA2, you can also use <a href="https://github.com/s-andrews/FastQC" target="_blank">FASTQC</a></p>
+<p>If the overall quality is too low, you will probably have to resequence your samples</p>
+</div><div class="column" style="width:50%;">
+<p><img data-src="../img/quality_plot_example.svg"></p>
+</div>
+</div>
+<p>A quality drop is often observed by the end of the reads</p>
+<aside class="notes">
+<ul>
+<li>green line: mean</li>
+<li>orange line (plain): median</li>
+<li>orange line (dashed): 25th and 75th quantiles</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="trimming-and-filtering" class="slide level2">
+<h2>Trimming and filtering</h2>
+<p>Trimming, at a given length, will improve the overall read quality</p>
+<div class="callout callout-caution callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Danger</strong></p>
+</div>
+<div class="callout-content">
+<p>After trimming, make sure that forward and reverse reads still overlap</p>
+</div>
+</div>
+</div>
+<p>Reads of low quality and/or with ambiguous nucleotides (N) after trimming are filtered out.</p>
+<p>Both length trimming and quality filtering are achieved using the function <code>filterAndTrim()</code></p>
+</section></section>
+<section>
+<section id="dada2-workflow-denoising-approach" class="title-slide slide level1 center">
+<h1>DADA2 workflow: denoising approach</h1>
+
+</section>
+<section id="denoising" class="slide level2">
+<h2>Denoising</h2>
+<p>Is sequence <span class="math inline">\(i\)</span> generated by sequence <span class="math inline">\(j\)</span> because of sequencing errors?</p>
+
+<img data-src="../img/alignment_example_1.svg" class="r-stretch"><p>In order to define if <span class="math inline">\(i\)</span> is an error of <span class="math inline">\(j\)</span> and perform denoising using DADA2, we need to compute:</p>
+<ul>
+<li>the error rate <span class="math inline">\(\lambda_{ji}\)</span></li>
+<li>the abundance p-value <span class="math inline">\(p_A(j \rightarrow i)\)</span></li>
+</ul>
+</section>
+<section id="error-rate" class="slide level2">
+<h2>Error rate</h2>
+<blockquote>
+<p>The rate at which an amplicon read with sequence i is produced from sample sequence j is reduced to the product over the transition probabilities between the L aligned nucleotides:</p>
+</blockquote>
+<p><span class="math display">\[\lambda_{ji} = \prod_{l=0}^L p(j(l) \rightarrow i(l),q_i(l))\]</span></p>
+</section>
+<section id="the-abundance-p-value" class="slide level2">
+<h2>The abundance p-value</h2>
+<p>The abundance p-value (<span class="math inline">\(p_A\)</span>) is the probability of all reads of <span class="math inline">\(i\)</span> (<span class="math inline">\(a_i\)</span>) or more being produced from <span class="math inline">\(j\)</span> during amplification ore sequencing.</p>
+<p><span class="math display">\[p_A(j \rightarrow i) = \frac{1}{1- \rho_{\mathrm{pois}}(n_j\lambda_{ji},0)} \sum_{a=a_i}^\infty \rho_{\mathrm{pois}}(n_j\lambda_{ji},a)\]</span></p>
+<p>A low p-value indicate that it is unlikely that <span class="math inline">\(i\)</span> is noise from amplifying and sequencing <span class="math inline">\(j\)</span></p>
+<aside class="notes">
+<p>The discrete nature of the Poisson distribution is also why this is a probability mass function and not a density function</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="the-divisive-partitioning-algorithm" class="slide level2">
+<h2>The divisive partitioning algorithm</h2>
+<ol type="1">
+<li>all unique sequences into a single partition</li>
+<li><span class="math inline">\(p_A\)</span> of all sequences against most abundant sequence (center)</li>
+<li>if smallest p-value below <span class="math inline">\(\Omega_A\)</span>: new partition</li>
+<li><span class="math inline">\(p_A\)</span> of all sequences against center of new partition</li>
+<li>every sequence join the partition most likely to have produced it</li>
+</ol>
+<p>Repeat steps 3 to 5 until all abundance p-values are greater than <span class="math inline">\(\Omega_A\)</span></p>
+</section></section>
+<section>
+<section id="dada2-workflow-denoising-in-practice" class="title-slide slide level1 center">
+<h1>DADA2 workflow: denoising in practice</h1>
+
+</section>
+<section id="learn-the-error-model" class="slide level2">
+<h2>Learn the error model</h2>
+<p>How do we compute <span class="math inline">\(\lambda_{ji}\)</span> if we don’t know the error rate for each possible transition?</p>
+<p>The error rates will be learned from the data using <code>learnErrors()</code></p>
+<blockquote>
+<p>The learnErrors method learns this error model from the data, by alternating estimation of the error rates and inference of sample composition until they converge on a jointly consistent solution</p>
+</blockquote>
+</section>
+<section id="visualise-the-error-model" class="slide level2">
+<h2>Visualise the error model</h2>
+<p>You can visualise the estimated error rates using the function <code>plotErrors()</code></p>
+
+<img data-src="../img/error_plot.svg" class="r-stretch"></section>
+<section id="run-the-dada2-algorithm" class="slide level2">
+<h2>Run the DADA2 algorithm</h2>
+<ul>
+<li><p>After dereplicating your sequences (<code>derepFastq()</code>), denoise using the function <code>dada()</code></p></li>
+<li><p>By default sample inference is performed on each sample individually (<code>pool = FALSE</code>).</p></li>
+<li><p>If you are interested in rare variants present in several samples use <code>pool = TRUE</code></p></li>
+<li><p>When working on big data, <code>pool = "pseudo"</code> is an interesting alternative to <code>pool = TRUE</code></p></li>
+</ul>
+</section></section>
+<section>
+<section id="dada2-workflow-build-the-asv-table" class="title-slide slide level1 center">
+<h1>DADA2 workflow: build the ASV table</h1>
+
+</section>
+<section id="merge-paired-reads" class="slide level2">
+<h2>Merge paired reads</h2>
+<p>Merge forward and reverse reads using <code>mergePairs()</code></p>
+
+<img data-src="../img/merging_example.svg" class="r-stretch"><ul>
+<li><code>minOverlap</code>: minimum size of overlap</li>
+<li><code>maxMismatch</code>: maximum number of mismatches</li>
+<li><code>justConcatenate</code>: in case your reads don’t overlap</li>
+</ul>
+</section>
+<section id="remove-chimeras" class="slide level2">
+<h2>Remove chimeras</h2>
+<ul>
+<li><p>Chimeras are artifact sequences formed by two or more biological sequences incorrectly joined together.</p></li>
+<li><p>We find and remove bimeras (two-parent chimeras) using the function <code>removeBimeraDenovo()</code></p></li>
+<li><p>Chimeric sequences are identified if they can be exactly reconstructed by combining a left-segment and a right-segment from two more abundant “parent” sequences.</p></li>
+<li><p>Can be done per sample (<code>method="per-sample"</code>), for the entire dataset (<code>method="pooled"</code>) or in a consensus way (<code>method="consensus"</code>)</p></li>
+</ul>
+<aside class="notes">
+<p>Chimeras are artifact sequences formed by two or more biological sequences incorrectly joined together. This often occurs during PCR reactions using mixed templates (i.e., uncultured environmental samples). Incomplete extensions during PCR allow subsequent PCR cycles to use a partially extended strand to bind to the template of a different, but similar, sequence. This partially extended strand then acts as a primer to extend and form a chimeric sequence. Once created, the chimeric sequence is then further amplified in subsequent cycles. The end result is a PCR artifact that does not represent a sequence that exists in nature.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="taxonomic-assignment" class="slide level2">
+<h2>Taxonomic assignment</h2>
+<ul>
+<li><p>Taxonomic assignment within DADA2 workflow, <code>assignTaxonomy()</code>, is achieved using a native implementation of the naive Bayesian classifier method (<a href="https://doi.org/10.1128/aem.00062-07" target="_blank">Wang et al.&nbsp;2007</a>).</p></li>
+<li><p>Reference fastas for the three most common 16S databases: Silva, RDP and GreenGenes are maintained by dada2’s team.</p></li>
+<li><p>For eukaryotes, a dada2 formatted version of PR2 can be found <a href="https://doi.org/10.1128/aem.00062-07" target="_blank">here</a>.</p></li>
+</ul>
+</section>
+<section id="extra-filtering-steps" class="slide level2">
+<h2>Extra filtering steps</h2>
+<p><br></p>
+<p>ASVs can be filtered out if:</p>
+<ul>
+<li>sequence has an unexpected length</li>
+<li>not assigned to the desired taxonomic group</li>
+<li>considered as contaminant (present in negative controls)</li>
+</ul>
+</section></section>
+<section id="now-it-is-your-turn" class="title-slide slide level1 center">
+<h1>Now it is your turn!</h1>
 
 <div class="footer footer-default">
 
 </div>
-</section></section>
+</section>
     </div>
   </div>
 
@@ -589,7 +922,7 @@
         progress: true,
 
         // Display the page number of the current slide
-        slideNumber: false,
+        slideNumber: 'c/t',
 
         // 'all', 'print', or 'speaker'
         showSlideNumber: 'all',
