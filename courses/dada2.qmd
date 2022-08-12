@@ -3,13 +3,34 @@ title: "Analysing metabarcoding data with dada2"
 author: "Nicolas Henry"
 format:
   revealjs:
+    slide-number: true
     theme: ../simple_nico.scss
 editor: visual
 ---
 
 # Introduction
 
-## FASTQ records
+## I received data 
+
+![](../img/fastq_files.png)
+
+## What am I going to do with that?
+
+Let's have a closer look of what we have
+
+```bash
+zcat 18S-NG080819-3_TTAGCT-CMKL6_L001_R1.fastq.gz | head -n 8
+```
+![](../img/fastq_head.png)
+
+We need a bioinformatic pipeline to:
+
+* Filter out wrong sequences, such as sequencing errors
+* Get a format suitable for diversity and community composition analyses of our samples
+
+# FASTQ records
+
+## Overview
 
 Two files (R1 and R2) per sequencing run or per sample (60 first nucleotides):
 
@@ -31,7 +52,7 @@ R2:
     -86@BCFFFGF@FGGFG9,CF,,C6,<A<F@FGGGGA,C,C8C<<FEFG:@,,B,,CFE:
 ```
 
-3 types of information per record: identifier, sequence, quality
+Per record: identifier, sequence, quality
 
 ## Identifier
 
@@ -55,15 +76,15 @@ R2:
 
 ## Sequence
 
-3 main parts:
+<br>
+
+![](../img/read_example_1.svg)
 
 -   The tag, informs you from which sample the read come from
 
 -   The primer used for the amplification
 
--   The targeted sequence (metabarcode), the sequence we are interested in.
-
-![](../img/read_example_1.svg)
+-   The targeted sequence (metabarcode)
 
 ## Quality
 
@@ -72,18 +93,18 @@ Quality score encoded using ASCII characters:
 ::: columns
 ::: {.column width="50%"}
 | ASCII character | Quality score |
-|-----------------|---------------|
+|:---------------:|:-------------:|
 | !               | 0             |
 | "               | 1             |
-| ...             | ...           |
+| \#              | 2             |
 :::
 
 ::: {.column width="50%"}
 | ASCII character | Quality score |
-|-----------------|---------------|
-| ...             | ...           |
-| }               | 92            |
-| \~              | 93            |
+|:---------------:|:-------------:|
+| G               | 38            |
+| H               | 39            |
+| I               | 40            |
 :::
 :::
 
@@ -91,11 +112,287 @@ The Phred quality score Q is related to the base calling error probability P acc
 
 $$Q = -10\log_{10}P$$
 
-``` default
----A99EBC-,C,,CF,@++F7,CFFF9,CEFF8,E,,C+B7F<FFF9,,CE,CF,;,,C
+$$P=10^{Q/-10}$$
+
+::: {.notes}
+In raw data reads, the quality score rarely exceed 40, but higher scores are possible when different raw reads are assembled
+:::
+
+# Bioinformatic pipeline
+
+## Strategies
+
+* Genetic clustering based approaches producing OTUs:
+    * UCLUST
+    * Swarm (could be seen as denoising too)
+
+* Denoising approaches producing ASVs:
+    * Deblur
+    * UNOISE
+    * DADA2
+
+## DADA2, qu'est-ce que c'est?
+
+<br>
+
+* DADA (Divisive Amplicon Denoising Algorithm) an algorithm to denoise Roche's 454 platform errors (<a href="https://doi.org/10.1186/1471-2105-13-283" target="_blank">Rosen et al. 2012</a>)
+
+* DADA2 implements a new quality-aware model of Illumina amplicon errors (<a href="https://doi.org/10.1038/nmeth.3869" target="_blank">Callahan et al. 2016</a>)
+
+* DADA2 is an open-source R package [https://github.com/benjjneb/dada2](https://github.com/benjjneb/dada2)
+
+## DADA2, the full amplicon workflow
+
+* Quality assessment &rarr; `plotQualityProfile()`
+* Length trimming &rarr; `filterAndTrim()`
+* Quality filtering &rarr; `filterAndTrim()`
+* Denoising &rarr; `dada()`
+* Merging pair-end reads &rarr; `mergePairs()`
+* Chimera identification &rarr; `removeBimeraDenovo()`
+* Taxonomic assignment &rarr; `assignTaxonomy()`
+
+But some preliminary steps are missing...
+
+# Before using Dada2
+
+## Artificial sequences
+
+![](../img/read_example_1.svg)
+
+**Tags** are used to encode the sample provenance of the reads. Reads need to be grouped by sample provenance (demultiplexing)
+
+**Primer** sequences will bias the error model built by DADA2 and need to be removed (primer trimming).
+
+Both task can be achieved using **Cutadapt**, a command line-tool to find and remove error-tolerantly adapters from reads (<a href="https://doi.org/10.14806/ej.17.1.200" target="_blank">Martin et al. 2011</a>).
+
+## Demultiplexing using cutadapt
+
+If your tags are in a fasta file with corresponding sample names as header, you can use this command-line:
+
+:::: {.columns}
+
+::: {.column width="50%"}
+```bash
+cutadapt \
+    -g file:${BARCODES} \
+    -o {name}_R1.fastq.gz \
+    -p {name}_R2.fastq.gz \
+    ${R1_FILE} \
+    ${R2_FILE}
 ```
+:::
 
-For the ASCII character `-`, $Q=12$
+::: {.column width="50%"}
 
-So, $P=10^{Q/-10}=10^{-1.2}$
+```bash
+# blabla
+# fff
+```
+:::
 
+::::
+
+You end up with as many R1 and R2 files as samples you have 
+
+:::{.callout-warning}
+## Help! My reads are mixed-orientated
+Run `cutadapt` a second time, looking for tags in R2.
+
+Keep the outputs of the two rounds separated for the rest of the workflow.
+:::
+
+## Primer removal using cutadapt
+
+To remove forward and reverse primer sequences form pair-end read files:
+
+:::: {.columns}
+
+::: {.column width="50%"}
+```bash
+cutadapt \
+    -e 0.1 \
+	-g ${PRIMER_FORWARD} \
+	-G ${PRIMER_REVERSE} \
+	--report=minimal \
+	--discard-untrimmed \
+	--minimum-length ${MIN_LENGTH} \
+	--no-indels \
+    -o ${FORWARD} \
+	-p ${REVERSE} \
+	${R1_FILE} \
+	${R2_FILE} 1> ${LOG}
+
+```
+:::
+
+::: {.column width="50%"}
+
+```bash
+# 
+# error tolerance (default value)
+```
+:::
+
+::::
+
+As for demultiplexing, if reads are mix-orientated, run `cutadapt` twice
+
+# DADA2 workflow: read preparation
+
+## Check reads quality 
+
+
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+The overall quality of the sequencing is checked using `plotQualityProfile()`
+
+Outside of DADA2, you can also use <a href="https://github.com/s-andrews/FastQC" target="_blank">FASTQC</a>
+
+If the overall quality is too low, you will probably have to resequence your samples
+
+:::
+
+::: {.column width="50%"}
+![](../img/quality_plot_example.svg)
+:::
+
+::::
+
+A quality drop is often observed by the end of the reads
+
+::: {.notes}
+* green line: mean
+* orange line (plain): median
+* orange line (dashed): 25th and 75th quantiles
+:::
+
+## Trimming and filtering
+
+Trimming, at a given length, will improve the overall read quality
+
+::: {.callout-caution}
+After trimming, make sure that forward and reverse reads still overlap
+:::
+
+Reads of low quality and/or with ambiguous nucleotides (N) after trimming are filtered out.
+
+Both length trimming and quality filtering are achieved using the function `filterAndTrim()`
+
+# DADA2 workflow: denoising approach
+
+## Denoising
+
+Is sequence $i$ generated by sequence $j$ because of sequencing errors?
+
+![](../img/alignment_example_1.svg)
+
+
+In order to define if $i$ is an error of $j$ and perform denoising using DADA2, we need to compute:
+
+* the error rate $\lambda_{ji}$
+* the abundance p-value $p_A(j \rightarrow i)$
+
+## Error rate
+
+> The rate at which an amplicon read with sequence i is produced from sample sequence j is reduced to the product over the transition probabilities between the L aligned nucleotides:
+
+$$\lambda_{ji} = \prod_{l=0}^L p(j(l) \rightarrow i(l),q_i(l))$$
+
+
+## The abundance p-value
+
+The abundance p-value ($p_A$) is the probability of all reads of $i$ ($a_i$) or more being produced from $j$ during amplification ore sequencing.
+
+$$p_A(j \rightarrow i) = \frac{1}{1- \rho_{\mathrm{pois}}(n_j\lambda_{ji},0)} \sum_{a=a_i}^\infty \rho_{\mathrm{pois}}(n_j\lambda_{ji},a)$$
+
+A low p-value indicate that it is unlikely that $i$ is noise from amplifying and sequencing $j$
+
+::: {.notes}
+The discrete nature of the Poisson distribution is also why this is a probability mass function and not a density function
+:::
+
+## The divisive partitioning algorithm
+
+1. all unique sequences into a single partition
+2. $p_A$ of all sequences against most abundant sequence (center)
+3. if smallest p-value below $\Omega_A$: new partition
+4. $p_A$ of all sequences against center of new partition
+5. every sequence join the partition most likely to have produced it
+
+Repeat steps 3 to 5 until all abundance p-values are greater than $\Omega_A$
+
+# DADA2 workflow: denoising in practice
+
+## Learn the error model
+
+How do we compute $\lambda_{ji}$ if we don't know the error rate for each possible transition?
+
+The error rates will be learned from the data using `learnErrors()`
+
+>The learnErrors method learns this error model from the data, by alternating estimation of the error rates and inference of sample composition until they converge on a jointly consistent solution
+
+## Visualise the error model
+
+You can visualise the estimated error rates using the function `plotErrors()`
+
+![](../img/error_plot.svg)
+
+## Run the DADA2 algorithm
+
+* After dereplicating your sequences (`derepFastq()`), denoise using the function `dada()`
+
+* By default sample inference is performed on each sample individually (`pool = FALSE`).
+
+* If you are interested in rare variants present in several samples use `pool = TRUE`
+
+* When working on big data, `pool = "pseudo"` is an interesting alternative to `pool = TRUE`
+
+# DADA2 workflow: build the ASV table
+
+## Merge paired reads
+
+Merge forward and reverse reads using `mergePairs()`
+
+![](../img/merging_example.svg)
+
+* `minOverlap`: minimum size of overlap
+* `maxMismatch`: maximum number of mismatches
+* `justConcatenate`: in case your reads don't overlap
+
+## Remove chimeras
+
+* Chimeras are artifact sequences formed by two or more biological sequences incorrectly joined together.
+
+* We find and remove bimeras (two-parent chimeras) using the function `removeBimeraDenovo()`
+
+* Chimeric sequences are identified if they can be exactly reconstructed by combining a left-segment and a right-segment from two more abundant “parent” sequences.
+
+* Can be done per sample (`method="per-sample"`), for the entire dataset (`method="pooled"`) or in a consensus way (`method="consensus"`)
+
+
+:::{.notes}
+Chimeras are artifact sequences formed by two or more biological sequences incorrectly joined together. This often occurs during PCR reactions using mixed templates (i.e., uncultured environmental samples). Incomplete extensions during PCR allow subsequent PCR cycles to use a partially extended strand to bind to the template of a different, but similar, sequence. This partially extended strand then acts as a primer to extend and form a chimeric sequence. Once created, the chimeric sequence is then further amplified in subsequent cycles. The end result is a PCR artifact that does not represent a sequence that exists in nature.
+:::
+
+## Taxonomic assignment
+
+* Taxonomic assignment within DADA2 workflow, `assignTaxonomy()`, is achieved using a native implementation of the naive Bayesian classifier method (<a href="https://doi.org/10.1128/aem.00062-07" target="_blank">Wang et al. 2007</a>).
+
+* Reference fastas for the three most common 16S databases: Silva, RDP and GreenGenes are maintained by dada2's team.
+
+* For eukaryotes, a dada2 formatted version of PR2 can be found <a href="https://doi.org/10.1128/aem.00062-07" target="_blank">here</a>.
+
+## Extra filtering steps
+
+<br>
+
+ASVs can be filtered out if:
+
+* sequence has an unexpected length
+* not assigned to the desired taxonomic group
+* considered as contaminant (present in negative controls)
+
+# Now it is your turn!
