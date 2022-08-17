@@ -19,6 +19,7 @@ title: "Exploration de la Diversité Taxonomique des Ecosystèmes par Metabarcod
 ## Practicals
 
 * Tuesday
+ - <a href="practicals/PART_I-DADA2_ANF.html" target="_blank">Dada2 practical</a>
 * Wednesday
 * Thursday
 * Friday
