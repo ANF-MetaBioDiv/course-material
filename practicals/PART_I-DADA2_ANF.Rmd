@@ -1,0 +1,361 @@
+---
+title: "Part I- Data preprocessing : From Dada2 to Phyloseq"
+date: "August 2022"
+output:
+  html_document:
+    theme: united
+    css: ../fab_style.css
+    toc: yes
+    toc_depth: 3
+    toc_float: yes
+    number_sections: true
+authors: Armougom/Garel
+editor_options: 
+  chunk_output_type: console
+---
+
+
+# Set working directory, Data
+
+**Your sequencing data is in the directory data so:**
+
+```{r}
+#Put the path directory containing your data (sequencing files) in a « variable » called path_to_fastqs
+path_to_fastqs <- here::here("data","raw")
+
+#download reference databases
+refdb_folder <- here::here("data","refdb")
+dir.create(refdb_folder)
+
+getOption('timeout')
+options(timeout=1200)
+
+silva_train_set <- file.path(refdb_folder,"silva_nr99_v138.1_train_set.fa.gz")
+
+if(!file.exists(file.path(refdb_folder,"silva_nr99_v138.1_train_set.fa.gz"))){
+  download.file("https://zenodo.org/record/4587955/files/silva_nr99_v138.1_train_set.fa.gz",
+              silva_train_set,
+              quiet=TRUE)
+}
+
+silva_species_assignment <- file.path(refdb_folder,"silva_species_assignment_v138.1.fa.gz")
+
+if(!file.exists(file.path(refdb_folder,"silva_species_assignment_v138.1.fa.gz"))){
+  download.file("https://zenodo.org/record/4587955/files/silva_species_assignment_v138.1.fa.gz",
+              silva_species_assignment,
+              quiet=TRUE)
+}
+
+options(timeout=60)
+
+# Attached functions from functions_dada4.R located in the R folder
+source(here::here("R","functions_dada4.R"))
+```
+
+# [**III- Read the sequencing files**]{style="color: steelblue;"}
+
+### [**a/Create a list of sequencing file paths**]{style="color: steelblue;"}
+
+The « forward » & « reverse » files are in gzipped (compressed) fastq format with the label:
+
+[SAMPLENAME_R1.fastq.gz]{style="color: red;"} for the forward files and [SAMPLENAME_R2.fastq.gz]{style="color: red;"} for the reverses files.
+
+R1 is Forward, R2 is Reverse
+
+Function : list.files
+
+https://stat.ethz.ch/R-manual/R-devel/library/base/html/list.files.html
+
+```{r}
+fnFs <- sort(list.files(path_to_fastqs, pattern="_R1.fastq.gz", full.names=TRUE))[1:2]
+fnRs <- sort(list.files(path_to_fastqs, pattern="_R2.fastq.gz", full.names=TRUE))[1:2]
+```
+
+**To understand: What fnFs & fnRs variables contain?**
+
+```{r}
+fnFs |> head()
+```
+
+### [**b/ Extract the names of the samples**]{style="color: steelblue;"}
+
+```{r}
+sample.names <- sapply(strsplit(basename(fnFs), "_"), `[`, 1)
+
+# with regular expressions
+# sample.names <- gsub("^.+/|_.+$","",fnFs)
+
+sample.names
+```
+
+**To understand:**
+
+**strsplit** : split character chain according a defined pattern
+
+https://www.rdocumentation.org/packages/base/versions/3.6.0/topics/strsplit
+
+**basename**: simplify the « PATH »
+
+https://www.rdocumentation.org/packages/base/versions/3.6.0/topics/basename
+
+```{r}
+strsplit(basename(fnFs), "_") |> head()
+```
+
+"strsplit" function?
+
+```{r}
+sapply(strsplit(basename(fnFs), "_"), `[`, 2) |> head()
+```
+
+```{r}
+sapply(strsplit(basename(fnFs), "_"), `[`, 3) |> head()
+```
+
+## [**IV-Sequence Quality Check**]{style="color: steelblue;"}
+
+Function: plotQualityProfile :
+
+https://www.rdocumentation.org/packages/dada2/versions/1.0.3/topics/plotQualityProfile
+
+We use a function implemented in functions_dada4.R, which takes the list of R1 files and R2 files and put all quality plot results in one pdf file and save in your current directory **TP_METABARCODING**.
+
+```{r}
+qualityprofile
+```
+
+```{r}
+# create a directory for the outputs
+quality_folder <- here::here("outputs","dada2","quality_plots")
+
+dir.create(quality_folder,recursive = TRUE)
+
+qualityprofile(fnFs,
+               fnRs,
+               file.path(quality_folder,"quality_plots.pdf"))
+```
+
+**Open the qualityplot.pdf**
+
+## [**V-Sequence Trimming**]{style="color: steelblue;"}
+
+### [**a/ Primer Removal**]{style="color: steelblue;"}
+
+#### **Put primer sequences in variables**
+
+#### **Create a sub-directory NOP in ./data directory & with file names**
+
+Prepare empty files that are going to collect the results (e.g. sequences with no primers)
+
+```{r}
+#files are empty at this stage
+path_to_trimmed_reads <- here::here("outputs","dada2","trimmed")
+dir.create(path_to_trimmed_reads)
+
+nopFw <- file.path(path_to_trimmed_reads, basename(fnFs))
+nopRv <- file.path(path_to_trimmed_reads, basename(fnRs))
+#see
+nopFw |> head()
+```
+
+#### **Remove primers**
+
+```{r}
+FWD  <- "CCTACGGGNBGCASCAG"
+REV  <- "GACTACNVGGGTATCTAAT"
+#Enlever les Primers  dans fichiers R1=fnFs et R2=fnRs et remplir les nouveaux fichiers sans les primers : nopFs (R1) et nopRs (R2)
+dada2::removePrimers(fnFs, nopFw, primer.fwd=FWD, orient=TRUE, max.mismatch=0,verbose=TRUE)
+dada2::removePrimers(fnRs, nopRv, primer.fwd=REV, orient=TRUE, max.mismatch=0,verbose=TRUE)
+#####
+```
+
+### [b/ Quality Trimming process]{style="color: steelblue;"}
+
+#### **Create a sub-directory Filtered & files for collecting the filtered results**
+
+Same as previously see for primers, but now for sequence quality trimming
+
+```{r}
+path_to_filtered_reads <- here::here("outputs","dada2","filtered")
+dir.create(path_to_filtered_reads)
+
+filtFs <- file.path(path_to_filtered_reads, basename(fnFs))
+filtRs <- file.path(path_to_filtered_reads, basename(fnRs))
+names(filtFs) <- sample.names
+names(filtRs) <- sample.names
+```
+
+#### **Apply quality trimming function**
+
+**Function filterAndTrim**: https://rdrr.io/bioc/dada2/man/filterAndTrim.html
+
+```{r}
+out <- dada2::filterAndTrim(nopFw, filtFs, nopRv, filtRs, minLen=150, matchIDs=TRUE,
+                     maxN=0, maxEE=c(3,3), truncQ=2)
+```
+
+```{r}
+#See
+out
+```
+
+**Details:**
+
+**nopFw** : Input, your row Forward list (path) of sequencing files without primer.
+
+**filtFs** : Output, the empty files created at the previous stage that you are now going to fill with this command.
+
+**nopRv, filRs** : Same as above, but for the Reverse data
+
+**TruncLen** : Truncate reads after truncLen bases. Reads shorter than this are discarded.
+
+Exple : TruncLen=c(200,150), means R1 forward are cut at 200 pb & the R2 reverse at 150 pb.
+
+**TrimLeft** : The number of nucleotides to remove from the start of each read, from the left
+
+**Trimright** : The number of nucleotides to remove from the start of each read, from the right
+
+**maxN** : Max number of ambiguous bases accepted
+
+**maxEE** : Quality system to remove low quality read. Standard maxEE=c(2,2).
+
+If you want to be more flexible (accept more low quality), increase the value, maxEE=c(2,5). 2 is for the forward, 5 for le reverse.
+
+**TruncQ=2**. Truncate reads at the first instance of a quality score less than or equal to truncQ.
+
+## [**VI-Learn « Errors »**]{style="color: steelblue;"}
+
+**Function: learnErrors** https://rdrr.io/bioc/dada2/man/learnErrors.html
+
+Parametric model to distinguish sequencing artefacts from true biological variations
+
+### **Apply the function**
+
+```{r}
+errF <- dada2::learnErrors(filtFs, randomize =TRUE, multithread=TRUE)
+errR <- dada2::learnErrors(filtRs, randomize =TRUE, multithread=TRUE)
+#See plot
+dada2::plotErrors(errF, nominalQ=TRUE)
+```
+
+## [**VII- Dereplication (identical sequences)**]{style="color: steelblue;"}
+
+**Function: derepFastq**
+
+https://www.rdocumentation.org/packages/dada2/versions/1.0.3/topics/derepFastq
+
+```{r}
+derepFs <- dada2::derepFastq(filtFs, verbose=TRUE)
+derepRs <- dada2::derepFastq(filtRs, verbose=TRUE)
+```
+
+## [**VIII-Amplicon Sequence Variant =ASV**]{style="color: steelblue;"}
+
+[**Error Corrections: function dada**]{style="color: steelblue;"}
+
+https://www.quantargo.com/help/r/latest/packages/dada2/1.18.0/dada
+
+```{r}
+dadaFs <- dada2::dada(derepFs, err=errF, multithread=TRUE)
+dadaRs <- dada2::dada(derepRs, err=errR, multithread=TRUE)
+
+```
+
+## [**IX- Assembly**]{style="color: steelblue;"}
+
+**Function: mergePairs :**
+
+https://www.rdocumentation.org/packages/dada2/versions/1.0.3/topics/mergePairs
+
+*Merge the forwards & reverses together* maxMismatch : how many mismatch do you accept in the overlapping region?
+
+```{r}
+mergers <- dada2::mergePairs(dadaFs, derepFs, dadaRs, derepRs, maxMismatch= 0, verbose=TRUE)
+```
+
+#### **Make OTU table: dada2 format have sequences as identifiers!**
+
+```{r}
+seqtab <- dada2::makeSequenceTable(mergers)
+```
+
+## [**X- Remove Chimera**]{style="color: steelblue;"}
+
+**Function: removeBimeraDenovo**
+
+https://www.rdocumentation.org/packages/dada2/versions/1.0.3/topics/removeBimeraDenovo
+
+```{r}
+seqtab.nochim <- dada2::removeBimeraDenovo(seqtab, method="consensus", multithread=TRUE, verbose=TRUE)
+```
+
+## [**XI -- Summarize the pre-processing**]{style="color: steelblue;"}
+
+```{r}
+getN <- function(x) sum(dada2::getUniques(x))
+
+track <- base::cbind(out, sapply(dadaFs, getN), sapply(dadaRs, getN),sapply(mergers, getN),rowSums(seqtab.nochim),rowSums(seqtab.nochim)/out[,1]*100)
+colnames(track) <- c("input", "filtered", "denoisedF", "denoisedR", "merged", "nonchim","%retained")
+rownames(track) <- sample.names
+track
+```
+
+## [**XII- Taxonomic Assignment using Dada2**]{style="color: steelblue;"}
+
+[**Function "assignTaxonomy"**]{style="color: steelblue;"}: **Assignment from Phylum to Genus level**
+
+https://www.quantargo.com/help/r/latest/packages/dada2/1.18.0/assignTaxonomy
+
+[**Function "addSpecies"**]{style="color: steelblue;"}: **Assignment to the species level if possible (100% identity).**
+
+https://www.quantargo.com/help/r/latest/packages/dada2/1.18.0/addSpecies
+
+```{r}
+taxa <- dada2::assignTaxonomy(seqtab.nochim,
+                              silva_train_set,
+                              taxLevels = c("Kingdom", "Phylum","Class", "Order", "Family","Genus", "Species"),
+                              multithread = TRUE,
+                              minBoot = 60)
+
+taxa <- dada2::addSpecies(taxa,
+                          silva_species_assignment,
+                          allowMultiple = FALSE)
+```
+
+## Export ASV table
+
+### R objects
+
+```{r}
+export_folder <- here::here("outputs","dada2","asv_table")
+
+dir.create(export_folder)
+
+saveRDS(object = seqtab.nochim,
+        file = file.path(export_folder,"seqtab_nochim.rds"))
+
+saveRDS(object = taxa,
+        file = file.path(export_folder,"taxa.rds"))
+```
+
+### Text files
+
+```{r}
+taxo_export <- apply(taxa,1,paste,collapse=";")
+seqtab_export <- t(seqtab.nochim)
+
+seqtab_export <- merge(x = taxo_export,
+      y = seqtab_export,
+      by=0,
+      all.x=TRUE,
+      sort=FALSE)
+
+colnames(seqtab_export)[1:2] <- c("sequence","taxonomy")
+
+write.table(seqtab_export,
+            file=file.path(export_folder,"asv_table.tsv"),
+            quote=FALSE,
+            sep="\t",
+            row.names = FALSE)
+```
+

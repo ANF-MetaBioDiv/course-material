@@ -1,0 +1,132 @@
+---
+title: "Part I- Data preprocessing : From Dada2 to Phyloseq"
+date: "August 2022"
+output:
+  html_notebook:
+    theme: united
+    toc: yes
+    toc_depth: 3
+    toc_float: yes
+  html_document:
+    df_print: paged
+    toc: yes
+    toc_depth: '3'
+authors: Armougom/Garel
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r}
+##Load libraries 
+# library(phyloseq)
+# library(microbiome)
+# library(dada2)
+# library(DECIPHER) 
+# library(phangorn) 
+# library(Biobase) 
+# library(Biostrings)
+# library(BiocGenerics)
+# library(ShortRead)
+```
+
+## [**XIII- Phylogenetic Tree**]{style="color: steelblue;"}
+
+NB: This step can be skipped if you have some problems to perform it or to many ASVs.
+
+### **Get the ASV sequences**
+
+```{r}
+seqs <- dada2::getSequences(seqtab.nochim)
+```
+
+### **Alignment by DECIPHER**
+
+```{r}
+aln <- DECIPHER::AlignSeqs(DNAStringSet(seqs), anchor=NA) 
+#See alignment
+BrowseSeqs(aln, highlight=0)
+```
+
+### **Transformed by Phydat for distance matrix/tree**
+
+```{r}
+phang.align <- phangorn::phyDat(as(aln, "matrix"), type="DNA")
+```
+
+-   
+#### **Build distance matrix**
+
+```{r}
+#Distance matrix
+dm <- phangorn::dist.ml(phang.align)
+#NJ tree 
+treeNJ <- phangorn::NJ(dm)
+#root
+treeNJ<- phangorn::midpoint(tree = treeNJ)
+```
+
+#### **Change labels (leaves) of the tree (important!!)**
+
+```{r}
+treeNJ$tip.label<-rownames(taxa)
+```
+
+## [**XIV- Build the Phyloseq Object including the phylogenetic tree**]{style="color: steelblue;"}
+
+### **Mapfile**
+
+    Must contain sample names identically as you defined it at the beginning of the TP
+
+```{r}
+#Check it, if necessary: 
+sample.names
+```
+
+You need to have match between Mapfile SampName and name(filtFs). Adapt your Mapfile file if it's not the case.
+
+### **Import the mapfile in Rstudio env**
+
+```{r}
+MAP= "mapfileFA.txt"
+MAPFILE <-phyloseq::import_qiime_sample_data(MAP)
+#See
+MAPFILE
+```
+
+### **Create the phyloseq object (OTU_table, Tax_table, tree)**
+
+```{r}
+Final<- phyloseq::phyloseq(otu_table(seqtab.nochim, taxa_are_rows=FALSE) ,sample_data(MAPFILE),phyloseq::tax_table(taxa),treeNJ)
+
+#See 
+Final
+```
+
+### **Issue of ASV ID**
+
+```{r}
+#See ASV ID is the sequence itself!!!
+taxa_names(Final)[1:2]
+```
+
+## [**XV- Add the ASV sequences to your Phyloseq object & change ASV ID**]{style="color: steelblue;"}
+
+### **Apply add_refseq function**
+
+```{r}
+#Get the sequences and change ASV names as ASV1,ASV2, etc
+Final1 <-microbiome::add_refseq(Final)
+```
+
+### **See the final object for the alpha and beta analyses**
+
+```{r}
+#See Sequence object attached to Final1
+Final1
+```
+
+```{r}
+#See the change of ASV names 
+taxa_names(Final1)[1:2]
+
+```

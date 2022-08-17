@@ -1,5 +1,9 @@
 project:
   type: website
+  render: 
+    - "*.Rmd"
+    - "*.qmd"
+    - "!practicals/PART_II-DADA2_ANF.Rmd"
 
 website:
   title: "ANF metabarcoding"
