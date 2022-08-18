@@ -1,10 +1,87 @@
 [
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Exploration de la Diversité Taxonomique des Ecosystèmes par Metabarcoding",
+    "objectID": "practicals/PART_I-DADA2_ANF.html",
+    "href": "practicals/PART_I-DADA2_ANF.html",
+    "title": "Part I- Data preprocessing : From Dada2 to Phyloseq",
     "section": "",
-    "text": "Monday\n\nR initiation\n\nTuesday\n\nDada2 presentation\nPhyloseq presentation\n\nWednesday\nThursday\nFriday\n\n\n\n\n\nTuesday\nWednesday\nThursday\nFriday"
+    "text": "Your sequencing data is in the directory data so:\n\n#Put the path directory containing your data (sequencing files) in a « variable » called path_to_fastqs\npath_to_fastqs <- here::here(\"data\",\"raw\")\n\n#download reference databases\nrefdb_folder <- here::here(\"data\",\"refdb\")\ndir.create(refdb_folder)\n\nWarning in dir.create(refdb_folder): '/home/nicolas/Documents/anf-metabarcoding/\ndata/refdb' existe déjà\n\ngetOption('timeout')\n\n[1] 60\n\noptions(timeout=1200)\n\nsilva_train_set <- file.path(refdb_folder,\"silva_nr99_v138.1_train_set.fa.gz\")\n\nif(!file.exists(file.path(refdb_folder,\"silva_nr99_v138.1_train_set.fa.gz\"))){\n  download.file(\"https://zenodo.org/record/4587955/files/silva_nr99_v138.1_train_set.fa.gz\",\n              silva_train_set,\n              quiet=TRUE)\n}\n\nsilva_species_assignment <- file.path(refdb_folder,\"silva_species_assignment_v138.1.fa.gz\")\n\nif(!file.exists(file.path(refdb_folder,\"silva_species_assignment_v138.1.fa.gz\"))){\n  download.file(\"https://zenodo.org/record/4587955/files/silva_species_assignment_v138.1.fa.gz\",\n              silva_species_assignment,\n              quiet=TRUE)\n}\n\noptions(timeout=60)\n\n# Attached functions from functions_dada4.R located in the R folder\nsource(here::here(\"R\",\"functions_dada4.R\"))"
+  },
+  {
+    "objectID": "practicals/PART_I-DADA2_ANF.html#iv-sequence-quality-check",
+    "href": "practicals/PART_I-DADA2_ANF.html#iv-sequence-quality-check",
+    "title": "Part I- Data preprocessing : From Dada2 to Phyloseq",
+    "section": "IV-Sequence Quality Check",
+    "text": "IV-Sequence Quality Check\nFunction: plotQualityProfile :\nhttps://www.rdocumentation.org/packages/dada2/versions/1.0.3/topics/plotQualityProfile\nWe use a function implemented in functions_dada4.R, which takes the list of R1 files and R2 files and put all quality plot results in one pdf file and save in your current directory TP_METABARCODING.\n\nqualityprofile\n\nfunction (fileFw, fileRev, outfile) \n{\n    pdf(outfile, onefile = TRUE)\n    for (i in 1:length(fileFw)) {\n        f <- dada2::plotQualityProfile(fileFw[[i]])\n        r <- dada2::plotQualityProfile(fileRev[[i]])\n        print(f)\n        print(r)\n    }\n    dev.off()\n}\n\n\n\n# create a directory for the outputs\nquality_folder <- here::here(\"outputs\",\"dada2\",\"quality_plots\")\n\ndir.create(quality_folder,recursive = TRUE)\n\nWarning in dir.create(quality_folder, recursive = TRUE): '/home/nicolas/\nDocuments/anf-metabarcoding/outputs/dada2/quality_plots' existe déjà\n\nqualityprofile(fnFs,\n               fnRs,\n               file.path(quality_folder,\"quality_plots.pdf\"))\n\nWarning: `guides(<scale> = FALSE)` is deprecated. Please use `guides(<scale> =\n\"none\")` instead.\n\n\nWarning: `guides(<scale> = FALSE)` is deprecated. Please use `guides(<scale> = \"none\")` instead.\n`guides(<scale> = FALSE)` is deprecated. Please use `guides(<scale> = \"none\")` instead.\n`guides(<scale> = FALSE)` is deprecated. Please use `guides(<scale> = \"none\")` instead.\n\n\npng \n  2 \n\n\nOpen the qualityplot.pdf"
+  },
+  {
+    "objectID": "practicals/PART_I-DADA2_ANF.html#v-sequence-trimming",
+    "href": "practicals/PART_I-DADA2_ANF.html#v-sequence-trimming",
+    "title": "Part I- Data preprocessing : From Dada2 to Phyloseq",
+    "section": "V-Sequence Trimming",
+    "text": "V-Sequence Trimming\n\na/ Primer Removal\n\nPut primer sequences in variables\n\n\nCreate a sub-directory NOP in ./data directory & with file names\nPrepare empty files that are going to collect the results (e.g. sequences with no primers)\n\n#files are empty at this stage\npath_to_trimmed_reads <- here::here(\"outputs\",\"dada2\",\"trimmed\")\ndir.create(path_to_trimmed_reads)\n\nWarning in dir.create(path_to_trimmed_reads): '/home/nicolas/Documents/anf-\nmetabarcoding/outputs/dada2/trimmed' existe déjà\n\nnopFw <- file.path(path_to_trimmed_reads, basename(fnFs))\nnopRv <- file.path(path_to_trimmed_reads, basename(fnRs))\n#see\nnopFw |> head()\n\n[1] \"/home/nicolas/Documents/anf-metabarcoding/outputs/dada2/trimmed/S11B_R1.fastq.gz\"\n[2] \"/home/nicolas/Documents/anf-metabarcoding/outputs/dada2/trimmed/S1B_R1.fastq.gz\" \n\n\n\n\nRemove primers\n\nFWD  <- \"CCTACGGGNBGCASCAG\"\nREV  <- \"GACTACNVGGGTATCTAAT\"\n#Enlever les Primers  dans fichiers R1=fnFs et R2=fnRs et remplir les nouveaux fichiers sans les primers : nopFs (R1) et nopRs (R2)\ndada2::removePrimers(fnFs, nopFw, primer.fwd=FWD, orient=TRUE, max.mismatch=0,verbose=TRUE)\n\nOverwriting file:/home/nicolas/Documents/anf-metabarcoding/outputs/dada2/trimmed/S11B_R1.fastq.gz\n\n\nRead in 2000, output 1959 (98%) filtered sequences.\n\n\nOverwriting file:/home/nicolas/Documents/anf-metabarcoding/outputs/dada2/trimmed/S1B_R1.fastq.gz\n\n\nRead in 2000, output 1949 (97.4%) filtered sequences.\n\ndada2::removePrimers(fnRs, nopRv, primer.fwd=REV, orient=TRUE, max.mismatch=0,verbose=TRUE)\n\nOverwriting file:/home/nicolas/Documents/anf-metabarcoding/outputs/dada2/trimmed/S11B_R2.fastq.gz\n\n\nRead in 2000, output 1442 (72.1%) filtered sequences.\n\n\nOverwriting file:/home/nicolas/Documents/anf-metabarcoding/outputs/dada2/trimmed/S1B_R2.fastq.gz\n\n\nRead in 2000, output 1487 (74.3%) filtered sequences.\n\n#####\n\n\n\n\nb/ Quality Trimming process\n\nCreate a sub-directory Filtered & files for collecting the filtered results\nSame as previously see for primers, but now for sequence quality trimming\n\npath_to_filtered_reads <- here::here(\"outputs\",\"dada2\",\"filtered\")\ndir.create(path_to_filtered_reads)\n\nWarning in dir.create(path_to_filtered_reads): '/home/nicolas/Documents/anf-\nmetabarcoding/outputs/dada2/filtered' existe déjà\n\nfiltFs <- file.path(path_to_filtered_reads, basename(fnFs))\nfiltRs <- file.path(path_to_filtered_reads, basename(fnRs))\nnames(filtFs) <- sample.names\nnames(filtRs) <- sample.names\n\n\n\nApply quality trimming function\nFunction filterAndTrim: https://rdrr.io/bioc/dada2/man/filterAndTrim.html\n\nout <- dada2::filterAndTrim(nopFw, filtFs, nopRv, filtRs, minLen=150, matchIDs=TRUE,\n                     maxN=0, maxEE=c(3,3), truncQ=2)\n\n\n#See\nout\n\n                 reads.in reads.out\nS11B_R1.fastq.gz     1959       950\nS1B_R1.fastq.gz      1949      1016\n\n\nDetails:\nnopFw : Input, your row Forward list (path) of sequencing files without primer.\nfiltFs : Output, the empty files created at the previous stage that you are now going to fill with this command.\nnopRv, filRs : Same as above, but for the Reverse data\nTruncLen : Truncate reads after truncLen bases. Reads shorter than this are discarded.\nExple : TruncLen=c(200,150), means R1 forward are cut at 200 pb & the R2 reverse at 150 pb.\nTrimLeft : The number of nucleotides to remove from the start of each read, from the left\nTrimright : The number of nucleotides to remove from the start of each read, from the right\nmaxN : Max number of ambiguous bases accepted\nmaxEE : Quality system to remove low quality read. Standard maxEE=c(2,2).\nIf you want to be more flexible (accept more low quality), increase the value, maxEE=c(2,5). 2 is for the forward, 5 for le reverse.\nTruncQ=2. Truncate reads at the first instance of a quality score less than or equal to truncQ."
+  },
+  {
+    "objectID": "practicals/PART_I-DADA2_ANF.html#vi-learn-errors",
+    "href": "practicals/PART_I-DADA2_ANF.html#vi-learn-errors",
+    "title": "Part I- Data preprocessing : From Dada2 to Phyloseq",
+    "section": "VI-Learn « Errors »",
+    "text": "VI-Learn « Errors »\nFunction: learnErrors https://rdrr.io/bioc/dada2/man/learnErrors.html\nParametric model to distinguish sequencing artefacts from true biological variations\n\nApply the function\n\nerrF <- dada2::learnErrors(filtFs, randomize =TRUE, multithread=TRUE)\n\n541515 total bases in 1966 reads from 2 samples will be used for learning the error rates.\n\nerrR <- dada2::learnErrors(filtRs, randomize =TRUE, multithread=TRUE)\n\n554402 total bases in 1966 reads from 2 samples will be used for learning the error rates.\n\n#See plot\ndada2::plotErrors(errF, nominalQ=TRUE)\n\nWarning: Transformation introduced infinite values in continuous y-axis\nTransformation introduced infinite values in continuous y-axis"
+  },
+  {
+    "objectID": "practicals/PART_I-DADA2_ANF.html#vii--dereplication-identical-sequences",
+    "href": "practicals/PART_I-DADA2_ANF.html#vii--dereplication-identical-sequences",
+    "title": "Part I- Data preprocessing : From Dada2 to Phyloseq",
+    "section": "VII- Dereplication (identical sequences)",
+    "text": "VII- Dereplication (identical sequences)\nFunction: derepFastq\nhttps://www.rdocumentation.org/packages/dada2/versions/1.0.3/topics/derepFastq\n\nderepFs <- dada2::derepFastq(filtFs, verbose=TRUE)\n\nDereplicating sequence entries in Fastq file: /home/nicolas/Documents/anf-metabarcoding/outputs/dada2/filtered/S11B_R1.fastq.gz\n\n\nEncountered 607 unique sequences from 950 total sequences read.\n\n\nDereplicating sequence entries in Fastq file: /home/nicolas/Documents/anf-metabarcoding/outputs/dada2/filtered/S1B_R1.fastq.gz\n\n\nEncountered 664 unique sequences from 1016 total sequences read.\n\nderepRs <- dada2::derepFastq(filtRs, verbose=TRUE)\n\nDereplicating sequence entries in Fastq file: /home/nicolas/Documents/anf-metabarcoding/outputs/dada2/filtered/S11B_R2.fastq.gz\n\n\nEncountered 691 unique sequences from 950 total sequences read.\n\n\nDereplicating sequence entries in Fastq file: /home/nicolas/Documents/anf-metabarcoding/outputs/dada2/filtered/S1B_R2.fastq.gz\n\n\nEncountered 733 unique sequences from 1016 total sequences read."
+  },
+  {
+    "objectID": "practicals/PART_I-DADA2_ANF.html#viii-amplicon-sequence-variant-asv",
+    "href": "practicals/PART_I-DADA2_ANF.html#viii-amplicon-sequence-variant-asv",
+    "title": "Part I- Data preprocessing : From Dada2 to Phyloseq",
+    "section": "VIII-Amplicon Sequence Variant =ASV",
+    "text": "VIII-Amplicon Sequence Variant =ASV\nError Corrections: function dada\nhttps://www.quantargo.com/help/r/latest/packages/dada2/1.18.0/dada\n\ndadaFs <- dada2::dada(derepFs, err=errF, multithread=TRUE)\n\nSample 1 - 950 reads in 607 unique sequences.\nSample 2 - 1016 reads in 664 unique sequences.\n\ndadaRs <- dada2::dada(derepRs, err=errR, multithread=TRUE)\n\nSample 1 - 950 reads in 691 unique sequences.\nSample 2 - 1016 reads in 733 unique sequences."
+  },
+  {
+    "objectID": "practicals/PART_I-DADA2_ANF.html#ix--assembly",
+    "href": "practicals/PART_I-DADA2_ANF.html#ix--assembly",
+    "title": "Part I- Data preprocessing : From Dada2 to Phyloseq",
+    "section": "IX- Assembly",
+    "text": "IX- Assembly\nFunction: mergePairs :\nhttps://www.rdocumentation.org/packages/dada2/versions/1.0.3/topics/mergePairs\nMerge the forwards & reverses together maxMismatch : how many mismatch do you accept in the overlapping region?\n\nmergers <- dada2::mergePairs(dadaFs, derepFs, dadaRs, derepRs, maxMismatch= 0, verbose=TRUE)\n\n709 paired-reads (in 28 unique pairings) successfully merged out of 768 (in 45 pairings) input.\n\n\n677 paired-reads (in 32 unique pairings) successfully merged out of 758 (in 57 pairings) input.\n\n\n\nMake OTU table: dada2 format have sequences as identifiers!\n\nseqtab <- dada2::makeSequenceTable(mergers)"
+  },
+  {
+    "objectID": "practicals/PART_I-DADA2_ANF.html#x--remove-chimera",
+    "href": "practicals/PART_I-DADA2_ANF.html#x--remove-chimera",
+    "title": "Part I- Data preprocessing : From Dada2 to Phyloseq",
+    "section": "X- Remove Chimera",
+    "text": "X- Remove Chimera\nFunction: removeBimeraDenovo\nhttps://www.rdocumentation.org/packages/dada2/versions/1.0.3/topics/removeBimeraDenovo\n\nseqtab.nochim <- dada2::removeBimeraDenovo(seqtab, method=\"consensus\", multithread=TRUE, verbose=TRUE)\n\nIdentified 1 bimeras out of 53 input sequences."
+  },
+  {
+    "objectID": "practicals/PART_I-DADA2_ANF.html#xi-summarize-the-pre-processing",
+    "href": "practicals/PART_I-DADA2_ANF.html#xi-summarize-the-pre-processing",
+    "title": "Part I- Data preprocessing : From Dada2 to Phyloseq",
+    "section": "XI – Summarize the pre-processing",
+    "text": "XI – Summarize the pre-processing\n\ngetN <- function(x) sum(dada2::getUniques(x))\n\ntrack <- base::cbind(out, sapply(dadaFs, getN), sapply(dadaRs, getN),sapply(mergers, getN),rowSums(seqtab.nochim),rowSums(seqtab.nochim)/out[,1]*100)\ncolnames(track) <- c(\"input\", \"filtered\", \"denoisedF\", \"denoisedR\", \"merged\", \"nonchim\",\"%retained\")\nrownames(track) <- sample.names\ntrack\n\n     input filtered denoisedF denoisedR merged nonchim %retained\nS11B  1959      950       830       809    709     630  32.15926\nS1B   1949     1016       794       859    677     662  33.96614"
+  },
+  {
+    "objectID": "practicals/PART_I-DADA2_ANF.html#xii--taxonomic-assignment-using-dada2",
+    "href": "practicals/PART_I-DADA2_ANF.html#xii--taxonomic-assignment-using-dada2",
+    "title": "Part I- Data preprocessing : From Dada2 to Phyloseq",
+    "section": "XII- Taxonomic Assignment using Dada2",
+    "text": "XII- Taxonomic Assignment using Dada2\nFunction “assignTaxonomy”: Assignment from Phylum to Genus level\nhttps://www.quantargo.com/help/r/latest/packages/dada2/1.18.0/assignTaxonomy\nFunction “addSpecies”: Assignment to the species level if possible (100% identity).\nhttps://www.quantargo.com/help/r/latest/packages/dada2/1.18.0/addSpecies\n\ntaxa <- dada2::assignTaxonomy(seqtab.nochim,\n                              silva_train_set,\n                              taxLevels = c(\"Kingdom\", \"Phylum\",\"Class\", \"Order\", \"Family\",\"Genus\", \"Species\"),\n                              multithread = TRUE,\n                              minBoot = 60)\n\ntaxa <- dada2::addSpecies(taxa,\n                          silva_species_assignment,\n                          allowMultiple = FALSE)"
+  },
+  {
+    "objectID": "practicals/PART_I-DADA2_ANF.html#export-asv-table",
+    "href": "practicals/PART_I-DADA2_ANF.html#export-asv-table",
+    "title": "Part I- Data preprocessing : From Dada2 to Phyloseq",
+    "section": "Export ASV table",
+    "text": "Export ASV table\n\nR objects\n\nexport_folder <- here::here(\"outputs\",\"dada2\",\"asv_table\")\n\ndir.create(export_folder)\n\nWarning in dir.create(export_folder): '/home/nicolas/Documents/anf-\nmetabarcoding/outputs/dada2/asv_table' existe déjà\n\nsaveRDS(object = seqtab.nochim,\n        file = file.path(export_folder,\"seqtab_nochim.rds\"))\n\nsaveRDS(object = taxa,\n        file = file.path(export_folder,\"taxa.rds\"))\n\n\n\nText files\n\ntaxo_export <- apply(taxa,1,paste,collapse=\";\")\nseqtab_export <- t(seqtab.nochim)\n\nseqtab_export <- merge(x = taxo_export,\n      y = seqtab_export,\n      by=0,\n      all.x=TRUE,\n      sort=FALSE)\n\ncolnames(seqtab_export)[1:2] <- c(\"sequence\",\"taxonomy\")\n\nwrite.table(seqtab_export,\n            file=file.path(export_folder,\"asv_table.tsv\"),\n            quote=FALSE,\n            sep=\"\\t\",\n            row.names = FALSE)"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "1 + 1\n\n[1] 2"
   },
   {
     "objectID": "courses/dada2.html#i-received-data",
@@ -182,10 +259,10 @@
     "text": "Extra filtering steps\n\nASVs can be filtered out if:\n\nsequence has an unexpected length\nnot assigned to the desired taxonomic group\nconsidered as contaminant (present in negative controls)"
   },
   {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Exploration de la Diversité Taxonomique des Ecosystèmes par Metabarcoding",
     "section": "",
-    "text": "1 + 1\n\n[1] 2"
+    "text": "Monday\n\nR initiation\n\nTuesday\n\nDada2 presentation\nPhyloseq presentation\n\nWednesday\nThursday\nFriday\n\n\n\n\n\nTuesday\nDada2 practical\nWednesday\nThursday\nFriday"
   }
 ]
