@@ -1,121 +1,59 @@
 ---
 title: "Part I- Data preprocessing : From Dada2 to Phyloseq"
 date: "August 2022"
-output:
-  html_notebook:
-    theme: united
-    toc: yes
-    toc_depth: 3
-    toc_float: yes
-  html_document:
-    df_print: paged
-    toc: yes
-    toc_depth: '3'
-authors: Armougom/Garel
+output: html_document
+author:
+  - "Fabrice Armougom, MIO"
+  - "Marc Garel, MIO"
 editor_options: 
-  chunk_output_type: inline
+  chunk_output_type: console
 ---
 
 ```{r}
-##Load libraries 
-# library(phyloseq)
-# library(microbiome)
-# library(dada2)
-# library(DECIPHER) 
-# library(phangorn) 
-# library(Biobase) 
-# library(Biostrings)
-# library(BiocGenerics)
-# library(ShortRead)
+library(phyloseq)
 ```
-
-## [**XIII- Phylogenetic Tree**]{style="color: steelblue;"}
-
-NB: This step can be skipped if you have some problems to perform it or to many ASVs.
-
-### **Get the ASV sequences**
 
 ```{r}
-seqs <- dada2::getSequences(seqtab.nochim)
-```
+asv_table <- readRDS(here::here("outputs","dada2","asv_table","seqtab_nochim.rds"))
+taxonomy <- readRDS(here::here("outputs","dada2","asv_table","taxa.rds"))
+context <- read.table(here::here("data","context","mapfileFA.txt"),
+                      header = TRUE,
+                      row.names = 1)
 
-### **Alignment by DECIPHER**
+context
+```
 
 ```{r}
-aln <- DECIPHER::AlignSeqs(DNAStringSet(seqs), anchor=NA) 
-#See alignment
-BrowseSeqs(aln, highlight=0)
+asv_seq <- colnames(asv_table)
+asv_id <- sapply(asv_seq,
+                 function(x) digest::digest(x,algo="sha1")) |> unname()
+row.names(taxonomy) <- colnames(asv_table) <- names(asv_seq) <- asv_id
 ```
 
-### **Transformed by Phydat for distance matrix/tree**
-
-```{r}
-phang.align <- phangorn::phyDat(as(aln, "matrix"), type="DNA")
-```
-
--   
-#### **Build distance matrix**
-
-```{r}
-#Distance matrix
-dm <- phangorn::dist.ml(phang.align)
-#NJ tree 
-treeNJ <- phangorn::NJ(dm)
-#root
-treeNJ<- phangorn::midpoint(tree = treeNJ)
-```
-
-#### **Change labels (leaves) of the tree (important!!)**
-
-```{r}
-treeNJ$tip.label<-rownames(taxa)
-```
-
-## [**XIV- Build the Phyloseq Object including the phylogenetic tree**]{style="color: steelblue;"}
+## [**XIV- Get a phyloseq object**]{style="color: steelblue;"}
 
 ### **Mapfile**
 
-    Must contain sample names identically as you defined it at the beginning of the TP
+Must contain sample names identically as you defined it at the beginning of the TP
 
 ```{r}
 #Check it, if necessary: 
 sample.names
 ```
 
-You need to have match between Mapfile SampName and name(filtFs). Adapt your Mapfile file if it's not the case.
-
-### **Import the mapfile in Rstudio env**
-
-```{r}
-MAP= "mapfileFA.txt"
-MAPFILE <-phyloseq::import_qiime_sample_data(MAP)
-#See
-MAPFILE
-```
-
 ### **Create the phyloseq object (OTU_table, Tax_table, tree)**
 
 ```{r}
-Final<- phyloseq::phyloseq(otu_table(seqtab.nochim, taxa_are_rows=FALSE) ,sample_data(MAPFILE),phyloseq::tax_table(taxa),treeNJ)
-
-#See 
-Final
-```
-
-### **Issue of ASV ID**
-
-```{r}
-#See ASV ID is the sequence itself!!!
-taxa_names(Final)[1:2]
+physeq <- phyloseq(otu_table(asv_table, taxa_are_rows=FALSE),
+                 tax_table(taxonomy),
+                 sample_data(context))
 ```
 
 ## [**XV- Add the ASV sequences to your Phyloseq object & change ASV ID**]{style="color: steelblue;"}
-
-### **Apply add_refseq function**
-
+ 
 ```{r}
-#Get the sequences and change ASV names as ASV1,ASV2, etc
-Final1 <-microbiome::add_refseq(Final)
+nucl <- Biostrings::DNAStringSet(asv_seq)
+physeq <- merge_phyloseq(physeq, nucl)
 ```
 
 ### **See the final object for the alpha and beta analyses**
@@ -130,3 +68,52 @@ Final1
 taxa_names(Final1)[1:2]
 
 ```
+
+
+## [**XIII- Phylogenetic Tree**]{style="color: steelblue;"}
+
+NB: This step can be skipped if you have some problems to perform it or to many ASVs.
+
+### **Get the ASV sequences**
+
+```{r}
+seqs <- dada2::getSequences(seqtab.nochim)
+```
+
+### **Alignment by DECIPHER**
+
+```{r}
+aln <- DECIPHER::AlignSeqs(refseq(physeq), anchor=NA) 
+#See alignment
+DECIPHER::BrowseSeqs(aln, highlight=0)
+```
+
+### **Transformed by Phydat for distance matrix/tree**
+
+```{r}
+phang.align <- phangorn::phyDat(as(aln, "matrix"), type="DNA")
+```
+
+-   
+
+    #### **Build distance matrix**
+
+```{r}
+#Distance matrix
+dm <- phangorn::dist.ml(phang.align)
+#NJ tree 
+treeNJ <- phangorn::NJ(dm)
+#root
+treeNJ<- phangorn::midpoint(tree = treeNJ)
+
+physeq <- merge_phyloseq(physeq, treeNJ)
+```
+
+```{r}
+plot_bar(physeq, fill = "Class")
+
+plot_tree(physeq, color = "groupe", label.tips = "Family", ladderize = "left", justify = "left" , size = "Abundance")
+```
+
+
+
