@@ -15,6 +15,7 @@ qualityprofile <- function(fileFw,fileRev,outfile)
   }
   dev.off()
 }
+
 ###############################################################################
 
 ############# COMPTAGE des amorces FWD et REV dans les Fichiers seq ############
