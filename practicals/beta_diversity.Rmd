@@ -1,0 +1,1244 @@
+---
+title: "PARTIII_BETA_Diversity_ANF"
+output: html_document
+authors: Auguet/Jean-Christophe
+editor_options: 
+  chunk_output_type: inline
+date: "2022-08-09"
+---
+
+## Preparing the R session
+
+### Load some libraries
+
+```{r message=FALSE}
+# library(gclus)
+# library(ade4)
+# library(RColorBrewer)
+# library(vegan)
+# library(ggplot2)
+library(tidyverse)
+library(phyloseq)
+```
+
+```{r}
+tmp <- here::here("outputs", "beta_diversity")
+
+if(!dir.exists(tmp)){
+  dir.create(tmp)
+}
+```
+
+## Preparation of the data
+
+### Load the data in R
+
+Load the data and inspect the phyloseq object
+
+```{r}
+physeq <- readRDS(here::here("data","asv_table","phyloseq_object_alpha_beta_div.rds"))
+physeq
+```
+
+### Normalisation
+
+Here we will consider two approaches for library size normalization. The first will involve simply subsampling the data without replacement; however, this approach comes with limitations that are well described [here](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003531).
+
+The second will employ a compositional data analysis approach and involves working with log-ratios.
+
+#### Rarefaction
+
+We will subsample reads from each sample without replacement to a constant depth. Let see first how many reads we have per sample:
+
+```{r}
+rowSums(physeq@otu_table@.Data)
+```
+
+We will plot these results and look at the rank abudance of the reads
+
+```{r}
+readsumsdf <- data.frame(nreads = sort(taxa_sums(physeq), decreasing = TRUE),
+                        sorted = 1:ntaxa(physeq),
+                        type = "OTUs")
+
+tmp <- data.frame(nreads = sort(sample_sums(physeq), decreasing = TRUE), 
+                  sorted = 1:nsamples(physeq),
+                  type = "Samples")
+
+readsumsdf <- rbind(readsumsdf, tmp)
+
+head(readsumsdf)
+```
+
+```{r}
+ggplot(readsumsdf, aes(x = sorted, y = nreads)) + 
+  geom_bar(stat = "identity")+
+  ggtitle("Total number of reads") + 
+  scale_y_log10() + 
+  facet_wrap(~type, 1, scales = "free")
+```
+
+We will now transform to equal sample sum (Only if the number of reads is not the same between samples) in order to be sure that the sampling effort is the same between samples.
+
+```{r}
+# set the seed for random sampling
+# it allows reproductibility
+set.seed(10000)
+
+# minimum reads in a sample
+min(rowSums(physeq@otu_table@.Data))
+```
+
+The minimun number of reads in a sample is `r min(rowSums(physeq@otu_table@.Data))`. Lets do the randomization at 800 reads per sample in order to apply the process also in the sample having this minimum of reads.
+
+```{r}
+physeq_rar <- rarefy_even_depth(physeq, sample.size = 800)
+rowSums(physeq_rar@otu_table@.Data) #how many reads per sample
+```
+
+```{r}
+physeq
+```
+
+```{r}
+physeq_rar
+```
+
+#### Centered log-ratio (CLR) transformation
+
+A detailed discussion of compositional data analysis (CoDA) is beyond the scope of this session but just know that microbiome data is compositional since reads total is constrained by the sequencing depth. Relative abundances (proportions) are obviously constraint by a sum equal to one. This total constraint induces strong dependencies among the observed abundances of the different taxa. In fact, nor the absolute abundance (read counts) nor the relative abundance (proportion) of one taxon alone are informative of the real abundance of the taxon in the environment. Instead, they provide information on the relative measure of abundance when compared to the abundance of other taxa in the same sample. For this reason, these data fail to meet many of the assumptions of our favorite statistical methods developed for unconstrained random variables. Working with ratios of compositional elements lets us transform these data to the Euclidian space and apply our favorite methods. There are different types of log-ratio "transformations" including the additive log-ratio, centered log-ratio, and isometric log-ratio transforms. Find more information [here](https://academic.oup.com/bioinformatics/article/34/16/2870/4956011?login=false), [here](https://www.springer.com/us/book/9789811315336?gclid=Cj0KCQjw3uboBRDCARIsAO2XcYAphJ23am-AoIBh18HoW-WpAd8TwbQUEhc_DJV9gM-zWYtXe0-6l8saAkNHEALw_wcB) and [here](https://www.frontiersin.org/articles/10.3389/fmicb.2017.02224/full)
+
+Lets perform the CLR transformation
+
+tmp
+
+```{r message=FALSE, warning=FALSE}
+
+ # we first replace the zeros using
+ # the Count Zero Multiplicative approach
+tmp <- zCompositions::cmultRepl(physeq@otu_table@.Data,
+                                method = "CZM",
+                                label = 0)
+
+# generate the centered log-ratio transformed. ASVs are in rows!!!!!
+physeq_clr_asv <- apply(tmp, 1, function(x) log(x) - mean(log(x)))
+```
+
+```{r}
+#create a new phyloseq object with CLR tranformed counts
+physeq_clr <- physeq
+otu_table(physeq_clr) <- otu_table(t(physeq_clr_asv),
+                                   taxa_are_rows = FALSE)
+data.frame(physeq_clr@otu_table@.Data[1:5,1:10])
+```
+
+We can see that the values are now no longer counts, but rather the dominance (or lack thereof) for each taxa relative to the geometric mean of all taxa on the logarithmic scale. This centered log-ratio (CLR) transformed table can be used directly in a PCA or RDA to generate a beta diveristy ordination using the Aitchison distance.
+
+*Tips: This chunk can be coded in one line using the [microbiome package](https://microbiome.github.io/tutorials/): physeq_clr \<- microbiome::transform(physeq, "clr")*
+
+## Visualisation of the meta-community composition
+
+Often an early step in many microbiome projects is to visualize the relative abundance of organisms at specific taxonomic ranks. Treemaps and stacked barplots are two ways of doing this.
+
+```{r}
+physeq_phylum <- physeq_rar %>%
+  tax_glom(taxrank = "Family") %>%                     # agglomerate at the Family level
+  transform_sample_counts(function(x) {x/sum(x)} ) %>% # Transform to rel. abundance
+  psmelt() %>%                                         # Melt to long format
+  filter(Abundance > 0.02) %>%                         # Filter out low abundance taxa
+  arrange(Family)                                      # Sort data frame alphabetically by phylum
+
+head(physeq_phylum)
+```
+
+### Treemaps
+
+#### What for?
+
+Looking at the composition of the meta community with a treemap allow roughly to detect if some taxa should not be present (contaminants) and observe if the dominanting taxa correspond to the habitat studied.
+
+#### Using the package `treemap`
+
+```{r}
+#pdf(file="treemap.pdf", wi = 7, he = 7)
+treemap::treemap(physeq_phylum, index=c("Class", "Family"), vSize="Abundance", type="index",
+        fontsize.labels=c(15,12),                # size of labels. Give the size per level of aggregation: size for group, size for subgroup, sub-subgroups...
+        fontcolor.labels=c("white","black"),    # Color of labels
+        fontface.labels=c(2,1),                  # Font of labels: 1,2,3,4 for normal, bold, italic, bold-italic...
+        align.labels=list(
+          c("center", "center"), 
+          c("left", "bottom")),                 # Where to place labels in the rectangle?
+        overlap.labels=0.5,                      # number between 0 and 1 that determines the tolerance of the overlap between labels. 0 means that labels of lower levels are not printed if higher level labels overlap, 1  means that labels are always printed. In-between values, for instance the default value .5, means that lower level labels are printed if other labels do not overlap with more than .5  times their area size.
+        inflate.labels=F, # If true, labels are bigger when rectangle is bigger.
+        border.col=c("black","white"),          #Color of the boders separating the taxonomic levels
+        border.lwds=c(4,2),
+        #palette = "Set3",                        # Select your color palette from the RColorBrewer presets or make your own.
+        fontsize.title=12
+)
+
+#dev.off()
+```
+
+#### Using the package `treemapify`
+
+```{r}
+tmp <- transform_sample_counts(physeq,function(x) {x/sum(x)} ) %>%
+  psmelt() %>%
+  group_by(Family, Class) %>%
+  summarise(abundance = sum(Abundance)) %>%
+  na.omit()
+
+ggplot(tmp,aes(area=abundance,label=Family,fill=Class,subgroup=Class))+
+  treemapify::geom_treemap()+
+  treemapify::geom_treemap_subgroup_border() +
+  treemapify::geom_treemap_subgroup_text(place = "centre", grow = T, alpha = 0.5, colour =
+                             "black", fontface = "italic", min.size = 0) +
+  treemapify::geom_treemap_text(colour = "white", place = "topleft", reflow = T)+
+  theme(legend.position="none")
+
+ggsave(here::here("outputs","beta_diversity","treemap_treemapify.pdf"))
+```
+
+#### Observations
+
+Here we can observe that the meta-community is dominated by typical marine clades such as the AEGEAN marine group in Alphaproteobacteria or the SAR86 clade in Gammaproteobacteria. So everything is good so far.
+
+### Stacked barplots
+
+```{r}
+ggplot(physeq_phylum, aes(x = Sample, y = Abundance, fill = Family)) + 
+  geom_bar(stat = "identity") +
+  #facet_wrap(~Treatment, nrow=1, scales = "free_x") +
+  ylab("Relative Abundance (Family > 2%)") +
+  scale_y_continuous(expand = c(0,0)) + #remove the space below the 0 of the y axis in the graph
+  ggtitle("Community composition") +
+  theme_bw() +
+  theme(axis.title.x = element_blank(),
+        axis.text.x = element_text(angle=45, size=10,hjust = 0.5,vjust=0.8),
+        axis.ticks.x = element_blank(),
+        panel.background = element_blank(), 
+        panel.grid.major = element_blank(),  #remove major-grid labels
+        panel.grid.minor = element_blank())  #remove minor-grid labels
+
+ggsave(here::here("outputs","beta_diversity","ASV_composition.pdf"))
+```
+
+Here we can already see some differences in the composition at the Family level with an enrichment in Pseudoalteromonadaceae in some samples and Cyanobiaceae. Note that we are limited by our ability to discernate between than more than 9-12 colors in this kind of graphic.
+
+## Distance or dissimilarity matrices
+
+### Calculation
+
+Over the years, ecologists have invented numerous ways of quantifying dissimilarity between pairs of ecosystems.Four components of species community beta-diveristy can be assessed using different distances or dissimilarities. Compostional distances or dissimilarities do not consider the relative abundance of taxa, only their presence (detection) or absence, which can make it (overly) sensitive to rare taxa, sequencing artefacts, and abundance filtering choices. Conversely, structural distances or dissimilarities do put (perhaps too much) more importance on highly abundant taxa, when determining dissimilarities. Phylogentic distances or dissimilarities take into account the phylogenetic relatedness of the taxa / sequences in your samples when calculating dissimilarity while taxnomic distances or dissimilarities do not.
+
+#### Compositional taxonomic
+
+```{r}
+physeq_rar_jaccard <- ade4::dist.binary(physeq_rar@otu_table@.Data, method = 1)
+```
+
+#### Compositional phylogenetic (Unweighted unifrac)
+
+The GUniFrac package requires a rooted tree as input data. We can use the function midpoint() from the phangorn package to obtain the rooted tree.
+
+To check if your tree is rooted, you may use this function:
+
+```{r}
+ape::is.rooted(physeq_rar@phy_tree)
+```
+
+If not, you can use the function midpoint() from the package phangorn
+
+```{r}
+tmp <- phangorn::midpoint(physeq_rar@phy_tree)
+tmp
+phy_tree(physeq_rar) <- tmp
+```
+
+Now, Unifrac distances can be calculated
+
+```{r}
+unifracs <- GUniFrac::GUniFrac(physeq_rar@otu_table@.Data, physeq_rar@phy_tree, alpha=c(0, 0.5, 1))$unifracs
+```
+
+The unifracs object is a list containing 5 distance matrices correspoonding to the weighted UniFrac (d_1), the unweighted UniFrac (d_UW), Variance adjusted UniFrac (d_VAW), GUniFrac with alpha = 0, GUniFrac with alpha = 0.5
+
+```{r}
+physeq_rar_du <- unifracs[, , "d_UW"]	# Unweighted UniFrac
+```
+
+#### Structural taxonomic (Bray-Curtis)
+
+```{r}
+# physeq_rar_bray <- vegan::vegdist(physeq_rar@otu_table@.Data, method = "bray")
+
+tmp <- transform_sample_counts(physeq,function(x) {x/sum(x)} )
+physeq_rar_bray <- vegan::vegdist(tmp@otu_table@.Data, method = "bray")
+```
+
+#### Structural phylogenetic (Weighted UniFrac)
+
+```{r}
+physeq_rar_dw <- unifracs[, , "d_1"]   # Weighted UniFrac
+```
+
+### Visualisation
+
+You can actually calculate all these distances directly in phyloseq using *dist.calc()*. There are currently 44 explicitly supported method options in the phyloseq package, see <https://joey711.github.io/phyloseq/distance.html> for more informations. Here, we will loop through each distance method, save each plot to a list and then plot these results in a combined graphic using ggplot2.
+
+```{r}
+dist_methods <- unlist(distanceMethodList)
+dist_methods
+
+#Select the distances of interest
+dist_methods2 <- dist_methods[c(1,2,10,8)] 
+dist_methods2
+
+#Loop through each distance method, save each plot to a list, called plist.
+plist <- vector("list", length(dist_methods2))
+names(plist) <-  dist_methods2
+
+for(i in dist_methods2){
+    iDist <- distance(physeq_rar, method=i) # Calculate distance matrix
+    iMDS  <- ordinate(physeq_rar, "MDS", distance=iDist) # Calculate PCoA ordination
+    p <- NULL ## Make plot. Don't carry over previous plot (if error, p will be blank)
+    p <- plot_ordination(physeq_rar, iMDS, color="Treatment") # Create plot, store as temp variable, p
+    p <- p + ggtitle(paste("MDS using distance method ", i, sep="")) # Add title to each plot
+        plist[[i]] = p # Save the graphic to file.
+}
+```
+
+Combine results
+
+```{r}
+df <- plyr::ldply(plist, function(x) x$data)
+df
+names(df)[1] <- "distance"
+p <- ggplot(df, aes(Axis.1, Axis.2, color=Treatment)) +
+  geom_point(size=3, alpha=0.5) + theme_bw() +
+  facet_wrap(~distance, scales="free") +
+  ggtitle("PCoA (MDS) on various distance metrics")
+p
+```
+
+We can observe that there is a fairly good separation between North and South samples except for the Weighted UniFrac distance which tends to give too much weight to the most abundant ASVs that are also the most frequent.
+
+## Hierarchical clustering
+
+### Hierarchical ascendant classification (HAC)
+
+A first step in many microbiome projects is to examine how samples cluster on some measure of (dis)similarity. There are many ways to do perform such clustering, see [here](https://sites.google.com/site/mb3gustame/dissimilarity-based-methods/cluster-analysis). Since microbiome data is compositional, we will perform here a hierarchical ascendant classification (HAC) of samples based on Aitchison distance.
+
+```{r}
+#distance matrix calculation
+physeq_clr_dist <- dist(physeq_clr@otu_table@.Data, method = "euclidean")
+```
+
+Let's see the different clustering obtained with the four aggregation criterion
+
+```{r warning=FALSE}
+#Simple aggregation criterion
+spe.single <- hclust(physeq_clr_dist, method ="single")
+
+#Complete aggregation criterion
+spe.complete <- hclust(physeq_clr_dist, method ="complete")
+
+#Unweighted pair group method with arithmetic mean
+spe.UPGMA <- hclust(physeq_clr_dist, method = "average")
+
+#Ward criterion
+spe.ward <- hclust(physeq_clr_dist, method ="ward.D")
+
+par(mfrow=c(2,2))
+plot(spe.single, main ="single")
+plot(spe.complete, main = "complete")
+plot(spe.UPGMA, main = "UPGMA")
+plot(spe.ward, main = "ward")
+```
+
+Remember that clustering is a heuristic procedure, not a statistical test. The choices of an association coefficient and a clustering method influence the result. This stresses the importance of choosing a method that is consistent with the aims of the analysis.
+
+### Cophenetic Correlation
+
+A cophenetic matrix is a matrix representing the cophenetic distances among all pairs of objects. A Pearson's r correlation, called the cophenetic correlation in this context, can be computed between the original dissimilarity matrix and the cophenetic matrix. The method with the highest cophenetic correlation may be seen as the one that produced the best clustering model for the distance matrix.
+
+Let us compute the cophenetic matrix and correlation of four clustering results presented above, by means of the function *cophenetic()* of package stats.
+
+```{r echo=TRUE, message=FALSE, results=FALSE}
+#Cophenetic corrélation
+spe.single.coph <- cophenetic(spe.single)
+cor(physeq_clr_dist, spe.single.coph)
+spe.complete.coph <- cophenetic(spe.complete)
+cor(physeq_clr_dist, spe.complete.coph)
+spe.UPGMA.coph <- cophenetic(spe.UPGMA)
+cor(physeq_clr_dist, spe.UPGMA.coph)
+spe.ward.coph <- cophenetic(spe.ward)
+cor(physeq_clr_dist, spe.ward.coph)
+```
+
+*Which dendrogram retains the closest relationship to the Aitchinson distance matrix?*
+
+To illustrate the relationship between a distance matrix and a set of cophenetic matrices obtained from various methods, one can draw Shepard-like diagrams (Legendre and Legendre 1998, p. 377) by plotting the original distances against the cophenetic distances.
+
+```{r}
+
+plot_coph_cor <- function(cophenetic_distance, hclust_type){
+
+  # first calculate the correlation between
+  # the cophenetic distance and the observed distance
+  cor_res <- round(cor(physeq_clr_dist, cophenetic_distance),3)
+
+  # generate a scatter plot to visualise
+  # the relationship
+  plot(x = physeq_clr_dist,
+     y = cophenetic_distance,
+     xlab="Aitchison distance",
+     ylab="Cophenetic distance",
+     xlim=c(10,35),ylim=c(10,35),
+     main=c(hclust_type,paste("Cophenetic correlation ",cor_res)))
+  abline(0,1)
+}
+
+par(mfrow=c(2,2))
+
+plot_coph_cor(cophenetic_distance = spe.complete.coph,
+              hclust_type = "Single linkage")
+
+plot_coph_cor(cophenetic_distance = spe.complete.coph,
+              hclust_type = "Complete linkage")
+
+plot_coph_cor(cophenetic_distance = spe.UPGMA.coph,
+              hclust_type = "Average linkage")
+
+plot_coph_cor(cophenetic_distance = spe.ward.coph,
+              hclust_type = "Ward linkage")
+
+```
+
+It seems clear that the UPGMA method give the most faithful representation of original distances.
+
+### Looking for Interpretable Clusters
+
+To interpret and compare clustering results, users generally look for interpretable clusters. This means that a decision must be made: at what level should the dendrogram be cut? Many indices (more than 30) has been published in the literature for finding the right number of clusters in a dataset. The process has been covered [here](http://www.sthda.com/english/wiki/determining-the-optimal-number-of-clusters-3-must-known-methods-unsupervised-machine-learning). The fusion level values of a dendrogram are the dissimilarity values where a fusion between two branches of a dendrogram occurs. Plotting the fusion level values may help define cutting levels. Let us plot the fusion level values for for the UPGMA dendrogram.
+
+```{r}
+#Fusion level plot
+par(mfrow = c(1, 1))
+
+plot(x = spe.UPGMA$height,
+     y = nrow(physeq_clr@otu_table@.Data):2,
+     type = "S",
+     main = "Fusion levels - Aitchison - Average",
+     ylab = "k (number of cluster)",
+     xlab = "h (node height)")
+
+text(x = spe.UPGMA$height,
+     y = nrow(physeq_clr@otu_table@.Data):2,
+     labels = nrow(physeq_clr@otu_table@.Data):2,
+     col = "red",
+     cex = 0.8)
+
+```
+
+From right to left, this first graph shows clear jumps after each fusion between 2 groups. We'll use the package NbClust which will compute, with a single function call, 30 indices for confirming the right number of clusters in the dataset:
+
+```{r}
+# nb <- NbClust::NbClust(t(physeq_clr@otu_table),
+#                        distance = "euclidean",
+#                        min.nc = 2,
+#                        max.nc = 10,
+#                        method = "average",
+#                        index = "all")
+```
+
+NbClust confirm the identification of two clusters of samples. We will go back to the dendrogram and cut it at the corresponding distances.
+
+```{r}
+#Cut the dendrogram in order to obtain K groups and compare their compositionC
+k <- 2 # Number of groups given by the fusion level plot
+
+#Cut the dendrogram
+spe.UPGMA.classe <- cutree(tree = spe.UPGMA, k = k)
+table (spe.UPGMA.classe)
+spe.UPGMA.classe2 <- cbind(spe.UPGMA.classe)
+colnames(spe.UPGMA.classe2) <- "Classe_UPGMA"
+```
+
+```{r}
+# Plot dendrogram with group labels
+plot(spe.UPGMA, hang=-1, ylab="Height", main="Aitchison distance - UPGMA")
+rect.hclust(spe.UPGMA , k = k, border = 2:6, cluster = cutree(spe.UPGMA, k=k))
+legend("topright", paste("Cluster",1:k), pch=22, col=2:(k+1), bty="n")
+```
+
+*Do the groups obtained make sense? Do you obtain enough groups containing a substantial number of sites?*
+
+There are several ways to measure the robustness of a clustering algorithm. Three commonly used metrics are the Dunn index, Davis-Bouldin index and Silhoutte index. The Dunn index is calculated as a ratio of the smallest inter-cluster distance to the largest intra-cluster distance. A high DI means better clustering since observations in each cluster are closer together, while clusters themselves are further away from each other. We'll use the function *cluster.stats()* in **fpc** package for computing the Dunn index which can be used for cluster validation,
+
+```{r}
+cs <- fpc::cluster.stats(d = physeq_clr_dist, spe.UPGMA.classe)
+cs$dunn
+```
+
+The Dunn index is high indicating a good clustering of samples. Now that we identified two groups of samples based on their microbial community composition, we may want to look at which microbial clades or ASVs are enriched in each of the groups.
+
+### Combining clustering and Z-score Heatmap
+
+**Z-score** heatmap are normalized (centered around the mean (by line!!) & reduced (Standard deviation= SD). It's the comparison on an observed value of a sample to the mean of the population. So, it answers to the question, how far from the population mean is a score for a given sample. The scores are given in SD to the population mean.
+
+#### Select the top 30 ASV
+
+Here we used ASV but of course you can do it on Family or genus taxonomic level!
+
+```{r,results='hide'}
+#Transform Row/normalized counts in percentage: transform_sample_counts
+pourcentS = phyloseq::transform_sample_counts(physeq_rar, function(x) x/sum(x) * 100)
+#Selection of top 30 taxa 
+mytop30 <- names(sort(phyloseq::taxa_sums(pourcentS), TRUE)[1:30])
+#Extraction of taxa from the object pourcentS
+selection30 <- phyloseq::prune_taxa(mytop30, pourcentS)
+#See new object with only the top 30 ASV
+selection30
+```
+
+#### Get the otu_table & Z-score transformation
+
+```{r}
+#Retrieve abundance of ASV (otu_table) as table & put in data.prop variable
+data.prop<-phyloseq::otu_table(selection30)
+
+#Change the rownames 
+#See
+rownames(data.prop)
+#Change... Why?
+rownames(data.prop)<-c("S11B_South5B","S1B_North1B","S2B_North2B","S2S_North2S","S3B_North3B","S3S_North3S","S4B_North4B","S4S_North4S","S5B_North5B","S5S_North5S","S6B_South1B","S6S_South1S","S7B_South2B","S7S_South2S","S8B_South3B","S8S_South3S","S9B_South4B","S9S_South4S")
+
+#Z-score transformation (with scale)
+heat <- t(base::scale(data.prop))
+#See
+head(data.frame(heat))
+```
+
+#### Heat map Z-score
+
+```{r}
+ComplexHeatmap::Heatmap(
+  heat,
+  row_names_gp = grid::gpar(fontsize = 6),
+  cluster_columns =FALSE,
+  heatmap_legend_param = list(direction = "vertical",
+                              title ="Z-scores", 
+                              grid_width = unit(0.5, "cm"),
+                              legend_height = unit(3, "cm"))
+)
+```
+
+#### Add the Taxonomy for ASV names
+
+```{r}
+#get taxnomic table
+taxon <- phyloseq::tax_table(selection30)
+#transform as dataframe
+taxonf <- as.data.frame(taxon)
+#concatene ASV with Phylum & Family names
+myname <- paste(rownames(taxonf), taxonf$Phylum, taxonf$Family, sep="_")
+#apply
+colnames(data.prop) <- myname
+```
+
+#### Apply to the Heatmap
+
+```{r}
+#re-run Z-score to take into account the colnames change
+heat <- t(scale(data.prop))
+
+ComplexHeatmap::Heatmap(
+  heat,
+  row_names_gp = grid::gpar(fontsize = 6),
+  cluster_columns =TRUE,
+  heatmap_legend_param = list(direction = "vertical",
+   title ="Z-scores",
+   grid_width = unit(0.5, "cm"),
+   legend_height = unit(4, "cm")),
+  top_annotation = ComplexHeatmap::HeatmapAnnotation(foo = ComplexHeatmap::anno_block(gp = grid::gpar(fill =c(3,4)),
+    labels = c(1, 2),
+    labels_gp = grid::gpar(col = "white", fontsize = 10))),
+  column_km = 2,
+  column_names_gp= grid::gpar(fontsize = 6))
+```
+
+#### Add a boxplot of ASV Abundance distribution within sample
+
+```{r}
+boxplot <- ComplexHeatmap::anno_boxplot(t(data.prop), 
+                                        which = "row",
+                                        gp = grid::gpar(fill = "turquoise3"))
+
+myboxplot_left_anno <- ComplexHeatmap::HeatmapAnnotation(Abund = boxplot, 
+                                                    which = "row",
+                                                    width = unit(3, "cm"))
+
+myboxplot_top_anno <- ComplexHeatmap::HeatmapAnnotation(foo = ComplexHeatmap::anno_block(gp = grid::gpar(fill =c(3,6)),
+                                                                            labels = c("South", "North"),
+                                                                            labels_gp = grid::gpar(col = "white",fontsize = 10)))
+
+ComplexHeatmap::Heatmap(heat,
+                        row_names_gp = grid::gpar(fontsize = 7),
+                        left_annotation = myboxplot_left_anno, 
+                        heatmap_legend_param = list(direction = "vertical",
+                                                    title ="Z-scores",
+                                                    grid_width = unit(0.5, "cm"),
+                                                    legend_height = unit(3, "cm")),
+                        top_annotation = myboxplot_top_anno,
+                        column_km = 2,
+                        cluster_columns = TRUE,
+                        column_dend_side = "bottom",
+                        column_names_gp = grid::gpar(fontsize = 7))
+```
+
+We can now observe that microbial communities in samples from the south differ in their microbial composition from sample from the north. The significant effect of treatment (North/south) remains to be tested statistically, we'll see how it is done in the hypothese testing section. This difference in community composition is due to the apparent differential abundance of many top ASV of the dataset. The identification of significant biomarkers in North and South samples will be covered in the differential abundance testing section.
+
+## Indirect gradient analysis
+
+While cluster analysis looks for discontinuities in a dataset, ordination extracts the main trends in the form of continuous axes. It is therefore particularly well adapted to analyse data from natural ecological communities, which are generally structured in gradients. That is why these type of analysis are called gradient analysis. The aim of ordination methods is to represent the data along a reduced number of orthogonal axes, constructed in such a way that they represent, in decreasing order, the main trends of the data. We'll see four types of analysis widely used in ecology: PCA, PCoA, NMDS. All these methods are descriptive: no statistical test is provided to assess the significance of the structures detected. That is the role of constrained ordination or hypothese testing analysis that are presented in the following chapters.
+
+### Principal component analysis (PCA)
+
+Principal components analysis (PCA) is a method to summarise, in a low-dimensional space, the variance in a multivariate scatter of points. In doing so, it provides an overview of linear relationships between your objects and variables. This can often act as a good starting point in multivariate data analysis by allowing you to note trends, groupings, key variables, and potential outliers. Again, because of the compositional nature of microbiome data, we will use the Aitchinson distance here. Be aware that this is the CLR transformed ASV table which is used directly not the Aitchinson distance matrix. The function will calculate a euclidean distance on this CLR transformed table to get the Aitchison matrix. There are many packages allowing PCA analysis. We will use the recent [PCAtools](https://bioconductor.org/packages/devel/bioc/vignettes/PCAtools/inst/doc/PCAtools.html) package wich provides functions for data exploration via PCA, and allows the user to generate publication-ready figures.
+
+#### Number of PCs to retain
+
+First, we will use a scree plot to examine the proportion of total variation explained by each PC.
+
+```{r message=FALSE}
+#library(PCAtools)
+a=1
+#library(ggalt)
+```
+
+```{r warning=FALSE}
+#prepare the ASV table to add taxonomy
+tax_CLR <-  as.data.frame(tax_table(physeq_clr)) #get taxnomic table
+#concatene ASV with Family & Genus names
+ASVname <- paste(rownames(tax_CLR), tax_CLR$Family, tax_CLR$Genus,sep="_")
+#apply 
+rownames(physeq_clr_asv) <- ASVname
+p <- PCAtools::pca(t(physeq_clr@otu_table@.Data),
+                   metadata = data.frame(sample_data(physeq_clr)))
+screeplot(p, axisLabSize = 18, titleLabSize = 22)
+#variance explained by each PC
+p$variance
+```
+
+Here we see that the first PC really stands out with 31% of the variance explained and then we have a gradual decline for the remaining components. A scree plot on its own just shows the accumulative proportion of explained variation, but we want to determine the optimum number of PCs to retain.
+
+```{r warning=FALSE}
+#Horn’s parallel analysis (Horn 1965) (Buja and Eyuboglu 1992)
+horn <- PCAtools::parallelPCA(t(physeq_clr@otu_table@.Data))
+horn$n
+#elbow method
+elbow <- PCAtools::findElbowPoint(p$variance)
+elbow
+```
+
+The two methods indicate that we should retain the first 2 or 3 PCs. The reason for this discrepancy is because finding the correct number of PCs is a difficult task and is akin to finding the 'correct' number of clusters in a dataset - there is no correct answer. Most studies take into account only the two first PCs.
+
+#### Plotting the ordination
+
+```{r}
+#Plotting the PCA
+PCAtools::biplot(p,
+       lab = p$metadata$X.SampleID,
+       colby = "Treatment",
+       pointSize = 5,
+       hline = 0, vline = 0,
+       legendPosition = "right")
+```
+
+Each point is a sample, and samples that appear closer together are typically more similar to each other than samples which are further apart. So by colouring the points by treatment you can see that the microbiota from the North are often, but not always, highly distinct from sample from the south.
+
+#### Determine the variables that drive variation among each PC
+
+One benefit of not using a distance matrix, is that you can plot taxa "loadings" onto your PCA axes, using the *showLoadings = TRUE* argument. PCAtools allow you to plots the number of taxa loading vectors you want beginning by those having the more weight on each PCs. The relative length of each loading vector indicates its contribution to each PCA axis shown, and allows you to roughly estimate which samples will contain more of that taxon.
+
+```{r}
+PCAtools::biplot(p, 
+       # loadings parameters
+       showLoadings = TRUE,
+       lengthLoadingsArrowsFactor = 1.5,
+       sizeLoadingsNames = 3,
+       colLoadingsNames = 'red4',
+       ntopLoadings = 3,
+       # other parameters
+       lab = p$metadata$X.SampleID,
+       colby = "Treatment",
+       hline = 0, vline = 0,
+       legendPosition = "right")
+```
+
+ASVs 7, 11 and 12 have a high contribution to PC1 while ASVs 38, 40, and 47 have a high contribution on the second PC. These ASVs belong to only two families. Samples from the South seems to be enriched in ASV7 while North samples contain higher abundances of ASV11 and 12. The two Noth sample outliers at the top of the plot are caracterized by a higher abundance of ASVs 38, 40, and 47.
+
+#### Correlate the principal components back to environmental data
+
+Further exploration of the PCs can come through correlations with environmental data. Here, we will correlate the two first PCs with environmental data.
+
+```{r warning=FALSE}
+PCAtools::eigencorplot(p,
+             components = PCAtools::getComponents(p, 1:horn$n),
+             metavars = c('SiOH4','NO2','NO3','NH4','PO4',
+                          'NT','PT','Chla',"T", "S", "Sigma_t"),
+             col = c('white', 'cornsilk1', 'gold', 'forestgreen', 'darkgreen'),
+             cexCorval = 1.2,
+             fontCorval = 2,
+             posLab = 'all',
+             rotLabX = 45,
+             scale = TRUE,
+             main = bquote(PC ~ Spearman ~ r^2 ~ environmental ~ correlates),
+             plotRsquared = TRUE,
+             corFUN = 'spearman',
+             corUSE = 'pairwise.complete.obs',
+             corMultipleTestCorrection = 'BH',
+             signifSymbols = c('****', '***', '**', '*', ''),
+             signifCutpoints = c(0, 0.0001, 0.001, 0.01, 0.05, 1))
+```
+
+The only signficant correlation found is between the first PC1 explaining the separation between South and North samples and salinity. This is unteresting but correlation between variables does not automatically means that the change in one variable is the cause of the change in the values of the other variable. We'll check later if there is a causal relationship between the salinity gradient and the difference observed in southern and northern bacterial communities.
+
+### Principal component analysis (PCoA)
+
+Principal coordinates analysis (PCoA, also known as metric multidimensional scaling, MDS) attempts to represent the distances between samples in a low-dimensional, Euclidean space. In particular, it maximizes the linear correlation between the distances in the distance matrix, and the distances in a space of low dimension (typically, 2 or 3 axes are selected). As always, the choice of (dis)similarity measure is critical and must be suitable to the data in question. Here we will use the Bray-Curtis distance. When the distance metric is Euclidean, PCoA is equivalent to Principal Components Analysis. The interpretation of the results is the same as with PCA.
+
+```{r}
+#PCOA
+# library(vegan)
+# library(ape)
+
+#BPCoA on Bray-Curtis dissimilarity
+pcoa.asv <- ape::pcoa(physeq_rar_bray)
+pcoa_coord <- pcoa.asv$vectors[,1:2]
+
+#Data frame for hull
+hull <- data.frame("Axis.1" = pcoa_coord[,1],
+                   "Axis.2" = pcoa_coord[,2],
+                   "sample" = as.data.frame(sample_data(physeq_rar@sam_data)))
+
+North <- hull[hull$sample.Treatment  == "North", ][chull(hull[hull$sample.Treatment == 
+                                                          "North", c("Axis.1", "Axis.2")]), ]  # hull values for North
+South <- hull[hull$sample.Treatment == "South", ][chull(hull[hull$sample.Treatment == 
+                                                         "South", c("Axis.1", "Axis.2")]), ]  # hull values for Jellyfishes  
+
+hull.data <- rbind(North, South)
+
+#Vector of color for hulls
+color <- rep("#a65628", length(hull.data$sample.Treatment))
+color[hull.data$sample.Treatment == "North"] <- "#1919ff"
+hull.data <- cbind(hull.data, color)
+head(hull.data)
+```
+
+Now that we prepared the data, lets plot the PCoA.
+
+```{r}
+ggplot() + 
+  geom_hline(yintercept=0, colour="lightgrey", linetype = 2) + 
+  geom_vline(xintercept=0, colour="lightgrey", linetype = 2) +
+  geom_polygon(data=hull.data, aes(x=Axis.1, y=Axis.2, group=sample.Treatment, fill=sample.Treatment),alpha=0.30) + # add the convex hulls)
+  scale_fill_manual(values = c("Darkgrey","#1919ff")) +
+  geom_point(data = hull, aes(x=Axis.1, y=Axis.2, color = sample.Treatment, size=sample.S), alpha = 0.7) +
+  scale_color_manual(values = c("Darkgrey", "#1919ff")) +
+  xlab(paste("PCo1 (", round(pcoa.asv$values$Relative_eig[1]*100, 1), "%)")) +
+  ylab(paste("PCo2 (", round(pcoa.asv$values$Relative_eig[2]*100, 1), "%)")) +
+  theme_bw() +
+  coord_equal() +
+  theme(axis.title.x = element_text(size=14), # remove x-axis labels
+        axis.title.y = element_text(size=14), # remove y-axis labels
+        panel.background = element_blank(), 
+        panel.grid.major = element_blank(),  #remove major-grid labels
+        panel.grid.minor = element_blank(),  #remove minor-grid labels
+        plot.background = element_blank())
+```
+
+The ordination of the samples in the PCoA is very similar to the one observed in the PCA with a clear segregation of North and South bacterial communities. This segregation may result from the increasing salinity gradient from North to South but it relaims to be tested.
+
+*Do you see what is missing?*
+
+Indeed, there are no species plotted on this ordination. That's because we used a dissimilarity matrix (sites x sites) as input for the PCoA function. Hence, no species scores could be calculated. However, we could work around this problem with the function `biplot.pcoa()` from the `ape` package.
+
+PCoA suffers from a number of flaws, in particular the arch effect (see PCA for more information). These flaws stem, in part, from the fact that PCoA maximizes a linear correlation. Non-metric Multidimensional Scaling (NMDS) rectifies this by maximizing the rank order correlation.
+
+### Non Metric Multidimensional Scaling (NMDS)
+
+NMDS attempts to represent the pairwise dissimilarity between objects in a low-dimensional space. Any dissimilarity coefficient or distance measure may be used to build the distance matrix used as input. **NMDS is a rank-based approach.** This means that the original distance data is substituted with ranks. While information about the magnitude of distances is lost, rank-based methods are generally more robust to data which do not have an identifiable distribution.
+
+NMDS is an iterative algorithm. NMDS routines often begin by random placement of data objects in ordination space. The algorithm then begins to refine this placement by an iterative process, attempting to find an ordination in which ordinated object distances closely match the order of object dissimilarities in the original distance matrix. The stress value reflects how well the ordination summarizes the observed distances among the samples.
+
+NMDS is not an eigenanalysis. This has three important consequences:
+
+-   There is no unique ordination result
+-   The axes of the ordination are not ordered according to the variance they explain
+-   The number of dimensions of the low-dimensional space must be specified before running the analysis
+
+Axes are not ordered in NMDS. `vegan::metaMDS()` automatically rotates the final result of the NMDS using PCA to make axis 1 correspond to the greatest variance among the NMDS sample points.
+
+```{r message=FALSE, warning=FALSE, results=FALSE}
+#NMDS plot on Aitchison distance
+ASV.nmds <- vegan::metaMDS(t(physeq_clr_asv), distance="euclidean", k=2, trymax=100) #Aitchison distance
+```
+
+A useful way to assess the appropriateness of an NMDS result is to compare, in a Shepard diagram, the distances among objects in the ordination plot with the original distances.
+
+```{r}
+vegan::stressplot(ASV.nmds)
+```
+
+There is a good non-metric fit between observed dissimilarities (in our distance matrix) and the distances in ordination space. Also the stress of our final result was good.
+
+*do you know how much the stress is?*
+
+The stress value can be used as an indicator of the goodness-of-fit. Stress values \>0.2 are generally poor and potentially not interpretable, whereas values \<0.1 are good and \<0.05 are excellent, leaving little danger of misinterpretation.
+
+So we can go further and plot the results:
+
+```{r}
+nmds_coord <- data.frame(ASV.nmds$points)
+
+#Data frame for hull
+hull <- data.frame("Axis.1" = nmds_coord[,1],
+                   "Axis.2" = nmds_coord[,2],
+                   "sample" = as.data.frame(sample_data(physeq_clr@sam_data)))
+
+North <- hull[hull$sample.Treatment  == "North", ][chull(hull[hull$sample.Treatment == 
+                                                                "North", c("Axis.1", "Axis.2")]), ]  # hull values for North
+South <- hull[hull$sample.Treatment == "South", ][chull(hull[hull$sample.Treatment == 
+                                                               "South", c("Axis.1", "Axis.2")]), ]  # hull values for Jellyfishes  
+
+hull.data <- rbind(North, South)
+
+#Vector of color for hulls
+color <- rep("#a65628", length(hull.data$sample.Treatment))
+color[hull.data$sample.Treatment == "North"] <- "#1919ff"
+hull.data <- cbind(hull.data, color)
+
+#pdf(file="NMDS_Aitchison.pdf", wi = 7, he = 7)
+ggplot() + 
+  geom_hline(yintercept=0, colour="lightgrey", linetype = 2) + 
+  geom_vline(xintercept=0, colour="lightgrey", linetype = 2) +
+  geom_polygon(data=hull.data, aes(x=Axis.1, y=Axis.2, group=sample.Treatment, fill=sample.Treatment),alpha=0.30) + # add the convex hulls)
+  scale_fill_manual(values = c("Darkgrey","#1919ff")) +
+  geom_point(data = hull, aes(x=Axis.1, y=Axis.2, color = sample.Treatment, size=sample.S), alpha = 0.7) +
+  scale_color_manual(values = c("Darkgrey", "#1919ff")) +
+  geom_text(data = hull.data, aes(x=-0, y=-9), label = paste("Stress =", round(ASV.nmds$stress, 2)), colour = "Black", size = 5)  +
+  xlab(paste("MDS1")) +
+  ylab(paste("MDS2")) +
+  theme_bw() +
+  coord_equal() +
+  theme(axis.title.x = element_text(size=14), # remove x-axis labels
+        axis.title.y = element_text(size=14), # remove y-axis labels
+        panel.background = element_blank(), 
+        panel.grid.major = element_blank(),  #remove major-grid labels
+        panel.grid.minor = element_blank(),  #remove minor-grid labels
+        plot.background = element_blank())
+#dev.off()
+```
+
+We observe the same ordiantion pattern of the samples as in the PCA and PCoA. There are no species scores (same problem as we encountered with PCoA). We can work around this problem, by using the *wascores* function giving metaMDS the original community matrix as input and specifying the distance measure.
+
+The next question is: Which environmental variable is driving the observed differences in species composition? Similarly to what we have done with PCA, we can correlate environmental variables with our ordination axes.
+
+```{r}
+# Correlation with environmental data
+env <- hull[,14:24]
+
+# The function envfit will add the environmental variables as vectors to the ordination plot
+ef <- vegan::envfit(ASV.nmds, env, permu = 999)
+ef
+
+# The two last columns are of interest: the squared correlation coefficient and the associated p-value
+# Plot the vectors of the significant correlations and interpret the plot
+plot(ASV.nmds, type = "t", display = "sites")
+plot(ef, p.max = 0.05)
+```
+
+Here again, we can see that the salinity is strongly correlated with the first axis separating samples from the South and the North. To a lesser extent, new environmental variables related with the trophic conditions of the habitat (NH4 and PT) were correlated with the second axis of the NMDS. The detection of these new relations between microbial communities and the environment may be related to the fact that NMDS is best suited to detect the non linear response of microbes to environmental gradients.
+
+Many different types of indirect gradient analysis are available outthere. In the following graph, we offer suggestions of some of the appropriate choices based on data input structure and expected relationships among variables.
+
+![](images/Indirect_gradient_methods.png)
+
+## Hypothese testing analyses
+
+We saw some segregation between Northern and Southern samples suggesting some differences in the bacterial communities according to sample type. While indirect gradient or classification analyses are exploratory data visualization tool, we can test whether the samples cluster beyond that expected using hypotheses testing methods such as multivariate analysis of variance with permutation (PERMANOVA), and analysis of group similarities (ANOSIM), multi-response permutation procedures (MRPP), and Mantel's test (MANTEL) and more recently Dirichlet-multinomial models.
+
+### PERmutational Multiple ANalysis Of VAriance (PERMANOVA)
+
+PERMANOVA was proposed by Anderson and McArdle to apply the powerful ANOVA to multivariate ecological datasets. PERMANOVA is one of most widely used nonparametric methods to fit multivariate models to microbiome data. It is a multivariate analysis of variance based on distance matrices and permutation. It does this by partitioning the sums of squares for the within- and between-cluster components using the concept of centroids. Many permutations of the data (i.e. random shuffling) are used to generate the null distribution. Find more informations on PERMANOVA [here](https://onlinelibrary.wiley.com/doi/full/10.1002/9781118445112.stat07841) and on the `adonis2()` function [here](https://www.researchgate.net/topic/Adonis) Now let us evaluate whether the group (North vs. South) has a significant effect on overall bacterial community composition.
+
+```{r}
+#PERMANOVA
+metadata2 <- data.frame(sample_data(physeq_clr))
+results_permanova <- vegan::adonis2(physeq_clr_dist~Treatment, data=metadata2, perm=1000)
+results_permanova
+```
+
+Here we can see that the North/South grouping explain significantly (p \< 0.001) 20% of the variance in the ASV Aitchison matrix. In other words Nothern and Southern bacterial differ significatively in their bacterial composition. The test from ADONIS can be confounded by differences in dispersion (or spread) so we want to check this as well..
+
+```{r}
+# Testing the assumption of similar multivariate spread among the groups (ie. analogous to variance homogeneity)
+anova(vegan::betadisper(physeq_clr_dist, metadata2$Treatment))
+```
+
+Here the groups have significant different spreads and permanova result may be impacted by that although PERMANOVA is very robust to difference in group dispertion. We can also check which taxa contribute most to the community differences using the ancient adonis() function and the ASV table of CLR transformed counts.
+
+```{r}
+#Show coefficients for the top taxa separating the groups
+permanova <- vegan::adonis(t(physeq_clr_asv) ~ Treatment,
+                            data = metadata2,
+                            permutations=1000,
+                            method = "euclidean")
+
+coef <- coefficients(permanova)["Treatment1",]
+top.coef <- coef[rev(order(abs(coef)))[1:10]]
+par(mar = c(3, 14, 2, 1))
+barplot(sort(top.coef), horiz = T, las = 1, main = "Top taxa", cex.names = 0.7)
+```
+
+*Are these ASVs the same or different compared to ASV contributing the most to PC axes?*
+
+`adonis()` and `adonis2()` allow us to explore the effect of categorical or [continuous](https://stats.stackexchange.com/questions/449176/the-way-permanova-handling-continuous-explanatory-variable) variables.
+
+**NB**: An important difference between adonis et adonis2: in adonis terms are tested sequentially and this is the only option. This means that the order you enter your variables is important (if design is unbalanced). This is because the first explanatory variable is added to the model. Then the next one is added to see if it explains significantly more variation not explained by the previous variables. This is equivalent to using by="terms" in adonis2. If you don't want the order to matter you can use adonis2 with by="margin", or if you want to check if the model as a whole is significant you can use by=NULL. Order does not matter when by="margin" because the significance is tested against a model that includes all other variables not just the ones preceding it in the formula.
+
+```{r}
+#Permanova on continuous variables
+permanova_S <- vegan::adonis2(physeq_clr_dist~S, data=metadata2, perm=1000)
+permanova_S
+permanova_NH4 <- vegan::adonis2(physeq_clr_dist~NH4, data=metadata2, perm=1000)
+permanova_NH4
+permanova_PT <- vegan::adonis2(physeq_clr_dist~PT, data=metadata2, perm=1000)
+permanova_PT
+```
+
+The result confirm that salinity and to a lesser extent NH4 and PT are important factors shaping microbial communities but what about the other variables? Lets construct a model with all the co-variables.
+
+```{r}
+#Inspecting co-variables
+permanova_all <- vegan::adonis2(physeq_clr_dist~SiOH4+NO2+NO3+NH4+PO4+NT+PT+Chla+T+S+Sigma_t, by="margin", data=metadata2, perm=1000)
+permanova_all
+```
+
+*What happened? Why none of the variables has no significant effect any more ?*
+
+The temptation to build an ecological model using all available information (i.e., all variables) is hard to resist. Lots of time and money are exhausted gathering data and supporting information. We also hope to identify every significant variable to more accurately characterize relationships with biological relevance. Collinearity, or excessive correlation among explanatory variables, can complicate or prevent the identification of an optimal set of explanatory variables for a statistical model. Lets take a look at which explanatory variables are correlated.
+
+```{r warning=FALSE}
+#inpecting autocorrélation
+
+cor.metadadata <- cor(metadata2[,12:22], method="spearman") #compute the correlation matrix
+
+cor.mtest <- function(mat, ...) {
+  mat <- as.matrix(mat)
+  n <- ncol(mat)
+  p.mat<- matrix(NA, n, n)
+  diag(p.mat) <- 0
+  for (i in 1:(n - 1)) {
+    for (j in (i + 1):n) {
+      tmp <- cor.test(mat[, i], mat[, j], method = "spearman", ...)
+      p.mat[i, j] <- p.mat[j, i] <- tmp$p.value
+    }
+  }
+  colnames(p.mat) <- rownames(p.mat) <- colnames(mat)
+  p.mat
+}
+
+# matrix of the p-value of the correlation
+p.mat <- cor.mtest(metadata2[,12:22])
+
+# Leave blank on no significant coefficient
+corrplot::corrplot(cor.metadadata, type="upper", order="hclust", p.mat = p.mat, sig.level = 0.05, insig = "blank")
+```
+
+We can see that many explanatory variables are correlated. Lets remove some of them. We'll keep S as a proxy of PO4, Sigma-t, NH4 and NO2. NO3 as a proxy of SiOH4. Chla as a proxy of PT.
+
+```{r}
+permanova_cor_pars <- vegan::adonis2(physeq_clr_dist~S+NO3+NT+Chla+T, by="margin", data=metadata2, perm=1000)
+permanova_cor_pars
+```
+
+The updated PERMANOVA model is improved over the original. We see that salinity is again significantly related to the response variable. However, the model with only salinity is even much better. The take home message is that true relationships among variables will be masked if explanatory variables are collinear. This creates problems in model creation which lead to complications in model inference. Taking the extra time to evaluate collinearity is a critical first step to creating more robust ecological models.
+
+### ANalysis Of SIMilarity (ANOSIM)
+
+[ANOSIM](https://sites.google.com/site/mb3gustame/hypothesis-tests/anosim) tests for significant difference between two or more classes of objects based on any (dis)similarity measure (Clarke 1993). It compares the ranks of distances between objects of different classes with ranks of object distances within classes. The basis of this approach is similar to the NMDS ordination technique described above.
+
+```{r}
+#ANOSIM
+vegan::anosim(physeq_clr_dist, metadata2$Treatment, permutations = 1000)
+```
+
+Similarly to PERMANOVA, the result of ANOSIM indicates a significant effect of the Norther or Southern origin of the sample on bacterial communities.
+
+A more formal approach to hypotheses testing can be done using redundancy analysis or canonical correspondence analysis that directly uses information on metadata fields when generating the ordinations and conducting testing. These approaches directly test hypotheses about environmental variables.
+
+##  Direct gradient analysis
+
+Simple (unconstrained) ordination analyses one data matrix and reveals its major structure in a graph constructed from a reduced set of orthogonal axes. It is therefore a passive form of analysis, and the user interprets the ordination results *a posteriori*. On the contrary, direct gradient analyses (called also canonical ordination) associates two or more data sets in the ordination process itself. Consequently, if one wishes to extract structures of a data set that are related to structures in other data sets, and/or formally test statistical hypotheses about the significance of these relationships, canonical ordination is the way to go. Here we will perform a RDA on our dataset but many other types exit: distance-based redundancy analysis (db-RDA), canonical correspondence analysis (CCA), linear discriminant analysis (LDA), canonical correlation analysis (CCorA), co-inertia analysis (CoIA) and multiple factor analysis (MFA). For more informations see this excellent [book](http://www.ievbras.ru/ecostat/Kiril/R/Biblio_N/R_Eng/Borcard2011.pdf).
+
+### Redundant analysis (RDA)
+
+#### Running the RDA
+
+RDA is a method combining regression and principal component analysis (PCA). RDA computes axes that are linear combinations of the explanatory variables. In RDA, one can truly say that the axes explain or model (in the statistical sense) the variation of the dependent matrix.
+
+```{r}
+# RDA of the Aitchinson distance, constrained by all the environmental variables contained in metadat2
+spe.rda <- vegan::rda(t(physeq_clr_asv) ~ ., metadata2[,12:22]) # Observe the shortcut formula
+head(summary(spe.rda))  # Scaling 2 (default)
+```
+
+The included environmental variables explain 70.44% of the variation in bacterial community composition across sites. 29.56 % of the variance is unexplained. However, we'll see that the propotion of variance explained is much lower. The R2 from the summary measures the strength of the canonical relationship between the response variables (Y matrix, ASVs) and the explanatory variables (X matrix) by calculating the proportion of the variation of Y explained by the variables in X. However, this R2 is biased. We calculate an Adjusted R2, which also measures the strength of the relationship between Y and X, but applies a correction of the R2 to take into account the number of explanatory variables. This is the statistic that should be reported.
+
+```{r}
+# Unadjusted R^2 retrieved from the rda object
+R2 <- vegan::RsquareAdj(spe.rda)$r.squared
+R2
+# Adjusted R^2 retrieved from the rda object
+R2adj <- vegan::RsquareAdj(spe.rda)$adj.r.squared
+R2adj
+```
+
+In reality, the proportion of variance explained dropped to 16.25 %. The numerical output shows that the first two canonical axes explain together 35.1% of the total variance of the data, the first axis alone explaining 25.9%. These are unadjusted values, however. Since R2 adj = 16.2 %, the percentages of accumulated constrained adj eigenvalues show that the first axis alone explains 0.162 × 0.368 = 0.059 or 5.9% variance. Because ecological data are generally quite noisy, one should never expect to obtain a very high value of R2 . Furthermore, the first unconstrained eigenvalue (PC1), the first unconstrained axe for the residuals, is comparatively high, which means that it does display an important residual structure of the response data that is not explain by the environmental parameters measure here.
+
+#### Significance testing
+
+The interpretation of the constrained ordination must be preceded by a test of statistical significance (see below). As in multiple regression, a non-significant result must not be interpreted and must be discarded.
+
+```{r}
+# Global test of the RDA result
+anova(spe.rda, step=1000)
+# Tests of all canonical axes
+anova(spe.rda, by="axis", step=1000)
+```
+
+Here we can see that ur full model is statistically non significant (p = 0.08), and every canonical axis resulting from the RDA are not either statistically significant (p \> 0.05). This RDA model is not interpretable.
+
+*Can you tell why?*
+
+#### Selecting variables
+
+It happens sometimes that one wishes to reduce the number of explanatory variables. The reasons vary: search for parsimony, rich data set but poor a priori hypotheses and possible strong linear dependencies (correlations) among the explanatory variables in the RDA model, which could render the regression coefficients of the explanatory variables in the model unstable.
+
+A simple approach to identify collinearity among explanatory variables is the use of variance inflation factors (VIF). VIF calculations are straightforward and easily comprehensible; the higher the value, the higher the collinearity. VIF measure the proportion by which the variance of a regression coefficient is inflated in the presence of other explanatory variables. VIFs above 20 indicate strong collinearity. Ideally, VIFs above 10 should be at least examined, and avoided if possible.
+
+```{r}
+# Variance inflation factors (VIF)
+vegan::vif.cca(spe.rda)
+```
+
+Salinity, Temperature and Sigma.t have very hight VIFs wich confirm the collinearities observed earlier between explanatory variables (see the PERMANOVA section). A reduction of the number of explanatory variables is justified. simplify this model, we can perform a forward selection (or backwards or stepwise). These types of selections help us select variables that are statistically important. However, it is important to note that selecting variables ecologically is much more important than performing selection in this way. If a variable of ecological interest is not selected, this does not mean it has to be removed from the RDA. Here, we will be performing forward selection on our 11 environmental variables. To do this, we can use the *ordiR2step()* function:
+
+```{r}
+# Forward selection of explanatory variables using vegan's ordiR2step()
+step.forward <- vegan::ordiR2step(vegan::rda(t(physeq_clr_asv) ~ 1, data=metadata2[,12:22]), 
+                           scope=formula(spe.rda), direction="forward", pstep=1000)
+```
+
+Here, we are essentially adding one variable at a time, and retaining it if it significantly increases the model's adjusted\
+R2. The forward selection show us that a model with only salinity has higher R2 adjust than with all variable and explain 18.4 % of the variance. Lets calculate this most parsimonious RDA and check its significance.
+
+```{r}
+# Parsimonious RDA
+spe.rda.pars <- vegan::rda(t(physeq_clr_asv) ~ S, data=metadata2[,12:22])
+anova(spe.rda.pars, step=1000)
+anova(spe.rda.pars, step=1000, by="axis")
+R2a.pars <- vegan::RsquareAdj(spe.rda.pars)$adj.r.squared
+# Compare variance inflation factors
+vegan::vif.cca(spe.rda)
+vegan::vif.cca(spe.rda.pars)
+
+```
+
+Now, both the model and the first canonical axis resulting from the RDA are statistically significant (p \< 0.05). The VIF of salinity is only 1. This RDA model is interpretable. Lets plot it.
+
+#### RDA plot
+
+```{r}
+#Preparation of the data for the plot
+ii <- summary(spe.rda.pars)  #View analysis results
+sp <- as.data.frame(ii$species[,1:2])*2 #Depending on the drawing result, the drawing data can be enlarged or reduced to a certain extent, as follows
+sp_top <- sp[rev(order((abs(-sp$RDA1))))[1:6],]
+st <- as.data.frame(ii$sites[,1:2])
+yz <- t(as.data.frame(ii$biplot[,1:2]))
+row.names(yz) <- "Salinity"
+yz <- as.data.frame(yz)
+grp <- as.data.frame(metadata2$Treatment)#Grouping by Square Type
+colnames(grp) <- "group"
+
+#plot
+ggplot() +
+  #geom_text_repel(data = st,aes(RDA1,PC1,label=row.names(st)),size=4)+#Show a Square
+  geom_point(data = st,aes(RDA1,PC1,shape=grp$group,fill=grp$group),size=4)+
+  scale_shape_manual(values = c(21:25))+
+  geom_segment(data = sp_top,aes(x = 0, y = 0, xend = RDA1, yend = PC1), 
+               arrow = arrow(angle=22.5,length = unit(0.35,"cm"),
+                             type = "closed"),linetype=1, size=0.6,colour = "red")+
+  ggrepel::geom_text_repel(data = sp_top, aes(RDA1,PC1,label=row.names(sp_top)))+
+  geom_segment(data = yz,aes(x = 0, y = 0, xend = RDA1, yend = PC1), 
+               arrow = arrow(angle=22.5,length = unit(0.35,"cm"),
+                             type = "closed"),linetype=1, size=0.6,colour = "blue")+
+  ggrepel::geom_text_repel(data = yz,aes(RDA1,PC1,label=row.names(yz)))+
+  labs(x=paste("RDA 1 (", format(100 *ii$cont[[1]][2,1], digits=4), "%)", sep=""),
+       y=paste("PC 1 (", format(100 *ii$cont[[1]][2,2], digits=4), "%)", sep=""))+
+  geom_hline(yintercept=0,linetype=3,size=1) + 
+  geom_vline(xintercept=0,linetype=3,size=1)+
+  guides(shape=guide_legend(title=NULL,color="black"),
+         fill=guide_legend(title=NULL))+
+  theme_bw()+theme(panel.grid=element_blank())
+```
+
+One of the most powerful aspects of RDA is the simultaneous visualization of your response and explanatory variables (i.e. species and environmental variables). From this ordination, we can really say now that salinity is the main environmental driver measured shaping bacterial communities. Among all the ASVs, some are more to this gradient of salinity. This is the case of ASV 12 and 11 for which abundance increase when salinity decreases and ASV 7 which presents the opposite pattern. These differential abundance patterns can be explored with many kind of analyses (see next chapter) but what is really powerful with RDA is that you highlight gradient relationships not a difference of abundance between two conditions. However, a large part of the variance in the bacterial community remains unexplained. Variance in species communities can be explained by deterministic processes such as species sorting (influence of the environment as we've seen here) but also by stochastic processes such as dispersal which depend, among other things, of the distance between communities. Since we have this information, lets take a look at a very common pattern in community ecology: the distance-decay pattern.
+
+### Multiple Regression on dissimilarity Matrices (MRM)
+
+The decay of assemblage similarity with spatial distance can be explained by alternative mechanisms: dispersal limitation and species sorting. To understand their relative contributions, we compare the decay in bacterial similarity with spatial distance and, independently, with environmental distance. You will find excellent articles on distance-decay relationship [Here](https://onlinelibrary.wiley.com/doi/epdf/10.1111/ecog.03693) and [here](https://www.frontiersin.org/articles/10.3389/fmicb.2021.702016/full).
+
+A combination of Mantel correlation and multiple regression, multiple regression on distance matrices (MRM; Manly, 1986; Smouse et al., 1986; Legendre et al., 1994) allows a regression-type analysis of two or more (dis)similarity matrices, using permutations to determine the significance of the coefficients of determination. One matrix must contain (dis)similarities calculated from response data, such as OTU abundances, and the other matrices must contain (dis)similarities calculated from explanatory data (e.g. environmental parameters or space).
+
+First we calculate the spatial distance matrix. In order to calculate kilometric distance bewtween sampling points from geographic coordinates, we used the **SpatialEpi** package and the *latlong2grid()* function. Here, you will load the result of this function because there is a conflict with this package and the betapart package we use after.
+
+```{r}
+#library(SpatialEpi)
+#ANFcoord <- read.table("Location_coordinates.txt", sep = "\t", row.names = 1, header = T)
+#ANF_km <- latlong2grid(ANFcoord[,1:2])
+#rownames(ANF_km) <- rownames(ANFcoord)
+
+ANF_km <- readRDS(here::here("data","beta_diversity","spatial_distance.rds"))
+ANF_km_dist <- dist(ANF_km)
+```
+
+Then, The relationship between microbial pairwise similarity and spatial distance is assessed by fitting negative exponential function describing the decay in microbial similarity with spatial distance.
+
+```{r}
+#Calculate and add model to the plot
+
+ANF.decay.exp <- betapart::decay.model(physeq_clr_dist/100, ANF_km_dist, y.type="dissim", model.type="exp", perm=100)
+
+#Plot Distance decay relationships
+plot(ANF_km_dist, physeq_clr_dist/100,
+     ylim=c(0, max(physeq_clr_dist/100)),
+     xlim=c(0, max(ANF_km_dist)),
+     xlab = "Distance (km)", ylab = "Dissimilarity (CLR)")
+betapart::plot.decay(ANF.decay.exp, col="blue", remove.dots=TRUE, add=TRUE)
+legend("bottomright", paste("exp: (Beta =", round(ANF.decay.exp$b.slope,4),
+                               ", Rsqr =", round(ANF.decay.exp$pseudo.r.squared,2),
+                               ", p =", round(ANF.decay.exp$p.value,2)),
+                            fill="blue")
+```
+
+The negative exponential model significantly explained the decay in similarity with spatial distance (p0.01). But what is the contribution of dispersal and species sorting in this pattern? Lets find out by decomposing the variance between the spatial and the envirnomental matrices.
+
+```{r}
+#Variance partitioning
+#Microbiam matrix (response)
+physeq_clr_dist_square <- vegan::vegdist(x = t(physeq_clr_asv), method = "euclidean", diag=TRUE, upper=TRUE)
+
+#Spatial matrix (explicative)
+ANF_km_dist_square <- dist(ANF_km, diag = T, upper = T)
+
+#environmental matrix (explicative)
+envdata <- dist(metadata2[,12:22], diag = T, upper = T)
+```
+
+```{r message=FALSE}
+
+library(ecodist)
+```
+
+```{r}
+#Multiple regressions on Matrices (MRM) - attention les colonnes et lignes des matrices doivent correspondrent (pas besoin d'avoir les mêmes noms)
+
+ecodist::MRM(physeq_clr_dist_square ~ envdata + ANF_km_dist_square, nperm=1000) #0.366
+ecodist::MRM(physeq_clr_dist_square ~ envdata, nperm=1000) #0.212
+ecodist::MRM(physeq_clr_dist_square ~ ANF_km_dist_square, nperm=1000) #0.238
+
+modEvA::varPart(A = 0.212, B=0.238, AB = 0.366, A.name = "Environmental", B.name = "Dispersal limitation")
+```
+
+Using multiple regression on distance matrices (MRM), spatial and environmental variables proved significant predictors of beta diversity and together explained 36.7 % of variation in dissimilarity of microbial communities. Variance partitioning was subsequently used to partition the variation into purely spatial, purely environmental and spatially-structured environmental components. With 15,4%, the amount of variation in dissimilarity explained by the purely spatial component was higher than the variation explained by the environmental component, indicationg that dispersal is an important process shaping our communities.
+
+Similarly to indirect gradient analyses, many different types of direct gradient analysis are available outthere. In the following graph, we offer suggestions of some of the appropriate choices based on data input structure and expected relationships among variables.
+
+![](images/Direct_gradient_analysis_decision.png) \# <span style="color: steelblue;"> Diffential abundance analysis (DAA)
+
+The goal of differential abundance testing is to identify specific taxa associated with metadata variables of interest. This is a difficult task. It is also one of the more controversial areas in microbiome data analysis as illustrated in this [prepprint](https://arxiv.org/abs/2104.07266). This is related to concerns that normalization and testing approaches have generally failed to control false discovery rates. For more details see these papers [here](https://www.biorxiv.org/content/10.1101/559831v1) and [here](https://www.nature.com/articles/s41467-019-10656-5).
+
+There are many tools to perform DAA. The most popular tools, without going into evaluating whether or not they perform well for this task, are:\
+-[ALDEx2](https://bioconductor.org/packages/release/bioc/html/ALDEx2.html)\
+-[ANCOM-BC](https://bioconductor.org/packages/release/bioc/html/ANCOMBC.html)\
+-[conrcob](https://cran.r-project.org/web/packages/corncob/index.html)\
+-[DESeq2](https://bioconductor.org/packages/release/bioc/html/DESeq2.html)\
+-[edgeR](https://bioconductor.org/packages/release/bioc/html/edgeR.html)\
+-[LEFse](https://bioconductor.org/packages/release/bioc/html/lefser.html)\
+-[limma voom](https://bioconductor.org/packages/release/bioc/html/limma.html)\
+-[LinDA](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-022-02655-5)\
+-[MaAsLin2](https://www.bioconductor.org/packages/release/bioc/html/Maaslin2.html)\
+-[metagenomeSeq](https://www.bioconductor.org/packages/release/bioc/html/metagenomeSeq.html)\
+-[IndVal](https://www.rdocumentation.org/packages/labdsv/versions/2.0-1/topics/indval)\
+-[t-test](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/t.test)\
+-[Wilcoxon test](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/wilcox.test)\
+
+Nearing et al. ([2022](https://www.nature.com/articles/s41467-022-28034-z)) compared all these listed methods across 38 different datasets and showed that ALDEx2 and ANCOM-BC produce the most consistent results across studies. Because different methods use different approaches (parametric vs non-parametric, different normalization techniques, assumptions etc.), results can differ between methods.Therefore, it is highly recommended to pick several methods to get an idea about how robust and potentially reproducible your findings are depending on the method. Here, we will apply 3 methods that are currently used in microbial ecology or that can be recommended based on recent literature (ANCOM-BC, ALDEx2 and LEFse) and we will compare the results between them. For this, we will use the recent **microbiome_marker** package.
+
+### Linear discriminant analysis Effect Size (LEFse)
+
+LEFSE has been developped by Segata et al. ([2011](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3218848/)). LEFse first use the non-parametric factorial Kruskal-Wallis (KW) sum-rank test to detect features with significant differential abundance with respect to the class of interest; biological consistency is subsequently investigated using a set of pairwise tests among subclasses using the (unpaired) Wilcoxon rank-sum test. As a last step, LEfSe uses LDA to estimate the effect size of each differentially abundant features.
+
+```{r message=FALSE, warning=FALSE}
+#LEFSE
+mm_lefse <- microbiomeMarker::run_lefse(physeq, norm = "CPM",
+                                        wilcoxon_cutoff = 0.01,
+                                        group = "Treatment",
+                                        taxa_rank = "none",
+                                        kw_cutoff = 0.01,
+                                        multigrp_strat = TRUE,
+                                        lda_cutoff = 4)
+
+mm_lefse_table <- data.frame(mm_lefse@marker_table)
+mm_lefse_table
+
+library(grid)
+
+p_LDAsc <- plot_ef_bar(mm_lefse)
+p_abd <- plot_abundance(mm_lefse, group = "Treatment")
+gridExtra::grid.arrange(p_LDAsc,p_abd, nrow=1)
+```
+
+LEFse identifies 12 biomarkers and among them ASV 7, 11 and 12 that we already identifies ealier with other methods.
+
+### Differential analysis of compositions of microbiomes with bias correction (ANCOM-BC)
+
+The ANCOM-BC [methodology](https://www.nature.com/articles/s41467-020-17041-7) assumes that the observed sample is an unknown fraction of a unit volume of the ecosystem, and the sampling fraction varies from sample to sample. ANCOM-BC accounts for sampling fraction by introducing a sample-specific offset term in a linear regression framework, that is estimated from the observed data. The offset term serves as the bias correction, and the linear regression framework in log scale is analogous to log-ratio transformation to deal with the compositionality of microbiome data. Furthermore, this method provides p-values and confidence intervals for each taxon. It also controls the FDR and it is computationally simple to implement.
+
+```{r message=FALSE, warning=FALSE}
+#ancomBC
+mm_ancombc <-run_ancombc(physeq, group = "Treatment", taxa_rank = "none", pvalue_cutoff = 0.001, p_adjust = "fdr")
+mm_ancombc_table <-data.frame(mm_ancombc@marker_table)
+mm_ancombc_table
+
+an_ef <- plot_ef_bar(mm_ancombc)
+an_abd <- plot_abundance(mm_ancombc, group = "Treatment")
+grid.arrange(an_ef,an_abd, nrow=1)
+```
+
+ANCOM-BC identifies 10 biomarkers and all in common with the results of the LEFse analysis.
+
+### ANOVA-like differential expression (ALDEx2)
+
+ALDEx2 estimates technical variation within each sample per taxon by utilizing the Dirichlet distribution. It furthermore applies the centered-log-ratio transformation (or closely related log-ratio transforms). Depending on the experimental setup, it will perform a two sample Welch's T-test and Wilcoxon-test or a one-way ANOVA and Kruskal-Wallis-test. The Benjamini-Hochberg procedure is applied in any case to correct for multiple testing.
+
+```{r message=FALSE, warning=FALSE}
+mm_aldex <-run_aldex(physeq, group = "Treatment", norm = "CPM", taxa_rank = "none", p_adjust = "fdr")
+mm_aldex_table <- data.frame(mm_aldex@marker_table)
+mm_aldex_table
+```
+
+ALDEx2 is much more stringent and identifies only 1 biomarker, ASV 27 which has been identified by the two other DAA methods. The others do not reach the FDR cut-off used here; although, they likely have "largish" effect sizes. Often, if I consider performing DA testing, I will run several models and focus on the intersection of OTUs given by at least two methods. Here it would be the 10 ASV identified with the ANCOM-BC.
