@@ -1,44 +1,92 @@
 ---
 title: "Part I- Data preprocessing : From Dada2 to Phyloseq"
 date: "August 2022"
-output:
-  html_document:
-    theme: united
-    css: ../fab_style.css
-    toc: yes
-    toc_depth: 3
-    toc_float: yes
-    number_sections: true
-authors: Armougom/Garel
+output: html_document
+author:
+  - "Fabrice Armougom, MIO"
+  - "Marc Garel, MIO"
 editor_options: 
-  chunk_output_type: console
+  chunk_output_type: inline
 ---
 
+## Prepare  your working space
 
-# Set working directory, Data
+### Get the files
 
-**Your sequencing data is in the directory data so:**
+To begin with, you will download the course repository on your computer.
+
+On way is to go to the repository on github 
+([ANF-metabarcoding](https://github.com/nhenry50/ANF-metabarcoding)) 
+and to download it as a zip file.
+
+Once on your computer, unzip the file and place the resulting folder
+in the most covenient location (`~/Documents` for example)
+
+### Dowload the reference database
+
+First we save in an object the path to the folder where you will place 
+the references databases.
 
 ```{r}
-#Put the path directory containing your data (sequencing files) in a « variable » called path_to_fastqs
-path_to_fastqs <- here::here("data","raw")
+refdb_folder <- here::here("data", "refdb")
+refdb_folder
+```
 
-#download reference databases
-refdb_folder <- here::here("data","refdb")
-dir.create(refdb_folder)
+The reason why we use here::here() is that when you render a
+Rmarkdown, the working directory is where the Rmarkdown file is:
 
+```{r}
+getwd()
+```
+
+Whereas here::here() point to the root of the R project
+
+```{r}
+here::here()
+```
+
+Now, let's create the folder directly from R:
+
+```{r}
+if(!dir.exists(refdb_folder)) {
+  dir.create(refdb_folder)
+}
+```
+
+You can also create the folder from RStudio in the `Files` window
+
+You can access the documentation of a function using `?`
+in the console. If you to know everything about the function
+`dir.create()`, simply run `?dir.create()` 
+
+In this practical, we are analysing 16S data.
+Silva is a well suited reference database for Prokaryote.
+
+In case you are working on 18S sequences, it is better to
+use PR2 (ref)
+
+```{r}
+# R stop dowloading after timeout which is
+# 60 seconds by default
 getOption('timeout')
+
+# so we change timeout to be 20 minutes
 options(timeout=1200)
 
+# we save in variable the path to the refdb
+# in the working space
 silva_train_set <- file.path(refdb_folder,"silva_nr99_v138.1_train_set.fa.gz")
+silva_species_assignment <- file.path(refdb_folder,"silva_species_assignment_v138.1.fa.gz")
 
+# then we download the files if they don't
+# already exist
+# note: if you copy/paste in your web browser
+# it is also working
 if(!file.exists(file.path(refdb_folder,"silva_nr99_v138.1_train_set.fa.gz"))){
   download.file("https://zenodo.org/record/4587955/files/silva_nr99_v138.1_train_set.fa.gz",
               silva_train_set,
               quiet=TRUE)
 }
-
-silva_species_assignment <- file.path(refdb_folder,"silva_species_assignment_v138.1.fa.gz")
 
 if(!file.exists(file.path(refdb_folder,"silva_species_assignment_v138.1.fa.gz"))){
   download.file("https://zenodo.org/record/4587955/files/silva_species_assignment_v138.1.fa.gz",
@@ -46,25 +94,32 @@ if(!file.exists(file.path(refdb_folder,"silva_species_assignment_v138.1.fa.gz"))
               quiet=TRUE)
 }
 
-options(timeout=60)
-
-# Attached functions from functions_dada4.R located in the R folder
-source(here::here("R","functions_dada4.R"))
 ```
 
-# [**III- Read the sequencing files**]{style="color: steelblue;"}
+## Attach custom functions
 
-### [**a/Create a list of sequencing file paths**]{style="color: steelblue;"}
+```{r}
+# Attached functions from preprocessing.R located in the R folder
+source(here::here("R","preprocessing.R"))
+```
+
+## Sequencing files
+
+## List of sequencing file paths
+
+Save the path to the directory containing your raw data (paried-end sequencing fastq files)
+in an object named `path_to_fastqs`
+
+```{r}
+path_to_fastqs <- here::here("data","raw")
+```
 
 The « forward » & « reverse » files are in gzipped (compressed) fastq format with the label:
 
-[SAMPLENAME_R1.fastq.gz]{style="color: red;"} for the forward files and [SAMPLENAME_R2.fastq.gz]{style="color: red;"} for the reverses files.
+`${SAMPLENAME}_R1.fastq.gz` for the forward files and `${SAMPLENAME}_R2.fastq.gz` for the reverses files.
 
 R1 is Forward, R2 is Reverse
 
-Function : list.files
-
-https://stat.ethz.ch/R-manual/R-devel/library/base/html/list.files.html
 
 ```{r}
 fnFs <- sort(list.files(path_to_fastqs, pattern="_R1.fastq.gz", full.names=TRUE))[1:2]
@@ -112,7 +167,7 @@ sapply(strsplit(basename(fnFs), "_"), `[`, 2) |> head()
 sapply(strsplit(basename(fnFs), "_"), `[`, 3) |> head()
 ```
 
-## [**IV-Sequence Quality Check**]{style="color: steelblue;"}
+# Sequence Quality Check
 
 Function: plotQualityProfile :
 
@@ -358,4 +413,3 @@ write.table(seqtab_export,
             sep="\t",
             row.names = FALSE)
 ```
-

@@ -1,12 +1,14 @@
 ---
 title: "Part I- Data preprocessing : From Dada2 to Phyloseq"
 date: "August 2022"
-output: html_document
+output:
+  html_notebook:
+  html_document:
 author:
   - "Fabrice Armougom, MIO"
   - "Marc Garel, MIO"
 editor_options: 
-  chunk_output_type: console
+  chunk_output_type: inline
 ---
 
 ```{r}
@@ -50,35 +52,15 @@ physeq <- phyloseq(otu_table(asv_table, taxa_are_rows=FALSE),
 ```
 
 ## [**XV- Add the ASV sequences to your Phyloseq object & change ASV ID**]{style="color: steelblue;"}
- 
+
 ```{r}
 nucl <- Biostrings::DNAStringSet(asv_seq)
 physeq <- merge_phyloseq(physeq, nucl)
 ```
 
-### **See the final object for the alpha and beta analyses**
-
-```{r}
-#See Sequence object attached to Final1
-Final1
-```
-
-```{r}
-#See the change of ASV names 
-taxa_names(Final1)[1:2]
-
-```
-
-
 ## [**XIII- Phylogenetic Tree**]{style="color: steelblue;"}
 
 NB: This step can be skipped if you have some problems to perform it or to many ASVs.
-
-### **Get the ASV sequences**
-
-```{r}
-seqs <- dada2::getSequences(seqtab.nochim)
-```
 
 ### **Alignment by DECIPHER**
 
@@ -114,6 +96,3 @@ plot_bar(physeq, fill = "Class")
 
 plot_tree(physeq, color = "groupe", label.tips = "Family", ladderize = "left", justify = "left" , size = "Abundance")
 ```
-
-
-
