@@ -6,6 +6,8 @@
 /.vscode/
 /.quarto/
 /_site/
+/_freeze/
+/_extensions/
 /tmp/
 /outputs/
 /data/refdb/
