@@ -4,6 +4,7 @@ author: "Nicolas Henry"
 format:
   revealjs:
     slide-number: true
+    footer: "[{{< fa house >}}](/index.html)"
     theme: ../simple_nico.scss
 editor: visual
 ---
