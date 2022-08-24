@@ -3,20 +3,58 @@ project:
   render: 
     - "*.Rmd"
     - "*.qmd"
-    - "!practicals/PART_II-DADA2_ANF.Rmd"
-
+execute:
+  freeze: auto  # re-render only when source changes
 website:
   title: "ANF metabarcoding"
+  repo-url: https://github.com/nhenry50/ANF-metabarcoding
+  repo-actions: [edit, issue]
   navbar:
     left:
-      - href: index.qmd
-        text: Home
-      - about.qmd
+      - text: Home
+        href: index.qmd
+      - text: Day 2
+        menu:
+        - text: "Courses"
+        - text: "Analysing metabarcoding data with dada2"
+          href: courses/dada2.html
+        - text: "Practicals"
+        - text: "Preprocessing: dada2"
+          href: practicals/preprocessing_dada2.html
+        - text: "Preprocessing: phyloseq"
+          href: practicals/preprocessing_phyloseq.html
+      - text: Day 3
+        menu:
+        - text: "Practicals"
+        - text: "Alpha diversity"
+          href: practicals/alpha_diversity.html
+      - text: Day 4
+        menu:
+        - text: "Practicals"
+        - text: "Beta diversity"
+          href: practicals/beta_diversity.html
+      - text: About
+        href: about.qmd
+    right:
+      - icon: github
+        href: https://github.com/nhenry50/ANF-metabarcoding    
+  page-footer:
+    center: |
+      [![](/img/logo_abims.png){fig-alt="ABiMS" height=35px}](http://abims.sb-roscoff.fr/)
+      [![](/img/logo_beep.png){fig-alt="beep" height=40px}](https://www.umr-beep.fr/)
+      [![](/img/logo_ifb.svg){fig-alt="IFB" height=40px}](https://www.france-bioinformatique.fr/)
+      [![](/img/logo_cnrs.svg){fig-alt="CNRS" height=40px}](https://www.cnrs.fr//)
+      [![](/img/logo_ird.png){fig-alt="IRD" height=40px}](https://www.ird.fr/)
+      [![](/img/logo_mio.png){fig-alt="MIO" height=40px}](https://www.mio.osupytheas.fr/)
+      [![](/img/logo_marbec.jpeg){fig-alt="marbec" height=40px}](https://umr-marbec.fr/)
 
 format:
   html:
-    theme: cosmo
-    css: styles.css
+    number-sections: true
+    shift-heading-level-by: -1
+    theme: 
+     - lumen
+     - custom_site_style.scss
     toc: true
 
 editor: visual
