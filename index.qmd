@@ -1,25 +1,48 @@
 ---
-title: "Exploration de la Diversité Taxonomique des Ecosystèmes par Metabarcoding"
+title: "ANF Exploration de la Diversité Taxonomique des Ecosystèmes par Metabarcoding"
 ---
 
+## Welcome {.unnumbered}
 
-# Formation material
+blabla
 
-## Courses
+## Course program {.unnumbered}
 
 * Monday
-  - R initiation
-* Tuesday
-  - <a href="courses/dada2.html" target="_blank">Dada2 presentation</a>
-  - Phyloseq presentation
-* Wednesday
-* Thursday
-* Friday
-
-## Practicals
-
-* Tuesday
- - <a href="practicals/PART_I-DADA2_ANF.html" target="_blank">Dada2 practical</a>
-* Wednesday
-* Thursday
-* Friday
+    * 09h30: Participants arrival
+    * 12h30: {{< fa utensils >}}
+    * 14h00: R practical by Marc Garel + check technical issues
+    * 19h00: {{< fa utensils >}}
+* Tuesday:
+    * 08h30: Introduction to metabarcoding by Loïs Maignien
+    * 10h15: {{< fa mug-hot >}}
+    * 10h30: [Analysing metabarcoding data with dada2](courses/dada2.html) by Nicolas Henry
+    * 11h30: [Preprocessing: dada2](practicals/preprocessing_dada2.html) by Nicolas Henry
+    * 12h30: {{< fa utensils >}}
+    * 14h00: [Introduction to phyloseq](courses/phyloseq.html)
+    * 15h00: [Preprocessing: dada2](practicals/preprocessing_dada2.Rmd) and [Preprocessing: phyloseq](practicals/preprocessing_phyloseq.html) by Nicolas Henry with {{< fa mug-hot >}}
+    * 18h00: free time
+    * 19h00: {{< fa utensils >}}
+* Wednesday:
+    * 08h30: SAMBA by Cyril Noël from Ifremer
+    * 09h30: Course on alpha diversity 1/2 by ???
+    * 10h15: {{< fa mug-hot >}}
+    * 10h30: [Alpha diversity practical](practicals/alpha_diversity.html) by ???
+    * 12h30: {{< fa utensils >}}
+    * 14h00: Course on alpha diversity 2/2 by ???
+    * 15h00: [Alpha diversity practical](practicals/alpha_diversity.html) by ??? with {{< fa mug-hot >}}
+    * 18h00: free time
+    * 19h00: {{< fa utensils >}}
+* Thursday:
+    * 09h30: Course on beta diversity 1/2 by Jean-Christophe Auguet
+    * 10h15: {{< fa mug-hot >}}
+    * 10h30: [Beta diversity practical](practicals/beta_diversity.html) by Jean-Christophe Auguet
+    * 12h30: {{< fa utensils >}}
+    * 14h00: Course on beta diversity 2/2 by Jean-Christophe Auguet
+    * 15h00: [Beta diversity practical](practicals/beta_diversity.html) by Jean-Christophe Auguet with {{< fa mug-hot >}}
+    * 18h00: free time
+    * 19h00: {{< fa champagne-glasses >}} {{< fa utensils >}}
+* Friday:
+    * 09h30: À la carte with {{< fa mug-hot >}}
+    * 12h30: {{< fa utensils >}}
+    * 14h00: End of the course
