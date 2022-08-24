@@ -1,5 +1,5 @@
 ---
-title: "Part I- Data preprocessing : From Dada2 to Phyloseq"
+title: "Preprocessing : phyloseq"
 date: "August 2022"
 output:
   html_notebook:
@@ -11,47 +11,65 @@ editor_options:
   chunk_output_type: inline
 ---
 
+```{r include = FALSE}
+knitr::opts_chunk$set(message = FALSE,
+                      warnings = FALSE)
+```
+
 ```{r}
 library(phyloseq)
 ```
 
 ```{r}
-asv_table <- readRDS(here::here("outputs","dada2","asv_table","seqtab_nochim.rds"))
-taxonomy <- readRDS(here::here("outputs","dada2","asv_table","taxa.rds"))
-context <- read.table(here::here("data","context","mapfileFA.txt"),
+asv_table <- readRDS(here::here("outputs",
+                                "dada2",
+                                "asv_table",
+                                "seqtab_nochim.rds"))
+
+taxonomy <- readRDS(here::here("outputs",
+                               "dada2",
+                               "asv_table",
+                               "taxonomy.rds"))
+
+context <- read.table(here::here("data",
+                                 "context",
+                                 "mapfileFA.txt"),
                       header = TRUE,
                       row.names = 1)
 
-context
+head(context)
 ```
 
 ```{r}
 asv_seq <- colnames(asv_table)
 asv_id <- sapply(asv_seq,
-                 function(x) digest::digest(x,algo="sha1")) |> unname()
+                 function(x) digest::digest(x, algo = "sha1")) |> unname()
 row.names(taxonomy) <- colnames(asv_table) <- names(asv_seq) <- asv_id
 ```
 
-## [**XIV- Get a phyloseq object**]{style="color: steelblue;"}
+## Get a phyloseq object
 
-### **Mapfile**
+### Check sample file
 
-Must contain sample names identically as you defined it at the beginning of the TP
+Make sure sample names are the same as in the ASV table
 
 ```{r}
-#Check it, if necessary: 
-sample.names
+row.names(context)
+row.names(asv_table)
+
+setdiff(row.names(asv_table), row.names(context))
 ```
 
-### **Create the phyloseq object (OTU_table, Tax_table, tree)**
+### Assemble ASV table, taxonomy and contextual data
 
 ```{r}
-physeq <- phyloseq(otu_table(asv_table, taxa_are_rows=FALSE),
-                 tax_table(taxonomy),
+physeq <- phyloseq::phyloseq(
+  phyloseq::otu_table(asv_table, taxa_are_rows = FALSE),
+  phyloseq::tax_table(taxonomy),
                  sample_data(context))
 ```
 
-## [**XV- Add the ASV sequences to your Phyloseq object & change ASV ID**]{style="color: steelblue;"}
+## Add the ASV sequences to your Phyloseq object & change ASV ID
 
 ```{r}
 nucl <- Biostrings::DNAStringSet(asv_seq)
