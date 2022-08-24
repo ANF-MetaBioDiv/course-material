@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>ANF metabarcoding - Exploration de la Diversité Taxonomique des Ecosystèmes par Metabarcoding</title>
+<title>ANF metabarcoding - ANF Exploration de la Diversité Taxonomique des Ecosystèmes par Metabarcoding</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -34,6 +34,8 @@ ul.task-list{list-style: none;}
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
+<link href="site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -55,7 +57,6 @@ ul.task-list{list-style: none;}
 }</script>
 
 
-<link rel="stylesheet" href="styles.css">
 </head>
 
 <body class="nav-fixed">
@@ -75,8 +76,54 @@ ul.task-list{list-style: none;}
   <li class="nav-item">
     <a class="nav-link active" href="./index.html" aria-current="page">Home</a>
   </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-day-2" role="button" data-bs-toggle="dropdown" aria-expanded="false">Day 2</a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-day-2">    
+        <li class="dropdown-header">Courses</li>
+        <li>
+    <a class="dropdown-item" href="./courses/dada2.html">
+ <span class="dropdown-text">Analysing metabarcoding data with dada2</span></a>
+  </li>  
+        <li class="dropdown-header">Practicals</li>
+        <li>
+    <a class="dropdown-item" href="./practicals/preprocessing_dada2.html">
+ <span class="dropdown-text">Preprocessing: dada2</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./practicals/preprocessing_dada2.html">
+ <span class="dropdown-text">Preprocessing: phyloseq</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-day-3" role="button" data-bs-toggle="dropdown" aria-expanded="false">Day 3</a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-day-3">    
+        <li class="dropdown-header">Practicals</li>
+        <li>
+    <a class="dropdown-item" href="./practicals/alpha_diversity.html">
+ <span class="dropdown-text">Alpha diversity</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-day-4" role="button" data-bs-toggle="dropdown" aria-expanded="false">Day 4</a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-day-4">    
+        <li class="dropdown-header">Practicals</li>
+        <li>
+    <a class="dropdown-item" href="./practicals/beta_diversity.html">
+ <span class="dropdown-text">Beta diversity</span></a>
+  </li>  
+    </ul>
+  </li>
   <li class="nav-item">
     <a class="nav-link" href="./about.html">About</a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/nhenry50/ANF-metabarcoding"><i class="bi bi-github" role="img">
+</i> 
+ </a>
   </li>  
 </ul>
               <div id="quarto-search" class="" title="Search"></div>
@@ -93,20 +140,20 @@ ul.task-list{list-style: none;}
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#formation-material" id="toc-formation-material" class="nav-link active" data-scroll-target="#formation-material">Formation material</a>
-  <ul class="collapse">
-  <li><a href="#courses" id="toc-courses" class="nav-link" data-scroll-target="#courses">Courses</a></li>
-  <li><a href="#practicals" id="toc-practicals" class="nav-link" data-scroll-target="#practicals">Practicals</a></li>
-  </ul></li>
+  <li><a href="#welcome" id="toc-welcome" class="nav-link active" data-scroll-target="#welcome">Welcome</a></li>
+  <li><a href="#course-program" id="toc-course-program" class="nav-link" data-scroll-target="#course-program">Course program</a></li>
+  <li><a href="#organisation-committee-and-intervenants" id="toc-organisation-committee-and-intervenants" class="nav-link" data-scroll-target="#organisation-committee-and-intervenants"> <span class="header-section-number">1</span> Organisation committee and intervenants</a></li>
+  <li><a href="#sponsors" id="toc-sponsors" class="nav-link" data-scroll-target="#sponsors"> <span class="header-section-number">2</span> Sponsors</a></li>
+  <li><a href="#stuff-to-include" id="toc-stuff-to-include" class="nav-link" data-scroll-target="#stuff-to-include"> <span class="header-section-number">3</span> Stuff to include</a></li>
   </ul>
-</nav>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/nhenry50/ANF-metabarcoding/edit/main/index.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/nhenry50/ANF-metabarcoding/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Exploration de la Diversité Taxonomique des Ecosystèmes par Metabarcoding</h1>
+<h1 class="title">ANF Exploration de la Diversité Taxonomique des Ecosystèmes par Metabarcoding</h1>
 </div>
 
 
@@ -120,37 +167,86 @@ ul.task-list{list-style: none;}
 
 </header>
 
-<section id="formation-material" class="level1">
-<h1>Formation material</h1>
-<section id="courses" class="level2">
-<h2 class="anchored" data-anchor-id="courses">Courses</h2>
+<section id="welcome" class="level1 unnumbered">
+<h1 class="unnumbered">Welcome</h1>
+<p>blabla</p>
+</section>
+<section id="course-program" class="level1 unnumbered">
+<h1 class="unnumbered">Course program</h1>
 <ul>
 <li>Monday
 <ul>
-<li>R initiation</li>
+<li>09h30: Participants arrival</li>
+<li>12h30: <i class="fa-solid fa-utensils" aria-hidden="true"></i></li>
+<li>14h00: R practical by Marc Garel + check technical issues</li>
+<li>19h00: <i class="fa-solid fa-utensils" aria-hidden="true"></i></li>
 </ul></li>
-<li>Tuesday
+<li>Tuesday:
 <ul>
-<li><a href="courses/dada2.html" target="_blank">Dada2 presentation</a></li>
-<li>Phyloseq presentation</li>
+<li>08h30: Introduction to metabarcoding by Loïs Maignien</li>
+<li>09h30: <a href="courses/dada2.html">Analysing metabarcoding data with dada2</a> by Nicolas Henry</li>
+<li>10h15: <i class="fa-solid fa-mug-hot" aria-hidden="true"></i></li>
+<li>10h30: <a href="practicals/preprocessing_dada2.html">Preprocessing: dada2</a> by Nicolas Henry</li>
+<li>12h30: <i class="fa-solid fa-utensils" aria-hidden="true"></i></li>
+<li>14h00: <a href="courses/phyloseq.html">Introduction to phyloseq</a></li>
+<li>15h00: <a href="./practicals/preprocessing_dada2.html">Preprocessing: dada2</a> and <a href="practicals/preprocessing_phyloseq.html">Preprocessing: phyloseq</a> by Nicolas Henry with <i class="fa-solid fa-mug-hot" aria-hidden="true"></i></li>
+<li>18h00: free time</li>
+<li>19h00: <i class="fa-solid fa-utensils" aria-hidden="true"></i></li>
 </ul></li>
-<li>Wednesday</li>
-<li>Thursday</li>
-<li>Friday</li>
+<li>Wednesday:
+<ul>
+<li>08h30: SAMBA by Cyril Noël from Ifremer</li>
+<li>09h30: Course on alpha diversity 1/2 by ???</li>
+<li>10h15: <i class="fa-solid fa-mug-hot" aria-hidden="true"></i></li>
+<li>10h30: <a href="practicals/alpha_diversity.html">Alpha diversity pratical</a> by ???</li>
+<li>12h30: <i class="fa-solid fa-utensils" aria-hidden="true"></i></li>
+<li>14h00: Course on alpha diversity 2/2 by ???</li>
+<li>15h00: <a href="practicals/alpha_diversity.html">Alpha diversity pratical</a> by ??? with <i class="fa-solid fa-mug-hot" aria-hidden="true"></i></li>
+<li>18h00: free time</li>
+<li>19h00: <i class="fa-solid fa-utensils" aria-hidden="true"></i></li>
+</ul></li>
+<li>Thursday:
+<ul>
+<li>09h30: Course on beta diversity 1/2 by Jean-Christophe Auguet</li>
+<li>10h15: <i class="fa-solid fa-mug-hot" aria-hidden="true"></i></li>
+<li>10h30: <a href="practicals/beta_diversity.html">Beta diversity pratical</a> by Jean-Christophe Auguet</li>
+<li>12h30: <i class="fa-solid fa-utensils" aria-hidden="true"></i></li>
+<li>14h00: Course on beta diversity 2/2 by Jean-Christophe Auguet</li>
+<li>15h00: <a href="practicals/beta_diversity.html">Beta diversity pratical</a> by Jean-Christophe Auguet with <i class="fa-solid fa-mug-hot" aria-hidden="true"></i></li>
+<li>18h00: free time</li>
+<li>19h00: <i class="fa-solid fa-champagne-glasses" aria-hidden="true"></i> <i class="fa-solid fa-utensils" aria-hidden="true"></i></li>
+</ul></li>
+<li>Friday:
+<ul>
+<li>09h30: À la carte with <i class="fa-solid fa-mug-hot" aria-hidden="true"></i></li>
+<li>12h30: <i class="fa-solid fa-utensils" aria-hidden="true"></i></li>
+<li>14h00: End of the course</li>
+</ul></li>
 </ul>
 </section>
-<section id="practicals" class="level2">
-<h2 class="anchored" data-anchor-id="practicals">Practicals</h2>
-<ul>
-<li>Tuesday</li>
-<li><a href="practicals/PART_I-DADA2_ANF.html" target="_blank">Dada2 practical</a></li>
-<li>Wednesday</li>
-<li>Thursday</li>
-<li>Friday</li>
-</ul>
-
-
+<section id="organisation-committee-and-intervenants" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Organisation committee and intervenants</h1>
+<p>Nicolas Henry, ABIMS, Station Biologique de Roscoff</p>
+<p>Erwan Corre, ABIMS, Station Biologique de Roscoff</p>
+<p>Jean-Christophe Auguet, Marbec, Montpellier</p>
+<p>Lois Maignien, BEEP, Université de Brest</p>
+<p>Marc Garel, MIO, Marseille</p>
+<p>Fabrice Armougom, MIO, Marseille</p>
 </section>
+<section id="sponsors" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Sponsors</h1>
+<p>Plateforme OMICS, MIO, Marseille</p>
+<p>Société Française de Bio-Informatique</p>
+<p>Institut Français de Bioinformatique</p>
+<p>Thanks the French Institute of Bioinformatics – IFB CNRS UAR3601 – for providing life science data and tools, storage and computing resources. Partenaires</p>
+</section>
+<section id="stuff-to-include" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Stuff to include</h1>
+<p>En matière de prospectives scientifiques, le CNRS (INSU OA) et l’IRD ambitionnent de caractériser la biodiversité environnementale afin d’étudier l’impact du changement global sur les milieux et de l’anthropisation de la planète. Ces enjeux nécessitent l’acquisition de connaissances sur la biodiversité pour répondre aux grands défis planétaires (e.g.&nbsp;modéliser, anticiper, prévenir les catastrophes écologiques), aux objectifs de développement durable, et contribuer aux grandes transitions de la société dans un contexte de changement climatique.</p>
+<p>Le metabarcoding est aujourd’hui une des approches incontournable dans la description des écosystèmes pour répondre à ces enjeux scientifiques; elle offre une caractérisation exhaustive de la diversité taxonomique (composition en espèces et abondances) d’un écosystème via le séquençage massif de marqueurs d’intérêts (e.g.&nbsp;ARN ribosomaux 16S, 18S, gène COX, …) et le post-traitement bio-informatique des données générées.</p>
+<p>L’Action Nationale de Formation CNRS-INSU MetaBioDiv, portée par l’Institut Méditerranéen d’Océanologie (Armougom F., MIO) et la Délégation Régionale Côte d’Azur CNRS (DR20, Pierrette Finsac), propose à la communauté scientifique une formation sur la caractérisation de la biodiversité taxonomique d’écosystèmes (procaryotes et micro-eucaryotes) par le prisme du séquençage haut-débit Illumina (Miseq) et du traitement bio-informatique associé (outils R sous Rstudio).</p>
+
+
 </section>
 
 </main> <!-- /main -->

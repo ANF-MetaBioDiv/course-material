@@ -118,7 +118,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 }</script>
 
 
-<link rel="stylesheet" href="styles.css">
 </head>
 
 <body class="nav-fixed">
@@ -138,8 +137,54 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li class="nav-item">
     <a class="nav-link" href="./index.html">Home</a>
   </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-day-2" role="button" data-bs-toggle="dropdown" aria-expanded="false">Day 2</a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-day-2">    
+        <li class="dropdown-header">Courses</li>
+        <li>
+    <a class="dropdown-item" href="./courses/dada2.html">
+ <span class="dropdown-text">Analysing metabarcoding data with dada2</span></a>
+  </li>  
+        <li class="dropdown-header">Practicals</li>
+        <li>
+    <a class="dropdown-item" href="./practicals/preprocessing_dada2.html">
+ <span class="dropdown-text">Preprocessing: dada2</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./practicals/preprocessing_dada2.html">
+ <span class="dropdown-text">Preprocessing: phyloseq</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-day-3" role="button" data-bs-toggle="dropdown" aria-expanded="false">Day 3</a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-day-3">    
+        <li class="dropdown-header">Practicals</li>
+        <li>
+    <a class="dropdown-item" href="./practicals/alpha_diversity.html">
+ <span class="dropdown-text">Alpha diversity</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-day-4" role="button" data-bs-toggle="dropdown" aria-expanded="false">Day 4</a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-day-4">    
+        <li class="dropdown-header">Practicals</li>
+        <li>
+    <a class="dropdown-item" href="./practicals/beta_diversity.html">
+ <span class="dropdown-text">Beta diversity</span></a>
+  </li>  
+    </ul>
+  </li>
   <li class="nav-item">
     <a class="nav-link active" href="./about.html" aria-current="page">About</a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/nhenry50/ANF-metabarcoding"><i class="bi bi-github" role="img">
+</i> 
+ </a>
   </li>  
 </ul>
               <div id="quarto-search" class="" title="Search"></div>
@@ -152,7 +197,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#libraries-used-in-practicals" id="toc-libraries-used-in-practicals" class="nav-link active" data-scroll-target="#libraries-used-in-practicals"> <span class="header-section-number">1</span> Libraries used in practicals</a></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/nhenry50/ANF-metabarcoding/edit/main/about.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/nhenry50/ANF-metabarcoding/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -173,15 +224,36 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<p>About this site</p>
+<section id="libraries-used-in-practicals" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Libraries used in practicals</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>renv<span class="sc">::</span><span class="fu">dependencies</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">pull</span>(Package) <span class="sc">|&gt;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">unique</span>() <span class="sc">|&gt;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sort</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 2</code></pre>
+<pre><code>Finding R package dependencies ... [12/16] [13/16] [14/16] [15/16] [16/16] Done!</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "ape"               "base"              "betapart"         
+ [4] "Biostrings"        "ComplexHeatmap"    "corrplot"         
+ [7] "dada2"             "DECIPHER"          "devtools"         
+[10] "digest"            "dplyr"             "ecodist"          
+[13] "fpc"               "FSA"               "ggplot2"          
+[16] "ggpmisc"           "ggpubr"            "ggrepel"          
+[19] "grid"              "gridExtra"         "GUniFrac"         
+[22] "here"              "microbiome"        "microbiomeMarker" 
+[25] "MicrobiotaProcess" "modEvA"            "parallel"         
+[28] "patchwork"         "PCAtools"          "phangorn"         
+[31] "phyloseq"          "plotly"            "plyr"             
+[34] "RColorBrewer"      "renv"              "rmarkdown"        
+[37] "stats"             "treemap"           "treemapify"       
+[40] "vegan"             "zCompositions"    </code></pre>
 </div>
 </div>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

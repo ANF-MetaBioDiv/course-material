@@ -1,23 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://nhenry50.github.io/ANF-metabarcoding/practicals/PART_I-DADA2_ANF.html</loc>
-    <lastmod>2022-08-18T09:45:42.755Z</lastmod>
+    <loc>https://nhenry50.github.io/ANF-metabarcoding/practicals/alpha_diversity.html</loc>
+    <lastmod>2022-08-24T08:21:17.537Z</lastmod>
+  </url>
+  <url>
+    <loc>https://nhenry50.github.io/ANF-metabarcoding/practicals/beta_diversity.html</loc>
+    <lastmod>2022-08-24T08:21:19.673Z</lastmod>
+  </url>
+  <url>
+    <loc>https://nhenry50.github.io/ANF-metabarcoding/practicals/preprocessing_dada2.html</loc>
+    <lastmod>2022-08-24T08:21:20.457Z</lastmod>
+  </url>
+  <url>
+    <loc>https://nhenry50.github.io/ANF-metabarcoding/practicals/preprocessing_phyloseq.html</loc>
+    <lastmod>2022-08-24T08:21:21.025Z</lastmod>
   </url>
   <url>
     <loc>https://nhenry50.github.io/ANF-metabarcoding/about.html</loc>
-    <lastmod>2022-08-18T09:45:45.743Z</lastmod>
+    <lastmod>2022-08-24T08:21:21.477Z</lastmod>
   </url>
   <url>
     <loc>https://nhenry50.github.io/ANF-metabarcoding/courses/dada2.html</loc>
-    <lastmod>2022-08-18T09:45:46.763Z</lastmod>
+    <lastmod>2022-08-24T08:21:21.921Z</lastmod>
   </url>
   <url>
     <loc>https://nhenry50.github.io/ANF-metabarcoding/courses/phyloseq.html</loc>
-    <lastmod>2022-08-18T09:45:47.211Z</lastmod>
+    <lastmod>2022-08-24T08:21:22.193Z</lastmod>
   </url>
   <url>
     <loc>https://nhenry50.github.io/ANF-metabarcoding/index.html</loc>
-    <lastmod>2022-08-18T09:45:47.567Z</lastmod>
+    <lastmod>2022-08-24T08:21:22.545Z</lastmod>
   </url>
 </urlset>
