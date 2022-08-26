@@ -307,7 +307,8 @@ S4B 0.099 1.087 0.349 0.137 8.689 3.129    0 18.8515 37.4542 26.9415</code></pre
 </div>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">row.names</span>(asv_table)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "S11B" "S1B" </code></pre>
+<pre><code> [1] "S11B" "S1B"  "S2B"  "S2S"  "S3B"  "S3S"  "S4B"  "S4S"  "S5B"  "S5S" 
+[11] "S6B"  "S6S"  "S7B"  "S7S"  "S8B"  "S8S"  "S9B"  "S9S" </code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">setdiff</span>(<span class="fu">row.names</span>(asv_table), <span class="fu">row.names</span>(context))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -338,56 +339,56 @@ S4B 0.099 1.087 0.349 0.137 8.689 3.129    0 18.8515 37.4542 26.9415</code></pre
 <section id="alignment-by-decipher" class="level2" data-number="3.1">
 <h2 data-number="3.1" class="anchored" data-anchor-id="alignment-by-decipher"><span class="header-section-number">3.1</span> <strong>Alignment by DECIPHER</strong></h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>aln <span class="ot">&lt;-</span> DECIPHER<span class="sc">::</span><span class="fu">AlignSeqs</span>(<span class="fu">refseq</span>(physeq), <span class="at">anchor=</span><span class="cn">NA</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>aln <span class="ot">&lt;-</span> DECIPHER<span class="sc">::</span><span class="fu">AlignSeqs</span>(<span class="fu">refseq</span>(physeq), <span class="at">anchor =</span> <span class="cn">NA</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Determining distance matrix based on shared 8-mers:
 ================================================================================
 
-Time difference of 0.05 secs
+Time difference of 0.5 secs
 
 Clustering into groups by similarity:
 ================================================================================
 
-Time difference of 0.01 secs
+Time difference of 0.03 secs
 
 Aligning Sequences:
 ================================================================================
 
-Time difference of 0.56 secs
+Time difference of 2.09 secs
 
 Iteration 1 of 2:
 
 Determining distance matrix based on alignment:
 ================================================================================
 
-Time difference of 0 secs
+Time difference of 0.04 secs
 
 Reclustering into groups by similarity:
 ================================================================================
 
-Time difference of 0.01 secs
+Time difference of 0.04 secs
 
 Realigning Sequences:
 ================================================================================
 
-Time difference of 0.22 secs
+Time difference of 0.94 secs
 
 Iteration 2 of 2:
 
 Determining distance matrix based on alignment:
 ================================================================================
 
-Time difference of 0 secs
+Time difference of 0.04 secs
 
 Reclustering into groups by similarity:
 ================================================================================
 
-Time difference of 0.01 secs
+Time difference of 0.04 secs
 
 Realigning Sequences:
 ================================================================================
 
-Time difference of 0.11 secs</code></pre>
+Time difference of 0.22 secs</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">#See alignment</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>DECIPHER<span class="sc">::</span><span class="fu">BrowseSeqs</span>(aln, <span class="at">highlight=</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>

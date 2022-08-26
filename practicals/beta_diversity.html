@@ -279,9 +279,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#rda-plot" id="toc-rda-plot" class="nav-link" data-scroll-target="#rda-plot"> <span class="header-section-number">8.1.4</span> RDA plot</a></li>
   </ul></li>
   <li><a href="#multiple-regression-on-dissimilarity-matrices-mrm" id="toc-multiple-regression-on-dissimilarity-matrices-mrm" class="nav-link" data-scroll-target="#multiple-regression-on-dissimilarity-matrices-mrm"> <span class="header-section-number">8.2</span> Multiple Regression on dissimilarity Matrices (MRM)</a></li>
-  <li><a href="#linear-discriminant-analysis-effect-size-lefse" id="toc-linear-discriminant-analysis-effect-size-lefse" class="nav-link" data-scroll-target="#linear-discriminant-analysis-effect-size-lefse"> <span class="header-section-number">8.3</span> Linear discriminant analysis Effect Size (LEFse)</a></li>
-  <li><a href="#differential-analysis-of-compositions-of-microbiomes-with-bias-correction-ancom-bc" id="toc-differential-analysis-of-compositions-of-microbiomes-with-bias-correction-ancom-bc" class="nav-link" data-scroll-target="#differential-analysis-of-compositions-of-microbiomes-with-bias-correction-ancom-bc"> <span class="header-section-number">8.4</span> Differential analysis of compositions of microbiomes with bias correction (ANCOM-BC)</a></li>
-  <li><a href="#anova-like-differential-expression-aldex2" id="toc-anova-like-differential-expression-aldex2" class="nav-link" data-scroll-target="#anova-like-differential-expression-aldex2"> <span class="header-section-number">8.5</span> ANOVA-like differential expression (ALDEx2)</a></li>
+  </ul></li>
+  <li><a href="#diffential-abundance-analysis-daa" id="toc-diffential-abundance-analysis-daa" class="nav-link" data-scroll-target="#diffential-abundance-analysis-daa"> <span class="header-section-number">9</span> Diffential abundance analysis (DAA)</a>
+  <ul class="collapse">
+  <li><a href="#linear-discriminant-analysis-effect-size-lefse" id="toc-linear-discriminant-analysis-effect-size-lefse" class="nav-link" data-scroll-target="#linear-discriminant-analysis-effect-size-lefse"> <span class="header-section-number">9.1</span> Linear discriminant analysis Effect Size (LEFse)</a></li>
+  <li><a href="#differential-analysis-of-compositions-of-microbiomes-with-bias-correction-ancom-bc" id="toc-differential-analysis-of-compositions-of-microbiomes-with-bias-correction-ancom-bc" class="nav-link" data-scroll-target="#differential-analysis-of-compositions-of-microbiomes-with-bias-correction-ancom-bc"> <span class="header-section-number">9.2</span> Differential analysis of compositions of microbiomes with bias correction (ANCOM-BC)</a></li>
+  <li><a href="#anova-like-differential-expression-aldex2" id="toc-anova-like-differential-expression-aldex2" class="nav-link" data-scroll-target="#anova-like-differential-expression-aldex2"> <span class="header-section-number">9.3</span> ANOVA-like differential expression (ALDEx2)</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/nhenry50/ANF-metabarcoding/edit/main/practicals/beta_diversity.Rmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/nhenry50/ANF-metabarcoding/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
@@ -2190,7 +2193,11 @@ Unexplained                                          0.634</code></pre>
 </div>
 <p>Using multiple regression on distance matrices (MRM), spatial and environmental variables proved significant predictors of beta diversity and together explained 36.7 % of variation in dissimilarity of microbial communities. Variance partitioning was subsequently used to partition the variation into purely spatial, purely environmental and spatially-structured environmental components. With 15,4%, the amount of variation in dissimilarity explained by the purely spatial component was higher than the variation explained by the environmental component, indicating that dispersal is an important process shaping our communities.</p>
 <p>Similarly to indirect gradient analyses, many different types of direct gradient analysis are available outthere. In the following graph, we offer suggestions of some of the appropriate choices based on data input structure and expected relationships among variables.</p>
-<p><img src="../img/Direct_gradient_analysis_decision.png" class="img-fluid"> # <span style="color: steelblue;"> Diffential abundance analysis (DAA)</span></p>
+<p><img src="../img/Direct_gradient_analysis_decision.png" class="img-fluid"></p>
+</section>
+</section>
+<section id="diffential-abundance-analysis-daa" class="level1" data-number="9">
+<h1 data-number="9"><span class="header-section-number">9</span> Diffential abundance analysis (DAA)</h1>
 <p>The goal of differential abundance testing is to identify specific taxa associated with metadata variables of interest. This is a difficult task. It is also one of the more controversial areas in microbiome data analysis as illustrated in this <a href="https://arxiv.org/abs/2104.07266">preprint</a>. This is related to concerns that normalization and testing approaches have generally failed to control false discovery rates. For more details see these papers <a href="https://www.biorxiv.org/content/10.1101/559831v1">here</a> and <a href="https://www.nature.com/articles/s41467-019-10656-5">here</a>.</p>
 <p>There are many tools to perform DAA. The most popular tools, without going into evaluating whether or not they perform well for this task, are:<br>
 -<a href="https://bioconductor.org/packages/release/bioc/html/ALDEx2.html">ALDEx2</a><br>
@@ -2208,9 +2215,8 @@ Unexplained                                          0.634</code></pre>
 -<a href="https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/wilcox.test">Wilcoxon test</a><br>
 </p>
 <p>Nearing et al.&nbsp;(<a href="https://www.nature.com/articles/s41467-022-28034-z">2022</a>) compared all these listed methods across 38 different datasets and showed that ALDEx2 and ANCOM-BC produce the most consistent results across studies. Because different methods use different approaches (parametric vs non-parametric, different normalization techniques, assumptions etc.), results can differ between methods.Therefore, it is highly recommended to pick several methods to get an idea about how robust and potentially reproducible your findings are depending on the method. Here, we will apply 3 methods that are currently used in microbial ecology or that can be recommended based on recent literature (ANCOM-BC, ALDEx2 and LEFse) and we will compare the results between them. For this, we will use the recent <strong>microbiome_marker</strong> package.</p>
-</section>
-<section id="linear-discriminant-analysis-effect-size-lefse" class="level2" data-number="8.3">
-<h2 data-number="8.3" class="anchored" data-anchor-id="linear-discriminant-analysis-effect-size-lefse"><span class="header-section-number">8.3</span> Linear discriminant analysis Effect Size (LEFse)</h2>
+<section id="linear-discriminant-analysis-effect-size-lefse" class="level2" data-number="9.1">
+<h2 data-number="9.1" class="anchored" data-anchor-id="linear-discriminant-analysis-effect-size-lefse"><span class="header-section-number">9.1</span> Linear discriminant analysis Effect Size (LEFse)</h2>
 <p>LEFSE has been developped by Segata et al.&nbsp;(<a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3218848/">2011</a>). LEFse first use the non-parametric factorial Kruskal-Wallis (KW) sum-rank test to detect features with significant differential abundance with respect to the class of interest; biological consistency is subsequently investigated using a set of pairwise tests among subclasses using the (unpaired) Wilcoxon rank-sum test. As a last step, LEfSe uses LDA to estimate the effect size of each differentially abundant features.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb138"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb138-1"><a href="#cb138-1" aria-hidden="true" tabindex="-1"></a><span class="co">#LEFSE</span></span>
@@ -2248,8 +2254,8 @@ marker12   ASV27        South 4.371920 0.0008112059 0.0008112059</code></pre>
 </div>
 <p>LEFse identifies 12 biomarkers and among them ASV 7, 11 and 12 that we already identifies ealier with other methods.</p>
 </section>
-<section id="differential-analysis-of-compositions-of-microbiomes-with-bias-correction-ancom-bc" class="level2" data-number="8.4">
-<h2 data-number="8.4" class="anchored" data-anchor-id="differential-analysis-of-compositions-of-microbiomes-with-bias-correction-ancom-bc"><span class="header-section-number">8.4</span> Differential analysis of compositions of microbiomes with bias correction (ANCOM-BC)</h2>
+<section id="differential-analysis-of-compositions-of-microbiomes-with-bias-correction-ancom-bc" class="level2" data-number="9.2">
+<h2 data-number="9.2" class="anchored" data-anchor-id="differential-analysis-of-compositions-of-microbiomes-with-bias-correction-ancom-bc"><span class="header-section-number">9.2</span> Differential analysis of compositions of microbiomes with bias correction (ANCOM-BC)</h2>
 <p>The ANCOM-BC <a href="https://www.nature.com/articles/s41467-020-17041-7">methodology</a> assumes that the observed sample is an unknown fraction of a unit volume of the ecosystem, and the sampling fraction varies from sample to sample. ANCOM-BC accounts for sampling fraction by introducing a sample-specific offset term in a linear regression framework, that is estimated from the observed data. The offset term serves as the bias correction, and the linear regression framework in log scale is analogous to log-ratio transformation to deal with the compositionality of microbiome data. Furthermore, this method provides p-values and confidence intervals for each taxon. It also controls the FDR and it is computationally simple to implement.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb141"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb141-1"><a href="#cb141-1" aria-hidden="true" tabindex="-1"></a><span class="co">#ancomBC</span></span>
@@ -2282,8 +2288,8 @@ marker10   ASV49        North -4.680720 2.858686e-06 7.504051e-05</code></pre>
 </div>
 <p>ANCOM-BC identifies 10 biomarkers and all in common with the results of the LEFse analysis.</p>
 </section>
-<section id="anova-like-differential-expression-aldex2" class="level2" data-number="8.5">
-<h2 data-number="8.5" class="anchored" data-anchor-id="anova-like-differential-expression-aldex2"><span class="header-section-number">8.5</span> ANOVA-like differential expression (ALDEx2)</h2>
+<section id="anova-like-differential-expression-aldex2" class="level2" data-number="9.3">
+<h2 data-number="9.3" class="anchored" data-anchor-id="anova-like-differential-expression-aldex2"><span class="header-section-number">9.3</span> ANOVA-like differential expression (ALDEx2)</h2>
 <p>ALDEx2 estimates technical variation within each sample per taxon by utilizing the Dirichlet distribution. It furthermore applies the centered-log-ratio transformation (or closely related log-ratio transforms). Depending on the experimental setup, it will perform a two sample Welch’s T-test and Wilcoxon-test or a one-way ANOVA and Kruskal-Wallis-test. The Benjamini-Hochberg procedure is applied in any case to correct for multiple testing.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb144"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb144-1"><a href="#cb144-1" aria-hidden="true" tabindex="-1"></a>mm_aldex <span class="ot">&lt;-</span> microbiomeMarker<span class="sc">::</span><span class="fu">run_aldex</span>(physeq, <span class="at">group =</span> <span class="st">"Geo"</span>,</span>

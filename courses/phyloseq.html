@@ -23,6 +23,70 @@
     div.column{display: inline-block; vertical-align: top; width: 50%;}
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto.css" id="theme">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -323,8 +387,1352 @@
   <p class="author">Nicolas Henry</p>
 </section>
 
-<section class="slide level2">
+<section id="asv-table" class="slide level2">
+<h2>ASV table</h2>
+<div class="cell">
+<div class="cell-output-display">
+<table>
+<colgroup>
+<col style="width: 35%">
+<col style="width: 4%">
+<col style="width: 3%">
+<col style="width: 3%">
+<col style="width: 3%">
+<col style="width: 3%">
+<col style="width: 3%">
+<col style="width: 3%">
+<col style="width: 3%">
+<col style="width: 3%">
+<col style="width: 3%">
+<col style="width: 3%">
+<col style="width: 3%">
+<col style="width: 3%">
+<col style="width: 3%">
+<col style="width: 3%">
+<col style="width: 3%">
+<col style="width: 3%">
+<col style="width: 3%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">S11B</th>
+<th style="text-align: right;">S1B</th>
+<th style="text-align: right;">S2B</th>
+<th style="text-align: right;">S2S</th>
+<th style="text-align: right;">S3B</th>
+<th style="text-align: right;">S3S</th>
+<th style="text-align: right;">S4B</th>
+<th style="text-align: right;">S4S</th>
+<th style="text-align: right;">S5B</th>
+<th style="text-align: right;">S5S</th>
+<th style="text-align: right;">S6B</th>
+<th style="text-align: right;">S6S</th>
+<th style="text-align: right;">S7B</th>
+<th style="text-align: right;">S7S</th>
+<th style="text-align: right;">S8B</th>
+<th style="text-align: right;">S8S</th>
+<th style="text-align: right;">S9B</th>
+<th style="text-align: right;">S9S</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">8e57b5813bc7e9f8e856bee05e4dfc9461d3ab0d</td>
+<td style="text-align: right;">101</td>
+<td style="text-align: right;">52</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">97</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: right;">72</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">63</td>
+<td style="text-align: right;">160</td>
+<td style="text-align: right;">161</td>
+<td style="text-align: right;">138</td>
+<td style="text-align: right;">62</td>
+<td style="text-align: right;">41</td>
+<td style="text-align: right;">70</td>
+<td style="text-align: right;">47</td>
+<td style="text-align: right;">59</td>
+<td style="text-align: right;">60</td>
+<td style="text-align: right;">78</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">75ca2ab3b10206afb2a3fec2fa754eed9c74a10f</td>
+<td style="text-align: right;">93</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">43</td>
+<td style="text-align: right;">71</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">38</td>
+<td style="text-align: right;">32</td>
+<td style="text-align: right;">49</td>
+<td style="text-align: right;">31</td>
+<td style="text-align: right;">49</td>
+<td style="text-align: right;">34</td>
+<td style="text-align: right;">46</td>
+<td style="text-align: right;">44</td>
+<td style="text-align: right;">58</td>
+<td style="text-align: right;">75</td>
+<td style="text-align: right;">45</td>
+<td style="text-align: right;">57</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">7636c4b6a068bda08f8403aa30257c8bb0e600a1</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">66</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">68</td>
+<td style="text-align: right;">236</td>
+<td style="text-align: right;">86</td>
+<td style="text-align: right;">32</td>
+<td style="text-align: right;">46</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">82</td>
+<td style="text-align: right;">56</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">da30b71ca1d8c9535e53e7625851ed01643cecab</td>
+<td style="text-align: right;">74</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">93</td>
+<td style="text-align: right;">42</td>
+<td style="text-align: right;">36</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">55</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">67</td>
+<td style="text-align: right;">29</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: right;">71</td>
+<td style="text-align: right;">67</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">9afe9ffe57ea2823eeac848b4298d427a7c6f3d2</td>
+<td style="text-align: right;">61</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">23</td>
+<td style="text-align: right;">26</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: right;">63</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">62</td>
+<td style="text-align: right;">84</td>
+<td style="text-align: right;">60</td>
+<td style="text-align: right;">70</td>
+<td style="text-align: right;">49</td>
+<td style="text-align: right;">14</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ab1fe7bea9d0c4e38d145e8b804f46ec19d91a75</td>
+<td style="text-align: right;">44</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">53</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">63</td>
+<td style="text-align: right;">45</td>
+<td style="text-align: right;">23</td>
+<td style="text-align: right;">63</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">47</td>
+<td style="text-align: right;">49</td>
+<td style="text-align: right;">54</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">054cb44ce6443de3df2b08f84d9a4476ed68bd10</td>
+<td style="text-align: right;">27</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">53</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">46</td>
+<td style="text-align: right;">57</td>
+<td style="text-align: right;">61</td>
+<td style="text-align: right;">28</td>
+<td style="text-align: right;">59</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">54</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1de36a7cc825dfa5d6ff68ca3c90c14568a3c17b</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: right;">32</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">42</td>
+<td style="text-align: right;">41</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">37</td>
+<td style="text-align: right;">85</td>
+<td style="text-align: right;">58</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">46</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">43</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">99989ba2a095c5f9ec9c1ee5b7ab39c9d135ead8</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">47</td>
+<td style="text-align: right;">49</td>
+<td style="text-align: right;">34</td>
+<td style="text-align: right;">60</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">26</td>
+<td style="text-align: right;">41</td>
+<td style="text-align: right;">37</td>
+<td style="text-align: right;">41</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">41</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">9ae12a481d70e09f45bff758cb0cfbef14e12571</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">47</td>
+<td style="text-align: right;">52</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">64</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">130</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">54</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="information-about-one-asv" class="slide level2">
+<h2>Information about one ASV</h2>
+<ul>
+<li>Taxonomy</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>taxonomy[<span class="dv">1</span>,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<table>
+<colgroup>
+<col style="width: 29%">
+<col style="width: 6%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 11%">
+<col style="width: 9%">
+<col style="width: 15%">
+<col style="width: 5%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: left;">Kingdom</th>
+<th style="text-align: left;">Phylum</th>
+<th style="text-align: left;">Class</th>
+<th style="text-align: left;">Order</th>
+<th style="text-align: left;">Family</th>
+<th style="text-align: left;">Genus</th>
+<th style="text-align: left;">Species</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">8e57b5813bc7e9f8e856bee05e4dfc9461d3ab0d</td>
+<td style="text-align: left;">Bacteria</td>
+<td style="text-align: left;">Cyanobacteria</td>
+<td style="text-align: left;">Cyanobacteriia</td>
+<td style="text-align: left;">Synechococcales</td>
+<td style="text-align: left;">Cyanobiaceae</td>
+<td style="text-align: left;">Synechococcus CC9902</td>
+<td style="text-align: left;">NA</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<ul>
+<li>Sequence</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>asv_seq[[<span class="st">"8e57b5813bc7e9f8e856bee05e4dfc9461d3ab0d"</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>406-letter DNAString object
+seq: TGGGGAATTTTCCGCAATGGGCGAAAGCCTGACGGA...TGACGCTCATGGACGAAAGCCAGGGGAGCGAAAGGG</code></pre>
+</div>
+</div>
+</section>
+<section id="information-about-the-samples" class="slide level2">
+<h2>Information about the samples</h2>
+<div class="cell">
+<div class="cell-output-display">
+<table style="width:100%;">
+<colgroup>
+<col style="width: 2%">
+<col style="width: 4%">
+<col style="width: 8%">
+<col style="width: 4%">
+<col style="width: 3%">
+<col style="width: 5%">
+<col style="width: 4%">
+<col style="width: 6%">
+<col style="width: 5%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 5%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: left;">Geo</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">groupe</th>
+<th style="text-align: right;">Pres</th>
+<th style="text-align: right;">PicoEuk</th>
+<th style="text-align: right;">Synec</th>
+<th style="text-align: right;">Prochloro</th>
+<th style="text-align: right;">NanoEuk</th>
+<th style="text-align: right;">Crypto</th>
+<th style="text-align: right;">SiOH4</th>
+<th style="text-align: right;">NO2</th>
+<th style="text-align: right;">NO3</th>
+<th style="text-align: right;">NH4</th>
+<th style="text-align: right;">PO4</th>
+<th style="text-align: right;">NT</th>
+<th style="text-align: right;">PT</th>
+<th style="text-align: right;">Chla</th>
+<th style="text-align: right;">T</th>
+<th style="text-align: right;">S</th>
+<th style="text-align: right;">Sigma_t</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">S1B</td>
+<td style="text-align: left;">North</td>
+<td style="text-align: left;">North1B</td>
+<td style="text-align: left;">NBF</td>
+<td style="text-align: right;">52</td>
+<td style="text-align: right;">660</td>
+<td style="text-align: right;">32195</td>
+<td style="text-align: right;">10675</td>
+<td style="text-align: right;">955</td>
+<td style="text-align: right;">115</td>
+<td style="text-align: right;">1.813</td>
+<td style="text-align: right;">0.256</td>
+<td style="text-align: right;">0.889</td>
+<td style="text-align: right;">0.324</td>
+<td style="text-align: right;">0.132</td>
+<td style="text-align: right;">9.946</td>
+<td style="text-align: right;">3.565</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">22.7338</td>
+<td style="text-align: right;">37.6204</td>
+<td style="text-align: right;">26.0046</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">S2B</td>
+<td style="text-align: left;">North</td>
+<td style="text-align: left;">North2B</td>
+<td style="text-align: left;">NBF</td>
+<td style="text-align: right;">59</td>
+<td style="text-align: right;">890</td>
+<td style="text-align: right;">25480</td>
+<td style="text-align: right;">16595</td>
+<td style="text-align: right;">670</td>
+<td style="text-align: right;">395</td>
+<td style="text-align: right;">2.592</td>
+<td style="text-align: right;">0.105</td>
+<td style="text-align: right;">1.125</td>
+<td style="text-align: right;">0.328</td>
+<td style="text-align: right;">0.067</td>
+<td style="text-align: right;">9.378</td>
+<td style="text-align: right;">3.391</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">22.6824</td>
+<td style="text-align: right;">37.6627</td>
+<td style="text-align: right;">26.0521</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">S2S</td>
+<td style="text-align: left;">North</td>
+<td style="text-align: left;">North2S</td>
+<td style="text-align: left;">NBS</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">890</td>
+<td style="text-align: right;">25480</td>
+<td style="text-align: right;">16595</td>
+<td style="text-align: right;">670</td>
+<td style="text-align: right;">395</td>
+<td style="text-align: right;">3.381</td>
+<td style="text-align: right;">0.231</td>
+<td style="text-align: right;">0.706</td>
+<td style="text-align: right;">0.450</td>
+<td style="text-align: right;">0.109</td>
+<td style="text-align: right;">8.817</td>
+<td style="text-align: right;">3.345</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">22.6854</td>
+<td style="text-align: right;">37.6176</td>
+<td style="text-align: right;">26.0137</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">S3B</td>
+<td style="text-align: left;">North</td>
+<td style="text-align: left;">North3B</td>
+<td style="text-align: left;">NBF</td>
+<td style="text-align: right;">74</td>
+<td style="text-align: right;">835</td>
+<td style="text-align: right;">13340</td>
+<td style="text-align: right;">25115</td>
+<td style="text-align: right;">1115</td>
+<td style="text-align: right;">165</td>
+<td style="text-align: right;">1.438</td>
+<td style="text-align: right;">0.057</td>
+<td style="text-align: right;">1.159</td>
+<td style="text-align: right;">0.369</td>
+<td style="text-align: right;">0.174</td>
+<td style="text-align: right;">8.989</td>
+<td style="text-align: right;">2.568</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">21.5296</td>
+<td style="text-align: right;">37.5549</td>
+<td style="text-align: right;">26.2987</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">S3S</td>
+<td style="text-align: left;">North</td>
+<td style="text-align: left;">North3S</td>
+<td style="text-align: left;">NBS</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">715</td>
+<td style="text-align: right;">26725</td>
+<td style="text-align: right;">16860</td>
+<td style="text-align: right;">890</td>
+<td style="text-align: right;">200</td>
+<td style="text-align: right;">1.656</td>
+<td style="text-align: right;">0.098</td>
+<td style="text-align: right;">0.794</td>
+<td style="text-align: right;">0.367</td>
+<td style="text-align: right;">0.095</td>
+<td style="text-align: right;">7.847</td>
+<td style="text-align: right;">2.520</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">22.5610</td>
+<td style="text-align: right;">37.5960</td>
+<td style="text-align: right;">26.0332</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">S4B</td>
+<td style="text-align: left;">North</td>
+<td style="text-align: left;">North4B</td>
+<td style="text-align: left;">NBF</td>
+<td style="text-align: right;">78</td>
+<td style="text-align: right;">2220</td>
+<td style="text-align: right;">3130</td>
+<td style="text-align: right;">29835</td>
+<td style="text-align: right;">2120</td>
+<td style="text-align: right;">235</td>
+<td style="text-align: right;">2.457</td>
+<td style="text-align: right;">0.099</td>
+<td style="text-align: right;">1.087</td>
+<td style="text-align: right;">0.349</td>
+<td style="text-align: right;">0.137</td>
+<td style="text-align: right;">8.689</td>
+<td style="text-align: right;">3.129</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">18.8515</td>
+<td style="text-align: right;">37.4542</td>
+<td style="text-align: right;">26.9415</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">S4S</td>
+<td style="text-align: left;">North</td>
+<td style="text-align: left;">North4S</td>
+<td style="text-align: left;">NBS</td>
+<td style="text-align: right;">78</td>
+<td style="text-align: right;">2220</td>
+<td style="text-align: right;">3130</td>
+<td style="text-align: right;">29835</td>
+<td style="text-align: right;">2120</td>
+<td style="text-align: right;">235</td>
+<td style="text-align: right;">2.457</td>
+<td style="text-align: right;">0.099</td>
+<td style="text-align: right;">1.087</td>
+<td style="text-align: right;">0.349</td>
+<td style="text-align: right;">0.137</td>
+<td style="text-align: right;">8.689</td>
+<td style="text-align: right;">3.129</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">18.8515</td>
+<td style="text-align: right;">37.4542</td>
+<td style="text-align: right;">26.9415</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">S5B</td>
+<td style="text-align: left;">North</td>
+<td style="text-align: left;">North5B</td>
+<td style="text-align: left;">NBF</td>
+<td style="text-align: right;">42</td>
+<td style="text-align: right;">1620</td>
+<td style="text-align: right;">55780</td>
+<td style="text-align: right;">23795</td>
+<td style="text-align: right;">2555</td>
+<td style="text-align: right;">1355</td>
+<td style="text-align: right;">2.028</td>
+<td style="text-align: right;">0.103</td>
+<td style="text-align: right;">1.135</td>
+<td style="text-align: right;">0.216</td>
+<td style="text-align: right;">0.128</td>
+<td style="text-align: right;">8.623</td>
+<td style="text-align: right;">3.137</td>
+<td style="text-align: right;">0.0102</td>
+<td style="text-align: right;">24.1905</td>
+<td style="text-align: right;">38.3192</td>
+<td style="text-align: right;">26.1037</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">S5S</td>
+<td style="text-align: left;">North</td>
+<td style="text-align: left;">North5S</td>
+<td style="text-align: left;">NBS</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1620</td>
+<td style="text-align: right;">56555</td>
+<td style="text-align: right;">22835</td>
+<td style="text-align: right;">2560</td>
+<td style="text-align: right;">945</td>
+<td style="text-align: right;">2.669</td>
+<td style="text-align: right;">0.136</td>
+<td style="text-align: right;">0.785</td>
+<td style="text-align: right;">0.267</td>
+<td style="text-align: right;">0.114</td>
+<td style="text-align: right;">9.146</td>
+<td style="text-align: right;">3.062</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">24.1789</td>
+<td style="text-align: right;">38.3213</td>
+<td style="text-align: right;">26.1065</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">S6B</td>
+<td style="text-align: left;">South</td>
+<td style="text-align: left;">South1B</td>
+<td style="text-align: left;">SGF</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">2520</td>
+<td style="text-align: right;">39050</td>
+<td style="text-align: right;">705</td>
+<td style="text-align: right;">3630</td>
+<td style="text-align: right;">1295</td>
+<td style="text-align: right;">2.206</td>
+<td style="text-align: right;">0.249</td>
+<td style="text-align: right;">0.768</td>
+<td style="text-align: right;">0.629</td>
+<td style="text-align: right;">0.236</td>
+<td style="text-align: right;">9.013</td>
+<td style="text-align: right;">3.455</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">22.0197</td>
+<td style="text-align: right;">39.0877</td>
+<td style="text-align: right;">27.3241</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section>
+<section id="a-fasta-file-of-cyanobacteria-asvs-found-in-south-samples" class="title-slide slide level1 center">
+<h1>A fasta file of Cyanobacteria ASVs found in south samples?</h1>
 
+</section>
+<section id="subset-samples" class="slide level2">
+<h2>Subset samples</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>south_context <span class="ot">&lt;-</span> <span class="fu">subset</span>(context, Geo <span class="sc">==</span> <span class="st">"South"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><br></p>
+<div class="fragment">
+<div class="cell">
+<div class="cell-output-display">
+<table style="width:100%;">
+<colgroup>
+<col style="width: 2%">
+<col style="width: 4%">
+<col style="width: 8%">
+<col style="width: 4%">
+<col style="width: 3%">
+<col style="width: 5%">
+<col style="width: 4%">
+<col style="width: 6%">
+<col style="width: 5%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 5%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: left;">Geo</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">groupe</th>
+<th style="text-align: right;">Pres</th>
+<th style="text-align: right;">PicoEuk</th>
+<th style="text-align: right;">Synec</th>
+<th style="text-align: right;">Prochloro</th>
+<th style="text-align: right;">NanoEuk</th>
+<th style="text-align: right;">Crypto</th>
+<th style="text-align: right;">SiOH4</th>
+<th style="text-align: right;">NO2</th>
+<th style="text-align: right;">NO3</th>
+<th style="text-align: right;">NH4</th>
+<th style="text-align: right;">PO4</th>
+<th style="text-align: right;">NT</th>
+<th style="text-align: right;">PT</th>
+<th style="text-align: right;">Chla</th>
+<th style="text-align: right;">T</th>
+<th style="text-align: right;">S</th>
+<th style="text-align: right;">Sigma_t</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">S6B</td>
+<td style="text-align: left;">South</td>
+<td style="text-align: left;">South1B</td>
+<td style="text-align: left;">SGF</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">2520</td>
+<td style="text-align: right;">39050</td>
+<td style="text-align: right;">705</td>
+<td style="text-align: right;">3630</td>
+<td style="text-align: right;">1295</td>
+<td style="text-align: right;">2.206</td>
+<td style="text-align: right;">0.249</td>
+<td style="text-align: right;">0.768</td>
+<td style="text-align: right;">0.629</td>
+<td style="text-align: right;">0.236</td>
+<td style="text-align: right;">9.013</td>
+<td style="text-align: right;">3.455</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">22.0197</td>
+<td style="text-align: right;">39.0877</td>
+<td style="text-align: right;">27.3241</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">S6S</td>
+<td style="text-align: left;">South</td>
+<td style="text-align: left;">South1S</td>
+<td style="text-align: left;">SGS</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">2435</td>
+<td style="text-align: right;">35890</td>
+<td style="text-align: right;">915</td>
+<td style="text-align: right;">3735</td>
+<td style="text-align: right;">1300</td>
+<td style="text-align: right;">3.004</td>
+<td style="text-align: right;">0.251</td>
+<td style="text-align: right;">0.927</td>
+<td style="text-align: right;">0.653</td>
+<td style="text-align: right;">0.266</td>
+<td style="text-align: right;">8.776</td>
+<td style="text-align: right;">3.230</td>
+<td style="text-align: right;">0.0134</td>
+<td style="text-align: right;">22.0515</td>
+<td style="text-align: right;">39.0884</td>
+<td style="text-align: right;">27.3151</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">S7B</td>
+<td style="text-align: left;">South</td>
+<td style="text-align: left;">South2B</td>
+<td style="text-align: left;">SGF</td>
+<td style="text-align: right;">26</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">4005</td>
+<td style="text-align: right;">1600</td>
+<td style="text-align: right;">3.016</td>
+<td style="text-align: right;">0.157</td>
+<td style="text-align: right;">0.895</td>
+<td style="text-align: right;">0.491</td>
+<td style="text-align: right;">0.176</td>
+<td style="text-align: right;">8.968</td>
+<td style="text-align: right;">4.116</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">23.6669</td>
+<td style="text-align: right;">38.9699</td>
+<td style="text-align: right;">26.7536</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">S7S</td>
+<td style="text-align: left;">South</td>
+<td style="text-align: left;">South2S</td>
+<td style="text-align: left;">SGS</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">4535</td>
+<td style="text-align: right;">26545</td>
+<td style="text-align: right;">1340</td>
+<td style="text-align: right;">6585</td>
+<td style="text-align: right;">1355</td>
+<td style="text-align: right;">1.198</td>
+<td style="text-align: right;">0.165</td>
+<td style="text-align: right;">1.099</td>
+<td style="text-align: right;">0.432</td>
+<td style="text-align: right;">0.180</td>
+<td style="text-align: right;">8.256</td>
+<td style="text-align: right;">3.182</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">23.6814</td>
+<td style="text-align: right;">38.9708</td>
+<td style="text-align: right;">26.7488</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">S8B</td>
+<td style="text-align: left;">South</td>
+<td style="text-align: left;">South3B</td>
+<td style="text-align: left;">SGF</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">5910</td>
+<td style="text-align: right;">1590</td>
+<td style="text-align: right;">3.868</td>
+<td style="text-align: right;">0.253</td>
+<td style="text-align: right;">0.567</td>
+<td style="text-align: right;">0.533</td>
+<td style="text-align: right;">0.169</td>
+<td style="text-align: right;">8.395</td>
+<td style="text-align: right;">3.126</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">23.1236</td>
+<td style="text-align: right;">39.0054</td>
+<td style="text-align: right;">26.9423</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">S8S</td>
+<td style="text-align: left;">South</td>
+<td style="text-align: left;">South3S</td>
+<td style="text-align: left;">SGS</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">4260</td>
+<td style="text-align: right;">36745</td>
+<td style="text-align: right;">985</td>
+<td style="text-align: right;">5470</td>
+<td style="text-align: right;">2265</td>
+<td style="text-align: right;">3.639</td>
+<td style="text-align: right;">0.255</td>
+<td style="text-align: right;">0.658</td>
+<td style="text-align: right;">0.665</td>
+<td style="text-align: right;">0.247</td>
+<td style="text-align: right;">8.991</td>
+<td style="text-align: right;">3.843</td>
+<td style="text-align: right;">0.0132</td>
+<td style="text-align: right;">23.3147</td>
+<td style="text-align: right;">38.9885</td>
+<td style="text-align: right;">26.8713</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<p><br></p>
+<div class="fragment">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>south_samples <span class="ot">&lt;-</span> <span class="fu">row.names</span>(south_context)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+
+</div>
+</div>
+</section>
+<section id="which-asvs-are-cyanobacteria" class="slide level2">
+<h2>Which ASVs are Cyanobacteria?</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>cyano_taxo <span class="ot">&lt;-</span> <span class="fu">subset</span>(taxonomy, Phylum <span class="sc">==</span> <span class="st">"Cyanobacteria"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><br></p>
+<div class="cell">
+<div class="cell-output-display">
+<table>
+<colgroup>
+<col style="width: 29%">
+<col style="width: 6%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 11%">
+<col style="width: 9%">
+<col style="width: 17%">
+<col style="width: 5%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: left;">Kingdom</th>
+<th style="text-align: left;">Phylum</th>
+<th style="text-align: left;">Class</th>
+<th style="text-align: left;">Order</th>
+<th style="text-align: left;">Family</th>
+<th style="text-align: left;">Genus</th>
+<th style="text-align: left;">Species</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">8e57b5813bc7e9f8e856bee05e4dfc9461d3ab0d</td>
+<td style="text-align: left;">Bacteria</td>
+<td style="text-align: left;">Cyanobacteria</td>
+<td style="text-align: left;">Cyanobacteriia</td>
+<td style="text-align: left;">Synechococcales</td>
+<td style="text-align: left;">Cyanobiaceae</td>
+<td style="text-align: left;">Synechococcus CC9902</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">22aadd43e88795bdc601040af311182e3440157c</td>
+<td style="text-align: left;">Bacteria</td>
+<td style="text-align: left;">Cyanobacteria</td>
+<td style="text-align: left;">Cyanobacteriia</td>
+<td style="text-align: left;">Synechococcales</td>
+<td style="text-align: left;">Cyanobiaceae</td>
+<td style="text-align: left;">Prochlorococcus MIT9313</td>
+<td style="text-align: left;">marinus</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">467820280624aa1dc05cdc6a5d76fb93e22fa701</td>
+<td style="text-align: left;">Bacteria</td>
+<td style="text-align: left;">Cyanobacteria</td>
+<td style="text-align: left;">Cyanobacteriia</td>
+<td style="text-align: left;">Chloroplast</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">956525620eb1842a14f209b36cb295ff74043ece</td>
+<td style="text-align: left;">Bacteria</td>
+<td style="text-align: left;">Cyanobacteria</td>
+<td style="text-align: left;">Cyanobacteriia</td>
+<td style="text-align: left;">Synechococcales</td>
+<td style="text-align: left;">Cyanobiaceae</td>
+<td style="text-align: left;">Prochlorococcus MIT9313</td>
+<td style="text-align: left;">marinus</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><br></p>
+<div class="fragment">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>cyano_asvs <span class="ot">&lt;-</span> <span class="fu">row.names</span>(cyano_taxo)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="subset-asv-table" class="slide level2">
+<h2>Subset asv table</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>asv_table_cyano <span class="ot">&lt;-</span> asv_table[cyano_asvs,south_samples]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><br></p>
+<div class="cell">
+<div class="cell-output-display">
+<table style="width:100%;">
+<colgroup>
+<col style="width: 52%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 6%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">S6B</th>
+<th style="text-align: right;">S6S</th>
+<th style="text-align: right;">S7B</th>
+<th style="text-align: right;">S7S</th>
+<th style="text-align: right;">S8B</th>
+<th style="text-align: right;">S8S</th>
+<th style="text-align: right;">S9B</th>
+<th style="text-align: right;">S9S</th>
+<th style="text-align: right;">S11B</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">8e57b5813bc7e9f8e856bee05e4dfc9461d3ab0d</td>
+<td style="text-align: right;">138</td>
+<td style="text-align: right;">62</td>
+<td style="text-align: right;">41</td>
+<td style="text-align: right;">70</td>
+<td style="text-align: right;">47</td>
+<td style="text-align: right;">59</td>
+<td style="text-align: right;">60</td>
+<td style="text-align: right;">78</td>
+<td style="text-align: right;">101</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">22aadd43e88795bdc601040af311182e3440157c</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">467820280624aa1dc05cdc6a5d76fb93e22fa701</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">19</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">956525620eb1842a14f209b36cb295ff74043ece</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">74d14f8459fa61d310b66472aa76f53bcd539d46</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">64649f74679ddd46d97f558a6faeace607cca08e</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">5fff88e383763b45c12cc486762817c327be6e16</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">a0ca1c2ce9c7508d31a16a2de62e2898715b7c56</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">f5fb70404afd3526d1893acbcac6c38fe4e09dda</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="cyanobacteria-present-in-south-samples" class="slide level2">
+<h2>Cyanobacteria present in south samples</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>cyano_total <span class="ot">&lt;-</span> <span class="fu">apply</span>(asv_table_cyano, <span class="dv">1</span>, sum)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><br></p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>                                         total
+8e57b5813bc7e9f8e856bee05e4dfc9461d3ab0d   656
+22aadd43e88795bdc601040af311182e3440157c     0
+467820280624aa1dc05cdc6a5d76fb93e22fa701   109
+956525620eb1842a14f209b36cb295ff74043ece    15
+74d14f8459fa61d310b66472aa76f53bcd539d46    21
+64649f74679ddd46d97f558a6faeace607cca08e    12
+5fff88e383763b45c12cc486762817c327be6e16    10
+a0ca1c2ce9c7508d31a16a2de62e2898715b7c56     0
+f5fb70404afd3526d1893acbcac6c38fe4e09dda     8</code></pre>
+</div>
+</div>
+<p><br></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>cyano_subset <span class="ot">&lt;-</span> <span class="fu">names</span>(cyano_total)[cyano_total <span class="sc">&gt;</span> <span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="exract-sequences" class="slide level2">
+<h2>Exract sequences</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>asv_seq_cyano <span class="ot">&lt;-</span> asv_seq[cyano_subset]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><br></p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>&gt;8e57b5813bc7e9f8e856bee05e4dfc9461d3ab0d
+TGGGGAATTTTCCGCAATGGGCGAAAGCCTGACGGAGCAACGCCGCGTGAGGGATGAAGGCCTCTGGGCTGTAAACCTCTTTTATCAAGGAAGAAGATCTGACGGTACTTGATGAATAAGCCACGGCTAATTCCGTGCCAGCAGCCGCGGTAATACGGGAGTGGCAAGCGTTATCCGGAATTATTGGGCGTAAAGCGTCCGCAGGCGGCCCTTCAAGTCTGCTGTTAAAAAGTGGAGCTTAACTCCATCATGGCAGTGGAAACTGTTGGGCTTGAGTGTGGTAGGGGCAGAGGGAATTCCCGGTGTAGCGGTGAAATGCGTAGATATCGGGAAGAACACCAGTGGCGAAGGCGCTCTGCTGGGCCATCACTGACGCTCATGGACGAAAGCCAGGGGAGCGAAAGGG
+&gt;467820280624aa1dc05cdc6a5d76fb93e22fa701
+TGAGGAATTTTCCGCAATGGGCGCAAGCCTGACGGAGCAATACCGCGTGAGGGATGACGGCCTTTGGGTTGTAAACCTCTTTTTTCAAGGAGGAAGTTCTGACGTGTACTTGAAGAATAAGCATCGGCTAACTCCGTGCCAGCAGCCGCGGTAAGACGGAGGATGCAAGTGTTATCCGGAATTATTGGGCGTAAAGCGTCTGTAGGTTGCCTAACAAGTCTGTTGTTAAAGGTTAAAGCTTAACTTTAAAACTGCAGCAGAAACTGCTAGGCTTGAGTACAGTCGAAGTAGAGGGAATTTCCAGTGAAGCGGTGAAATGCGTAGATATTGGAAGGAACACCAATGGCGAAAGCACTCTACTAGACTTTTACTGACACTCAGAGACGAAAGCTAGGGTAGCAAATGGG
+&gt;956525620eb1842a14f209b36cb295ff74043ece
+TGGGGAATTTTCCGCAATGGGCGAAAGCCTGACGGAGCAACGCCGCGTGAGGGACGAAGGCCTCTGGGCTGTAAACCTCTTTTCTCAAGGAAGAAGATATGACGGTACTTGAGGAATAAGCCACGGCTAATTCCGTGCCAGCAGCCGCGGTAATACGGGAGTGGCAAGCGTTATCCGGAATTATTGGGCGTAAAGCGTCCGCAGGCGGCTTTTCAAGTCTGCTGTTAAAGCGTGGAGCTTAACTCCATCATGGCAGTGGAAACTGAAAGGCTTGAGTATGGTAGGGGCAGAGGGAATTCCCGGTGTAGCGGTGAAATGCGTAGATATCGGGAAGAACACCAGTGGCGAAGGCGCTCTGCTGGGCCATTACTGACGCTCATGGACGAAAGCCAGGGGAGCGAAAGGG
+&gt;74d14f8459fa61d310b66472aa76f53bcd539d46
+TGGGGAATTTTCCGCAATGGACGAAAGTCTGACGGAGCGACGCTGCGTGAAGGATGACGGCCTGCGGGTTGTAAACTTCTTTTCTCGAAGAAGAAGCTCTGACGGTATTCGAGGAATAAGCATCGGCTAACTCCGTGCCAGCAGCCGCGGTAATACGGAGGATGCAAGTGTTATTCGGAATGATTGGGCGTAAAGCGTCTGTAGGCTGTATAGAAAGTCTTTTGTTAAATGCCTCGGCTCAACCGAGATCCAGCAAAGGAAACTTCTATACTTGAGGGAAGTAGAGGTACAGGGAATTCCCGGTGGAGCGGTGAAATGCGTAGATATCGGGAGGAACACCAATATGGCGAAGGCACTGTACTGGGCTTTACCTGACGCTCAGAGACGAAAGCTAAAGGAGTGATTAGG
+&gt;64649f74679ddd46d97f558a6faeace607cca08e
+TGAGGAATTTTCCGCAATGGGCGAAAGCCTGACGGAGCAATACCGCGTGAGGGATGAAGGATTTTGGTCTGTAAACCTCTTTTCTCAAGAAAGAAGTTCTGACGGTACTTGAGGAATAAGCATCGGCTAACTCCGTGCCAGCAGCCGCGGTAATACGGGGGATGCAAGCGTTATCCGGAATCATTGGGCGTAAAGCGCCTGTAGGTTGTTTAATAAGTCTGTTGTTAAAGACTGGGGCTTAACCCCAGGAAAGCAATGGAAACTACTAGACTAGAGTATGGTAGGGGTAAAGGGAATTTCTAGTGTAGCGGTGAAATGCGTAGATATTAGAAAGAACACCGGTGGCGAAAGCGCTTTACTGGACCATTACTGACACTCAGAGGCGAAAGCTAGGGTAGCCAAAGGG
+&gt;5fff88e383763b45c12cc486762817c327be6e16
+TGGGGAATTTTCCGCAATGGGCGAAAGCCTGACGGAGCGACGCTGCGTGAAGGATGACGGCCTGAGGGTTGTAAACTTCTTTTCTCGAAGAAGAATCAATGACGGTATTCGAGGAATAAGCATCGGCTAACTCTGTGCCAGCAGCCGCGGTAAGACAGAGGATGCAAGTGTTATTCGGATTGATTGGGCGTAAAGCGTCTGTAGGCGGTTTAGAAAGTCTTTTGTGAAATACTTCAGCTCAACTGGGGCTCCGCAAAAGAAACTTCTAGACTTGAGGGAAGTAGAGGTACAGGGAATTTCCGGTGGAGCGGTGAAATGCGTAGATATCGGAAGGAACACCAATATGGCGAAGGCACTGTACTGGGCTTTACCTGACGCTAAGAGACGAAAGCTAAAGGAGTGATTAGG
+&gt;f5fb70404afd3526d1893acbcac6c38fe4e09dda
+TGGGGAATTTTCCGCAATGGGCGAAAGCCTGACGGAGCAACGCCGCGTGAGGGATGAAGGCCTCTGGGCTGTAAACCTCTTTTATCAAGGAAGAAGATCTGACGGTACTTGATGAATAAGCCACGGCTAATTCCGTGCCAGCAGCCGCGGTAATACGGGAGTGGCAAGCGTTATCCGGAATTATTGGGCGTAAAGCGTCCGCAGGCGGCCTGACAAGTCTGCTGTTAAAGCGTGGAGCTTAACTCCATTTCAGCAGTGGAAACTGTCAGGCTTGAGTGTGGTAGGGGCAGAGGGAATTCCCGGTGTAGCGGTGAAATGCGTAGATATCGGGAAGAACACCAGTGGCGAAAGCGCTCTGCTGGGCCATCACTGACGCTCATGGACGAAAGCCAGGGGAGCGAAAGGG</code></pre>
+</div>
+</div>
+</section>
+<section id="go-fancy-with-a-phylogenetic-tree" class="slide level2">
+<h2>Go fancy with a phylogenetic tree</h2>
+
+<img data-src="phyloseq_files/figure-revealjs/unnamed-chunk-21-1.png" width="960" class="r-stretch quarto-figure-center"></section>
+<section id="a-complex-data-structure" class="slide level2">
+<h2>A complex data structure</h2>
+<div class="cell" data-fig-width="8">
+<div class="cell-output-display">
+<div>
+<p>
+<svg width="768" height="481" viewbox="0.00 0.00 372.85 233.66" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style=" display: block; margin: auto auto auto auto">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 229.66)">
+<title>
+G
+</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-229.66 368.85,-229.66 368.85,4 -4,4"></polygon> <!-- ASV table\n(abundance information) --> <g id="node1" class="node">
+<title>
+ASV table(abundance information)
+</title>
+<ellipse fill="none" stroke="black" cx="141.51" cy="-196.25" rx="109.39" ry="29.33"></ellipse> <text text-anchor="middle" x="141.51" y="-200.45" font-family="Times,serif" font-size="14.00">ASV table</text> <text text-anchor="middle" x="141.51" y="-183.65" font-family="Times,serif" font-size="14.00">(abundance information)</text> </g> <!-- Samples\ncontextual data --> <g id="node2" class="node">
+<title>
+Samplesdata
+</title>
+<ellipse fill="none" stroke="black" cx="71.51" cy="-101.42" rx="71.52" ry="29.33"></ellipse> <text text-anchor="middle" x="71.51" y="-105.62" font-family="Times,serif" font-size="14.00">Samples</text> <text text-anchor="middle" x="71.51" y="-88.82" font-family="Times,serif" font-size="14.00">contextual data</text> </g> <!-- ASV table\n(abundance information)&#45;&#45;Samples\ncontextual data --> <g id="edge1" class="edge">
+<title>
+ASV table(abundance information)–Samplesdata
+</title>
+<path fill="none" stroke="black" d="M120.32,-167.14C111.38,-155.3 101.02,-141.55 92.15,-129.79"></path> </g> <!-- Sequences --> <g id="node3" class="node">
+<title>
+Sequences
+</title>
+<ellipse fill="none" stroke="black" cx="212.51" cy="-101.42" rx="51.59" ry="18"></ellipse> <text text-anchor="middle" x="212.51" y="-97.22" font-family="Times,serif" font-size="14.00">Sequences</text> </g> <!-- ASV table\n(abundance information)&#45;&#45;Sequences --> <g id="edge2" class="edge">
+<title>
+ASV table(abundance information)–Sequences
+</title>
+<path fill="none" stroke="black" d="M163,-167.14C175,-151.45 189.54,-132.44 199.75,-119.09"></path> </g> <!-- Taxonomy --> <g id="node4" class="node">
+<title>
+Taxonomy
+</title>
+<ellipse fill="none" stroke="black" cx="137.51" cy="-18" rx="52.75" ry="18"></ellipse> <text text-anchor="middle" x="137.51" y="-13.8" font-family="Times,serif" font-size="14.00">Taxonomy</text> </g> <!-- Sequences&#45;&#45;Taxonomy --> <g id="edge3" class="edge">
+<title>
+Sequences–Taxonomy
+</title>
+<path fill="none" stroke="black" d="M197.33,-83.94C184.32,-69.81 165.67,-49.57 152.66,-35.45"></path> </g> <!-- Phylogenetic tree --> <g id="node5" class="node">
+<title>
+Phylogenetic tree
+</title>
+<ellipse fill="none" stroke="black" cx="286.51" cy="-18" rx="78.19" ry="18"></ellipse> <text text-anchor="middle" x="286.51" y="-13.8" font-family="Times,serif" font-size="14.00">Phylogenetic tree</text> </g> <!-- Sequences&#45;&#45;Phylogenetic tree --> <g id="edge4" class="edge">
+<title>
+Sequences–Phylogenetic tree
+</title>
+<path fill="none" stroke="black" d="M227.48,-83.94C240.24,-69.91 258.48,-49.84 271.3,-35.73"></path> </g> </g>
+</svg>
+</p>
+</div>
+</div>
+</div>
+</section></section>
+<section id="could-it-be-easier" class="title-slide slide level1 center">
+<h1>Could it be easier?</h1>
+
+</section>
+
+<section>
+<section id="yes" class="title-slide slide level1 center">
+<h1>yes!</h1>
+
+</section>
+<section id="the-phyloseq-package" class="slide level2">
+<h2>The phyloseq package</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="../img/phyloseq_pone_fig1.png"></p>
+</figure>
+</div>
+
+<aside><div>
+<p>https://doi.org/10.1371/journal.pone.0061217.g001</p>
+</div></aside></section>
+<section id="phyloseq-workflow" class="slide level2">
+<h2>phyloseq workflow</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="../img/phyloseq_pone_fig2.png" height="500"></p>
+</figure>
+</div>
+
+<aside><div>
+<p>https://doi.org/10.1371/journal.pone.0061217.g002</p>
+</div></aside></section>
+<section id="phyloseq-object" class="slide level2">
+<h2>phyloseq object</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="../img/phyloseq_pone_fig3.png"></p>
+</figure>
+</div>
+
+<aside><div>
+<p>https://doi.org/10.1371/journal.pone.0061217.g003</p>
+</div></aside></section>
+<section id="create-our-phyloseq-object" class="slide level2">
+<h2>Create our phyloseq object</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="fu">library</span>(phyloseq)</span>
+<span id="cb14-2"><a href="#cb14-2"></a></span>
+<span id="cb14-3"><a href="#cb14-3"></a>physeq <span class="ot">&lt;-</span> <span class="fu">phyloseq</span>(</span>
+<span id="cb14-4"><a href="#cb14-4"></a>  <span class="fu">otu_table</span>(asv_table,<span class="at">taxa_are_rows =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb14-5"><a href="#cb14-5"></a>  <span class="fu">tax_table</span>(<span class="fu">as.matrix</span>(taxonomy)),</span>
+<span id="cb14-6"><a href="#cb14-6"></a>  <span class="fu">sample_data</span>(context),</span>
+<span id="cb14-7"><a href="#cb14-7"></a>  <span class="fu">refseq</span>(asv_seq),</span>
+<span id="cb14-8"><a href="#cb14-8"></a>  <span class="fu">phy_tree</span>(asv_tree)</span>
+<span id="cb14-9"><a href="#cb14-9"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><br></p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>phyloseq-class experiment-level object
+otu_table()   OTU Table:         [ 155 taxa and 18 samples ]
+sample_data() Sample Data:       [ 18 samples by 20 sample variables ]
+tax_table()   Taxonomy Table:    [ 155 taxa by 7 taxonomic ranks ]
+phy_tree()    Phylogenetic Tree: [ 155 tips and 153 internal nodes ]
+refseq()      DNAStringSet:      [ 155 reference sequences ]</code></pre>
+</div>
+</div>
+</section>
+<section id="redo-our-selection" class="slide level2" data-auto-animate="true">
+<h2 data-id="quarto-animate-title">Redo our selection</h2>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>phyloseq-class experiment-level object
+otu_table()   OTU Table:         [ 155 taxa and 18 samples ]
+sample_data() Sample Data:       [ 18 samples by 20 sample variables ]
+tax_table()   Taxonomy Table:    [ 155 taxa by 7 taxonomic ranks ]
+phy_tree()    Phylogenetic Tree: [ 155 tips and 153 internal nodes ]
+refseq()      DNAStringSet:      [ 155 reference sequences ]</code></pre>
+</div>
+</div>
+<p><br></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb17-1" class="hljs-ln-code"><a href="#cb17-1"></a><span class="fu">subset_taxa</span>(physeq,Phylum <span class="sc">==</span> <span class="st">"Cyanobacteria"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><br></p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>phyloseq-class experiment-level object
+otu_table()   OTU Table:         [ 9 taxa and 18 samples ]
+sample_data() Sample Data:       [ 18 samples by 20 sample variables ]
+tax_table()   Taxonomy Table:    [ 9 taxa by 7 taxonomic ranks ]
+phy_tree()    Phylogenetic Tree: [ 9 tips and 8 internal nodes ]
+refseq()      DNAStringSet:      [ 9 reference sequences ]</code></pre>
+</div>
+</div>
+</section>
+<section id="redo-our-selection-1" class="slide level2" data-auto-animate="true">
+<h2 data-id="quarto-animate-title">Redo our selection</h2>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>phyloseq-class experiment-level object
+otu_table()   OTU Table:         [ 155 taxa and 18 samples ]
+sample_data() Sample Data:       [ 18 samples by 20 sample variables ]
+tax_table()   Taxonomy Table:    [ 155 taxa by 7 taxonomic ranks ]
+phy_tree()    Phylogenetic Tree: [ 155 tips and 153 internal nodes ]
+refseq()      DNAStringSet:      [ 155 reference sequences ]</code></pre>
+</div>
+</div>
+<p><br></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb20-1" class="hljs-ln-code"><a href="#cb20-1"></a><span class="fu">subset_taxa</span>(physeq,Phylum <span class="sc">==</span> <span class="st">"Cyanobacteria"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb20-2" class="hljs-ln-code"><a href="#cb20-2"></a>  <span class="fu">subset_samples</span>(Geo <span class="sc">==</span> <span class="st">"South"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><br></p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>phyloseq-class experiment-level object
+otu_table()   OTU Table:         [ 9 taxa and 9 samples ]
+sample_data() Sample Data:       [ 9 samples by 20 sample variables ]
+tax_table()   Taxonomy Table:    [ 9 taxa by 7 taxonomic ranks ]
+phy_tree()    Phylogenetic Tree: [ 9 tips and 8 internal nodes ]
+refseq()      DNAStringSet:      [ 9 reference sequences ]</code></pre>
+</div>
+</div>
+</section>
+<section id="redo-our-selection-2" class="slide level2" data-auto-animate="true">
+<h2 data-id="quarto-animate-title">Redo our selection</h2>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>phyloseq-class experiment-level object
+otu_table()   OTU Table:         [ 155 taxa and 18 samples ]
+sample_data() Sample Data:       [ 18 samples by 20 sample variables ]
+tax_table()   Taxonomy Table:    [ 155 taxa by 7 taxonomic ranks ]
+phy_tree()    Phylogenetic Tree: [ 155 tips and 153 internal nodes ]
+refseq()      DNAStringSet:      [ 155 reference sequences ]</code></pre>
+</div>
+</div>
+<p><br></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb23-1" class="hljs-ln-code"><a href="#cb23-1"></a><span class="fu">subset_taxa</span>(physeq,Phylum <span class="sc">==</span> <span class="st">"Cyanobacteria"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb23-2" class="hljs-ln-code"><a href="#cb23-2"></a>  <span class="fu">subset_samples</span>(Geo <span class="sc">==</span> <span class="st">"South"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb23-3" class="hljs-ln-code"><a href="#cb23-3"></a>  <span class="fu">filter_taxa</span>(<span class="cf">function</span>(x) <span class="fu">sum</span>(x) <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="at">prune =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><br></p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>phyloseq-class experiment-level object
+otu_table()   OTU Table:         [ 7 taxa and 9 samples ]
+sample_data() Sample Data:       [ 9 samples by 20 sample variables ]
+tax_table()   Taxonomy Table:    [ 7 taxa by 7 taxonomic ranks ]
+phy_tree()    Phylogenetic Tree: [ 7 tips and 6 internal nodes ]
+refseq()      DNAStringSet:      [ 7 reference sequences ]</code></pre>
+</div>
+</div>
+</section>
+<section id="redo-our-selection-3" class="slide level2" data-auto-animate="true">
+<h2 data-id="quarto-animate-title">Redo our selection</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb25-1" class="hljs-ln-code"><a href="#cb25-1"></a><span class="fu">subset_taxa</span>(physeq,Phylum <span class="sc">==</span> <span class="st">"Cyanobacteria"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb25-2" class="hljs-ln-code"><a href="#cb25-2"></a>  <span class="fu">subset_samples</span>(Geo <span class="sc">==</span> <span class="st">"South"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb25-3" class="hljs-ln-code"><a href="#cb25-3"></a>  <span class="fu">filter_taxa</span>(<span class="cf">function</span>(x) <span class="fu">sum</span>(x) <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="at">prune =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb25-4" class="hljs-ln-code"><a href="#cb25-4"></a>  <span class="fu">plot_bar</span>(<span class="at">fill=</span><span class="st">"Genus"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><br></p>
+
+<img data-src="phyloseq_files/figure-revealjs/unnamed-chunk-35-1.png" width="960" class="r-stretch quarto-figure-center"></section>
+<section id="phyloseq-in-this-course" class="slide level2">
+<h2>phyloseq in this course</h2>
+<ul>
+<li><a href="../practicals/preprocessing_phyloseq.html">Create</a> a phyloseq object from your data</li>
+<li><a href="../practicals/alpha_diversity.html#taxonomy-barplot-graph">Explore</a> the taxonomic composition of your communities</li>
+<li><a href="../practicals/beta_diversity.html#visualisation">Compare</a> communities composition with ordinations</li>
+</ul>
+</section></section>
+<section id="now-it-is-your-turn" class="title-slide slide level1 center">
+<h1>Now it is your turn!</h1>
 
 <div class="footer footer-default">
 
@@ -541,6 +1949,48 @@
         ]
       });
     </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        function fireSlideChanged(previousSlide, currentSlide) {
+
+          // dispatch for htmlwidgets
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for reveal
+        if (window.Reveal) {
+          window.Reveal.addEventListener("slidechanged", function(event) {
+            fireSlideChanged(event.previousSlide, event.currentSlide);
+          });
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
       const toggleBodyColorMode = (bsSheetEl) => {

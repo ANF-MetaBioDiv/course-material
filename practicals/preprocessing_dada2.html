@@ -376,18 +376,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>fnFs <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">list.files</span>(path_to_fastqs,</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>                        <span class="at">pattern =</span> <span class="st">"_R1.fastq.gz"</span>,</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>                        <span class="at">full.names =</span> <span class="cn">TRUE</span>))[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>                        <span class="at">full.names =</span> <span class="cn">TRUE</span>))</span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>fnRs <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">list.files</span>(path_to_fastqs,</span>
 <span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>                        <span class="at">pattern =</span> <span class="st">"_R2.fastq.gz"</span>,</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>                        <span class="at">full.names =</span> <span class="cn">TRUE</span>))[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>                        <span class="at">full.names =</span> <span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><strong>To understand: What fnFs &amp; fnRs variables contain?</strong></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>fnFs <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "/home/nicolas/Documents/anf-metabarcoding/data/raw/S11B_R1.fastq.gz"
-[2] "/home/nicolas/Documents/anf-metabarcoding/data/raw/S1B_R1.fastq.gz" </code></pre>
+[2] "/home/nicolas/Documents/anf-metabarcoding/data/raw/S1B_R1.fastq.gz" 
+[3] "/home/nicolas/Documents/anf-metabarcoding/data/raw/S2B_R1.fastq.gz" 
+[4] "/home/nicolas/Documents/anf-metabarcoding/data/raw/S2S_R1.fastq.gz" 
+[5] "/home/nicolas/Documents/anf-metabarcoding/data/raw/S3B_R1.fastq.gz" 
+[6] "/home/nicolas/Documents/anf-metabarcoding/data/raw/S3S_R1.fastq.gz" </code></pre>
 </div>
 </div>
 </section>
@@ -396,7 +400,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="cell">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>(sample.names <span class="ot">&lt;-</span> <span class="fu">sapply</span>(<span class="fu">strsplit</span>(<span class="fu">basename</span>(fnFs), <span class="st">"_"</span>), <span class="st">`</span><span class="at">[</span><span class="st">`</span>, <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "S11B" "S1B" </code></pre>
+<pre><code> [1] "S11B" "S1B"  "S2B"  "S2S"  "S3B"  "S3S"  "S4B"  "S4S"  "S5B"  "S5S" 
+[11] "S6B"  "S6S"  "S7B"  "S7S"  "S8B"  "S8S"  "S9B"  "S9S" </code></pre>
 </div>
 </div>
 <p><strong>To understand:</strong></p>
@@ -409,26 +414,39 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 [1] "S11B"        "R1.fastq.gz"
 
 [[2]]
-[1] "S1B"         "R1.fastq.gz"</code></pre>
+[1] "S1B"         "R1.fastq.gz"
+
+[[3]]
+[1] "S2B"         "R1.fastq.gz"
+
+[[4]]
+[1] "S2S"         "R1.fastq.gz"
+
+[[5]]
+[1] "S3B"         "R1.fastq.gz"
+
+[[6]]
+[1] "S3S"         "R1.fastq.gz"</code></pre>
 </div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(<span class="fu">strsplit</span>(<span class="fu">basename</span>(fnFs), <span class="st">"_"</span>), <span class="st">`</span><span class="at">[</span><span class="st">`</span>, <span class="dv">2</span>) <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "R1.fastq.gz" "R1.fastq.gz"</code></pre>
+<pre><code>[1] "R1.fastq.gz" "R1.fastq.gz" "R1.fastq.gz" "R1.fastq.gz" "R1.fastq.gz"
+[6] "R1.fastq.gz"</code></pre>
 </div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(<span class="fu">strsplit</span>(<span class="fu">basename</span>(fnFs), <span class="st">"_"</span>), <span class="st">`</span><span class="at">[</span><span class="st">`</span>, <span class="dv">3</span>) <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] NA NA</code></pre>
+<pre><code>[1] NA NA NA NA NA NA</code></pre>
 </div>
 </div>
 <p>With regular expressions:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gsub</span>(<span class="st">"^.+/|_.+$"</span>, <span class="st">""</span>, fnFs) <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "S11B" "S1B" </code></pre>
+<pre><code>[1] "S11B" "S1B"  "S2B"  "S2S"  "S3B"  "S3S" </code></pre>
 </div>
 </div>
 </section>
@@ -450,6 +468,38 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>               <span class="fu">file.path</span>(quality_folder, <span class="st">"quality_plots.pdf"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: `guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; = "none")` instead.
+`guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; = "none")` instead.
+`guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; = "none")` instead.
+`guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; = "none")` instead.
+`guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; = "none")` instead.
+`guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; = "none")` instead.
+`guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; = "none")` instead.
+`guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; = "none")` instead.
+`guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; = "none")` instead.
+`guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; = "none")` instead.
+`guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; = "none")` instead.
+`guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; = "none")` instead.
+`guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; = "none")` instead.
+`guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; = "none")` instead.
+`guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; = "none")` instead.
+`guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; = "none")` instead.
+`guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; = "none")` instead.
+`guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; = "none")` instead.
+`guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; = "none")` instead.
+`guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; = "none")` instead.
+`guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; = "none")` instead.
+`guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; = "none")` instead.
+`guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; = "none")` instead.
+`guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; = "none")` instead.
+`guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; = "none")` instead.
+`guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; = "none")` instead.
+`guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; = "none")` instead.
+`guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; = "none")` instead.
+`guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; = "none")` instead.
+`guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; = "none")` instead.
+`guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; = "none")` instead.
+`guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; = "none")` instead.
+`guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; = "none")` instead.
 `guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; = "none")` instead.
 `guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; = "none")` instead.
 `guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; = "none")` instead.</code></pre>
@@ -479,7 +529,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(nopFw)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "/home/nicolas/Documents/anf-metabarcoding/outputs/dada2/trimmed/S11B_R1.fastq.gz"
-[2] "/home/nicolas/Documents/anf-metabarcoding/outputs/dada2/trimmed/S1B_R1.fastq.gz" </code></pre>
+[2] "/home/nicolas/Documents/anf-metabarcoding/outputs/dada2/trimmed/S1B_R1.fastq.gz" 
+[3] "/home/nicolas/Documents/anf-metabarcoding/outputs/dada2/trimmed/S2B_R1.fastq.gz" 
+[4] "/home/nicolas/Documents/anf-metabarcoding/outputs/dada2/trimmed/S2S_R1.fastq.gz" 
+[5] "/home/nicolas/Documents/anf-metabarcoding/outputs/dada2/trimmed/S3B_R1.fastq.gz" 
+[6] "/home/nicolas/Documents/anf-metabarcoding/outputs/dada2/trimmed/S3S_R1.fastq.gz" </code></pre>
 </div>
 </div>
 </section>
@@ -545,7 +599,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="cell-output cell-output-stdout">
 <pre><code>                 reads.in reads.out
 S11B_R1.fastq.gz     1985       994
-S1B_R1.fastq.gz      1973      1051</code></pre>
+S1B_R1.fastq.gz      1973      1051
+S2B_R1.fastq.gz      1985      1058
+S2S_R1.fastq.gz      1981      1046
+S3B_R1.fastq.gz      1986      1044
+S3S_R1.fastq.gz      1987      1132
+S4B_R1.fastq.gz      1980      1058
+S4S_R1.fastq.gz      1983      1135
+S5B_R1.fastq.gz      1984      1049
+S5S_R1.fastq.gz      1988      1055
+S6B_R1.fastq.gz      1979      1035
+S6S_R1.fastq.gz      1979      1025
+S7B_R1.fastq.gz      1985       997
+S7S_R1.fastq.gz      1985      1008
+S8B_R1.fastq.gz      1992       976
+S8S_R1.fastq.gz      1980      1051
+S9B_R1.fastq.gz      1979       956
+S9S_R1.fastq.gz      1979      1045</code></pre>
 </div>
 </div>
 </section>
@@ -573,13 +643,13 @@ S1B_R1.fastq.gz      1973      1051</code></pre>
 <span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>                           <span class="at">randomize =</span> <span class="cn">TRUE</span>,</span>
 <span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>                           <span class="at">multithread =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>563287 total bases in 2045 reads from 2 samples will be used for learning the error rates.</code></pre>
+<pre><code>5155290 total bases in 18715 reads from 18 samples will be used for learning the error rates.</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>errR <span class="ot">&lt;-</span> dada2<span class="sc">::</span><span class="fu">learnErrors</span>(filtRs,</span>
 <span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>                           <span class="at">randomize =</span> <span class="cn">TRUE</span>,</span>
 <span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>                           <span class="at">multithread =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>576718 total bases in 2045 reads from 2 samples will be used for learning the error rates.</code></pre>
+<pre><code>5277647 total bases in 18715 reads from 18 samples will be used for learning the error rates.</code></pre>
 </div>
 </div>
 <p>You can visualise the resulting error model using the function <code>dada2::plotErrors()</code></p>
@@ -610,12 +680,44 @@ Transformation introduced infinite values in continuous y-axis</code></pre>
 <div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>dadaFs <span class="ot">&lt;-</span> dada2<span class="sc">::</span><span class="fu">dada</span>(derepFs, <span class="at">err =</span> errF, <span class="at">multithread =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Sample 1 - 994 reads in 633 unique sequences.
-Sample 2 - 1051 reads in 683 unique sequences.</code></pre>
+Sample 2 - 1051 reads in 683 unique sequences.
+Sample 3 - 1058 reads in 671 unique sequences.
+Sample 4 - 1046 reads in 661 unique sequences.
+Sample 5 - 1044 reads in 670 unique sequences.
+Sample 6 - 1132 reads in 665 unique sequences.
+Sample 7 - 1058 reads in 649 unique sequences.
+Sample 8 - 1135 reads in 563 unique sequences.
+Sample 9 - 1049 reads in 668 unique sequences.
+Sample 10 - 1055 reads in 578 unique sequences.
+Sample 11 - 1035 reads in 597 unique sequences.
+Sample 12 - 1025 reads in 563 unique sequences.
+Sample 13 - 997 reads in 586 unique sequences.
+Sample 14 - 1008 reads in 578 unique sequences.
+Sample 15 - 976 reads in 595 unique sequences.
+Sample 16 - 1051 reads in 604 unique sequences.
+Sample 17 - 956 reads in 566 unique sequences.
+Sample 18 - 1045 reads in 582 unique sequences.</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>dadaRs <span class="ot">&lt;-</span> dada2<span class="sc">::</span><span class="fu">dada</span>(derepRs, <span class="at">err =</span> errR, <span class="at">multithread =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Sample 1 - 994 reads in 730 unique sequences.
-Sample 2 - 1051 reads in 763 unique sequences.</code></pre>
+Sample 2 - 1051 reads in 763 unique sequences.
+Sample 3 - 1058 reads in 780 unique sequences.
+Sample 4 - 1046 reads in 747 unique sequences.
+Sample 5 - 1044 reads in 762 unique sequences.
+Sample 6 - 1132 reads in 796 unique sequences.
+Sample 7 - 1058 reads in 763 unique sequences.
+Sample 8 - 1135 reads in 733 unique sequences.
+Sample 9 - 1049 reads in 777 unique sequences.
+Sample 10 - 1055 reads in 718 unique sequences.
+Sample 11 - 1035 reads in 727 unique sequences.
+Sample 12 - 1025 reads in 672 unique sequences.
+Sample 13 - 997 reads in 700 unique sequences.
+Sample 14 - 1008 reads in 709 unique sequences.
+Sample 15 - 976 reads in 699 unique sequences.
+Sample 16 - 1051 reads in 762 unique sequences.
+Sample 17 - 956 reads in 674 unique sequences.
+Sample 18 - 1045 reads in 724 unique sequences.</code></pre>
 </div>
 </div>
 </section>
@@ -642,7 +744,7 @@ Sample 2 - 1051 reads in 763 unique sequences.</code></pre>
 <section id="remove-chimera" class="level1" data-number="9">
 <h1 data-number="9"><span class="header-section-number">9</span> Remove Chimera</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>seqtab.nochim <span class="ot">&lt;-</span> dada2<span class="sc">::</span><span class="fu">removeBimeraDenovo</span>(seqtab,</span>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>seqtab_nochim <span class="ot">&lt;-</span> dada2<span class="sc">::</span><span class="fu">removeBimeraDenovo</span>(seqtab,</span>
 <span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>                                           <span class="at">method =</span> <span class="st">"consensus"</span>,</span>
 <span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>                                           <span class="at">multithread =</span> <span class="cn">TRUE</span>,</span>
 <span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>                                           <span class="at">verbose =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -658,16 +760,32 @@ Sample 2 - 1051 reads in 763 unique sequences.</code></pre>
 <span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>                    <span class="at">denoisedF =</span> <span class="fu">sapply</span>(dadaFs, getN),</span>
 <span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a>                    <span class="at">denoisedR =</span> <span class="fu">sapply</span>(dadaRs, getN),</span>
 <span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a>                    <span class="at">merged =</span> <span class="fu">sapply</span>(mergers, getN),</span>
-<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a>                    <span class="at">nonchim =</span> <span class="fu">rowSums</span>(seqtab.nochim),</span>
-<span id="cb52-9"><a href="#cb52-9" aria-hidden="true" tabindex="-1"></a>                    <span class="at">perc_retained =</span> <span class="fu">rowSums</span>(seqtab.nochim)<span class="sc">/</span>out[,<span class="dv">1</span>]<span class="sc">*</span><span class="dv">100</span>)</span>
+<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a>                    <span class="at">nonchim =</span> <span class="fu">rowSums</span>(seqtab_nochim),</span>
+<span id="cb52-9"><a href="#cb52-9" aria-hidden="true" tabindex="-1"></a>                    <span class="at">perc_retained =</span> <span class="fu">rowSums</span>(seqtab_nochim)<span class="sc">/</span>out[,<span class="dv">1</span>]<span class="sc">*</span><span class="dv">100</span>)</span>
 <span id="cb52-10"><a href="#cb52-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb52-11"><a href="#cb52-11" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(track) <span class="ot">&lt;-</span> sample.names</span>
 <span id="cb52-12"><a href="#cb52-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb52-13"><a href="#cb52-13" aria-hidden="true" tabindex="-1"></a>track</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     input filtered denoisedF denoisedR merged nonchim perc_retained
-S11B  1985      994       873       841    737     737      37.12846
-S1B   1973     1051       824       890    708     708      35.88444</code></pre>
+S11B  1985      994       884       841    749     749      37.73300
+S1B   1973     1051       823       886    708     708      35.88444
+S2B   1985     1058       882       863    672     672      33.85390
+S2S   1981     1046       917       903    783     783      39.52549
+S3B   1986     1044       857       842    672     672      33.83686
+S3S   1987     1132       940       985    776     776      39.05385
+S4B   1980     1058       887       862    687     687      34.69697
+S4S   1983     1135       967       995    870     870      43.87292
+S5B   1984     1049       933       916    770     770      38.81048
+S5S   1988     1055       892       917    767     766      38.53119
+S6B   1979     1035       948       919    817     817      41.28348
+S6S   1979     1025       870       915    738     738      37.29156
+S7B   1985      997       868       850    684     684      34.45844
+S7S   1985     1008       874       866    754     754      37.98489
+S8B   1992      976       811       830    694     694      34.83936
+S8S   1980     1051       903       891    742     742      37.47475
+S9B   1979      956       840       816    650     650      32.84487
+S9S   1979     1045       904       927    746     746      37.69581</code></pre>
 </div>
 </div>
 </section>
@@ -676,7 +794,7 @@ S1B   1973     1051       824       890    708     708      35.88444</code></pre
 <p>The taxonomic assignment can be achieved using the functions <code>assignTaxonomy()</code> and <code>addSpecies()</code> from dada2.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>taxonomy <span class="ot">&lt;-</span> dada2<span class="sc">::</span><span class="fu">assignTaxonomy</span>(</span>
-<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">seqs =</span> seqtab.nochim,</span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">seqs =</span> seqtab_nochim,</span>
 <span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">refFasta =</span> silva_train_set,</span>
 <span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">taxLevels =</span> <span class="fu">c</span>(<span class="st">"Kingdom"</span>, <span class="st">"Phylum"</span>, <span class="st">"Class"</span>,</span>
 <span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>                <span class="st">"Order"</span>, <span class="st">"Family"</span>, <span class="st">"Genus"</span>,</span>
@@ -699,7 +817,7 @@ S1B   1973     1051       824       890    708     708      35.88444</code></pre
 <span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">dir.exists</span>(export_folder)) <span class="fu">dir.create</span>(export_folder)</span>
 <span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(<span class="at">object =</span> seqtab.nochim,</span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(<span class="at">object =</span> seqtab_nochim,</span>
 <span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">file =</span> <span class="fu">file.path</span>(export_folder, <span class="st">"seqtab_nochim.rds"</span>))</span>
 <span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(<span class="at">object =</span> taxonomy,</span>
@@ -709,22 +827,39 @@ S1B   1973     1051       824       890    708     708      35.88444</code></pre
 <section id="text-files" class="level2" data-number="12.2">
 <h2 data-number="12.2" class="anchored" data-anchor-id="text-files"><span class="header-section-number">12.2</span> Text files</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>taxo_export <span class="ot">&lt;-</span> <span class="fu">apply</span>(taxonomy, <span class="dv">1</span>, paste, <span class="at">collapse=</span><span class="st">";"</span>)</span>
-<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>seqtab_export <span class="ot">&lt;-</span> <span class="fu">t</span>(seqtab.nochim)</span>
-<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>seqtab_export <span class="ot">&lt;-</span> <span class="fu">merge</span>(<span class="at">x =</span> taxo_export,</span>
-<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> seqtab_export,</span>
-<span id="cb56-6"><a href="#cb56-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">by =</span> <span class="dv">0</span>,</span>
-<span id="cb56-7"><a href="#cb56-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">all.x =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb56-8"><a href="#cb56-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">sort =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb56-9"><a href="#cb56-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-10"><a href="#cb56-10" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(seqtab_export)[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"sequence"</span>, <span class="st">"taxonomy"</span>)</span>
-<span id="cb56-11"><a href="#cb56-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-12"><a href="#cb56-12" aria-hidden="true" tabindex="-1"></a><span class="fu">write.table</span>(seqtab_export,</span>
-<span id="cb56-13"><a href="#cb56-13" aria-hidden="true" tabindex="-1"></a>            <span class="at">file =</span> <span class="fu">file.path</span>(export_folder, <span class="st">"asv_table.tsv"</span>),</span>
-<span id="cb56-14"><a href="#cb56-14" aria-hidden="true" tabindex="-1"></a>            <span class="at">quote =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb56-15"><a href="#cb56-15" aria-hidden="true" tabindex="-1"></a>            <span class="at">sep =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>,</span>
-<span id="cb56-16"><a href="#cb56-16" aria-hidden="true" tabindex="-1"></a>            <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>asv_seq <span class="ot">&lt;-</span> <span class="fu">colnames</span>(seqtab_nochim)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>asv_id <span class="ot">&lt;-</span> <span class="fu">sapply</span>(asv_seq,</span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>                 <span class="cf">function</span>(x) <span class="fu">unname</span>(digest<span class="sc">::</span><span class="fu">digest</span>(x, <span class="at">algo =</span> <span class="st">"sha1"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">row.names</span>(taxonomy) <span class="ot">&lt;-</span> <span class="fu">colnames</span>(seqtab_nochim) <span class="ot">&lt;-</span> <span class="fu">names</span>(asv_seq) <span class="ot">&lt;-</span> asv_id</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>taxonomy <span class="ot">&lt;-</span> <span class="fu">df_export</span>(taxonomy, <span class="at">new_rn =</span> <span class="st">"asv"</span>)</span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a><span class="fu">write.table</span>(taxonomy,</span>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">file =</span> <span class="fu">file.path</span>(export_folder, <span class="st">"taxonomy.tsv"</span>),</span>
+<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">quote =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb59-6"><a href="#cb59-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">sep =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>,</span>
+<span id="cb59-7"><a href="#cb59-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>seqtab_nochim <span class="ot">&lt;-</span> <span class="fu">t</span>(seqtab_nochim)</span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>seqtab_nochim <span class="ot">&lt;-</span> <span class="fu">df_export</span>(seqtab_nochim, <span class="at">new_rn =</span> <span class="st">"asv"</span>)</span>
+<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a><span class="fu">write.table</span>(seqtab_nochim,</span>
+<span id="cb60-6"><a href="#cb60-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">file =</span> <span class="fu">file.path</span>(export_folder, <span class="st">"asv_table.tsv"</span>),</span>
+<span id="cb60-7"><a href="#cb60-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">quote =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb60-8"><a href="#cb60-8" aria-hidden="true" tabindex="-1"></a>            <span class="at">sep =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>,</span>
+<span id="cb60-9"><a href="#cb60-9" aria-hidden="true" tabindex="-1"></a>            <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">paste0</span>(<span class="st">"&gt;"</span>, <span class="fu">names</span>(asv_seq), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>, asv_seq),</span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">sep =</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>,</span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">file =</span> <span class="fu">file.path</span>(export_folder, <span class="st">"asv.fasta"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 
