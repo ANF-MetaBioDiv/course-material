@@ -15,9 +15,16 @@ $selection-bg: rgba(0, 0, 0, 0.99);
 // headings
 $presentation-heading-font: "News Cycle", sans-serif !default;
 
+// code
+$code-block-font-size: 0.6em;
 
 /*-- scss:rules --*/
 
 .reveal table {
   font-size: 0.6em;
+}
+
+.reveal h2 {
+  margin-top: -0.3em;
+  margin-bottom: 0.8em;
 }
