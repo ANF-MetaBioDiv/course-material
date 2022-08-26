@@ -1,0 +1,365 @@
+---
+title: "Introduction to phyloseq"
+author: "Nicolas Henry"
+format:
+  revealjs:
+    slide-number: true
+    theme: ../simple_nico.scss
+editor: visual
+---
+
+```{r}
+#| include: false
+input_dir <- here::here("outputs","dada2","asv_table")
+
+asv_table <- read.table(file = file.path(input_dir, "asv_table.tsv"),
+                        header = TRUE,
+                        sep = "\t",
+                        row.names = 1)
+
+taxonomy <- read.table(file = file.path(input_dir, "taxonomy.tsv"),
+                        header = TRUE,
+                        sep = "\t",
+                        row.names = 1)
+
+asv_seq <- Biostrings::readDNAStringSet(
+  filepath = file.path(input_dir, "asv.fasta"),
+  format = "fasta"
+)
+
+context <- read.table(here::here("data",
+                                 "context",
+                                 "mapfileFA.txt"),
+                      header = TRUE,
+                      row.names = 1)
+```
+
+## ASV table
+
+```{r}
+head(asv_table, n = 10) |> knitr::kable()
+```
+
+## Information about one ASV
+
+* Taxonomy
+```{r}
+#| echo: true
+#| eval: false
+taxonomy[1,]
+```
+
+```{r}
+taxonomy[1,] |> knitr::kable()
+```
+
+* Sequence
+```{r}
+#| echo: true
+asv_seq[["8e57b5813bc7e9f8e856bee05e4dfc9461d3ab0d"]]
+```
+
+## Information about the samples
+
+```{r}
+head(context, n = 10) |> knitr::kable()
+```
+
+# A fasta file of Cyanobacteria ASVs found in south samples?
+
+## Subset samples
+
+```{r}
+#| echo: true
+#| eval: false
+south_context <- subset(context, Geo == "South")
+```
+
+<br>
+
+:::{.fragment}
+```{r}
+south_context <- subset(context, Geo == "South")
+head(south_context) |> knitr::kable()
+```
+:::
+
+<br>
+
+:::{.fragment}
+```{r}
+#| echo: true
+#| eval: false
+south_samples <- row.names(south_context)
+```
+
+```{r}
+south_samples <- row.names(south_context)
+```
+:::
+
+## Which ASVs are Cyanobacteria?
+
+```{r}
+#| echo: true
+#| eval: false
+cyano_taxo <- subset(taxonomy, Phylum == "Cyanobacteria")
+```
+
+<br>
+
+```{r}
+cyano_taxo <- subset(taxonomy, Phylum == "Cyanobacteria")
+head(cyano_taxo, n = 4) |> knitr::kable()
+```
+
+<br>
+
+:::{.fragment}
+```{r}
+#| echo: true
+cyano_asvs <- row.names(cyano_taxo)
+```
+:::
+
+## Subset asv table
+```{r}
+#| echo: true
+#| eval: false
+asv_table_cyano <- asv_table[cyano_asvs,south_samples]
+```
+
+<br>
+
+```{r}
+asv_table_cyano <- asv_table[cyano_asvs,south_samples]
+knitr::kable(asv_table_cyano)
+```
+
+## Cyanobacteria present in south samples
+
+```{r}
+#| echo: true
+#| eval: false
+cyano_total <- apply(asv_table_cyano, 1, sum)
+```
+
+<br>
+
+```{r}
+cyano_total <- apply(asv_table_cyano, 1, sum)
+data.frame(total = cyano_total)
+```
+
+<br>
+
+```{r}
+#| echo: true
+cyano_subset <- names(cyano_total)[cyano_total > 0]
+```
+
+## Exract sequences
+
+```{r}
+#| echo: true
+#| eval: false
+asv_seq_cyano <- asv_seq[cyano_subset]
+```
+
+<br>
+
+```{r}
+asv_seq_cyano <- asv_seq[cyano_subset]
+
+cat(paste0(">", names(asv_seq_cyano), "\n", asv_seq_cyano),
+    sep = "\n")
+```
+
+## Go fancy with a phylogenetic tree
+
+```{r}
+#| fig-align: center
+
+DECIPHER::AlignSeqs(asv_seq_cyano,verbose = FALSE) |>
+  as.matrix() |>
+  phangorn::phyDat(type = "DNA") |>
+  phangorn::dist.ml() |>
+  phangorn::NJ() |>
+  plot()
+```
+
+## A complex data structure
+
+```{dot}
+//| fig-width: 8
+graph G {
+  layout = dot
+  overlap = flase
+  "ASV table\n(abundance information)" -- {"Samples\ncontextual data","Sequences"};
+  "Sequences" -- {"Taxonomy","Phylogenetic tree"};
+}
+```
+
+# Could it be easier?
+
+# yes!
+
+## The phyloseq package
+
+![](../img/phyloseq_pone_fig1.png){fig-align="center"}
+
+::: aside
+https://doi.org/10.1371/journal.pone.0061217.g001
+:::
+
+## phyloseq workflow
+
+![](../img/phyloseq_pone_fig2.png){fig-align="center" height="500"}
+
+::: aside
+https://doi.org/10.1371/journal.pone.0061217.g002
+:::
+
+## phyloseq object
+
+![](../img/phyloseq_pone_fig3.png){fig-align="center"}
+
+::: aside
+https://doi.org/10.1371/journal.pone.0061217.g003
+:::
+
+## Create our phyloseq object
+
+```{r}
+#| echo: true
+#| eval: false
+
+library(phyloseq)
+
+physeq <- phyloseq(
+  otu_table(asv_table,taxa_are_rows = TRUE),
+  tax_table(as.matrix(taxonomy)),
+  sample_data(context),
+  refseq(asv_seq),
+  phy_tree(asv_tree)
+)
+```
+
+<br>
+
+```{r}
+DECIPHER::AlignSeqs(asv_seq,verbose = FALSE) |>
+  as.matrix() |>
+  phangorn::phyDat(type = "DNA") |>
+  phangorn::dist.ml() |>
+  phangorn::NJ() -> asv_tree
+
+
+library(phyloseq)
+
+physeq <- phyloseq(
+  otu_table(asv_table,taxa_are_rows = TRUE),
+  tax_table(as.matrix(taxonomy)),
+  sample_data(context),
+  refseq(asv_seq),
+  phy_tree(asv_tree)
+)
+
+physeq
+```
+
+## Redo our selection{auto-animate="true"}
+
+```{r}
+physeq
+```
+
+<br>
+
+```{r}
+#| echo: true
+#| eval: false
+subset_taxa(physeq,Phylum == "Cyanobacteria")
+```
+
+<br>
+
+```{r}
+subset_taxa(physeq,Phylum == "Cyanobacteria")
+```
+
+## Redo our selection{auto-animate="true"}
+
+```{r}
+physeq
+```
+
+<br>
+
+```{r}
+#| echo: true
+#| eval: false
+subset_taxa(physeq,Phylum == "Cyanobacteria") |>
+  subset_samples(Geo == "South") 
+```
+
+<br>
+
+```{r}
+subset_taxa(physeq,Phylum == "Cyanobacteria") |>
+  subset_samples(Geo == "South")
+```
+
+## Redo our selection{auto-animate="true"}
+
+```{r}
+physeq
+```
+
+<br>
+
+```{r}
+#| echo: true
+#| eval: false
+subset_taxa(physeq,Phylum == "Cyanobacteria") |>
+  subset_samples(Geo == "South") |>
+  filter_taxa(function(x) sum(x) > 0, prune = TRUE)
+```
+
+<br>
+
+```{r}
+subset_taxa(physeq,Phylum == "Cyanobacteria") |>
+  subset_samples(Geo == "South") |>
+  filter_taxa(function(x) sum(x) > 0, prune = TRUE)
+```
+
+## Redo our selection{auto-animate="true"}
+
+```{r}
+#| echo: true
+#| eval: false
+subset_taxa(physeq,Phylum == "Cyanobacteria") |>
+  subset_samples(Geo == "South") |>
+  filter_taxa(function(x) sum(x) > 0, prune = TRUE) |>
+  plot_bar(fill="Genus")
+```
+
+<br>
+
+```{r}
+#| fig-align: center
+#| fig-height: 5
+subset_taxa(physeq,Phylum == "Cyanobacteria") |>
+  subset_samples(Geo == "South") |>
+  filter_taxa(function(x) sum(x) > 0, prune = TRUE) |>
+  plot_bar(fill="Genus")
+```
+
+## phyloseq in this course
+
+* [Create](/practicals/preprocessing_phyloseq.html) a phyloseq object from your data
+* [Explore](/practicals/alpha_diversity.html#taxonomy-barplot-graph) the taxonomic composition of your communities
+* [Compare](/practicals/beta_diversity.html#visualisation) communities composition with ordinations
+
+# Now it is your turn!

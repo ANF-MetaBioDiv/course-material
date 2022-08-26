@@ -1,8 +1,14 @@
 project:
   type: website
   render: 
-    - "*.Rmd"
-    - "*.qmd"
+    - "index.qmd"
+    - "about.qmd"
+    - "/courses/dada2.qmd"
+    - "/practicals/preprocessing_dada2.Rmd"
+    - "/courses/phyloseq.qmd"
+    - "/practicals/preprocessing_phyloseq.Rmd"
+    - "/practicals/alpha_diversity.Rmd"
+    - "/practicals/beta_diversity.Rmd"
 execute:
   freeze: auto  # re-render only when source changes
 website:
