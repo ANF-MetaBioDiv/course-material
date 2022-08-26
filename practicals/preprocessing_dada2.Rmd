@@ -128,11 +128,11 @@ R1 for forward reads and R2 for reverse reads.
 ```{r}
 fnFs <- sort(list.files(path_to_fastqs,
                         pattern = "_R1.fastq.gz",
-                        full.names = TRUE))[1:2]
+                        full.names = TRUE))
 
 fnRs <- sort(list.files(path_to_fastqs,
                         pattern = "_R2.fastq.gz",
-                        full.names = TRUE))[1:2]
+                        full.names = TRUE))
 ```
 
 **To understand: What fnFs & fnRs variables contain?**
@@ -366,7 +366,7 @@ seqtab <- dada2::makeSequenceTable(mergers)
 ## Remove Chimera
 
 ```{r}
-seqtab.nochim <- dada2::removeBimeraDenovo(seqtab,
+seqtab_nochim <- dada2::removeBimeraDenovo(seqtab,
                                            method = "consensus",
                                            multithread = TRUE,
                                            verbose = TRUE)
@@ -382,8 +382,8 @@ track <- data.frame(input = out[, 1],
                     denoisedF = sapply(dadaFs, getN),
                     denoisedR = sapply(dadaRs, getN),
                     merged = sapply(mergers, getN),
-                    nonchim = rowSums(seqtab.nochim),
-                    perc_retained = rowSums(seqtab.nochim)/out[,1]*100)
+                    nonchim = rowSums(seqtab_nochim),
+                    perc_retained = rowSums(seqtab_nochim)/out[,1]*100)
 
 rownames(track) <- sample.names
 
@@ -397,7 +397,7 @@ The taxonomic assignment can be achieved using the functions
 
 ```{r}
 taxonomy <- dada2::assignTaxonomy(
-  seqs = seqtab.nochim,
+  seqs = seqtab_nochim,
   refFasta = silva_train_set,
   taxLevels = c("Kingdom", "Phylum", "Class",
                 "Order", "Family", "Genus",
@@ -420,7 +420,7 @@ export_folder <- here::here("outputs", "dada2", "asv_table")
 
 if (!dir.exists(export_folder)) dir.create(export_folder)
 
-saveRDS(object = seqtab.nochim,
+saveRDS(object = seqtab_nochim,
         file = file.path(export_folder, "seqtab_nochim.rds"))
 
 saveRDS(object = taxonomy,
@@ -430,20 +430,42 @@ saveRDS(object = taxonomy,
 ### Text files
 
 ```{r}
-taxo_export <- apply(taxonomy, 1, paste, collapse=";")
-seqtab_export <- t(seqtab.nochim)
+asv_seq <- colnames(seqtab_nochim)
+```
 
-seqtab_export <- merge(x = taxo_export,
-      y = seqtab_export,
-      by = 0,
-      all.x = TRUE,
-      sort = FALSE)
+```{r}
+asv_id <- sapply(asv_seq,
+                 function(x) unname(digest::digest(x, algo = "sha1")))
+```
 
-colnames(seqtab_export)[1:2] <- c("sequence", "taxonomy")
+```{r}
+row.names(taxonomy) <- colnames(seqtab_nochim) <- names(asv_seq) <- asv_id
+```
 
-write.table(seqtab_export,
+```{r}
+taxonomy <- df_export(taxonomy, new_rn = "asv")
+
+write.table(taxonomy,
+            file = file.path(export_folder, "taxonomy.tsv"),
+            quote = FALSE,
+            sep = "\t",
+            row.names = FALSE)
+```
+
+```{r}
+seqtab_nochim <- t(seqtab_nochim)
+
+seqtab_nochim <- df_export(seqtab_nochim, new_rn = "asv")
+
+write.table(seqtab_nochim,
             file = file.path(export_folder, "asv_table.tsv"),
             quote = FALSE,
             sep = "\t",
             row.names = FALSE)
+```
+
+```{r}
+cat(paste0(">", names(asv_seq), "\n", asv_seq),
+    sep = "\n",
+    file = file.path(export_folder, "asv.fasta"))
 ```
