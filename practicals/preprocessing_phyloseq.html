@@ -10,7 +10,7 @@
 <meta name="author" content="Marc Garel, MIO">
 <meta name="dcterms.date" content="2022-08-01">
 
-<title>ANF metabarcoding - Preprocessing : phyloseq</title>
+<title>ANF MetaBioDiv - Preprocessing : phyloseq</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -130,7 +130,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <nav class="navbar navbar-expand-lg navbar-dark ">
       <div class="navbar-container container-fluid">
       <a class="navbar-brand" href="../index.html">
-    <span class="navbar-title">ANF metabarcoding</span>
+    <span class="navbar-title">ANF MetaBioDiv</span>
   </a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
@@ -147,6 +147,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
         <li>
     <a class="dropdown-item" href="../courses/dada2.html">
  <span class="dropdown-text">Analysing metabarcoding data with dada2</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../courses/phyloseq.html">
+ <span class="dropdown-text">Introduction to phyloseq</span></a>
   </li>  
         <li class="dropdown-header">Practicals</li>
         <li>
@@ -204,17 +208,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#get-a-phyloseq-object" id="toc-get-a-phyloseq-object" class="nav-link active" data-scroll-target="#get-a-phyloseq-object"> <span class="header-section-number">1</span> Get a phyloseq object</a>
+  <li><a href="#prepare-workspace" id="toc-prepare-workspace" class="nav-link active" data-scroll-target="#prepare-workspace"> <span class="header-section-number">1</span> Prepare workspace</a></li>
+  <li><a href="#get-a-phyloseq-object" id="toc-get-a-phyloseq-object" class="nav-link" data-scroll-target="#get-a-phyloseq-object"> <span class="header-section-number">2</span> Get a phyloseq object</a>
   <ul class="collapse">
-  <li><a href="#check-sample-file" id="toc-check-sample-file" class="nav-link" data-scroll-target="#check-sample-file"> <span class="header-section-number">1.1</span> Check sample file</a></li>
-  <li><a href="#assemble-asv-table-taxonomy-and-contextual-data" id="toc-assemble-asv-table-taxonomy-and-contextual-data" class="nav-link" data-scroll-target="#assemble-asv-table-taxonomy-and-contextual-data"> <span class="header-section-number">1.2</span> Assemble ASV table, taxonomy and contextual data</a></li>
+  <li><a href="#check-sample-file" id="toc-check-sample-file" class="nav-link" data-scroll-target="#check-sample-file"> <span class="header-section-number">2.1</span> Check sample file</a></li>
+  <li><a href="#assemble-asv-table-taxonomy-and-contextual-data" id="toc-assemble-asv-table-taxonomy-and-contextual-data" class="nav-link" data-scroll-target="#assemble-asv-table-taxonomy-and-contextual-data"> <span class="header-section-number">2.2</span> Assemble ASV table, taxonomy and contextual data</a></li>
   </ul></li>
-  <li><a href="#add-the-asv-sequences-to-your-phyloseq-object-change-asv-id" id="toc-add-the-asv-sequences-to-your-phyloseq-object-change-asv-id" class="nav-link" data-scroll-target="#add-the-asv-sequences-to-your-phyloseq-object-change-asv-id"> <span class="header-section-number">2</span> Add the ASV sequences to your Phyloseq object &amp; change ASV ID</a></li>
-  <li><a href="#xiii--phylogenetic-tree" id="toc-xiii--phylogenetic-tree" class="nav-link" data-scroll-target="#xiii--phylogenetic-tree"> <span class="header-section-number">3</span> <span style="color: steelblue;"><strong>XIII- Phylogenetic Tree</strong></span></a>
+  <li><a href="#add-phylogenetic-tree-optional" id="toc-add-phylogenetic-tree-optional" class="nav-link" data-scroll-target="#add-phylogenetic-tree-optional"> <span class="header-section-number">3</span> Add phylogenetic tree (optional)</a>
   <ul class="collapse">
-  <li><a href="#alignment-by-decipher" id="toc-alignment-by-decipher" class="nav-link" data-scroll-target="#alignment-by-decipher"> <span class="header-section-number">3.1</span> <strong>Alignment by DECIPHER</strong></a></li>
-  <li><a href="#transformed-by-phydat-for-distance-matrixtree" id="toc-transformed-by-phydat-for-distance-matrixtree" class="nav-link" data-scroll-target="#transformed-by-phydat-for-distance-matrixtree"> <span class="header-section-number">3.2</span> <strong>Transformed by Phydat for distance matrix/tree</strong></a></li>
+  <li><a href="#alignment-using-decipher" id="toc-alignment-using-decipher" class="nav-link" data-scroll-target="#alignment-using-decipher"> <span class="header-section-number">3.1</span> Alignment using DECIPHER</a></li>
+  <li><a href="#infering-the-phylogenetic-tree" id="toc-infering-the-phylogenetic-tree" class="nav-link" data-scroll-target="#infering-the-phylogenetic-tree"> <span class="header-section-number">3.2</span> Infering the phylogenetic tree</a></li>
   </ul></li>
+  <li><a href="#extract-information-from-a-phyloseq-object" id="toc-extract-information-from-a-phyloseq-object" class="nav-link" data-scroll-target="#extract-information-from-a-phyloseq-object"> <span class="header-section-number">4</span> Extract information from a phyloseq object</a></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/nhenry50/ANF-metabarcoding/edit/main/practicals/preprocessing_phyloseq.Rmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/nhenry50/ANF-metabarcoding/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
@@ -250,181 +255,374 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
+<section id="prepare-workspace" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Prepare workspace</h1>
+<p>Load <code>phyloseq</code></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(phyloseq)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>We import the ASV table, the taxonomy and the sequences from the text files we exported in the <a href="../practicals/preprocessing_dada2.html#export-asv-table">dada2 practical</a></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>asv_table <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"outputs"</span>,</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"dada2"</span>,</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"asv_table"</span>,</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"seqtab_nochim.rds"</span>))</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>taxonomy <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"outputs"</span>,</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>                               <span class="st">"dada2"</span>,</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>                               <span class="st">"asv_table"</span>,</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>                               <span class="st">"taxonomy.rds"</span>))</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>context <span class="ot">&lt;-</span> <span class="fu">read.table</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>,</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>                                 <span class="st">"context"</span>,</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>                                 <span class="st">"mapfileFA.txt"</span>),</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>                      <span class="at">header =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>                      <span class="at">row.names =</span> <span class="dv">1</span>)</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(context)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>      Geo Description groupe Pres PicoEuk Synec Prochloro NanoEuk Crypto SiOH4
-S1B North     North1B    NBF   52     660 32195     10675     955    115 1.813
-S2B North     North2B    NBF   59     890 25480     16595     670    395 2.592
-S2S North     North2S    NBS    0     890 25480     16595     670    395 3.381
-S3B North     North3B    NBF   74     835 13340     25115    1115    165 1.438
-S3S North     North3S    NBS    0     715 26725     16860     890    200 1.656
-S4B North     North4B    NBF   78    2220  3130     29835    2120    235 2.457
-      NO2   NO3   NH4   PO4    NT    PT Chla       T       S Sigma_t
-S1B 0.256 0.889 0.324 0.132 9.946 3.565    0 22.7338 37.6204 26.0046
-S2B 0.105 1.125 0.328 0.067 9.378 3.391    0 22.6824 37.6627 26.0521
-S2S 0.231 0.706 0.450 0.109 8.817 3.345    0 22.6854 37.6176 26.0137
-S3B 0.057 1.159 0.369 0.174 8.989 2.568    0 21.5296 37.5549 26.2987
-S3S 0.098 0.794 0.367 0.095 7.847 2.520    0 22.5610 37.5960 26.0332
-S4B 0.099 1.087 0.349 0.137 8.689 3.129    0 18.8515 37.4542 26.9415</code></pre>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>input_dir <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"outputs"</span>, <span class="st">"dada2"</span>, <span class="st">"asv_table"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>asv_table <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="at">file =</span> <span class="fu">file.path</span>(input_dir, <span class="st">"asv_table.tsv"</span>),</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>                        <span class="at">header =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>                        <span class="at">sep =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>                        <span class="at">row.names =</span> <span class="dv">1</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>taxonomy <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="at">file =</span> <span class="fu">file.path</span>(input_dir, <span class="st">"taxonomy.tsv"</span>),</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>                        <span class="at">header =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>                        <span class="at">sep =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>,</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>                        <span class="at">row.names =</span> <span class="dv">1</span>)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>asv_seq <span class="ot">&lt;-</span> Biostrings<span class="sc">::</span><span class="fu">readDNAStringSet</span>(</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">filepath =</span> <span class="fu">file.path</span>(input_dir, <span class="st">"asv.fasta"</span>),</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">format =</span> <span class="st">"fasta"</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</div>
+<p>We will also need some information about the samples.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>asv_seq <span class="ot">&lt;-</span> <span class="fu">colnames</span>(asv_table)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>asv_id <span class="ot">&lt;-</span> <span class="fu">sapply</span>(asv_seq,</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>                 <span class="cf">function</span>(x) digest<span class="sc">::</span><span class="fu">digest</span>(x, <span class="at">algo =</span> <span class="st">"sha1"</span>)) <span class="sc">|&gt;</span> <span class="fu">unname</span>()</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">row.names</span>(taxonomy) <span class="ot">&lt;-</span> <span class="fu">colnames</span>(asv_table) <span class="ot">&lt;-</span> <span class="fu">names</span>(asv_seq) <span class="ot">&lt;-</span> asv_id</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>context <span class="ot">&lt;-</span> <span class="fu">read.table</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>,</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>                                 <span class="st">"context"</span>,</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>                                 <span class="st">"mapfileFA.txt"</span>),</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>                      <span class="at">header =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>                      <span class="at">row.names =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<section id="get-a-phyloseq-object" class="level1" data-number="1">
-<h1 data-number="1"><span class="header-section-number">1</span> Get a phyloseq object</h1>
-<section id="check-sample-file" class="level2" data-number="1.1">
-<h2 data-number="1.1" class="anchored" data-anchor-id="check-sample-file"><span class="header-section-number">1.1</span> Check sample file</h2>
-<p>Make sure sample names are the same as in the ASV table</p>
+</section>
+<section id="get-a-phyloseq-object" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Get a phyloseq object</h1>
+<section id="check-sample-file" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="check-sample-file"><span class="header-section-number">2.1</span> Check sample file</h2>
+<p>Make sure sample names in the ASV table…</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">row.names</span>(context)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code> [1] "S1B"  "S2B"  "S2S"  "S3B"  "S3S"  "S4B"  "S4S"  "S5B"  "S5S"  "S6B" 
-[11] "S6S"  "S7B"  "S7S"  "S8B"  "S8S"  "S9B"  "S9S"  "S11B"</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">row.names</span>(asv_table)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(asv_table) <span class="sc">|&gt;</span> <span class="fu">sort</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] "S11B" "S1B"  "S2B"  "S2S"  "S3B"  "S3S"  "S4B"  "S4S"  "S5B"  "S5S" 
 [11] "S6B"  "S6S"  "S7B"  "S7S"  "S8B"  "S8S"  "S9B"  "S9S" </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">setdiff</span>(<span class="fu">row.names</span>(asv_table), <span class="fu">row.names</span>(context))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>match sample table ids.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">row.names</span>(context) <span class="sc">|&gt;</span> <span class="fu">sort</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "S11B" "S1B"  "S2B"  "S2S"  "S3B"  "S3S"  "S4B"  "S4S"  "S5B"  "S5S" 
+[11] "S6B"  "S6S"  "S7B"  "S7S"  "S8B"  "S8S"  "S9B"  "S9S" </code></pre>
+</div>
+</div>
+<p>You can do it in a more formal way using the function <code>setdiff()</code>. This function returns the elements of <code>x</code> not present in <code>y</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">setdiff</span>(<span class="at">x =</span> <span class="fu">colnames</span>(asv_table),</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> <span class="fu">row.names</span>(context))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>character(0)</code></pre>
 </div>
 </div>
+<p>Perfect! The ASV table sample names match with the contextual data table.</p>
 </section>
-<section id="assemble-asv-table-taxonomy-and-contextual-data" class="level2" data-number="1.2">
-<h2 data-number="1.2" class="anchored" data-anchor-id="assemble-asv-table-taxonomy-and-contextual-data"><span class="header-section-number">1.2</span> Assemble ASV table, taxonomy and contextual data</h2>
+<section id="assemble-asv-table-taxonomy-and-contextual-data" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="assemble-asv-table-taxonomy-and-contextual-data"><span class="header-section-number">2.2</span> Assemble ASV table, taxonomy and contextual data</h2>
+<p>Use the <code>phyloseq::phyloseq()</code> function to create a phyloseq object. A phyloseq object is usualy composed by an ASV table, a taxonomy table and a table describing the samples. You can also add ASV sequences and a <a href="#add-phylogenetic-tree-optional">phylogenetic tree</a></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>physeq <span class="ot">&lt;-</span> phyloseq<span class="sc">::</span><span class="fu">phyloseq</span>(</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  phyloseq<span class="sc">::</span><span class="fu">otu_table</span>(asv_table, <span class="at">taxa_are_rows =</span> <span class="cn">FALSE</span>),</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  phyloseq<span class="sc">::</span><span class="fu">tax_table</span>(taxonomy),</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>                 <span class="fu">sample_data</span>(context))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>physeq <span class="ot">&lt;-</span> phyloseq<span class="sc">::</span><span class="fu">phyloseq</span>(</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  phyloseq<span class="sc">::</span><span class="fu">otu_table</span>(asv_table, <span class="at">taxa_are_rows =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  phyloseq<span class="sc">::</span><span class="fu">tax_table</span>(<span class="fu">as.matrix</span>(taxonomy)),</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  phyloseq<span class="sc">::</span><span class="fu">sample_data</span>(context),</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  phyloseq<span class="sc">::</span><span class="fu">refseq</span>(asv_seq)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
-<section id="add-the-asv-sequences-to-your-phyloseq-object-change-asv-id" class="level1" data-number="2">
-<h1 data-number="2"><span class="header-section-number">2</span> Add the ASV sequences to your Phyloseq object &amp; change ASV ID</h1>
+<section id="add-phylogenetic-tree-optional" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Add phylogenetic tree (optional)</h1>
+<p>NB: This step can be skipped if too many ASVs.</p>
+<section id="alignment-using-decipher" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="alignment-using-decipher"><span class="header-section-number">3.1</span> Alignment using DECIPHER</h2>
+<p>Before reconstructing a phylogenetic tree we need to align the ASVs sequences.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>nucl <span class="ot">&lt;-</span> Biostrings<span class="sc">::</span><span class="fu">DNAStringSet</span>(asv_seq)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>physeq <span class="ot">&lt;-</span> <span class="fu">merge_phyloseq</span>(physeq, nucl)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>aln <span class="ot">&lt;-</span> <span class="fu">refseq</span>(physeq) <span class="sc">|&gt;</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  DECIPHER<span class="sc">::</span><span class="fu">AlignSeqs</span>(<span class="at">anchor =</span> <span class="cn">NA</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Once it is done, you can visualise the alignment using the function <code>DECIPHER::BrowseSeqs()</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>DECIPHER<span class="sc">::</span><span class="fu">BrowseSeqs</span>(aln, <span class="at">highlight =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="xiii--phylogenetic-tree" class="level1" data-number="3">
-<h1 data-number="3"><span class="header-section-number">3</span> <span style="color: steelblue;"><strong>XIII- Phylogenetic Tree</strong></span></h1>
-<p>NB: This step can be skipped if you have some problems to perform it or to many ASVs.</p>
-<section id="alignment-by-decipher" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="alignment-by-decipher"><span class="header-section-number">3.1</span> <strong>Alignment by DECIPHER</strong></h2>
+<section id="infering-the-phylogenetic-tree" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="infering-the-phylogenetic-tree"><span class="header-section-number">3.2</span> Infering the phylogenetic tree</h2>
+<p>We will infer a phylogenetic from our alignement using the library <code>phangorn</code>.</p>
+<p>First, let’s convert our <code>DNAStringSet</code> alignment to the <code>phangorn</code> <code>phyDat</code> format.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>aln <span class="ot">&lt;-</span> DECIPHER<span class="sc">::</span><span class="fu">AlignSeqs</span>(<span class="fu">refseq</span>(physeq), <span class="at">anchor =</span> <span class="cn">NA</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Determining distance matrix based on shared 8-mers:
-================================================================================
-
-Time difference of 0.5 secs
-
-Clustering into groups by similarity:
-================================================================================
-
-Time difference of 0.03 secs
-
-Aligning Sequences:
-================================================================================
-
-Time difference of 2.09 secs
-
-Iteration 1 of 2:
-
-Determining distance matrix based on alignment:
-================================================================================
-
-Time difference of 0.04 secs
-
-Reclustering into groups by similarity:
-================================================================================
-
-Time difference of 0.04 secs
-
-Realigning Sequences:
-================================================================================
-
-Time difference of 0.94 secs
-
-Iteration 2 of 2:
-
-Determining distance matrix based on alignment:
-================================================================================
-
-Time difference of 0.04 secs
-
-Reclustering into groups by similarity:
-================================================================================
-
-Time difference of 0.04 secs
-
-Realigning Sequences:
-================================================================================
-
-Time difference of 0.22 secs</code></pre>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>phang_align <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(aln) <span class="sc">|&gt;</span> phangorn<span class="sc">::</span><span class="fu">phyDat</span>(<span class="at">type =</span> <span class="st">"DNA"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">#See alignment</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>DECIPHER<span class="sc">::</span><span class="fu">BrowseSeqs</span>(aln, <span class="at">highlight=</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Then, we compute pairwise distances of our aligned sequences using equal base frequencies (JC69 model used by default).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>dm <span class="ot">&lt;-</span> phangorn<span class="sc">::</span><span class="fu">dist.ml</span>(phang_align, <span class="at">model =</span> <span class="st">"JC69"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Finally, we reconstruct a neighbour joining tree.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>treeNJ <span class="ot">&lt;-</span> phangorn<span class="sc">::</span><span class="fu">NJ</span>(dm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Other approaches to reconstruct a phylogenetic tree exist. If you want to try them with <code>phangorn</code>, have a look <a href="https://cran.r-project.org/web/packages/phangorn/vignettes/Trees.html">here</a></p>
+<p>We need the tree to be rooted for future analysis. We can do that using the function <code>phangorn::midpoint()</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>treeNJ <span class="ot">&lt;-</span> phangorn<span class="sc">::</span><span class="fu">midpoint</span>(<span class="at">tree =</span> treeNJ)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Once we have a rooted tree, we can add it to the phyloseq object.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>physeq <span class="ot">&lt;-</span> phyloseq<span class="sc">::</span><span class="fu">merge_phyloseq</span>(physeq,treeNJ)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="transformed-by-phydat-for-distance-matrixtree" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="transformed-by-phydat-for-distance-matrixtree"><span class="header-section-number">3.2</span> <strong>Transformed by Phydat for distance matrix/tree</strong></h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>phang.align <span class="ot">&lt;-</span> phangorn<span class="sc">::</span><span class="fu">phyDat</span>(<span class="fu">as</span>(aln, <span class="st">"matrix"</span>), <span class="at">type=</span><span class="st">"DNA"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
+</section>
+<section id="extract-information-from-a-phyloseq-object" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Extract information from a phyloseq object</h1>
 <ul>
-<li><h3 id="build-distance-matrix" data-number="3.2.1" class="anchored"><span class="header-section-number">3.2.1</span> <strong>Build distance matrix</strong></h3></li>
+<li><strong>Get the total number of ASVs</strong></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Distance matrix</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>dm <span class="ot">&lt;-</span> phangorn<span class="sc">::</span><span class="fu">dist.ml</span>(phang.align)</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co">#NJ tree </span></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>treeNJ <span class="ot">&lt;-</span> phangorn<span class="sc">::</span><span class="fu">NJ</span>(dm)</span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="co">#root</span></span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>treeNJ<span class="ot">&lt;-</span> phangorn<span class="sc">::</span><span class="fu">midpoint</span>(<span class="at">tree =</span> treeNJ)</span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>physeq <span class="ot">&lt;-</span> <span class="fu">merge_phyloseq</span>(physeq, treeNJ)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>phyloseq<span class="sc">::</span><span class="fu">ntaxa</span>(physeq)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 155</code></pre>
 </div>
+</div>
+<ul>
+<li><strong>Get the total number of samples</strong></li>
+</ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_bar</span>(physeq, <span class="at">fill =</span> <span class="st">"Class"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>phyloseq<span class="sc">::</span><span class="fu">nsamples</span>(physeq)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 18</code></pre>
+</div>
+</div>
+<ul>
+<li><strong>Get sample names</strong></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>phyloseq<span class="sc">::</span><span class="fu">sample_names</span>(physeq)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "S11B" "S1B"  "S2B"  "S2S"  "S3B"  "S3S"  "S4B"  "S4S"  "S5B"  "S5S" 
+[11] "S6B"  "S6S"  "S7B"  "S7S"  "S8B"  "S8S"  "S9B"  "S9S" </code></pre>
+</div>
+</div>
+<ul>
+<li><strong>Get ASV identification</strong></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>phyloseq<span class="sc">::</span><span class="fu">taxa_names</span>(physeq) <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "8e57b5813bc7e9f8e856bee05e4dfc9461d3ab0d"
+[2] "75ca2ab3b10206afb2a3fec2fa754eed9c74a10f"
+[3] "7636c4b6a068bda08f8403aa30257c8bb0e600a1"
+[4] "da30b71ca1d8c9535e53e7625851ed01643cecab"
+[5] "9afe9ffe57ea2823eeac848b4298d427a7c6f3d2"
+[6] "ab1fe7bea9d0c4e38d145e8b804f46ec19d91a75"</code></pre>
+</div>
+</div>
+<ul>
+<li><strong>Get the names of variables in sam_data</strong></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>phyloseq<span class="sc">::</span><span class="fu">sample_variables</span>(physeq)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "Geo"         "Description" "groupe"      "Pres"        "PicoEuk"    
+ [6] "Synec"       "Prochloro"   "NanoEuk"     "Crypto"      "SiOH4"      
+[11] "NO2"         "NO3"         "NH4"         "PO4"         "NT"         
+[16] "PT"          "Chla"        "T"           "S"           "Sigma_t"    </code></pre>
+</div>
+</div>
+<ul>
+<li><strong>Display all variables with values</strong></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>phyloseq<span class="sc">::</span><span class="fu">get_variable</span>(physeq)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       Geo Description groupe Pres PicoEuk Synec Prochloro NanoEuk Crypto SiOH4
+S11B South     South5B    SGF   35    5370 46830       580    6010   1690 3.324
+S1B  North     North1B    NBF   52     660 32195     10675     955    115 1.813
+S2B  North     North2B    NBF   59     890 25480     16595     670    395 2.592
+S2S  North     North2S    NBS    0     890 25480     16595     670    395 3.381
+S3B  North     North3B    NBF   74     835 13340     25115    1115    165 1.438
+S3S  North     North3S    NBS    0     715 26725     16860     890    200 1.656
+S4B  North     North4B    NBF   78    2220  3130     29835    2120    235 2.457
+S4S  North     North4S    NBS   78    2220  3130     29835    2120    235 2.457
+S5B  North     North5B    NBF   42    1620 55780     23795    2555   1355 2.028
+S5S  North     North5S    NBS    0    1620 56555     22835    2560    945 2.669
+S6B  South     South1B    SGF   13    2520 39050       705    3630   1295 2.206
+S6S  South     South1S    SGS    0    2435 35890       915    3735   1300 3.004
+S7B  South     South2B    SGF   26       0     0         0    4005   1600 3.016
+S7S  South     South2S    SGS    0    4535 26545      1340    6585   1355 1.198
+S8B  South     South3B    SGF   33       0     0         0    5910   1590 3.868
+S8S  South     South3S    SGS    0    4260 36745       985    5470   2265 3.639
+S9B  South     South4B    SGF   25    4000 31730       485    4395   1180 3.910
+S9S  South     South4S    SGS    0    5465 32860       820    5045   1545 3.607
+       NO2   NO3   NH4   PO4    NT    PT   Chla       T       S Sigma_t
+S11B 0.083 0.756 0.467 0.115 9.539 4.138 0.0182 23.0308 38.9967 26.9631
+S1B  0.256 0.889 0.324 0.132 9.946 3.565 0.0000 22.7338 37.6204 26.0046
+S2B  0.105 1.125 0.328 0.067 9.378 3.391 0.0000 22.6824 37.6627 26.0521
+S2S  0.231 0.706 0.450 0.109 8.817 3.345 0.0000 22.6854 37.6176 26.0137
+S3B  0.057 1.159 0.369 0.174 8.989 2.568 0.0000 21.5296 37.5549 26.2987
+S3S  0.098 0.794 0.367 0.095 7.847 2.520 0.0000 22.5610 37.5960 26.0332
+S4B  0.099 1.087 0.349 0.137 8.689 3.129 0.0000 18.8515 37.4542 26.9415
+S4S  0.099 1.087 0.349 0.137 8.689 3.129 0.0000 18.8515 37.4542 26.9415
+S5B  0.103 1.135 0.216 0.128 8.623 3.137 0.0102 24.1905 38.3192 26.1037
+S5S  0.136 0.785 0.267 0.114 9.146 3.062 0.0000 24.1789 38.3213 26.1065
+S6B  0.249 0.768 0.629 0.236 9.013 3.455 0.0000 22.0197 39.0877 27.3241
+S6S  0.251 0.927 0.653 0.266 8.776 3.230 0.0134 22.0515 39.0884 27.3151
+S7B  0.157 0.895 0.491 0.176 8.968 4.116 0.0000 23.6669 38.9699 26.7536
+S7S  0.165 1.099 0.432 0.180 8.256 3.182 0.0000 23.6814 38.9708 26.7488
+S8B  0.253 0.567 0.533 0.169 8.395 3.126 0.0000 23.1236 39.0054 26.9423
+S8S  0.255 0.658 0.665 0.247 8.991 3.843 0.0132 23.3147 38.9885 26.8713
+S9B  0.107 0.672 0.490 0.134 8.954 4.042 0.0172 22.6306 38.9094 27.0131
+S9S  0.139 0.644 0.373 0.167 9.817 3.689 0.0062 22.9545 38.7777 26.8172</code></pre>
+</div>
+</div>
+<ul>
+<li><strong>Sum the reads by sample</strong></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>phyloseq<span class="sc">::</span><span class="fu">sample_sums</span>(physeq)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>S11B  S1B  S2B  S2S  S3B  S3S  S4B  S4S  S5B  S5S  S6B  S6S  S7B  S7S  S8B  S8S 
+ 749  708  672  783  672  776  687  870  770  766  817  738  684  754  694  742 
+ S9B  S9S 
+ 650  746 </code></pre>
+</div>
+</div>
+<ul>
+<li><strong>Sum the reads by species/taxa/OTUs (for all samples)</strong></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>phyloseq<span class="sc">::</span><span class="fu">taxa_sums</span>(physeq) <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>8e57b5813bc7e9f8e856bee05e4dfc9461d3ab0d 
+                                    1363 
+75ca2ab3b10206afb2a3fec2fa754eed9c74a10f 
+                                     822 
+7636c4b6a068bda08f8403aa30257c8bb0e600a1 
+                                     709 
+da30b71ca1d8c9535e53e7625851ed01643cecab 
+                                     663 
+9afe9ffe57ea2823eeac848b4298d427a7c6f3d2 
+                                     611 
+ab1fe7bea9d0c4e38d145e8b804f46ec19d91a75 
+                                     554 </code></pre>
+</div>
+</div>
+<ul>
+<li><strong>Sort species/taxa/OTUs by number of reads</strong></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>phyloseq<span class="sc">::</span><span class="fu">taxa_sums</span>(physeq) <span class="sc">|&gt;</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sort</span>(<span class="at">decreasing =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>8e57b5813bc7e9f8e856bee05e4dfc9461d3ab0d 
+                                    1363 
+75ca2ab3b10206afb2a3fec2fa754eed9c74a10f 
+                                     822 
+7636c4b6a068bda08f8403aa30257c8bb0e600a1 
+                                     709 
+da30b71ca1d8c9535e53e7625851ed01643cecab 
+                                     663 
+9afe9ffe57ea2823eeac848b4298d427a7c6f3d2 
+                                     611 
+ab1fe7bea9d0c4e38d145e8b804f46ec19d91a75 
+                                     554 </code></pre>
+</div>
+</div>
+<p>Looking for the 2 last commands you can notice that dada2 has already ranked ASV… ASV1 the most abundant and after decreasing.</p>
+<ul>
+<li><strong>Get taxonomic ranks (useful for other commands)</strong></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>phyloseq<span class="sc">::</span><span class="fu">rank_names</span>(physeq)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Kingdom" "Phylum"  "Class"   "Order"   "Family"  "Genus"   "Species"</code></pre>
+</div>
+</div>
+<ul>
+<li><strong>Show abundance of a given ASV</strong></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>phyloseq<span class="sc">::</span><span class="fu">get_sample</span>(physeq, <span class="at">i =</span> <span class="st">"7636c4b6a068bda08f8403aa30257c8bb0e600a1"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>S11B  S1B  S2B  S2S  S3B  S3S  S4B  S4S  S5B  S5S  S6B  S6S  S7B  S7S  S8B  S8S 
+  22    0    0   66    8    0    0    0    0    0   68  236   86   32   46    7 
+ S9B  S9S 
+  82   56 </code></pre>
+</div>
+</div>
+<ul>
+<li><strong>Show ASVs and abundance for a given sample</strong></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>phyloseq<span class="sc">::</span><span class="fu">get_taxa</span>(physeq, <span class="at">i =</span> <span class="st">"S2B"</span>) <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>8e57b5813bc7e9f8e856bee05e4dfc9461d3ab0d 
+                                      40 
+75ca2ab3b10206afb2a3fec2fa754eed9c74a10f 
+                                      43 
+7636c4b6a068bda08f8403aa30257c8bb0e600a1 
+                                       0 
+da30b71ca1d8c9535e53e7625851ed01643cecab 
+                                       0 
+9afe9ffe57ea2823eeac848b4298d427a7c6f3d2 
+                                       0 
+ab1fe7bea9d0c4e38d145e8b804f46ec19d91a75 
+                                       0 </code></pre>
+</div>
+</div>
+<ul>
+<li><strong>Get phyla detected in your samples</strong></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>phyloseq<span class="sc">::</span><span class="fu">get_taxa_unique</span>(physeq, <span class="at">taxonomic.rank =</span> <span class="st">"Phylum"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "Cyanobacteria"                 "Proteobacteria"               
+ [3] "Thermoplasmatota"              "Actinobacteriota"             
+ [5] "Bacteroidota"                  "Dadabacteria"                 
+ [7] "SAR324 clade(Marine group B)"  "Verrucomicrobiota"            
+ [9] "Chloroflexi"                   "Marinimicrobia (SAR406 clade)"
+[11] "Desulfobacterota"             </code></pre>
+</div>
+</div>
+<p>If you do not remember the name of the taxonomic ranks in your phyloseq object</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rank_names</span>(physeq)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Kingdom" "Phylum"  "Class"   "Order"   "Family"  "Genus"   "Species"</code></pre>
+</div>
+</div>
+<ul>
+<li><strong>Number of ASVs per phylum</strong></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(phyloseq<span class="sc">::</span><span class="fu">tax_table</span>(physeq)[, <span class="st">"Phylum"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+             Actinobacteriota                  Bacteroidota 
+                           13                            13 
+                  Chloroflexi                 Cyanobacteria 
+                            3                             9 
+                 Dadabacteria              Desulfobacterota 
+                            2                             1 
+Marinimicrobia (SAR406 clade)                Proteobacteria 
+                            7                            82 
+ SAR324 clade(Marine group B)              Thermoplasmatota 
+                            2                            19 
+            Verrucomicrobiota 
+                            4 </code></pre>
+</div>
+</div>
+<p>You can also plot a barchart to visualise the results.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_bar</span>(physeq, <span class="at">fill =</span> <span class="st">"Phylum"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="preprocessing_phyloseq_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
-</div>
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_tree</span>(physeq, <span class="at">color =</span> <span class="st">"groupe"</span>, <span class="at">label.tips =</span> <span class="st">"Family"</span>, <span class="at">ladderize =</span> <span class="st">"left"</span>, <span class="at">justify =</span> <span class="st">"left"</span> , <span class="at">size =</span> <span class="st">"Abundance"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="preprocessing_phyloseq_files/figure-html/unnamed-chunk-11-2.png" class="img-fluid" width="672"></p>
+<p><img src="preprocessing_phyloseq_files/figure-html/unnamed-chunk-31-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+<p>More about plots in the alpha and beta diversity practicals.</p>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->

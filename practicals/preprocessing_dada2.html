@@ -10,7 +10,7 @@
 <meta name="author" content="Marc Garel, MIO">
 <meta name="dcterms.date" content="2022-08-01">
 
-<title>ANF metabarcoding - Preprocessing : dada2</title>
+<title>ANF MetaBioDiv - Preprocessing : dada2</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -130,7 +130,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <nav class="navbar navbar-expand-lg navbar-dark ">
       <div class="navbar-container container-fluid">
       <a class="navbar-brand" href="../index.html">
-    <span class="navbar-title">ANF metabarcoding</span>
+    <span class="navbar-title">ANF MetaBioDiv</span>
   </a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
@@ -147,6 +147,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
         <li>
     <a class="dropdown-item" href="../courses/dada2.html">
  <span class="dropdown-text">Analysing metabarcoding data with dada2</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../courses/phyloseq.html">
+ <span class="dropdown-text">Introduction to phyloseq</span></a>
   </li>  
         <li class="dropdown-header">Practicals</li>
         <li>
@@ -204,15 +208,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#prepare-your-working-space" id="toc-prepare-your-working-space" class="nav-link active" data-scroll-target="#prepare-your-working-space"> <span class="header-section-number">1</span> Prepare your working space</a>
+  <li><a href="#prepare-your-working-directory" id="toc-prepare-your-working-directory" class="nav-link active" data-scroll-target="#prepare-your-working-directory"> <span class="header-section-number">1</span> Prepare your working directory</a>
   <ul class="collapse">
-  <li><a href="#get-the-files" id="toc-get-the-files" class="nav-link" data-scroll-target="#get-the-files"> <span class="header-section-number">1.1</span> Get the files</a></li>
+  <li><a href="#get-the-repository-files" id="toc-get-the-repository-files" class="nav-link" data-scroll-target="#get-the-repository-files"> <span class="header-section-number">1.1</span> Get the repository files</a></li>
   <li><a href="#dowload-the-reference-database" id="toc-dowload-the-reference-database" class="nav-link" data-scroll-target="#dowload-the-reference-database"> <span class="header-section-number">1.2</span> Dowload the reference database</a></li>
   <li><a href="#attach-custom-functions" id="toc-attach-custom-functions" class="nav-link" data-scroll-target="#attach-custom-functions"> <span class="header-section-number">1.3</span> Attach custom functions</a></li>
   </ul></li>
-  <li><a href="#sequencing-files" id="toc-sequencing-files" class="nav-link" data-scroll-target="#sequencing-files"> <span class="header-section-number">2</span> Sequencing files</a>
+  <li><a href="#inputs-files" id="toc-inputs-files" class="nav-link" data-scroll-target="#inputs-files"> <span class="header-section-number">2</span> Inputs files</a>
   <ul class="collapse">
-  <li><a href="#list-of-sequencing-file-paths" id="toc-list-of-sequencing-file-paths" class="nav-link" data-scroll-target="#list-of-sequencing-file-paths"> <span class="header-section-number">2.1</span> List of sequencing file paths</a></li>
+  <li><a href="#locate-the-sequencing-files" id="toc-locate-the-sequencing-files" class="nav-link" data-scroll-target="#locate-the-sequencing-files"> <span class="header-section-number">2.1</span> Locate the sequencing files</a></li>
   <li><a href="#extract-sample-names" id="toc-extract-sample-names" class="nav-link" data-scroll-target="#extract-sample-names"> <span class="header-section-number">2.2</span> Extract sample names</a></li>
   </ul></li>
   <li><a href="#sequence-quality-check" id="toc-sequence-quality-check" class="nav-link" data-scroll-target="#sequence-quality-check"> <span class="header-section-number">3</span> Sequence quality check</a></li>
@@ -279,17 +283,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<section id="prepare-your-working-space" class="level1" data-number="1">
-<h1 data-number="1"><span class="header-section-number">1</span> Prepare your working space</h1>
-<section id="get-the-files" class="level2" data-number="1.1">
-<h2 data-number="1.1" class="anchored" data-anchor-id="get-the-files"><span class="header-section-number">1.1</span> Get the files</h2>
+<section id="prepare-your-working-directory" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Prepare your working directory</h1>
+<section id="get-the-repository-files" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="get-the-repository-files"><span class="header-section-number">1.1</span> Get the repository files</h2>
 <p>To begin with, you will download the course repository on your computer.</p>
-<p>On way is to go to the repository on github (<a href="https://github.com/nhenry50/ANF-metabarcoding">ANF-metabarcoding</a>) and to download it as a zip file.</p>
-<p>Once on your computer, unzip the file and place the resulting folder in the most covenient location (<code>~/Documents</code> for example)</p>
+<p>To do so, visit the repository on github (<a href="https://github.com/nhenry50/ANF-metabarcoding">ANF-metabarcoding</a>) and download it as a zip file.</p>
+<p>Once on your computer, unzip the file and place the resulting folder in the most covenient location (<code>~/Documents</code> for example).</p>
 </section>
 <section id="dowload-the-reference-database" class="level2" data-number="1.2">
 <h2 data-number="1.2" class="anchored" data-anchor-id="dowload-the-reference-database"><span class="header-section-number">1.2</span> Dowload the reference database</h2>
-<p>First we save in an object the path to the folder where you will place the references databases.</p>
+<p>Save the path to the folder where you will place the references databases.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>refdb_folder <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"refdb"</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>refdb_folder</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -316,75 +320,85 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">dir.exists</span>(refdb_folder)) <span class="fu">dir.create</span>(refdb_folder)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>You can also create the folder from RStudio in the <code>Files</code> window</p>
-<p>You can access the documentation of a function using <code>?</code> in the console. If you to know everything about the function <code>dir.create()</code>, simply run <code>?dir.create()</code></p>
-<p>In this practical, we are analysing 16S data. Silva is a well suited reference database for Prokaryote.</p>
-<p>In case you are working on 18S sequences, it is better to use PR2 (ref)</p>
+<p><strong>Tip:</strong> You can access the documentation of a function using <code>?</code> in the console. If you to know everything about the function <code>dir.create()</code>, simply run <code>?dir.create()</code></p>
+<p>The Silva reference database, commonly used to assign 16S metabarcoding data, will be used in practical.</p>
+<p>In case you are working with 18S sequences, you will have better assignements using PR2 (https://pr2-database.org/) or EukRibo (https://doi.org/10.5281/zenodo.6327891) especially if you are interested in protists.</p>
+<p>The following code downloads dada2 formated silva reference database. If you are not confortable with it, you can simply download the reference database files from your web browser <a href="%22https://zenodo.org/record/4587955/files/silva_nr99_v138.1_train_set.fa.gz%22">here</a> and <a href="%22https://zenodo.org/record/4587955/files/silva_species_assignment_v138.1.fa.gz%22">here</a>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># R stop dowloading after timeout which is</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 60 seconds by default</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">getOption</span>(<span class="st">'timeout'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">getOption</span>(<span class="st">"timeout"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 60</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># so we change timeout to be 20 minutes</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">timeout=</span><span class="dv">1200</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">timeout =</span> <span class="dv">1200</span>)</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># we save in variable the path to the refdb</span></span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co"># in the working space</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>silva_train_set <span class="ot">&lt;-</span> <span class="fu">file.path</span>(refdb_folder,<span class="st">"silva_nr99_v138.1_train_set.fa.gz"</span>)</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>silva_species_assignment <span class="ot">&lt;-</span> <span class="fu">file.path</span>(refdb_folder,<span class="st">"silva_species_assignment_v138.1.fa.gz"</span>)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>silva_train_set <span class="ot">&lt;-</span> <span class="fu">file.path</span>(refdb_folder,</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>                             <span class="st">"silva_nr99_v138.1_train_set.fa.gz"</span>)</span>
 <span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co"># then we download the files if they don't</span></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co"># already exist</span></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="co"># note: if you copy/paste in your web browser</span></span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="co"># it is also working</span></span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">file.exists</span>(<span class="fu">file.path</span>(refdb_folder,<span class="st">"silva_nr99_v138.1_train_set.fa.gz"</span>))){</span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">download.file</span>(<span class="st">"https://zenodo.org/record/4587955/files/silva_nr99_v138.1_train_set.fa.gz"</span>,</span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>              silva_train_set,</span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>              <span class="at">quiet=</span><span class="cn">TRUE</span>)</span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">file.exists</span>(<span class="fu">file.path</span>(refdb_folder,<span class="st">"silva_species_assignment_v138.1.fa.gz"</span>))){</span>
-<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">download.file</span>(<span class="st">"https://zenodo.org/record/4587955/files/silva_species_assignment_v138.1.fa.gz"</span>,</span>
-<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>              silva_species_assignment,</span>
-<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>              <span class="at">quiet=</span><span class="cn">TRUE</span>)</span>
-<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>silva_species_assignment <span class="ot">&lt;-</span> <span class="fu">file.path</span>(refdb_folder,</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>                                      <span class="st">"silva_species_assignment_v138.1.fa.gz"</span>)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="co"># then we download the files if they don't already exist</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(silva_train_set)) {</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">download.file</span>(</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"https://zenodo.org/record/4587955/files/silva_nr99_v138.1_train_set.fa.gz"</span>,</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    silva_train_set,</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">quiet =</span> <span class="cn">TRUE</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(silva_species_assignment)) {</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">download.file</span>(</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>    <span class="st">"https://zenodo.org/record/4587955/files/silva_species_assignment_v138.1.fa.gz"</span>,</span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>    silva_species_assignment,</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">quiet =</span> <span class="cn">TRUE</span></span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="attach-custom-functions" class="level2" data-number="1.3">
 <h2 data-number="1.3" class="anchored" data-anchor-id="attach-custom-functions"><span class="header-section-number">1.3</span> Attach custom functions</h2>
+<p>We will used R functions specifically written of this course. The “classic” way is to use <code>source()</code> with the name of the R script to source.</p>
+<p>Instead, we use <code>devtools::load_all()</code>. This function will source all the script from the folder <code>R/</code> along with the documentation in <code>man/</code></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Attached functions from preprocessing.R located in the R folder</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">load_all</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
-<section id="sequencing-files" class="level1" data-number="2">
-<h1 data-number="2"><span class="header-section-number">2</span> Sequencing files</h1>
-<section id="list-of-sequencing-file-paths" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="list-of-sequencing-file-paths"><span class="header-section-number">2.1</span> List of sequencing file paths</h2>
+<section id="inputs-files" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Inputs files</h1>
+<section id="locate-the-sequencing-files" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="locate-the-sequencing-files"><span class="header-section-number">2.1</span> Locate the sequencing files</h2>
 <p>Save the path to the directory containing your raw data (paried-end sequencing fastq files) in an object named <code>path_to_fastqs</code></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>path_to_fastqs <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"raw"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The “forward” and “reverse” files are in gzipped (compressed) fastq format with the label:</p>
+<p>The <a href="https://en.wikipedia.org/wiki/Gzip">gzipped</a> (compressed) <a href="https://en.wikipedia.org/wiki/FASTQ_format">FASTQ</a> formated “forward” (R1) and “reverse” (R2) files are named as follow:</p>
 <ul>
 <li><code>${SAMPLENAME}_R1.fastq.gz</code> for the forward files</li>
 <li><code>${SAMPLENAME}_R2.fastq.gz</code> for the reverse files.</li>
 </ul>
-<p>R1 for forward reads and R2 for reverse reads.</p>
+<p>We list the forward files using the function “list.files()”. The argument <code>pattern</code> gives you the possibility to only select file names matching a regular expression. In our case, we select all file names finising by <code>_R1.fastq.gz</code>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>fnFs <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">list.files</span>(path_to_fastqs,</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>                        <span class="at">pattern =</span> <span class="st">"_R1.fastq.gz"</span>,</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>                        <span class="at">full.names =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>fnRs <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">list.files</span>(path_to_fastqs,</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>                        <span class="at">pattern =</span> <span class="st">"_R2.fastq.gz"</span>,</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>                        <span class="at">full.names =</span> <span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>                        <span class="at">full.names =</span> <span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p><strong>To understand: What fnFs &amp; fnRs variables contain?</strong></p>
+<p>We do the same for reverse samples.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>fnFs <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>fnRs <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">list.files</span>(path_to_fastqs,</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>                        <span class="at">pattern =</span> <span class="st">"_R2.fastq.gz"</span>,</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>                        <span class="at">full.names =</span> <span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>To understand:</strong> What fnFs &amp; fnRs variables contain?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(fnFs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "/home/nicolas/Documents/anf-metabarcoding/data/raw/S11B_R1.fastq.gz"
 [2] "/home/nicolas/Documents/anf-metabarcoding/data/raw/S1B_R1.fastq.gz" 
@@ -398,17 +412,29 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="extract-sample-names" class="level2" data-number="2.2">
 <h2 data-number="2.2" class="anchored" data-anchor-id="extract-sample-names"><span class="header-section-number">2.2</span> Extract sample names</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>(sample.names <span class="ot">&lt;-</span> <span class="fu">sapply</span>(<span class="fu">strsplit</span>(<span class="fu">basename</span>(fnFs), <span class="st">"_"</span>), <span class="st">`</span><span class="at">[</span><span class="st">`</span>, <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code> [1] "S11B" "S1B"  "S2B"  "S2S"  "S3B"  "S3S"  "S4B"  "S4S"  "S5B"  "S5S" 
-[11] "S6B"  "S6S"  "S7B"  "S7S"  "S8B"  "S8S"  "S9B"  "S9S" </code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>sample_names <span class="ot">&lt;-</span> <span class="fu">basename</span>(fnFs) <span class="sc">|&gt;</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">strsplit</span>(<span class="at">split =</span> <span class="st">"_"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sapply</span>(<span class="st">`</span><span class="at">[</span><span class="st">`</span>, <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><strong>To understand:</strong></p>
-<p><code>strsplit()</code> : split character chain according a defined pattern. <code>?strsplit</code> for function documentation.</p>
-<p><code>basename()</code>: remove path to only keep file name</p>
+<p><code>basename()</code>: remove path to only keep file name.</p>
+<p><code>|&gt;</code>: R “pipe”. It allows you to chain functions, avoinding intermediate variables and nested parenthesis. It basically transfers the output of the left expression to the input of the right expression.</p>
+<p><code>strsplit()</code>: split character chain according a defined pattern. <code>?strsplit</code> for documentation.</p>
+<p><code>sapply()</code>: apply a function to each element of a list or vector. The output is simplified to be vector.</p>
+<p>Let’s go step by step. First list the R1 file names.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">strsplit</span>(<span class="fu">basename</span>(fnFs), <span class="st">"_"</span>) <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">basename</span>(fnFs) <span class="sc">|&gt;</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "S11B_R1.fastq.gz" "S1B_R1.fastq.gz"  "S2B_R1.fastq.gz"  "S2S_R1.fastq.gz" 
+[5] "S3B_R1.fastq.gz"  "S3S_R1.fastq.gz" </code></pre>
+</div>
+</div>
+<p>We can see that the sample name is before the first <code>_</code>. With <code>strsplit()</code>, we can split the file names into a 2 elements vector. The result is a list of 2 elements vectors.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">basename</span>(fnFs) <span class="sc">|&gt;</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">strsplit</span>(<span class="at">split =</span> <span class="st">"_"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[1]]
 [1] "S11B"        "R1.fastq.gz"
@@ -429,26 +455,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 [1] "S3S"         "R1.fastq.gz"</code></pre>
 </div>
 </div>
+<p>Now, We just have to extract the first element for each file.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(<span class="fu">strsplit</span>(<span class="fu">basename</span>(fnFs), <span class="st">"_"</span>), <span class="st">`</span><span class="at">[</span><span class="st">`</span>, <span class="dv">2</span>) <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">basename</span>(fnFs) <span class="sc">|&gt;</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">strsplit</span>(<span class="at">split =</span> <span class="st">"_"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sapply</span>(<span class="st">`</span><span class="at">[</span><span class="st">`</span>, <span class="dv">1</span>) <span class="sc">|&gt;</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "R1.fastq.gz" "R1.fastq.gz" "R1.fastq.gz" "R1.fastq.gz" "R1.fastq.gz"
-[6] "R1.fastq.gz"</code></pre>
+<pre><code>[1] "S11B" "S1B"  "S2B"  "S2S"  "S3B"  "S3S" </code></pre>
 </div>
 </div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(<span class="fu">strsplit</span>(<span class="fu">basename</span>(fnFs), <span class="st">"_"</span>), <span class="st">`</span><span class="at">[</span><span class="st">`</span>, <span class="dv">3</span>) <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] NA NA NA NA NA NA</code></pre>
-</div>
-</div>
-<p>With regular expressions:</p>
+<p><strong>Tip:</strong> you can achieve the same thing using regular expressions:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gsub</span>(<span class="st">"^.+/|_.+$"</span>, <span class="st">""</span>, fnFs) <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "S11B" "S1B"  "S2B"  "S2S"  "S3B"  "S3S" </code></pre>
 </div>
 </div>
+<p>Regular expressions are extremly useful. If you are keen to learn how to use them, have a look here:</p>
 </section>
 </section>
 <section id="sequence-quality-check" class="level1" data-number="3">
@@ -577,8 +601,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="cell">
 <div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>filtFs <span class="ot">&lt;-</span> <span class="fu">file.path</span>(path_to_filtered_reads, <span class="fu">basename</span>(fnFs))</span>
 <span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>filtRs <span class="ot">&lt;-</span> <span class="fu">file.path</span>(path_to_filtered_reads, <span class="fu">basename</span>(fnRs))</span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(filtFs) <span class="ot">&lt;-</span> sample.names</span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(filtRs) <span class="ot">&lt;-</span> sample.names</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(filtFs) <span class="ot">&lt;-</span> sample_names</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(filtRs) <span class="ot">&lt;-</span> sample_names</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="use-dada2filterandtrim" class="level3" data-number="5.0.2">
@@ -660,7 +684,7 @@ S9S_R1.fastq.gz      1979      1045</code></pre>
 Transformation introduced infinite values in continuous y-axis</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="preprocessing_dada2_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid" width="672"></p>
+<p><img src="preprocessing_dada2_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section>
@@ -763,7 +787,7 @@ Sample 18 - 1045 reads in 724 unique sequences.</code></pre>
 <span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a>                    <span class="at">nonchim =</span> <span class="fu">rowSums</span>(seqtab_nochim),</span>
 <span id="cb52-9"><a href="#cb52-9" aria-hidden="true" tabindex="-1"></a>                    <span class="at">perc_retained =</span> <span class="fu">rowSums</span>(seqtab_nochim)<span class="sc">/</span>out[,<span class="dv">1</span>]<span class="sc">*</span><span class="dv">100</span>)</span>
 <span id="cb52-10"><a href="#cb52-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-11"><a href="#cb52-11" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(track) <span class="ot">&lt;-</span> sample.names</span>
+<span id="cb52-11"><a href="#cb52-11" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(track) <span class="ot">&lt;-</span> sample_names</span>
 <span id="cb52-12"><a href="#cb52-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb52-13"><a href="#cb52-13" aria-hidden="true" tabindex="-1"></a>track</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
