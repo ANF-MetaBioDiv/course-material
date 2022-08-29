@@ -12,7 +12,7 @@ project:
 execute:
   freeze: auto  # re-render only when source changes
 website:
-  title: "ANF metabarcoding"
+  title: "ANF MetaBioDiv"
   repo-url: https://github.com/nhenry50/ANF-metabarcoding
   repo-actions: [edit, issue]
   navbar:
@@ -24,6 +24,8 @@ website:
         - text: "Courses"
         - text: "Analysing metabarcoding data with dada2"
           href: courses/dada2.html
+        - text: "Introduction to phyloseq"
+          href: courses/phyloseq.html
         - text: "Practicals"
         - text: "Preprocessing: dada2"
           href: practicals/preprocessing_dada2.html

@@ -26,5 +26,10 @@ $code-block-font-size: 0.6em;
 
 .reveal h2 {
   margin-top: -0.3em;
-  margin-bottom: 0.8em;
+  margin-bottom: 0.3em;
+}
+
+.reveal div.sourceCode {
+  margin-top: 0.5em;
+  overflow: auto;
 }

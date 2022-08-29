@@ -1,19 +1,20 @@
 ---
-title: "ANF Exploration de la Diversité Taxonomique des Ecosystèmes par Metabarcoding"
+title: "ANF MetaBioDiv"
 ---
 
-## Welcome {.unnumbered}
+## First edition (September 2022){.unnumbered}
 
-blabla
+Welcome to the first edition of the ANF Exploration de la Diversité Taxonomique des Ecosystèmes par Metabarcoding.
+The aim of this course is to teach you how to run microbial ecology analyses (mostly alpha and beta diversity) from metabarcoding raw sequencing data using R.
 
-## Course program {.unnumbered}
+### Program{.unnumbered}
 
-* Monday
+* Monday 5<sup>th</sup>:
     * 09h30: Participants arrival
     * 12h30: {{< fa utensils >}}
     * 14h00: R practical by Marc Garel + check technical issues
     * 19h00: {{< fa utensils >}}
-* Tuesday:
+* Tuesday 6<sup>th</sup>:
     * 08h30: Introduction to metabarcoding by Loïs Maignien
     * 10h15: {{< fa mug-hot >}}
     * 10h30: [Analysing metabarcoding data with dada2](courses/dada2.html) by Nicolas Henry
@@ -23,17 +24,17 @@ blabla
     * 15h00: [Preprocessing: dada2](practicals/preprocessing_dada2.Rmd) and [Preprocessing: phyloseq](practicals/preprocessing_phyloseq.html) by Nicolas Henry with {{< fa mug-hot >}}
     * 18h00: free time
     * 19h00: {{< fa utensils >}}
-* Wednesday:
+* Wednesday 7<sup>th</sup>:
     * 08h30: SAMBA by Cyril Noël from Ifremer
-    * 09h30: Course on alpha diversity 1/2 by ???
+    * 09h30: Course on alpha diversity 1/2 by Loïs Maignien
     * 10h15: {{< fa mug-hot >}}
-    * 10h30: [Alpha diversity practical](practicals/alpha_diversity.html) by ???
+    * 10h30: [Alpha diversity practical](practicals/alpha_diversity.html) by Loïs Maignien
     * 12h30: {{< fa utensils >}}
-    * 14h00: Course on alpha diversity 2/2 by ???
-    * 15h00: [Alpha diversity practical](practicals/alpha_diversity.html) by ??? with {{< fa mug-hot >}}
+    * 14h00: Course on alpha diversity 2/2 by Loïs Maignien
+    * 15h00: [Alpha diversity practical](practicals/alpha_diversity.html) by Loïs Maignien with {{< fa mug-hot >}}
     * 18h00: free time
     * 19h00: {{< fa utensils >}}
-* Thursday:
+* Thursday 8<sup>th</sup>:
     * 09h30: Course on beta diversity 1/2 by Jean-Christophe Auguet
     * 10h15: {{< fa mug-hot >}}
     * 10h30: [Beta diversity practical](practicals/beta_diversity.html) by Jean-Christophe Auguet
@@ -42,7 +43,7 @@ blabla
     * 15h00: [Beta diversity practical](practicals/beta_diversity.html) by Jean-Christophe Auguet with {{< fa mug-hot >}}
     * 18h00: free time
     * 19h00: {{< fa champagne-glasses >}} {{< fa utensils >}}
-* Friday:
+* Friday 9<sup>th</sup>:
     * 09h30: À la carte with {{< fa mug-hot >}}
     * 12h30: {{< fa utensils >}}
     * 14h00: End of the course
