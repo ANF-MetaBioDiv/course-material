@@ -14,22 +14,22 @@ knitr::opts_chunk$set(message = FALSE,
                       warnings = FALSE)
 ```
 
-## Prepare your working space
+## Prepare your working directory
 
-### Get the files
+### Get the repository files
 
 To begin with, you will download the course repository on your computer.
 
-On way is to go to the repository on github 
+To do so, visit the repository on github 
 ([ANF-metabarcoding](https://github.com/nhenry50/ANF-metabarcoding)) 
-and to download it as a zip file.
+and download it as a zip file.
 
 Once on your computer, unzip the file and place the resulting folder
-in the most covenient location (`~/Documents` for example)
+in the most covenient location (`~/Documents` for example).
 
 ### Dowload the reference database
 
-First we save in an object the path to the folder where you will place 
+Save the path to the folder where you will place 
 the references databases.
 
 ```{r}
@@ -58,57 +58,76 @@ if (!dir.exists(refdb_folder)) dir.create(refdb_folder)
 
 You can also create the folder from RStudio in the `Files` window
 
-You can access the documentation of a function using `?`
+**Tip:** You can access the documentation of a function using `?`
 in the console. If you to know everything about the function
 `dir.create()`, simply run `?dir.create()` 
 
-In this practical, we are analysing 16S data.
-Silva is a well suited reference database for Prokaryote.
+The Silva reference database, commonly used to assign 16S metabarcoding data,
+will be used in practical.
 
-In case you are working on 18S sequences, it is better to
-use PR2 (ref)
+In case you are working with 18S sequences, you will have better assignements
+using PR2 (https://pr2-database.org/) or EukRibo (https://doi.org/10.5281/zenodo.6327891)
+especially if you are interested in protists.
+
+The following code downloads dada2 formated silva reference database. 
+If you are not confortable with it, you can simply
+download the reference database files from your web browser
+[here]("https://zenodo.org/record/4587955/files/silva_nr99_v138.1_train_set.fa.gz") and
+[here]("https://zenodo.org/record/4587955/files/silva_species_assignment_v138.1.fa.gz").
 
 ```{r}
 # R stop dowloading after timeout which is
 # 60 seconds by default
-getOption('timeout')
+getOption("timeout")
 
 # so we change timeout to be 20 minutes
-options(timeout=1200)
+options(timeout = 1200)
 
 # we save in variable the path to the refdb
 # in the working space
-silva_train_set <- file.path(refdb_folder,"silva_nr99_v138.1_train_set.fa.gz")
-silva_species_assignment <- file.path(refdb_folder,"silva_species_assignment_v138.1.fa.gz")
+silva_train_set <- file.path(refdb_folder,
+                             "silva_nr99_v138.1_train_set.fa.gz")
 
-# then we download the files if they don't
-# already exist
-# note: if you copy/paste in your web browser
-# it is also working
-if(!file.exists(file.path(refdb_folder,"silva_nr99_v138.1_train_set.fa.gz"))){
-  download.file("https://zenodo.org/record/4587955/files/silva_nr99_v138.1_train_set.fa.gz",
-              silva_train_set,
-              quiet=TRUE)
+silva_species_assignment <- file.path(refdb_folder,
+                                      "silva_species_assignment_v138.1.fa.gz")
+
+# then we download the files if they don't already exist
+
+if (!file.exists(silva_train_set)) {
+  download.file(
+    "https://zenodo.org/record/4587955/files/silva_nr99_v138.1_train_set.fa.gz",
+    silva_train_set,
+    quiet = TRUE
+  )
 }
 
-if(!file.exists(file.path(refdb_folder,"silva_species_assignment_v138.1.fa.gz"))){
-  download.file("https://zenodo.org/record/4587955/files/silva_species_assignment_v138.1.fa.gz",
-              silva_species_assignment,
-              quiet=TRUE)
+if (!file.exists(silva_species_assignment)) {
+  download.file(
+    "https://zenodo.org/record/4587955/files/silva_species_assignment_v138.1.fa.gz",
+    silva_species_assignment,
+    quiet = TRUE
+  )
 }
 
 ```
 
 ### Attach custom functions
 
+We will used R functions specifically written of this course.
+The "classic" way is to use `source()` with the name of the R script
+to source.
+
+Instead, we use `devtools::load_all()`. This function will source all the 
+script from the folder `R/` along with the documentation in `man/
+`
 ```{r}
 # Attached functions from preprocessing.R located in the R folder
 devtools::load_all()
 ```
 
-## Sequencing files
+## Inputs files
 
-### List of sequencing file paths
+### Locate the sequencing files
 
 Save the path to the directory containing your raw data
 (paried-end sequencing fastq files) in an object named `path_to_fastqs`
@@ -117,59 +136,94 @@ Save the path to the directory containing your raw data
 path_to_fastqs <- here::here("data", "raw")
 ```
 
-The "forward" and "reverse" files are in gzipped (compressed)
-fastq format with the label:
+The [gzipped](https://en.wikipedia.org/wiki/Gzip) (compressed)
+[FASTQ](https://en.wikipedia.org/wiki/FASTQ_format) formated 
+"forward" (R1) and "reverse" (R2) files
+are named as follow:
 
 * `${SAMPLENAME}_R1.fastq.gz` for the forward files
 * `${SAMPLENAME}_R2.fastq.gz` for the reverse files.
 
-R1 for forward reads and R2 for reverse reads.
+We list the forward files using the function "list.files()".
+The argument `pattern` gives you the possibility to only select
+file names matching a regular expression. In our case, we select
+all file names finising by `_R1.fastq.gz`.
 
 ```{r}
 fnFs <- sort(list.files(path_to_fastqs,
                         pattern = "_R1.fastq.gz",
                         full.names = TRUE))
+```
 
+We do the same for reverse samples.
+
+```{r}
 fnRs <- sort(list.files(path_to_fastqs,
                         pattern = "_R2.fastq.gz",
                         full.names = TRUE))
 ```
 
-**To understand: What fnFs & fnRs variables contain?**
+**To understand:** What fnFs & fnRs variables contain?
 
 ```{r}
-fnFs |> head()
+head(fnFs)
 ```
 
 ### Extract sample names
 
 ```{r}
-(sample.names <- sapply(strsplit(basename(fnFs), "_"), `[`, 1))
+sample_names <- basename(fnFs) |>
+  strsplit(split = "_") |>
+  sapply(`[`, 1)
 ```
 
 **To understand:**
 
-`strsplit()` : split character chain according a defined pattern. `?strsplit` for function documentation.
+`basename()`: remove path to only keep file name.
 
-`basename()`: remove path to only keep file name
+`|>`: R "pipe". It allows you to chain functions, avoinding intermediate variables and
+nested parenthesis. It basically transfers the output of the left expression to the input
+of the right expression.
+
+`strsplit()`: split character chain according a defined pattern. `?strsplit` for documentation.
+
+`sapply()`: apply a function to each element of a list or vector. The output is simplified to
+be vector.
+
+Let's go step by step. First list the R1 file names.
 
 ```{r}
-strsplit(basename(fnFs), "_") |> head()
+basename(fnFs) |>
+  head()
 ```
+
+We can see that the sample name is before the first `_`.
+With `strsplit()`, we can split the file names into a 2 elements vector.
+The result is a list of 2 elements vectors.
 
 ```{r}
-sapply(strsplit(basename(fnFs), "_"), `[`, 2) |> head()
+basename(fnFs) |>
+  strsplit(split = "_") |>
+  head()
 ```
+
+Now, We just have to extract the first element for each file.
 
 ```{r}
-sapply(strsplit(basename(fnFs), "_"), `[`, 3) |> head()
+basename(fnFs) |>
+  strsplit(split = "_") |>
+  sapply(`[`, 1) |>
+  head()
 ```
 
-With regular expressions:
+**Tip:** you can achieve the same thing using regular expressions:
 
 ```{r}
 gsub("^.+/|_.+$", "", fnFs) |> head()
 ```
+
+Regular expressions are extremly useful. If you are keen to learn
+how to use them, have a look here: 
 
 ## Sequence quality check
 
@@ -262,8 +316,8 @@ and list file names with path
 ```{r}
 filtFs <- file.path(path_to_filtered_reads, basename(fnFs))
 filtRs <- file.path(path_to_filtered_reads, basename(fnRs))
-names(filtFs) <- sample.names
-names(filtRs) <- sample.names
+names(filtFs) <- sample_names
+names(filtRs) <- sample_names
 ```
 
 #### Use `dada2::filterAndTrim()`
@@ -385,7 +439,7 @@ track <- data.frame(input = out[, 1],
                     nonchim = rowSums(seqtab_nochim),
                     perc_retained = rowSums(seqtab_nochim)/out[,1]*100)
 
-rownames(track) <- sample.names
+rownames(track) <- sample_names
 
 track
 ```
