@@ -35,7 +35,9 @@ if (!dir.exists(output_alpha)) dir.create(output_alpha)
 
 Load the data and inspect the phyloseq object:
 ```{r}
-physeq <- readRDS(here::here("data", "asv_table", "phyloseq_object_alpha_beta_div.rds"))
+physeq <- readRDS(here::here("data",
+                             "asv_table",
+                             "phyloseq_object_alpha_beta_div.rds"))
 ```
 
 ## Data Structure 
@@ -74,84 +76,6 @@ physeq@phy_tree
 ```{r}
 physeq@refseq
 ```
-
-## Starting with some basic commands
- 
-### Get the total number of ASVs
-```{r}
-phyloseq::ntaxa(physeq)
-```
-
-### Get the total number of samples
-```{r}
-phyloseq::nsamples(physeq)
-```
-
-### Get sample names
-```{r}
-phyloseq::sample_names(physeq)
-```
-
-### Get ASV identification
-```{r}
-phyloseq::taxa_names(physeq)
-```
-
-### Get the names of variables in sam_data
-```{r}
-phyloseq::sample_variables(physeq)
-```
-
-### Display all variables with values
-```{r}
-phyloseq::get_variable(physeq)
-```
-
-### Sum the reads by sample
-```{r}
-phyloseq::sample_sums(physeq)
-```
-
-### Sum the reads by species/taxa/OTUs (for all samples)
-```{r}
-phyloseq::taxa_sums(physeq)
-```
-
-### Sort species/taxa/OTUs by devreasing number of reads
-```{r}
-sort(phyloseq::taxa_sums(physeq), decreasing = TRUE)
-```
-
-Looking for the 2 last commands you can notice that dada2 has already ranked ASV... ASV1 the most abundant and after decreasing. 
-
-### Get taxonomic ranks
-Be careful: in the future command/functions used in this practical, you will often call a taxonomic rank... it **MUST** be one of these (case sensitive)!
-```{r}
-phyloseq::rank_names(physeq)
-```
-
-### Show abundance for a given ASV
-```{r}
-phyloseq::get_sample(physeq, i = "ASV37")
-```
-
-### Show ASVs and abundance for a given sample
-```{r}
-phyloseq::get_taxa(physeq, i = "S2B")
-```
-
-### Get All phyla detected in your samples
-```{r}
-#Taxonomic rank should be one from rank_names(physeq)...ALWAYS, case sensitive! 
-phyloseq::get_taxa_unique(physeq, taxonomic.rank = "Phylum")
-```
-
-### Distribution of ASVs by phylum taxonomic rank
-```{r}
-table(phyloseq::tax_table(physeq)[, "Phylum"])
-```
-
-
 
 ## Subsampling normalization
 ### Rarefaction Curves
@@ -881,7 +805,7 @@ Use a column from metadata to group/merge samples (North & South)
 Define what you want to keep
 
 ```{r}
-keep <- c("S1B","S2S")
+keep <- c("S1B", "S2S")
 ```
 
 Then extract these samples from pourcentS phyloseq object
@@ -922,7 +846,7 @@ phyloseq::subset_samples(pourcentS, Geo == "North") |>
   phyloseq::filter_taxa(flist = function(x) max(x) >= 10, prune = TRUE) |>
   phyloseq::refseq() |>
   Biostrings::writeXStringSet(
-    filepath = file.path(output_alpha,"fancy_selection_asvs.fasta"),
+    filepath = file.path(output_alpha, "fancy_selection_asvs.fasta"),
     format = "fasta"
   )
 ```
