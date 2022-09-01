@@ -8,6 +8,7 @@
 
 <meta name="author" content="Fabrice Armougom, MIO">
 <meta name="author" content="Marc Garel, MIO">
+<meta name="author" content="Nicolas Henry, ABiMS">
 <meta name="dcterms.date" content="2022-08-01">
 
 <title>ANF MetaBioDiv - Preprocessing : dada2</title>
@@ -230,7 +231,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <ul class="collapse">
   <li><a href="#prepare-outputs-1" id="toc-prepare-outputs-1" class="nav-link" data-scroll-target="#prepare-outputs-1"> <span class="header-section-number">5.0.1</span> Prepare outputs</a></li>
   <li><a href="#use-dada2filterandtrim" id="toc-use-dada2filterandtrim" class="nav-link" data-scroll-target="#use-dada2filterandtrim"> <span class="header-section-number">5.0.2</span> Use <code>dada2::filterAndTrim()</code></a></li>
-  <li><a href="#details" id="toc-details" class="nav-link" data-scroll-target="#details"> <span class="header-section-number">5.0.3</span> Details</a></li>
   </ul></li>
   <li><a href="#denoising" id="toc-denoising" class="nav-link" data-scroll-target="#denoising"> <span class="header-section-number">6</span> Denoising</a>
   <ul class="collapse">
@@ -241,12 +241,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#merge-paired-end-reads" id="toc-merge-paired-end-reads" class="nav-link" data-scroll-target="#merge-paired-end-reads"> <span class="header-section-number">7</span> Merge paired-end reads</a></li>
   <li><a href="#build-the-asv-table" id="toc-build-the-asv-table" class="nav-link" data-scroll-target="#build-the-asv-table"> <span class="header-section-number">8</span> Build the ASV table</a></li>
   <li><a href="#remove-chimera" id="toc-remove-chimera" class="nav-link" data-scroll-target="#remove-chimera"> <span class="header-section-number">9</span> Remove Chimera</a></li>
-  <li><a href="#summarize-the-pre-processing" id="toc-summarize-the-pre-processing" class="nav-link" data-scroll-target="#summarize-the-pre-processing"> <span class="header-section-number">10</span> Summarize the pre-processing</a></li>
-  <li><a href="#taxonomic-assignment-from-dada2" id="toc-taxonomic-assignment-from-dada2" class="nav-link" data-scroll-target="#taxonomic-assignment-from-dada2"> <span class="header-section-number">11</span> Taxonomic assignment from dada2</a></li>
-  <li><a href="#export-asv-table" id="toc-export-asv-table" class="nav-link" data-scroll-target="#export-asv-table"> <span class="header-section-number">12</span> Export ASV table</a>
+  <li><a href="#taxonomic-assignment-from-dada2" id="toc-taxonomic-assignment-from-dada2" class="nav-link" data-scroll-target="#taxonomic-assignment-from-dada2"> <span class="header-section-number">10</span> Taxonomic assignment from dada2</a></li>
+  <li><a href="#export" id="toc-export" class="nav-link" data-scroll-target="#export"> <span class="header-section-number">11</span> Export</a>
   <ul class="collapse">
-  <li><a href="#r-objects" id="toc-r-objects" class="nav-link" data-scroll-target="#r-objects"> <span class="header-section-number">12.1</span> R objects</a></li>
-  <li><a href="#text-files" id="toc-text-files" class="nav-link" data-scroll-target="#text-files"> <span class="header-section-number">12.2</span> Text files</a></li>
+  <li><a href="#r-objects" id="toc-r-objects" class="nav-link" data-scroll-target="#r-objects"> <span class="header-section-number">11.1</span> R objects</a></li>
+  <li><a href="#text-files" id="toc-text-files" class="nav-link" data-scroll-target="#text-files"> <span class="header-section-number">11.2</span> Text files</a></li>
+  <li><a href="#log" id="toc-log" class="nav-link" data-scroll-target="#log"> <span class="header-section-number">11.3</span> Log</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/nhenry50/ANF-metabarcoding/edit/main/practicals/preprocessing_dada2.Rmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/nhenry50/ANF-metabarcoding/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
@@ -268,6 +268,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <div class="quarto-title-meta-contents">
              <p>Fabrice Armougom, MIO </p>
              <p>Marc Garel, MIO </p>
+             <p>Nicolas Henry, ABiMS </p>
           </div>
   </div>
     
@@ -287,13 +288,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1 data-number="1"><span class="header-section-number">1</span> Prepare your working directory</h1>
 <section id="get-the-repository-files" class="level2" data-number="1.1">
 <h2 data-number="1.1" class="anchored" data-anchor-id="get-the-repository-files"><span class="header-section-number">1.1</span> Get the repository files</h2>
-<p>To begin with, you will download the course repository on your computer.</p>
+<p>To begin with, download the course repository on your computer or virtual machine.</p>
 <p>To do so, visit the repository on github (<a href="https://github.com/nhenry50/ANF-metabarcoding">ANF-metabarcoding</a>) and download it as a zip file.</p>
-<p>Once on your computer, unzip the file and place the resulting folder in the most covenient location (<code>~/Documents</code> for example).</p>
+<p>Once on your machine, unzip the file and place the resulting folder in the most covenient location (<code>~/Documents/</code> for example).</p>
 </section>
 <section id="dowload-the-reference-database" class="level2" data-number="1.2">
 <h2 data-number="1.2" class="anchored" data-anchor-id="dowload-the-reference-database"><span class="header-section-number">1.2</span> Dowload the reference database</h2>
-<p>Save the path to the folder where you will place the references databases.</p>
+<p>Save as a variable the path to the folder where you will place the references databases.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>refdb_folder <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"refdb"</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>refdb_folder</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -301,7 +302,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>[1] "/home/nicolas/Documents/anf-metabarcoding/data/refdb"</code></pre>
 </div>
 </div>
-<p>The reason why we use here::here() is that when you render a Rmarkdown, the working directory is where the Rmarkdown file is:</p>
+<p>The reason why we use here::here() is that when you render a Rmarkdown file, the working directory is where the Rmarkdown file is:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">getwd</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -320,10 +321,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">dir.exists</span>(refdb_folder)) <span class="fu">dir.create</span>(refdb_folder)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>You can also create the folder from RStudio in the <code>Files</code> window</p>
-<p><strong>Tip:</strong> You can access the documentation of a function using <code>?</code> in the console. If you to know everything about the function <code>dir.create()</code>, simply run <code>?dir.create()</code></p>
+<p><strong>Tip:</strong> You can access the documentation of any R function using <code>?</code> in the console. If you to know everything about the function <code>dir.create()</code>, simply run <code>?dir.create()</code></p>
 <p>The Silva reference database, commonly used to assign 16S metabarcoding data, will be used in practical.</p>
 <p>In case you are working with 18S sequences, you will have better assignements using PR2 (https://pr2-database.org/) or EukRibo (https://doi.org/10.5281/zenodo.6327891) especially if you are interested in protists.</p>
-<p>The following code downloads dada2 formated silva reference database. If you are not confortable with it, you can simply download the reference database files from your web browser <a href="%22https://zenodo.org/record/4587955/files/silva_nr99_v138.1_train_set.fa.gz%22">here</a> and <a href="%22https://zenodo.org/record/4587955/files/silva_species_assignment_v138.1.fa.gz%22">here</a>.</p>
+<p>The following code downloads dada2 formated silva reference databases. If you are not confortable with it, you can simply download the reference database files from your web browser <a href="%22https://zenodo.org/record/4587955/files/silva_nr99_v138.1_train_set.fa.gz%22">here</a> and <a href="%22https://zenodo.org/record/4587955/files/silva_species_assignment_v138.1.fa.gz%22">here</a>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># R stop dowloading after timeout which is</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 60 seconds by default</span></span>
@@ -363,11 +364,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="attach-custom-functions" class="level2" data-number="1.3">
 <h2 data-number="1.3" class="anchored" data-anchor-id="attach-custom-functions"><span class="header-section-number">1.3</span> Attach custom functions</h2>
-<p>We will used R functions specifically written of this course. The “classic” way is to use <code>source()</code> with the name of the R script to source.</p>
-<p>Instead, we use <code>devtools::load_all()</code>. This function will source all the script from the folder <code>R/</code> along with the documentation in <code>man/</code></p>
+<p>We will use in this practical R functions especially written for this course. The “classic” way to import functions is to use <code>source()</code> with the name of the R script to source.</p>
+<p>Instead, we use <code>devtools::load_all()</code>. This function will source all the scripts from the folder <code>R/</code> along with the documentation in <code>man/</code> `</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Attached functions from preprocessing.R located in the R folder</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">load_all</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">load_all</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
@@ -375,7 +375,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1 data-number="2"><span class="header-section-number">2</span> Inputs files</h1>
 <section id="locate-the-sequencing-files" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="locate-the-sequencing-files"><span class="header-section-number">2.1</span> Locate the sequencing files</h2>
-<p>Save the path to the directory containing your raw data (paried-end sequencing fastq files) in an object named <code>path_to_fastqs</code></p>
+<p>Save the path to the directory containing your raw data (paired-end sequencing fastq files) in a variable named <code>path_to_fastqs</code></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>path_to_fastqs <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"raw"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -384,7 +384,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><code>${SAMPLENAME}_R1.fastq.gz</code> for the forward files</li>
 <li><code>${SAMPLENAME}_R2.fastq.gz</code> for the reverse files.</li>
 </ul>
-<p>We list the forward files using the function “list.files()”. The argument <code>pattern</code> gives you the possibility to only select file names matching a regular expression. In our case, we select all file names finising by <code>_R1.fastq.gz</code>.</p>
+<p>We list the forward files using the function <code>list.files()</code>. The argument <code>pattern</code> gives you the possibility to only select file names matching a regular expression. In our case, we select all file names finising by <code>_R1.fastq.gz</code>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>fnFs <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">list.files</span>(path_to_fastqs,</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>                        <span class="at">pattern =</span> <span class="st">"_R1.fastq.gz"</span>,</span>
@@ -418,8 +418,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <p><strong>To understand:</strong></p>
 <p><code>basename()</code>: remove path to only keep file name.</p>
-<p><code>|&gt;</code>: R “pipe”. It allows you to chain functions, avoinding intermediate variables and nested parenthesis. It basically transfers the output of the left expression to the input of the right expression.</p>
-<p><code>strsplit()</code>: split character chain according a defined pattern. <code>?strsplit</code> for documentation.</p>
+<p><code>|&gt;</code>: R “pipe”. It allows you to chain functions, avoiding intermediate variables and nested parenthesis. It basically transfers the output of the left expression to the input of the right expression. You need R &gt; 4.1 to use this pipe, otherwise use <code>%&gt;%</code> from <a href="https://magrittr.tidyverse.org/"><code>magrittr</code></a>.</p>
+<p><code>strsplit()</code>: split character chain according to a defined pattern. <code>?strsplit</code> for documentation.</p>
 <p><code>sapply()</code>: apply a function to each element of a list or vector. The output is simplified to be vector.</p>
 <p>Let’s go step by step. First list the R1 file names.</p>
 <div class="cell">
@@ -430,7 +430,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 [5] "S3B_R1.fastq.gz"  "S3S_R1.fastq.gz" </code></pre>
 </div>
 </div>
-<p>We can see that the sample name is before the first <code>_</code>. With <code>strsplit()</code>, we can split the file names into a 2 elements vector. The result is a list of 2 elements vectors.</p>
+<p>We can see that the sample name is before the first <code>_</code>. With <code>strsplit()</code>, we can split each file name into a 2 elements vector. The result is a list of 2 elements vectors.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">basename</span>(fnFs) <span class="sc">|&gt;</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">strsplit</span>(<span class="at">split =</span> <span class="st">"_"</span>) <span class="sc">|&gt;</span></span>
@@ -472,24 +472,26 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>[1] "S11B" "S1B"  "S2B"  "S2S"  "S3B"  "S3S" </code></pre>
 </div>
 </div>
-<p>Regular expressions are extremly useful. If you are keen to learn how to use them, have a look here:</p>
+<p>Regular expressions are extremly useful. If you are keen to learn how to use them, have a look <a href="https://bookdown.org/rdpeng/rprogdatascience/regular-expressions.html">here</a></p>
 </section>
 </section>
 <section id="sequence-quality-check" class="level1" data-number="3">
 <h1 data-number="3"><span class="header-section-number">3</span> Sequence quality check</h1>
-<p>We use a custom function, <code>qualityprofile()</code>, implemented in <code>R/preprocessing.R</code>.</p>
+<p>We use a custom function, <code>qualityprofile()</code>, implemented in <code>R/preprocessing.R</code> to check the quality of the raw sequences.</p>
 <p>Run <code>?qualityprofile</code> to know more about this function.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create a directory for the outputs</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>quality_folder <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"outputs"</span>, <span class="st">"dada2"</span>, <span class="st">"quality_plots"</span>)</span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">dir.exists</span>(quality_folder)) {</span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dir.create</span>(quality_folder, <span class="at">recursive =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a><span class="fu">qualityprofile</span>(fnFs,</span>
-<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>               fnRs,</span>
-<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>               <span class="fu">file.path</span>(quality_folder, <span class="st">"quality_plots.pdf"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>quality_folder <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"outputs"</span>,</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>                             <span class="st">"dada2"</span>,</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>                             <span class="st">"quality_plots"</span>)</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">dir.exists</span>(quality_folder)) {</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dir.create</span>(quality_folder, <span class="at">recursive =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a><span class="fu">qualityprofile</span>(fnFs,</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>               fnRs,</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>               <span class="fu">file.path</span>(quality_folder, <span class="st">"quality_plots.pdf"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: `guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; = "none")` instead.
 `guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; = "none")` instead.
@@ -528,29 +530,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 `guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; = "none")` instead.
 `guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; = "none")` instead.</code></pre>
 </div>
-<div class="cell-output cell-output-stdout">
-<pre><code>png 
-  2 </code></pre>
 </div>
-</div>
-<p><strong>Open the qualityplot.pdf</strong></p>
+<p><strong>Open the the pdf file generated by <code>qualityprofile()</code></strong></p>
 </section>
 <section id="primer-removal" class="level1" data-number="4">
 <h1 data-number="4"><span class="header-section-number">4</span> Primer removal</h1>
 <section id="prepare-outputs" class="level2" data-number="4.1">
 <h2 data-number="4.1" class="anchored" data-anchor-id="prepare-outputs"><span class="header-section-number">4.1</span> Prepare outputs</h2>
-<p>We first create a folder where to save the trimmed reads:</p>
+<p>We first create a folder where to save the reads once they are trimmed:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>path_to_trimmed_reads <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"outputs"</span>, <span class="st">"dada2"</span>, <span class="st">"trimmed"</span>)</span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">dir.exists</span>(path_to_trimmed_reads)) <span class="fu">dir.create</span>(path_to_trimmed_reads)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>path_to_trimmed_reads <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"outputs"</span>,</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>                                    <span class="st">"dada2"</span>,</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>                                    <span class="st">"trimmed"</span>)</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">dir.exists</span>(path_to_trimmed_reads)) <span class="fu">dir.create</span>(path_to_trimmed_reads)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Then we prepare a list of file names with path where to save the results of the primer removal (<em>e.g.</em> sequences without primers)</p>
+<p>Then we prepare a list of paths where to save the results (<em>e.g.</em> sequences without primers)</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>nopFw <span class="ot">&lt;-</span> <span class="fu">file.path</span>(path_to_trimmed_reads, <span class="fu">basename</span>(fnFs))</span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>nopRv <span class="ot">&lt;-</span> <span class="fu">file.path</span>(path_to_trimmed_reads, <span class="fu">basename</span>(fnRs))</span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(nopFw)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>nopFw <span class="ot">&lt;-</span> <span class="fu">file.path</span>(path_to_trimmed_reads, <span class="fu">basename</span>(fnFs))</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>nopRv <span class="ot">&lt;-</span> <span class="fu">file.path</span>(path_to_trimmed_reads, <span class="fu">basename</span>(fnRs))</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(nopFw)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "/home/nicolas/Documents/anf-metabarcoding/outputs/dada2/trimmed/S11B_R1.fastq.gz"
 [2] "/home/nicolas/Documents/anf-metabarcoding/outputs/dada2/trimmed/S1B_R1.fastq.gz" 
@@ -563,28 +563,29 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="remove-primers" class="level2" data-number="4.2">
 <h2 data-number="4.2" class="anchored" data-anchor-id="remove-primers"><span class="header-section-number">4.2</span> Remove primers</h2>
+<p>Save into variables the forward and reverse primers.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>primer_fwd  <span class="ot">&lt;-</span> <span class="st">"CCTACGGGNBGCASCAG"</span></span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>primer_rev  <span class="ot">&lt;-</span> <span class="st">"GACTACNVGGGTATCTAAT"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>primer_fwd  <span class="ot">&lt;-</span> <span class="st">"CCTACGGGNBGCASCAG"</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>primer_rev  <span class="ot">&lt;-</span> <span class="st">"GACTACNVGGGTATCTAAT"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Remove primers from forward <code>fnFs</code> and reverse <code>fnRs</code> reads and save the result in <code>nopFs</code> and <code>nopRs</code> respectively.</p>
+<p>Use the function <code>dada2::removePrimers()</code> twice to remove the primers from forward <code>fnFs</code> and reverse <code>fnRs</code> reads and save the results in <code>nopFs</code> and <code>nopRs</code> respectively.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>dada2<span class="sc">::</span><span class="fu">removePrimers</span>(<span class="at">fn =</span> fnFs,</span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">fout =</span> nopFw,</span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">primer.fwd =</span> primer_fwd,</span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>                     <span class="at">max.mismatch =</span> <span class="dv">1</span>,</span>
-<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>                     <span class="at">verbose =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>dada2<span class="sc">::</span><span class="fu">removePrimers</span>(<span class="at">fn =</span> fnRs,</span>
-<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>                     <span class="at">fout =</span> nopRv,</span>
-<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>                     <span class="at">primer.fwd =</span> primer_rev,</span>
-<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>                     <span class="at">max.mismatch =</span> <span class="dv">1</span>,</span>
-<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>                     <span class="at">verbose =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>dada2<span class="sc">::</span><span class="fu">removePrimers</span>(<span class="at">fn =</span> fnFs,</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">fout =</span> nopFw,</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">primer.fwd =</span> primer_fwd,</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>                     <span class="at">max.mismatch =</span> <span class="dv">1</span>,</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>                     <span class="at">verbose =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>dada2<span class="sc">::</span><span class="fu">removePrimers</span>(<span class="at">fn =</span> fnRs,</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>                     <span class="at">fout =</span> nopRv,</span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>                     <span class="at">primer.fwd =</span> primer_rev,</span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>                     <span class="at">max.mismatch =</span> <span class="dv">1</span>,</span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>                     <span class="at">verbose =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="for-more-complex-situations" class="level2" data-number="4.3">
 <h2 data-number="4.3" class="anchored" data-anchor-id="for-more-complex-situations"><span class="header-section-number">4.3</span> For more complex situations</h2>
-<p>If you have to deal with lots of samples and/or mixed orientated reads, we would recommend using dedicated tools such as <a href="https://github.com/marcelm/cutadapt">cutadapt</a>.</p>
+<p>If you have to deal with a lot of samples and/or mixed orientated reads, we would recommend using dedicated tools such as <a href="https://github.com/marcelm/cutadapt">cutadapt</a>.</p>
 <p>If you have to deal with mix-orientated paired-end reads, you may find inspiration <a href="https://gitlab.sb-roscoff.fr/nhenry/abims-metabarcoding-pipeline-dada2">here</a></p>
 </section>
 </section>
@@ -594,20 +595,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3 data-number="5.0.1" class="anchored" data-anchor-id="prepare-outputs-1"><span class="header-section-number">5.0.1</span> Prepare outputs</h3>
 <p>Same as before, create a folder</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>path_to_filtered_reads <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"outputs"</span>, <span class="st">"dada2"</span>, <span class="st">"filtered"</span>)</span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">dir.exists</span>(path_to_filtered_reads)) <span class="fu">dir.create</span>(path_to_filtered_reads)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>path_to_filtered_reads <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"outputs"</span>, <span class="st">"dada2"</span>, <span class="st">"filtered"</span>)</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">dir.exists</span>(path_to_filtered_reads)) <span class="fu">dir.create</span>(path_to_filtered_reads)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>and list file names with path</p>
+<p>and list paths:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>filtFs <span class="ot">&lt;-</span> <span class="fu">file.path</span>(path_to_filtered_reads, <span class="fu">basename</span>(fnFs))</span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>filtRs <span class="ot">&lt;-</span> <span class="fu">file.path</span>(path_to_filtered_reads, <span class="fu">basename</span>(fnRs))</span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(filtFs) <span class="ot">&lt;-</span> sample_names</span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(filtRs) <span class="ot">&lt;-</span> sample_names</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>filtFs <span class="ot">&lt;-</span> <span class="fu">file.path</span>(path_to_filtered_reads, <span class="fu">basename</span>(fnFs))</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>filtRs <span class="ot">&lt;-</span> <span class="fu">file.path</span>(path_to_filtered_reads, <span class="fu">basename</span>(fnRs))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>To make the link between files and sample names, simply name the file names vector using the sample names</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(filtFs) <span class="ot">&lt;-</span> sample_names</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(filtRs) <span class="ot">&lt;-</span> sample_names</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="use-dada2filterandtrim" class="level3" data-number="5.0.2">
 <h3 data-number="5.0.2" class="anchored" data-anchor-id="use-dada2filterandtrim"><span class="header-section-number">5.0.2</span> Use <code>dada2::filterAndTrim()</code></h3>
-<p>Let’s have a look at what the function is doing. To do so, type <code>?dada2::filterAndTrim()</code> in the console</p>
+<p>Let’s have a look at what the function is doing. To do so, type <code>?dada2::filterAndTrim()</code> in the console.</p>
+<p>Let’s run the function.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>(out <span class="ot">&lt;-</span> dada2<span class="sc">::</span><span class="fu">filterAndTrim</span>(</span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">fwd =</span> nopFw,</span>
@@ -642,26 +647,16 @@ S9B_R1.fastq.gz      1979       956
 S9S_R1.fastq.gz      1979      1045</code></pre>
 </div>
 </div>
-</section>
-<section id="details" class="level3" data-number="5.0.3">
-<h3 data-number="5.0.3" class="anchored" data-anchor-id="details"><span class="header-section-number">5.0.3</span> Details</h3>
-<ul>
-<li><strong>nopFw</strong> : input, where the forward reads without primers are (path)</li>
-<li><strong>filtFs</strong> : output, where forward filtered reads are written (path)</li>
-<li><strong>nopRv</strong> and <strong>filRs</strong> : same as above, but wiht reverse reads</li>
-<li><strong>TruncLen</strong> : truncate reads after truncLen bases. Reads shorter than that are discarded. Exple : TruncLen=c(200,150), means forward and reverse reads are cut at 200 bp and 150 bp respectively.</li>
-<li><strong>TrimLeft</strong> : number of nucleotides to remove from the start</li>
-<li><strong>Trimright</strong> : number of nucleotides to remove from the end</li>
-<li><strong>maxN</strong> : max number of ambiguous bases accepted</li>
-<li><strong>maxEE</strong> : read expected errors (EE) threshold. The EE of a read is the sum of the error probability of each base composing it. Increase that value to accept more low quality reads. The first value refers to the forward reads and the second to the reverse reads.</li>
-<li><strong>TruncQ=2</strong>: truncate reads at the first instance of a quality score less than or equal to truncQ.</li>
-</ul>
+<p><strong>What happened?</strong></p>
+<p>Details about the function arguments: * <strong>nopFw</strong> : input, where the forward reads without primers are (path) * <strong>filtFs</strong> : output, where forward filtered reads are written (path) * <strong>nopRv</strong> and <strong>filRs</strong> : same as above, but wiht reverse reads * <strong>TruncLen</strong> : truncate reads after truncLen bases. Reads shorter than that are discarded. Exple : TruncLen=c(200,150), means forward and reverse reads are cut at 200 bp and 150 bp respectively. * <strong>TrimLeft</strong> : number of nucleotides to remove from the start * <strong>Trimright</strong> : number of nucleotides to remove from the end * <strong>maxN</strong> : max number of ambiguous bases accepted * <strong>maxEE</strong> : read expected errors (EE) threshold. The EE of a read is the sum of the error probability of each base composing it. Increase that value to accept more low quality reads. The first value refers to the forward reads and the second to the reverse reads. * <strong>TruncQ=2</strong>: truncate reads at the first instance of a quality score less than or equal to truncQ.</p>
 </section>
 </section>
 <section id="denoising" class="level1" data-number="6">
 <h1 data-number="6"><span class="header-section-number">6</span> Denoising</h1>
 <section id="learn-the-error-model" class="level2" data-number="6.1">
 <h2 data-number="6.1" class="anchored" data-anchor-id="learn-the-error-model"><span class="header-section-number">6.1</span> Learn the error model</h2>
+<p>To be able to denoise your data, you need an error model. The error model will tell you at which rate a nucleotide is replace by another for a given quality score. For example, for a quality score Q of 30, what is the probability of an A being wrongly read as a T.</p>
+<p>This error model can be learnt directly from the data with the function <code>dada2::learnErrors()</code>. You can come back to the <a href="../courses/dada2.html#/dada2-workflow-denoising-approach">course</a> for more details about the maths behind.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>errF <span class="ot">&lt;-</span> dada2<span class="sc">::</span><span class="fu">learnErrors</span>(filtFs,</span>
 <span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>                           <span class="at">randomize =</span> <span class="cn">TRUE</span>,</span>
@@ -684,13 +679,14 @@ S9S_R1.fastq.gz      1979      1045</code></pre>
 Transformation introduced infinite values in continuous y-axis</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="preprocessing_dada2_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid" width="672"></p>
+<p><img src="preprocessing_dada2_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section>
 <section id="dereplication" class="level2" data-number="6.2">
 <h2 data-number="6.2" class="anchored" data-anchor-id="dereplication"><span class="header-section-number">6.2</span> Dereplication</h2>
-<p>Let’s have a look at the function’s documentation: <code>?dada2::derepFastq()</code></p>
+<p>Before denoising, we need to dereplicate the sequences. It means, for each unique sequence, count the number of reads.</p>
+<p>The dereplication is achieved using the function <code>dada2::derepFastq()</code></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>derepFs <span class="ot">&lt;-</span> dada2<span class="sc">::</span><span class="fu">derepFastq</span>(filtFs, <span class="at">verbose =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -699,7 +695,7 @@ Transformation introduced infinite values in continuous y-axis</code></pre>
 </section>
 <section id="run-dada" class="level2" data-number="6.3">
 <h2 data-number="6.3" class="anchored" data-anchor-id="run-dada"><span class="header-section-number">6.3</span> Run dada</h2>
-<p>Let’s have a look at the function’s documentation: <code>?dada2::dada()</code></p>
+<p>Now we are ready to run the denoising algorithm with <code>dada2::dada()</code>. As input, we need the error model and the dereplicated sequences.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>dadaFs <span class="ot">&lt;-</span> dada2<span class="sc">::</span><span class="fu">dada</span>(derepFs, <span class="at">err =</span> errF, <span class="at">multithread =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -748,6 +744,7 @@ Sample 18 - 1045 reads in 724 unique sequences.</code></pre>
 </section>
 <section id="merge-paired-end-reads" class="level1" data-number="7">
 <h1 data-number="7"><span class="header-section-number">7</span> Merge paired-end reads</h1>
+<p>Once forward and reverse reads have been denoised, we can merge them with <code>dada2::mergePairs()</code>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>mergers <span class="ot">&lt;-</span> dada2<span class="sc">::</span><span class="fu">mergePairs</span>(</span>
 <span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">dadaF =</span> dadaFs,</span>
@@ -761,12 +758,14 @@ Sample 18 - 1045 reads in 724 unique sequences.</code></pre>
 </section>
 <section id="build-the-asv-table" class="level1" data-number="8">
 <h1 data-number="8"><span class="header-section-number">8</span> Build the ASV table</h1>
+<p>At this point we have ASVs and we know their number of reads in each sample. Whe have enough information to build an ASV table.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>seqtab <span class="ot">&lt;-</span> dada2<span class="sc">::</span><span class="fu">makeSequenceTable</span>(mergers)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="remove-chimera" class="level1" data-number="9">
 <h1 data-number="9"><span class="header-section-number">9</span> Remove Chimera</h1>
+<p>Chimeras are artifact sequences formed by two or more biological sequences incorrectly joined together. We find and remove bimeras (two-parent chimeras) using the function <code>dada2::removeBimeraDenovo()</code></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>seqtab_nochim <span class="ot">&lt;-</span> dada2<span class="sc">::</span><span class="fu">removeBimeraDenovo</span>(seqtab,</span>
 <span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>                                           <span class="at">method =</span> <span class="st">"consensus"</span>,</span>
@@ -774,116 +773,121 @@ Sample 18 - 1045 reads in 724 unique sequences.</code></pre>
 <span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>                                           <span class="at">verbose =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="summarize-the-pre-processing" class="level1" data-number="10">
-<h1 data-number="10"><span class="header-section-number">10</span> Summarize the pre-processing</h1>
+<section id="taxonomic-assignment-from-dada2" class="level1" data-number="10">
+<h1 data-number="10"><span class="header-section-number">10</span> Taxonomic assignment from dada2</h1>
+<p>The ASV table is ready. But without a clue about the ASVs taxonomic identity, we won’t go far in ecological interpretations. We can have an idea of ASV taxonomic identity comparing their sequences to references databases such as SILVA.</p>
+<p>The taxonomic assignment is done in two steps.</p>
+<p>First, each ASV is assigned to a taxonomy using the RDP Naive Bayesian Classifier algorithm described in <a href="https://doi.org/10.1128/aem.00062-07">Wang et al.&nbsp;2007</a> called by the function <code>dada2::assignTaxonomy()</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>getN <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">sum</span>(dada2<span class="sc">::</span><span class="fu">getUniques</span>(x))</span>
-<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>track <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">input =</span> out[, <span class="dv">1</span>],</span>
-<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>                    <span class="at">filtered =</span> out[, <span class="dv">2</span>],</span>
-<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>                    <span class="at">denoisedF =</span> <span class="fu">sapply</span>(dadaFs, getN),</span>
-<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a>                    <span class="at">denoisedR =</span> <span class="fu">sapply</span>(dadaRs, getN),</span>
-<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a>                    <span class="at">merged =</span> <span class="fu">sapply</span>(mergers, getN),</span>
-<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a>                    <span class="at">nonchim =</span> <span class="fu">rowSums</span>(seqtab_nochim),</span>
-<span id="cb52-9"><a href="#cb52-9" aria-hidden="true" tabindex="-1"></a>                    <span class="at">perc_retained =</span> <span class="fu">rowSums</span>(seqtab_nochim)<span class="sc">/</span>out[,<span class="dv">1</span>]<span class="sc">*</span><span class="dv">100</span>)</span>
-<span id="cb52-10"><a href="#cb52-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-11"><a href="#cb52-11" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(track) <span class="ot">&lt;-</span> sample_names</span>
-<span id="cb52-12"><a href="#cb52-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-13"><a href="#cb52-13" aria-hidden="true" tabindex="-1"></a>track</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>     input filtered denoisedF denoisedR merged nonchim perc_retained
-S11B  1985      994       884       841    749     749      37.73300
-S1B   1973     1051       823       886    708     708      35.88444
-S2B   1985     1058       882       863    672     672      33.85390
-S2S   1981     1046       917       903    783     783      39.52549
-S3B   1986     1044       857       842    672     672      33.83686
-S3S   1987     1132       940       985    776     776      39.05385
-S4B   1980     1058       887       862    687     687      34.69697
-S4S   1983     1135       967       995    870     870      43.87292
-S5B   1984     1049       933       916    770     770      38.81048
-S5S   1988     1055       892       917    767     766      38.53119
-S6B   1979     1035       948       919    817     817      41.28348
-S6S   1979     1025       870       915    738     738      37.29156
-S7B   1985      997       868       850    684     684      34.45844
-S7S   1985     1008       874       866    754     754      37.98489
-S8B   1992      976       811       830    694     694      34.83936
-S8S   1980     1051       903       891    742     742      37.47475
-S9B   1979      956       840       816    650     650      32.84487
-S9S   1979     1045       904       927    746     746      37.69581</code></pre>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>taxonomy <span class="ot">&lt;-</span> dada2<span class="sc">::</span><span class="fu">assignTaxonomy</span>(</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">seqs =</span> seqtab_nochim,</span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">refFasta =</span> silva_train_set,</span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">taxLevels =</span> <span class="fu">c</span>(<span class="st">"Kingdom"</span>, <span class="st">"Phylum"</span>, <span class="st">"Class"</span>,</span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>                <span class="st">"Order"</span>, <span class="st">"Family"</span>, <span class="st">"Genus"</span>,</span>
+<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a>                <span class="st">"Species"</span>),</span>
+<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">multithread =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">minBoot =</span> <span class="dv">60</span></span>
+<span id="cb52-9"><a href="#cb52-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>The method is robust, however, it often fails to assign at the species level.</p>
+<p>If you consider that in case an ASV is 100% similar to a reference sequence, it belongs to the same species, then you can use <code>dada2::addSpecies()</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>taxonomy <span class="ot">&lt;-</span> dada2<span class="sc">::</span><span class="fu">addSpecies</span>(taxonomy,</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>                          silva_species_assignment,</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>                          <span class="at">allowMultiple =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This function assign to the species level ASVs which are identical to a reference sequence.</p>
+</section>
+<section id="export" class="level1" data-number="11">
+<h1 data-number="11"><span class="header-section-number">11</span> Export</h1>
+<p>All the preprocessing is done. Now we export our results.</p>
+<section id="r-objects" class="level2" data-number="11.1">
+<h2 data-number="11.1" class="anchored" data-anchor-id="r-objects"><span class="header-section-number">11.1</span> R objects</h2>
+<p>The results can be exported as a R objects, one object for the ASV table and another one for the taxonomy.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>export_folder <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"outputs"</span>, <span class="st">"dada2"</span>, <span class="st">"asv_table"</span>)</span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">dir.exists</span>(export_folder)) <span class="fu">dir.create</span>(export_folder)</span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(<span class="at">object =</span> seqtab_nochim,</span>
+<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">file =</span> <span class="fu">file.path</span>(export_folder, <span class="st">"seqtab_nochim.rds"</span>))</span>
+<span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-8"><a href="#cb54-8" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(<span class="at">object =</span> taxonomy,</span>
+<span id="cb54-9"><a href="#cb54-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">file =</span> <span class="fu">file.path</span>(export_folder, <span class="st">"taxonomy.rds"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="taxonomic-assignment-from-dada2" class="level1" data-number="11">
-<h1 data-number="11"><span class="header-section-number">11</span> Taxonomic assignment from dada2</h1>
-<p>The taxonomic assignment can be achieved using the functions <code>assignTaxonomy()</code> and <code>addSpecies()</code> from dada2.</p>
+<section id="text-files" class="level2" data-number="11.2">
+<h2 data-number="11.2" class="anchored" data-anchor-id="text-files"><span class="header-section-number">11.2</span> Text files</h2>
+<p>We recommand to export your results as text files. They are then easy reusable by other programs/languages.</p>
+<p>But before, we need to format the data a little bit.</p>
+<p>First we create a new variable to collect the ASV sequences:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>taxonomy <span class="ot">&lt;-</span> dada2<span class="sc">::</span><span class="fu">assignTaxonomy</span>(</span>
-<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">seqs =</span> seqtab_nochim,</span>
-<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">refFasta =</span> silva_train_set,</span>
-<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">taxLevels =</span> <span class="fu">c</span>(<span class="st">"Kingdom"</span>, <span class="st">"Phylum"</span>, <span class="st">"Class"</span>,</span>
-<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>                <span class="st">"Order"</span>, <span class="st">"Family"</span>, <span class="st">"Genus"</span>,</span>
-<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a>                <span class="st">"Species"</span>),</span>
-<span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">multithread =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb54-8"><a href="#cb54-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">minBoot =</span> <span class="dv">60</span></span>
-<span id="cb54-9"><a href="#cb54-9" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb54-10"><a href="#cb54-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb54-11"><a href="#cb54-11" aria-hidden="true" tabindex="-1"></a>taxonomy <span class="ot">&lt;-</span> dada2<span class="sc">::</span><span class="fu">addSpecies</span>(taxonomy,</span>
-<span id="cb54-12"><a href="#cb54-12" aria-hidden="true" tabindex="-1"></a>                          silva_species_assignment,</span>
-<span id="cb54-13"><a href="#cb54-13" aria-hidden="true" tabindex="-1"></a>                          <span class="at">allowMultiple =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>asv_seq <span class="ot">&lt;-</span> <span class="fu">colnames</span>(seqtab_nochim)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</section>
-<section id="export-asv-table" class="level1" data-number="12">
-<h1 data-number="12"><span class="header-section-number">12</span> Export ASV table</h1>
-<section id="r-objects" class="level2" data-number="12.1">
-<h2 data-number="12.1" class="anchored" data-anchor-id="r-objects"><span class="header-section-number">12.1</span> R objects</h2>
+<p>We create unique ids for each ASV. The sequence itself is an unique id, but we would like to have something shorter. The ids are generated using the cryptographic hash function SHA-1. A given sequence will always give you the same result, which means that if you have the same id in two different datasets, it means that it is the same sequence. It won’t be true for arbitrary ids such as ASV1, ASV2 and so on.</p>
+<p>To do so we use the function <code>digest::digest()</code>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>export_folder <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"outputs"</span>, <span class="st">"dada2"</span>, <span class="st">"asv_table"</span>)</span>
-<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">dir.exists</span>(export_folder)) <span class="fu">dir.create</span>(export_folder)</span>
-<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(<span class="at">object =</span> seqtab_nochim,</span>
-<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">file =</span> <span class="fu">file.path</span>(export_folder, <span class="st">"seqtab_nochim.rds"</span>))</span>
-<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(<span class="at">object =</span> taxonomy,</span>
-<span id="cb55-9"><a href="#cb55-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">file =</span> <span class="fu">file.path</span>(export_folder, <span class="st">"taxonomy.rds"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>asv_id <span class="ot">&lt;-</span> <span class="fu">sapply</span>(asv_seq,</span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>                 <span class="cf">function</span>(x) <span class="fu">unname</span>(digest<span class="sc">::</span><span class="fu">digest</span>(x, <span class="at">algo =</span> <span class="st">"sha1"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</section>
-<section id="text-files" class="level2" data-number="12.2">
-<h2 data-number="12.2" class="anchored" data-anchor-id="text-files"><span class="header-section-number">12.2</span> Text files</h2>
+<p>and rename the different variables with the new ids</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>asv_seq <span class="ot">&lt;-</span> <span class="fu">colnames</span>(seqtab_nochim)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">row.names</span>(taxonomy) <span class="ot">&lt;-</span> <span class="fu">colnames</span>(seqtab_nochim) <span class="ot">&lt;-</span> <span class="fu">names</span>(asv_seq) <span class="ot">&lt;-</span> asv_id</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>Before exporting the data frames (<code>taxonomy</code> and <code>seqtab_nochim</code>) as a text file, we convert their row names (ASV ids) into a new column named <code>asv</code>. This is achieved using the custom function <code>df_export()</code></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>asv_id <span class="ot">&lt;-</span> <span class="fu">sapply</span>(asv_seq,</span>
-<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>                 <span class="cf">function</span>(x) <span class="fu">unname</span>(digest<span class="sc">::</span><span class="fu">digest</span>(x, <span class="at">algo =</span> <span class="st">"sha1"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>taxonomy_export <span class="ot">&lt;-</span> <span class="fu">df_export</span>(taxonomy, <span class="at">new_rn =</span> <span class="st">"asv"</span>)</span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>seqtab_nochim_export <span class="ot">&lt;-</span> <span class="fu">t</span>(seqtab_nochim)</span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>seqtab_nochim_export <span class="ot">&lt;-</span> <span class="fu">df_export</span>(seqtab_nochim_export, <span class="at">new_rn =</span> <span class="st">"asv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>Finally, we can export the taxonomy</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">row.names</span>(taxonomy) <span class="ot">&lt;-</span> <span class="fu">colnames</span>(seqtab_nochim) <span class="ot">&lt;-</span> <span class="fu">names</span>(asv_seq) <span class="ot">&lt;-</span> asv_id</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.table</span>(taxonomy_export,</span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">file =</span> <span class="fu">file.path</span>(export_folder, <span class="st">"taxonomy.tsv"</span>),</span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">quote =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">sep =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>,</span>
+<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>the ASV table</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>taxonomy <span class="ot">&lt;-</span> <span class="fu">df_export</span>(taxonomy, <span class="at">new_rn =</span> <span class="st">"asv"</span>)</span>
-<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a><span class="fu">write.table</span>(taxonomy,</span>
-<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">file =</span> <span class="fu">file.path</span>(export_folder, <span class="st">"taxonomy.tsv"</span>),</span>
-<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">quote =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb59-6"><a href="#cb59-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">sep =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>,</span>
-<span id="cb59-7"><a href="#cb59-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.table</span>(seqtab_nochim_export,</span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">file =</span> <span class="fu">file.path</span>(export_folder, <span class="st">"asv_table.tsv"</span>),</span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">quote =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">sep =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>,</span>
+<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>seqtab_nochim <span class="ot">&lt;-</span> <span class="fu">t</span>(seqtab_nochim)</span>
-<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>seqtab_nochim <span class="ot">&lt;-</span> <span class="fu">df_export</span>(seqtab_nochim, <span class="at">new_rn =</span> <span class="st">"asv"</span>)</span>
-<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a><span class="fu">write.table</span>(seqtab_nochim,</span>
-<span id="cb60-6"><a href="#cb60-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">file =</span> <span class="fu">file.path</span>(export_folder, <span class="st">"asv_table.tsv"</span>),</span>
-<span id="cb60-7"><a href="#cb60-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">quote =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb60-8"><a href="#cb60-8" aria-hidden="true" tabindex="-1"></a>            <span class="at">sep =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>,</span>
-<span id="cb60-9"><a href="#cb60-9" aria-hidden="true" tabindex="-1"></a>            <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
+<p>and the sequences as a fasta file</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">paste0</span>(<span class="st">"&gt;"</span>, <span class="fu">names</span>(asv_seq), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>, asv_seq),</span>
 <span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">sep =</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>,</span>
 <span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">file =</span> <span class="fu">file.path</span>(export_folder, <span class="st">"asv.fasta"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="log" class="level2" data-number="11.3">
+<h2 data-number="11.3" class="anchored" data-anchor-id="log"><span class="header-section-number">11.3</span> Log</h2>
+<p>Statistics about each preprocessing can also be exported.</p>
+<p>First this table need to be assembled:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>getN <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">sum</span>(dada2<span class="sc">::</span><span class="fu">getUniques</span>(x))</span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a>log_table <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">input =</span> out[, <span class="dv">1</span>],</span>
+<span id="cb62-4"><a href="#cb62-4" aria-hidden="true" tabindex="-1"></a>                    <span class="at">filtered =</span> out[, <span class="dv">2</span>],</span>
+<span id="cb62-5"><a href="#cb62-5" aria-hidden="true" tabindex="-1"></a>                    <span class="at">denoisedF =</span> <span class="fu">sapply</span>(dadaFs, getN),</span>
+<span id="cb62-6"><a href="#cb62-6" aria-hidden="true" tabindex="-1"></a>                    <span class="at">denoisedR =</span> <span class="fu">sapply</span>(dadaRs, getN),</span>
+<span id="cb62-7"><a href="#cb62-7" aria-hidden="true" tabindex="-1"></a>                    <span class="at">merged =</span> <span class="fu">sapply</span>(mergers, getN),</span>
+<span id="cb62-8"><a href="#cb62-8" aria-hidden="true" tabindex="-1"></a>                    <span class="at">nonchim =</span> <span class="fu">rowSums</span>(seqtab_nochim),</span>
+<span id="cb62-9"><a href="#cb62-9" aria-hidden="true" tabindex="-1"></a>                    <span class="at">perc_retained =</span> <span class="fu">rowSums</span>(seqtab_nochim) <span class="sc">/</span> out[, <span class="dv">1</span>] <span class="sc">*</span> <span class="dv">100</span>)</span>
+<span id="cb62-10"><a href="#cb62-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-11"><a href="#cb62-11" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(log_table) <span class="ot">&lt;-</span> sample_names</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Then it can be exported:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="fu">df_export</span>(log_table, <span class="at">new_rn =</span> <span class="st">"sample"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write.table</span>(<span class="at">file =</span> <span class="fu">file.path</span>(export_folder, <span class="st">"log_table.tsv"</span>),</span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">quote =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">sep =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>,</span>
+<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 
@@ -991,7 +995,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
-      <div class="nav-footer-center"><a href="http://abims.sb-roscoff.fr/"><img src="../img/logo_abims.png" alt="ABiMS" height="35"></a> <a href="https://www.umr-beep.fr/"><img src="../img/logo_beep.png" alt="beep" height="40"></a> <a href="https://www.france-bioinformatique.fr/"><img src="../img/logo_ifb.svg" alt="IFB" height="40"></a> <a href="https://www.cnrs.fr//"><img src="../img/logo_cnrs.svg" alt="CNRS" height="40"></a> <a href="https://www.ird.fr/"><img src="../img/logo_ird.png" alt="IRD" height="40"></a> <a href="https://www.mio.osupytheas.fr/"><img src="../img/logo_mio.png" alt="MIO" height="40"></a> <a href="https://umr-marbec.fr/"><img src="../img/logo_marbec.jpeg" alt="marbec" height="40"></a></div>
+      <div class="nav-footer-center"><a href="http://abims.sb-roscoff.fr/"><img src="../img/logo_abims.png" alt="ABiMS" height="35"></a> <a href="https://www.umr-beep.fr/"><img src="../img/logo_beep.png" alt="beep" height="40"></a> <a href="https://www.france-bioinformatique.fr/"><img src="../img/logo_ifb.svg" alt="IFB" height="40"></a> <a href="https://www.cnrs.fr//"><img src="../img/logo_cnrs.svg" alt="CNRS" height="40"></a> <a href="https://www.ird.fr/"><img src="../img/logo_ird.png" alt="IRD" height="40"></a> <a href="https://www.mio.osupytheas.fr/"><img src="../img/logo_mio.png" alt="MIO" height="40"></a> <a href="https://umr-marbec.fr/"><img src="../img/logo_marbec.jpeg" alt="marbec" height="40"></a> <a href="https://umr-marbec.fr/"><img src="../img/logo_tara.png" alt="marbec" height="30"></a></div>
   </div>
 </footer>
 
