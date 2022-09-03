@@ -396,14 +396,37 @@
 </section>
 <section id="i-received-data" class="slide level2">
 <h2>I received data</h2>
-
-<img data-src="../img/fastq_files.png" class="r-stretch"></section>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>,<span class="st">"raw"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a>    <span class="fu">list.files</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "S11B_R1.fastq.gz" "S11B_R2.fastq.gz" "S1B_R1.fastq.gz"  "S1B_R2.fastq.gz" 
+ [5] "S2B_R1.fastq.gz"  "S2B_R2.fastq.gz"  "S2S_R1.fastq.gz"  "S2S_R2.fastq.gz" 
+ [9] "S3B_R1.fastq.gz"  "S3B_R2.fastq.gz"  "S3S_R1.fastq.gz"  "S3S_R2.fastq.gz" 
+[13] "S4B_R1.fastq.gz"  "S4B_R2.fastq.gz"  "S4S_R1.fastq.gz"  "S4S_R2.fastq.gz" 
+[17] "S5B_R1.fastq.gz"  "S5B_R2.fastq.gz"  "S5S_R1.fastq.gz"  "S5S_R2.fastq.gz" 
+[21] "S6B_R1.fastq.gz"  "S6B_R2.fastq.gz"  "S6S_R1.fastq.gz"  "S6S_R2.fastq.gz" 
+[25] "S7B_R1.fastq.gz"  "S7B_R2.fastq.gz"  "S7S_R1.fastq.gz"  "S7S_R2.fastq.gz" 
+[29] "S8B_R1.fastq.gz"  "S8B_R2.fastq.gz"  "S8S_R1.fastq.gz"  "S8S_R2.fastq.gz" 
+[33] "S9B_R1.fastq.gz"  "S9B_R2.fastq.gz"  "S9S_R1.fastq.gz"  "S9S_R2.fastq.gz" </code></pre>
+</div>
+</div>
+</section>
 <section id="what-am-i-going-to-do-with-that" class="slide level2">
 <h2>What am I going to do with that?</h2>
-<p>Let’s have a closer look of what we have</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">zcat</span> 18S-NG080819-3_TTAGCT-CMKL6_L001_R1.fastq.gz <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 8</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-
-<img data-src="../img/fastq_head.png" class="r-stretch"><p>We need a bioinformatic pipeline to:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>,<span class="st">"raw"</span>,<span class="st">"S11B_R1.fastq.gz"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a>    <span class="fu">gzfile</span>() <span class="sc">|&gt;</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a>    <span class="fu">readLines</span>(<span class="at">n =</span> <span class="dv">4</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a>    <span class="fu">cat</span>(<span class="at">sep=</span><span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>@M01522:260:000000000-C3YFC:1:2114:21886:9214 1:N:0:CTTGTA
+CCTACGGGGGGCAGCAGTAGGGAATTTTGCGCAATGGGCGAAAGCCTGACGCAGCAACGCCGCGTGATCGATGAAGCTTCTAGGAGCGTAAAGATCTGTCGTGAGGGAAGAAAAATTCGGAGGTAAATAATTTTCGTTTTTGACGGTACCTCACAAGAAAGCACCGGCTAACTTCGTGCCAGCAGCCGCGGTAATACGAGGGGTGCTAGCGTTGTCCGGAATCATTGGGCGTAAAGGGTCCGTAGGCGGTTTAACAAGTCAATTGTTAAAGACATCGGCTTAACCGATGAAGT
++
+GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGEGGFGGGGGGGGGGGGGGFGGGFGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGFGGGGGGGGGFGGGGGGGGGGGGGDFGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGEEGGGGCGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGEEGGGGGGC8CD8CGGGGGCE:FGGGGGGGFFG7FFFGFFGF:@?FFBEFFFFFFF3&gt;BFFF*</code></pre>
+</div>
+</div>
+<p>We need a bioinformatic pipeline to:</p>
 <ul>
 <li>Filter out wrong sequences, such as sequencing errors</li>
 <li>Get a format suitable for diversity and community composition analyses of our samples</li>
@@ -416,22 +439,34 @@
 </section>
 <section id="overview" class="slide level2">
 <h2>Overview</h2>
-<p>Two files (R1 and R2) per sequencing run or per sample (60 first nucleotides):</p>
+<p>Two files (R1 and R2) per sequencing run or per sample (100 first nucleotides):</p>
 <p>R1:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource default number-lines code-with-copy"><code class="sourceCode default"><span id="cb2-1"><a href="#cb2-1"></a>    @M05074:31:000000000-BC3R3:1:1101:13622:1477 1:N:0:1</span>
-<span id="cb2-2"><a href="#cb2-2"></a>    TAACAACCCAGCAGCTGCGGTAATTCCAGCTCCAATAGCGTATATTTAAGTTGTTGCAGT</span>
-<span id="cb2-3"><a href="#cb2-3"></a>    +</span>
-<span id="cb2-4"><a href="#cb2-4"></a>    ---A99EBC-,C,,CF,@++F7,CFFF9,CEFF8,E,,C+B7F&lt;FFF9,,CE,CF,;,,C</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>@M01522:260:000000000-C3YFC:1:2114:21886:9214 1:N:0:CTTGTA
+CCTACGGGGGGCAGCAGTAGGGAATTTTGCGCAATGGGCGAAAGCCTGACGCAGCAACGCCGCGTGATCGATGAAGCTTCTAGGAGCGTAAAGATCTGTC
++
+GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGEGGFGGGGGGGGGGGGGGFGGGFGGGGGGGGGGGGGGGGGGGGGGGGG</code></pre>
+</div>
+</div>
 <p>R2:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource default number-lines code-with-copy"><code class="sourceCode default"><span id="cb3-1"><a href="#cb3-1"></a>    @M05074:31:000000000-BC3R3:1:1101:13622:1477 2:N:0:1</span>
-<span id="cb3-2"><a href="#cb3-2"></a>    ACAACACTTTCGTTCTTGCTTGATGAAAACATCCTTGGCAAATGCTTTCGCATTAGTTCG</span>
-<span id="cb3-3"><a href="#cb3-3"></a>    +</span>
-<span id="cb3-4"><a href="#cb3-4"></a>    -86@BCFFFGF@FGGFG9,CF,,C6,&lt;A&lt;F@FGGGGA,C,C8C&lt;&lt;FEFG:@,,B,,CFE:</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>@M01522:260:000000000-C3YFC:1:2114:21886:9214 2:N:0:CTTGTA
+GACTACCAGGGTATCTAATCCTGTTCGCTCCCCACGCTTTCGTCCCTCAGCGTCAGTTTTAGGCCAGAAAGTTGCCTTCGCCATTGGTGTTCCTTCTGAT
++
+CCCCCFGGGGGGGGGGGGGGGGGGGCEGGGGGGGGGGEEEFGG&gt;GGGGGGGGGGGGFGGGG?FGGGGGFGFGGFGGFGGCGEGGGGGGGG&gt;FGGGGGGGG</code></pre>
+</div>
+</div>
 <p>Per record: identifier, sequence, quality</p>
 </section>
 <section id="identifier" class="slide level2">
 <h2>Identifier</h2>
-<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource default number-lines code-with-copy"><code class="sourceCode default"><span id="cb4-1"><a href="#cb4-1"></a>    @M05074:31:000000000-BC3R3:1:1101:13622:1477 1:N:0:1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>@M01522:260:000000000-C3YFC:1:2114:21886:9214 1:N:0:CTTGTA</code></pre>
+</div>
+</div>
 <table>
 <thead>
 <tr class="header">
@@ -492,7 +527,7 @@
 <p><br></p>
 
 <img data-src="../img/read_example_1.svg" class="r-stretch"><ul>
-<li><p>The tag, informs you from which sample the read come from</p></li>
+<li><p>The tag informs you from which sample the read come from</p></li>
 <li><p>The primer used for the amplification</p></li>
 <li><p>The targeted sequence (metabarcode)</p></li>
 </ul>
@@ -573,17 +608,17 @@
 </section>
 <section id="strategies" class="slide level2">
 <h2>Strategies</h2>
+<p><br></p>
 <ul>
 <li>Genetic clustering based approaches producing OTUs:
 <ul>
-<li>UCLUST</li>
-<li>Swarm (could be seen as denoising too)</li>
+<li><a href="https://doi.org/10.1038/nmeth.2604">UPARSE</a></li>
+<li><a href="https://doi.org/10.1093/bioinformatics/btab493">Swarm</a> (could be seen as denoising too)</li>
 </ul></li>
 <li>Denoising approaches producing ASVs:
 <ul>
-<li>Deblur</li>
-<li>UNOISE</li>
-<li>DADA2</li>
+<li><a href="https://doi.org/10.1128/mSystems.00191-16">Deblur</a></li>
+<li><a href="https://doi.org/10.1038%2Fnmeth.3869">DADA2</a></li>
 </ul></li>
 </ul>
 </section>
@@ -626,15 +661,19 @@
 <p>If your tags are in a fasta file with corresponding sample names as header, you can use this command-line:</p>
 <div class="columns">
 <div class="column" style="width:50%;">
-<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1"></a><span class="ex">cutadapt</span> <span class="dt">\</span></span>
-<span id="cb5-2"><a href="#cb5-2"></a>    <span class="at">-g</span> file:<span class="va">${BARCODES}</span> <span class="dt">\</span></span>
-<span id="cb5-3"><a href="#cb5-3"></a>    <span class="at">-o</span> {name}_R1.fastq.gz <span class="dt">\</span></span>
-<span id="cb5-4"><a href="#cb5-4"></a>    <span class="at">-p</span> {name}_R2.fastq.gz <span class="dt">\</span></span>
-<span id="cb5-5"><a href="#cb5-5"></a>    <span class="va">${R1_FILE}</span> <span class="dt">\</span></span>
-<span id="cb5-6"><a href="#cb5-6"></a>    <span class="va">${R2_FILE}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1"></a><span class="ex">cutadapt</span> <span class="dt">\</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a>    <span class="at">-g</span> file:<span class="va">${BARCODES}</span> <span class="dt">\</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a>    <span class="at">-o</span> {name}_R1.fastq.gz <span class="dt">\</span></span>
+<span id="cb8-4"><a href="#cb8-4"></a>    <span class="at">-p</span> {name}_R2.fastq.gz <span class="dt">\</span></span>
+<span id="cb8-5"><a href="#cb8-5"></a>    <span class="va">${R1_FILE}</span> <span class="dt">\</span></span>
+<span id="cb8-6"><a href="#cb8-6"></a>    <span class="va">${R2_FILE}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column" style="width:50%;">
-<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># blabla</span></span>
-<span id="cb6-2"><a href="#cb6-2"></a><span class="co"># fff</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1"></a><span class="co"># </span></span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="co"># tags to look for at the beginning (5') of R1 files. ${BARCODES} is a fasta file containing the tags</span></span>
+<span id="cb9-3"><a href="#cb9-3"></a><span class="co"># demultiplexed R1 file output. name will be replace by the name of the tag</span></span>
+<span id="cb9-4"><a href="#cb9-4"></a><span class="co"># same as above but with R2 files</span></span>
+<span id="cb9-5"><a href="#cb9-5"></a><span class="co"># input R1 file</span></span>
+<span id="cb9-6"><a href="#cb9-6"></a><span class="co"># input R2 file</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <p>You end up with as many R1 and R2 files as samples you have</p>
@@ -658,21 +697,31 @@
 <p>To remove forward and reverse primer sequences form pair-end read files:</p>
 <div class="columns">
 <div class="column" style="width:50%;">
-<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1"></a><span class="ex">cutadapt</span> <span class="dt">\</span></span>
-<span id="cb7-2"><a href="#cb7-2"></a>    <span class="at">-e</span> 0.1 <span class="dt">\</span></span>
-<span id="cb7-3"><a href="#cb7-3"></a>    <span class="at">-g</span> <span class="va">${PRIMER_FORWARD}</span> <span class="dt">\</span></span>
-<span id="cb7-4"><a href="#cb7-4"></a>    <span class="at">-G</span> <span class="va">${PRIMER_REVERSE}</span> <span class="dt">\</span></span>
-<span id="cb7-5"><a href="#cb7-5"></a>    <span class="at">--report</span><span class="op">=</span>minimal <span class="dt">\</span></span>
-<span id="cb7-6"><a href="#cb7-6"></a>    <span class="at">--discard-untrimmed</span> <span class="dt">\</span></span>
-<span id="cb7-7"><a href="#cb7-7"></a>    <span class="at">--minimum-length</span> <span class="va">${MIN_LENGTH}</span> <span class="dt">\</span></span>
-<span id="cb7-8"><a href="#cb7-8"></a>    <span class="at">--no-indels</span> <span class="dt">\</span></span>
-<span id="cb7-9"><a href="#cb7-9"></a>    <span class="at">-o</span> <span class="va">${FORWARD}</span> <span class="dt">\</span></span>
-<span id="cb7-10"><a href="#cb7-10"></a>    <span class="at">-p</span> <span class="va">${REVERSE}</span> <span class="dt">\</span></span>
-<span id="cb7-11"><a href="#cb7-11"></a>    <span class="va">${R1_FILE}</span> <span class="dt">\</span></span>
-<span id="cb7-12"><a href="#cb7-12"></a>    <span class="va">${R2_FILE}</span> <span class="dv">1</span><span class="op">&gt;</span> <span class="va">${LOG}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1"></a><span class="ex">cutadapt</span> <span class="dt">\</span></span>
+<span id="cb10-2"><a href="#cb10-2"></a>    <span class="at">-e</span> 0.1 <span class="dt">\</span></span>
+<span id="cb10-3"><a href="#cb10-3"></a>    <span class="at">-g</span> <span class="va">${PRIMER_FORWARD}</span> <span class="dt">\</span></span>
+<span id="cb10-4"><a href="#cb10-4"></a>    <span class="at">-G</span> <span class="va">${PRIMER_REVERSE}</span> <span class="dt">\</span></span>
+<span id="cb10-5"><a href="#cb10-5"></a>    <span class="at">--report</span><span class="op">=</span>minimal <span class="dt">\</span></span>
+<span id="cb10-6"><a href="#cb10-6"></a>    <span class="at">--discard-untrimmed</span> <span class="dt">\</span></span>
+<span id="cb10-7"><a href="#cb10-7"></a>    <span class="at">--minimum-length</span> <span class="va">${MIN_LENGTH}</span> <span class="dt">\</span></span>
+<span id="cb10-8"><a href="#cb10-8"></a>    <span class="at">--no-indels</span> <span class="dt">\</span></span>
+<span id="cb10-9"><a href="#cb10-9"></a>    <span class="at">-o</span> <span class="va">${FORWARD}</span> <span class="dt">\</span></span>
+<span id="cb10-10"><a href="#cb10-10"></a>    <span class="at">-p</span> <span class="va">${REVERSE}</span> <span class="dt">\</span></span>
+<span id="cb10-11"><a href="#cb10-11"></a>    <span class="va">${R1_FILE}</span> <span class="dt">\</span></span>
+<span id="cb10-12"><a href="#cb10-12"></a>    <span class="va">${R2_FILE}</span> <span class="dv">1</span><span class="op">&gt;</span> <span class="va">${LOG}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column" style="width:50%;">
-<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1"></a><span class="co"># </span></span>
-<span id="cb8-2"><a href="#cb8-2"></a><span class="co"># error tolerance (default value)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1"></a><span class="co"># </span></span>
+<span id="cb11-2"><a href="#cb11-2"></a><span class="co"># error tolerance (default value)</span></span>
+<span id="cb11-3"><a href="#cb11-3"></a><span class="co"># forward primer</span></span>
+<span id="cb11-4"><a href="#cb11-4"></a><span class="co"># reverse primer</span></span>
+<span id="cb11-5"><a href="#cb11-5"></a><span class="co"># ask to print primer trimming statistics</span></span>
+<span id="cb11-6"><a href="#cb11-6"></a><span class="co"># reads not containing primers are discarded</span></span>
+<span id="cb11-7"><a href="#cb11-7"></a><span class="co"># read with a length below this threshold after trimming are discarded</span></span>
+<span id="cb11-8"><a href="#cb11-8"></a><span class="co"># no indels allowed when mathing primer to reads</span></span>
+<span id="cb11-9"><a href="#cb11-9"></a><span class="co"># R1 output</span></span>
+<span id="cb11-10"><a href="#cb11-10"></a><span class="co"># R2 output</span></span>
+<span id="cb11-11"><a href="#cb11-11"></a><span class="co"># R1 input</span></span>
+<span id="cb11-12"><a href="#cb11-12"></a><span class="co"># R2 input; 1&gt; ${LOG} export the report in the file ${LOG}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <p>As for demultiplexing, if reads are mix-orientated, run <code>cutadapt</code> twice</p>
@@ -686,14 +735,14 @@
 <h2>Check reads quality</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<p>The overall quality of the sequencing is checked using <code>plotQualityProfile()</code></p>
+<p>Check the overall quality of a sequencing run using <code>plotQualityProfile()</code></p>
 <p>Outside of DADA2, you can also use <a href="https://github.com/s-andrews/FastQC" target="_blank">FASTQC</a></p>
 <p>If the overall quality is too low, you will probably have to resequence your samples</p>
 </div><div class="column" style="width:50%;">
 <p><img data-src="../img/quality_plot_example.svg"></p>
 </div>
 </div>
-<p>A quality drop is often observed by the end of the reads</p>
+<p>A quality drop is often observed in the end of the reads</p>
 <aside class="notes">
 <ul>
 <li>green line: mean</li>
@@ -721,10 +770,10 @@
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>Danger</strong></p>
+<p><strong>Danger zone</strong></p>
 </div>
 <div class="callout-content">
-<p>After trimming, make sure that forward and reverse reads still overlap</p>
+<p>After trimming, make sure that forward and reverse reads are still long enough to overlap</p>
 </div>
 </div>
 </div>
@@ -800,7 +849,7 @@
 <h2>Visualise the error model</h2>
 <p>You can visualise the estimated error rates using the function <code>plotErrors()</code></p>
 
-<img data-src="../img/error_plot.svg" class="r-stretch"></section>
+<img data-src="../img/error_plot.svg" class="r-stretch quarto-figure-center"></section>
 <section id="run-the-dada2-algorithm" class="slide level2">
 <h2>Run the DADA2 algorithm</h2>
 <ul>
@@ -1083,6 +1132,48 @@
         ]
       });
     </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        function fireSlideChanged(previousSlide, currentSlide) {
+
+          // dispatch for htmlwidgets
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for reveal
+        if (window.Reveal) {
+          window.Reveal.addEventListener("slidechanged", function(event) {
+            fireSlideChanged(event.previousSlide, event.currentSlide);
+          });
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
       const toggleBodyColorMode = (bsSheetEl) => {

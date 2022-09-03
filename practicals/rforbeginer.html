@@ -280,8 +280,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1 data-number="1"><span class="header-section-number">1</span> How to install R?</h1>
 <section id="useful-link" class="level2" data-number="1.1">
 <h2 data-number="1.1" class="anchored" data-anchor-id="useful-link"><span class="header-section-number">1.1</span> Useful link</h2>
-<p>To install Cran R, you must go to https://cran.r-project.org/, and download the install file for your favorite operating system, click on the .exe, .dmg, .pkg, .deb, respectively for Windows, MacOS and Linux-debian.</p>
-<p>And click on follow… until to reach successful installation Then download and install the IDE Rstudio https://www.rstudio.com/products/rstudio/.</p>
+<p>To install Cran R, you must go to <a href="https://cran.r-project.org/">https://cran.r-project.org/</a>, and download the install file for your favorite operating system, click on the .exe, .dmg, .pkg, .deb, respectively for Windows, MacOS and Linux-debian.</p>
+<p>And click on follow… until to reach successful installation Then download and install the IDE Rstudio <a href="https://www.rstudio.com/products/rstudio/">https://www.rstudio.com/products/rstudio/</a>.</p>
 <p><em>Everything is free to download</em></p>
 </section>
 <section id="first-commands" class="level2" data-number="1.2">
@@ -299,9 +299,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">"/path/to/my/fancy/project/"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>In Rstudio, we can change the working directory by navigating in folder in <strong>File</strong> panel and clicking on menu <strong>More</strong></p>
-<p>If you are using a Rproject, you don’t to change your working directory.</p>
+<p>If you are using a Rproject, you don’t need to change your working directory.</p>
 <p><strong>How can I find documentation about function?</strong></p>
-<p>The command <em>help()</em> is the 911</p>
+<p>The command <code>help()</code> is the 911</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># exemple with function read.table</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">help</span>(<span class="st">"read.table"</span>)</span>
@@ -678,8 +678,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="use-dplyr-to-select-filter-a-data-frame" class="level4" data-number="3.3.3.3">
 <h4 data-number="3.3.3.3" class="anchored" data-anchor-id="use-dplyr-to-select-filter-a-data-frame"><span class="header-section-number">3.3.3.3</span> Use dplyr to select, filter a data frame</h4>
-<p><code>dplyr</code> is past of the set of libraries named <code>tidyverse</code> (contraction of “tidy” and “universe”, it’s a tidy universe). <code>tidyverse</code> packages are designed to work together and thus follow the same code logic and a common grammar.</p>
-<p>The pipe, <strong>%&gt;%</strong>, is one of the useful elements of the tidyverse. It allows to structure sequences of operations by minimizing the creation of intermediate objects and by facilitating the addition of a step anywhere in this sequence.</p>
+<p><code>dplyr</code> is part of the library set named <code>tidyverse</code> (contraction of “tidy” and “universe”, it’s a tidy universe). <code>tidyverse</code> packages are designed to work together and thus follow the same code logic and a common grammar.</p>
+<p>The pipe, <code>%&gt;%</code>, is one of the useful elements of the tidyverse. It allows to structure sequences of operations by minimizing the creation of intermediate objects and by facilitating the addition of a step anywhere in this sequence. Note that from R 4.1 you can use a new pipe, <code>|&gt;</code> without the need of loading any library.</p>
 <p>The most commonly used tidyverse packages are loaded in your session:</p>
 <ul>
 <li><code>ggplot2</code></li>
