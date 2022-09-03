@@ -3,6 +3,7 @@ project:
   render: 
     - "index.qmd"
     - "about.qmd"
+    - "/practicals/rforbeginer.Rmd"
     - "/courses/dada2.qmd"
     - "/practicals/preprocessing_dada2.Rmd"
     - "/courses/phyloseq.qmd"
@@ -19,6 +20,11 @@ website:
     left:
       - text: Home
         href: index.qmd
+      - text: Day 1
+        menu:
+        - text: "Practicals"
+        - text: "R for beginners"
+          href: practicals/rforbeginer.html
       - text: Day 2
         menu:
         - text: "Courses"
@@ -55,6 +61,7 @@ website:
       [![](/img/logo_ird.png){fig-alt="IRD" height=40px}](https://www.ird.fr/)
       [![](/img/logo_mio.png){fig-alt="MIO" height=40px}](https://www.mio.osupytheas.fr/)
       [![](/img/logo_marbec.jpeg){fig-alt="marbec" height=40px}](https://umr-marbec.fr/)
+      [![](/img/logo_tara.png){fig-alt="marbec" height=30px}](https://umr-marbec.fr/)
 
 format:
   html:

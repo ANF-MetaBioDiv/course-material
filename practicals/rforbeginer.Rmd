@@ -1,0 +1,681 @@
+---
+title: "Part 0: R for beginner"
+output: html_document
+author: "Marc Garel, MIO"
+editor_options: 
+  chunk_output_type: inline
+---
+
+## How to install R?
+### Useful link
+
+To install Cran R, you must go to [https://cran.r-project.org/](https://cran.r-project.org/), 
+and download the install file for your favorite operating system,
+click on the .exe, .dmg, .pkg, .deb, respectively for Windows, MacOS and Linux-debian.
+
+And click on follow... until to reach successful installation
+Then download and install the IDE Rstudio
+[https://www.rstudio.com/products/rstudio/](https://www.rstudio.com/products/rstudio/).
+
+*Everything is free to download*
+
+### First commands
+
+**Where am I?**
+
+To get the current working directory
+
+```{r}
+getwd()
+```
+
+**To change my working directory from the console**
+
+```{r eval=FALSE}
+setwd("/path/to/my/fancy/project/")
+```
+
+In Rstudio, we can change the working directory by navigating in folder in **File** panel
+and clicking on menu **More**
+
+If you are using a Rproject, you don't need to change your working directory.
+
+**How can I find documentation about function?**
+
+The command `help()` is the 911
+
+```{r eval=FALSE}
+# exemple with function read.table
+help("read.table")
+#other exemple of 911
+example("plot")
+??plot()
+```
+
+
+## How to use a package?
+### Installation
+
+You can install new packages by clicking directly in Rstudio
+or by command line (the best way for me)
+
+```{r eval=FALSE}
+install.packages("your_package") # for packages on CRAN mirror
+```
+
+For packages from Bioconductor (specifically for bioinformatic): 
+
+```{r eval=FALSE}
+BiocManager::install("your_package")
+```
+
+or from github (using the package devtools)
+
+```{r eval=FALSE}
+devtools::install_github("your_package")
+```
+
+### Using functions from a package
+
+To use functions from a specific package you can either load the entire package:
+
+```{r eval=FALSE}
+library("your_package")
+```
+
+or call the function this way:
+
+```{r eval=FALSE}
+your_package::yourfunction()
+```
+
+
+## Expression and affectation
+### Expression
+
+An expression is directly evaluated and the result is displayed on terminal
+Example : 
+
+```{r}
+2 + 3
+sqrt(25)
+```
+
+
+### Affectation in an object
+An assignment is an expression stored in object or variable.
+In this example expression, constant, array, matrix, data frame, list
+Example :
+
+```{r}
+a <- 2 + 3
+```
+
+You can also assigned a expression to variable using `=`, like in most
+of other languages.
+
+```{r}
+b = 3 + 3
+```
+
+There are debates about which one to use.
+It is not really important which one you use, just be
+consistant and always use the same way to assign.
+
+To list object/variable from your environment:
+
+```{r}
+ls()
+```
+
+### Type of objects
+
+#### Vectors
+
+Vectors are objects composed by values with the same type (i.e, numeric, characters...)
+
+```{r}
+V1 <- c(2, 6, 9) # numeric vector
+V2 <- c("monday", "Tuesday", "Wednesday")# character vector
+V3 <- rep(6, 3) # repetition of the same value
+V4 <- seq(1, 3, 0.1)
+V5 <- 1:100
+V5
+```
+
+
+To know the number of value inside a vector
+
+```{r}
+length(V1)
+```
+
+**What do you think about V4?**
+
+Filter a vector according to criteria
+
+```{r}
+
+# Example : with list of value (a vector)
+
+x <- c(1, 3, 5, 3, 2, 1, 4, 6, 4, 7, 5, 4, 3)
+
+# get element from 2 to 6
+
+x[2:6]
+
+# get elements 3 et 5 from x.
+
+x[c(3, 5)]
+
+# get value more than 20.
+
+x[x > 20]
+
+# get value of  x where x is equal to 21.
+
+x[x == 21]
+
+# return elements form x the the value different from 5
+
+x[x != 5]
+```
+
+Filter a vector according to several criteria
+
+```{r}
+# 3 lists : ages, sexes et poids
+
+age <- c(20, 30, 40,
+         15, 22, 24,
+         36, 38)
+
+sexe <- c("F", "M", "F",
+          "M", "F", "M",
+          "F", "M")
+
+poids <- c(75, 76, 73,
+           72, 64, 76,
+           73, 72)
+
+# get value from age greater than 20 and less than 30.
+
+age[age > 20 & age < 30]
+
+# Recovering "poids" for those who are older than 25 and female
+
+poids[age > 25 & sexe == "F"]
+
+#Retrieve age values below 20 or above 30.
+
+age[age < 20 | age > 30]
+```
+
+*Exo1*
+
+Considering the vector `a` such as 
+`a <- c("lannister", "targaryen", "baratheon", "starck", "greyjoy")`
+
+1. What is the length of the vector?
+
+2. Try doing `a[1:3]`. What do you get?
+
+3. Create a new vector b containing only lannister and starck.
+
+4. Try doing `a[-1]`. What do you get?
+
+5. Sort by alphabetical order using `sort()`
+
+*Exo2*
+
+1. Create a vector `a` containing all integers from 1 to 100.
+
+2. Add the values 200, 201, 202 to the vector `a`.
+
+3. Create a vector `b` containing all even integers from 2 to 100 using `seq()`
+
+#### Matrices
+
+Matrices are objects in which the elements are arranged in a two-dimensional rectangular layout.
+As for vector all the elements are of the same type.
+
+```{r}
+m1 <- matrix(1:12, ncol = 3, byrow = TRUE)
+m2 <- matrix(1:12, ncol = 3, byrow = FALSE)
+m1
+# to know the dimension of the matrix (number of line and number of column)
+dim(m1)
+ncol(m1)
+nrow(m1)
+```
+
+**Some operation on matrix**
+
+```{r}
+#Selection all data inside 2 column
+c2 <- m1[, 2]
+c2
+
+#Select data inside 3th column and 4rd line
+m1[4, 3]
+
+#delete a column
+m3 <- m1[, -2]
+m3
+m3[2]
+```
+
+*Exo3*
+
+1. Run the command `a <- rep(c(0,1), 50)`. What happened?
+
+2. Use `a` to construct a matrix `A` with 10 rows and 10 columns. 
+
+3. Print the dimensions of this matrix.
+
+4. Use `t()` on this matrix to create a matrix `B`. What happened?
+
+5. The commands `A[1:5, ]` and `B[, 1:5]` retrieve the first 5 rows of A 
+and the first 5 columns of B. Use these commands to retrieve the rows containing
+only 1s from A and the columns containing only 0s from B.
+
+*Exo 4 sup*
+
+1. Create matrix M
+
+$$M = \begin{bmatrix}3 & 5 & 6\\
+-1 & 2 & 2 \\
+1 & -1 & -1 \\
+\end{bmatrix}$$
+
+2. Display the dimension of `A`, its number of columns, its number of rows and its length
+3. Extract the second column of `A`, then the first row
+4. Extract the element at the third position of the first line;
+5. Compute the sum of the columns and rows of `A` using `colSums()`, `rowSums()`
+
+#### Data frames
+
+Data frames are objects composed by vector where the value
+are of different modes (i.e, numeric, characters...)
+
+##### Data frame examples
+
+Load a data frame
+
+```{r}
+data(iris)
+```
+
+Visualise the data frame in a table
+
+```{r eval=FALSE}
+View(iris)
+```
+
+Display its internal structure
+
+```{r}
+str(iris)
+```
+
+**What can we notice?** 
+
+##### How to build your own data frame
+
+```{r}
+date <- c("1_monday", "2_Tuesday", "3_Wednesday",
+          "4_Thursday", "5_Friday", "6_Sturday",
+          "7_Sunday")
+
+is.character(date)
+
+# temperature in deg Celsius
+temperature <- c(24, 27, 25,
+               22, 30, 21,
+               28)
+
+is.numeric(temperature)
+
+# rain in mm
+rain <- c(1, 0, 0,
+          5, 2, 0,
+          0)
+
+is.numeric(rain)
+
+# add column together
+df <- cbind(date, temperature, rain)
+str(df)
+
+# make data.frame
+df <- data.frame(date, temperature, rain)
+str(df)
+
+#Give me the difference between cbind() and data.frame()
+View(df)
+
+#To select a column or vector
+df$temperature
+df[, 2]
+
+# here we use list() instead of c()
+# because there is multiple class in inside row
+
+day <- list("8_monday", 29, 1)
+new_def <- rbind(df, day)# add row to a data frame
+new_def
+```
+
+##### Use dplyr to select, filter a data frame
+
+`dplyr` is part of the library set named `tidyverse`
+(contraction of "tidy" and "universe", it's a tidy universe). 
+`tidyverse` packages are designed to work together and thus follow
+the same code logic and a common grammar.
+
+The pipe, `%>%`, is one of the useful elements of the tidyverse. 
+It allows to structure sequences of operations by minimizing 
+the creation of intermediate objects and by facilitating 
+the addition of a step anywhere in this sequence. Note that from
+R 4.1 you can use a new pipe, `|>` without the need of loading any
+library.
+
+The most commonly used tidyverse packages are loaded in your session:
+
+- `ggplot2`
+- `dplyr`
+- `tidyr`
+- `readr`
+- `tibble`
+- `stringr`
+
+
+```{r}
+tidyverse::tidyverse_packages()
+```
+
+
+```{r}
+library(tidyverse)
+
+#To select a variable with tidyverse
+#Command line widely used to select data
+iris$Sepal.Width %>%
+  head()
+iris[, "Sepal.Width"] %>%
+  head()
+
+#With dplyr
+select(iris, Sepal.Width) %>%
+  head()
+
+```
+
+```{r}
+#Command line widely used to select data
+iris[, c("Sepal.Length", "Sepal.Width", "Species")] %>%
+  head()
+#With tidyverse command
+iris %>%
+  select(Sepal.Length, Sepal.Width, Species) %>%
+  head()
+```
+
+To sort and select data inside data frame
+
+```{r}
+# Command line widely used to select data
+iris[which(iris$Sepal.Width > 3 & iris$Species == "virginica"), ] %>%
+  head()
+
+#With tidyverse command
+iris %>%
+  filter(Sepal.Width > 3) %>%
+  filter(Species == "virginica") %>%
+  head()
+```
+
+
+## Functions
+### Definition
+Function are a compilation of command line with different instructions 
+inside one object to simplify code. A function is composed by
+ <span style="color: steelblue;">**arguments**</span> and <span style="color: steelblue;">**options**</span>.
+
+function(argument1, argument2, option1, ... ,option10)
+
+
+### Usual functions for data frame
+
+```{r, eval=FALSE}
+head() # to know first line of your data frame
+class()# return the class of the object. Ex : data.frame, matrix, list ....
+str()# return the structure of the object. Ex : numeric, factor, character....
+names()# to get or set the names of an object
+sum() # for addition
+min() # return the minimum of the vector
+max() # return the minimum of the vector
+row.names() # attribute names for lines of the data frame
+colnames() # attribute names for column of the data frame
+apply() # Returns a vector or array or list of values obtained by applying a function to margins of an array or matrix.
+```
+
+**Example function row.names, class and str**
+
+```{r}
+df2 <- data.frame(x = c(TRUE, FALSE, NA, NA), y = c(12, 34, 56, 78))
+df2
+row.names(df2) <- paste("row", 1 : 4, sep = "_")
+df2 # what do you see
+class(df2)
+str(df2)
+```
+
+**Example function apply**
+
+```{r}
+head(df)
+class(df)
+str(df)
+# return mean for the numerical column of the data.frame. apply(data,margin,fun). 
+# For margin parameter the value 1 return mean for each row, 
+# for margin=2 return mean for each selected column.
+apply(df[, 2:3], 2, mean)
+```
+
+**Example function plot**
+
+The function `plot()` is a very useful function to make a graph for examination for your data set
+
+Let's have a look at the documentation of this function `?plot`
+
+*Exo 5*
+
+Load data set iris using `data()`
+
+1. Give the class Sepal.Width and Species vectors
+2. What is the minimum / maximum / average sepal length of these irises?
+3. What is the values of the 10 first sepals?
+4. Calculate standard deviation for every numeric vector
+5. Calculate standard mean for every numeric vector
+6. Create a data frame with mean and sd as line and give a name for each line
+7. An error of 0.5cm was made in the measurement of the length of the sepal of the 41st iris: add 0.5cm to this measurement
+8. Plot Sepal.Length as fonction of Sepal.Width adding title "Sepal" xlab "Sepal.Length" and ylab "Sepal.Length"
+9. Run once again plot giving the following parameters pch=19, cex=2, col="red", cex.axis=2, cex.lab=2. What do you see?
+
+
+#### How to import external data frame issue from .txt or .csv
+
+To import data set, the function `read.table()` or `read.csv()` are commonly used.
+
+`read.table(file, header = FALSE, sep = "", dec = ".", ...)`
+
+The main parameter are :
+
+- **file** : add the pathway and the name of the file
+- **header** : a logical value (TRUE or FALSE)indicating whether the file contains the names of the variables as its first line. 
+- **sep** : the field separator character. Values on each line of the file are separated by this character. If sep = "" (the default for read.table) the separator is ‘white space’, that is one or more spaces, tabs, newlines or carriage returns.
+- **dec** : the character used in the file for decimal points.
+
+```{r}
+ds <- read.table(here::here("data",
+                            "rforbeginers",
+                            "exemple_read.txt"),
+                 header = TRUE,
+                 sep = ";",
+                 dec = ",")
+```
+
+
+<span style="color: steelblue;">Why I use the parameter `header=TRUE` ?</span>
+
+#### To export data set as .txt to read in excel
+
+The function is similar to `read.table()`
+
+`write.table(x, file = "", sep = " ",na = "NA", dec = ".", ... )`
+
+- **x** : this is your data.frame
+- **file** : give a name for your file
+- **sep** : cf read.table
+- **dec** : cf read.table
+- **na** : give a symbole for missing data, by convention is NA
+
+```{r}
+write.table(ds, "ds.txt", sep = "\t", dec = ".")
+```
+
+To keep our working directory tidy, we now delete `ds.txt`
+
+```{r}
+file.remove("ds.txt")
+```
+
+## The world of "PLOT"
+
+We load data set included in R 
+
+```{r}
+data("airquality")
+```
+
+How can I check data ? before to plot, could you check the structure of data.frame
+
+```{r}
+plot(airquality$Month, airquality$Ozone)
+```
+
+add label for each axes, change the symbol by square and color blue
+
+```{r}
+boxplot(airquality$Ozone ~ airquality$Month,
+        col=c("orange", "yellow", "blue", "red", "green"))
+```
+
+**Use of ggplot2 packages to generate smart plot**
+
+`ggplot2` is part of tidyverse, so it is already loaded
+
+```{r}
+g1 <- ggplot(data = airquality) +
+  geom_point(aes(Month, Ozone))
+
+g1
+
+g2 <- ggplot(data = airquality) +
+  geom_point(aes(Month, Ozone), size = 3, colour = "red") +
+  theme_bw()
+
+g2
+```
+
+What do you notice? 
+
+```{r}
+df <- data.frame(airquality$Month, airquality$Temp)
+df$airquality.Month <- as.factor(df$airquality.Month)
+g3 <- ggplot(data = df, aes(x = airquality.Month, y = airquality.Temp)) +
+  geom_boxplot() +
+  theme_bw()
+g3
+
+g4 <- ggplot(data = df, aes(x = airquality.Month,
+                            y = airquality.Temp,
+                            color = airquality.Month)) +
+  geom_boxplot() +
+  theme_bw()
+g4
+
+```
+
+**Save your plot**
+
+Using the function `pdf()`
+
+```{r}
+pdf("yourfile.pdf")
+g4
+dev.off()
+```
+
+or `ggplot2::ggsave()`
+
+```{r}
+ggsave("yourfile2.pdf", g4)
+```
+
+```{r}
+list.files(pattern = ".pdf") %>%
+  file.remove()
+```
+
+```{r}
+data("BCI", package = "vegan")
+chart <- apply(BCI, 2, sum)
+selection1 <- chart[1:30]
+dotchart(selection1, cex = 0.7, bg = "blue")
+row.label <- names(selection1)
+df2 <- data.frame(row.label, selection1)
+
+ggplot(df2) +
+  geom_point(aes(x = selection1, y = row.label))
+
+
+g6 <- ggplot(df2, aes(x = selection1, y = row.label)) +
+  labs(tag = "A", x = "Species", y = "Count")
+
+g6 +
+  geom_bar(stat = "identity")
+
+g6 +
+  geom_bar(stat = "identity", color = "lightblue", bg = "lightblue")
+```
+
+Save this plot using command `ggsave()`. The documentation is
+your best friend. 
+
+*Exo6*
+
+We propose to evaluate the effect of a vitamin treatment supposed
+to make students more resistant to fatigue during exams.
+
+To do this, different students are tested: a score out of 10
+is attributed to them and expresses the degree of rest called
+here "Acuity", 0 for very tired and 10 for in full form.
+
+10 students take a treatment (Treatment = "O" for "Yes")
+and their fatigue is evaluated every day during 5 days
+of intense revision where the fatigue increases progressively.
+
+10 students take a placebo (Treatment = "N" for "No") and
+their fatigue is assessed every day for 5 days.
+
+1. Load the table "exercise6.txt". This table has a header and a tab separation.
+
+2. Plot the tiredness (here "Fatigue") as a function of time for all tested individuals.
+Display the treated individuals in blue and the untreated ones in red (see example).
+(*To filter data set use `by()` function*)
+
+3. Try with ggplot
+
+4. Save your plot as a pdf
