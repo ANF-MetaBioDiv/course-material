@@ -1,3 +1,9 @@
+#' Plot one quality profile per fastq file
+#'
+#' @return a pdf file containing one quality profile per file
+#' @param filefw R1 file names
+#' @param filefw R2 file names
+#' @param outfile Output pdf file name
 
 qualityprofile <- function(filefw, filerev, outfile) {
   pdf(outfile, onefile = TRUE)

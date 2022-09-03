@@ -4,7 +4,7 @@
 \alias{indices_normality}
 \title{Check for normal distribution of alpha diversity measurements}
 \usage{
-indices_normality(rich, file)
+indices_normality(rich, nrow, ncol)
 }
 \arguments{
 \item{rich}{A dataframe with alpha diversity indices as columns
