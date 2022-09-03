@@ -13,16 +13,19 @@ editor: visual
 
 ## I received data 
 
-![](../img/fastq_files.png)
+```{r echo=TRUE}
+here::here("data","raw") |>
+    list.files()
+```
 
 ## What am I going to do with that?
 
-Let's have a closer look of what we have
-
-```bash
-zcat 18S-NG080819-3_TTAGCT-CMKL6_L001_R1.fastq.gz | head -n 8
+```{r echo=TRUE}
+here::here("data","raw","S11B_R1.fastq.gz") |>
+    gzfile() |>
+    readLines(n = 4) |>
+    cat(sep="\n")
 ```
-![](../img/fastq_head.png)
 
 We need a bioinformatic pipeline to:
 
@@ -33,33 +36,40 @@ We need a bioinformatic pipeline to:
 
 ## Overview
 
-Two files (R1 and R2) per sequencing run or per sample (60 first nucleotides):
+Two files (R1 and R2) per sequencing run or per sample (100 first nucleotides):
 
 R1:
 
-``` default
-    @M05074:31:000000000-BC3R3:1:1101:13622:1477 1:N:0:1
-    TAACAACCCAGCAGCTGCGGTAATTCCAGCTCCAATAGCGTATATTTAAGTTGTTGCAGT
-    +
-    ---A99EBC-,C,,CF,@++F7,CFFF9,CEFF8,E,,C+B7F<FFF9,,CE,CF,;,,C
+```{r}
+here::here("data","raw","S11B_R1.fastq.gz") |>
+    gzfile() |>
+    readLines(n = 4) |>
+    substr(1,100) |>
+    cat(sep="\n")
+
 ```
 
 R2:
 
-``` default
-    @M05074:31:000000000-BC3R3:1:1101:13622:1477 2:N:0:1
-    ACAACACTTTCGTTCTTGCTTGATGAAAACATCCTTGGCAAATGCTTTCGCATTAGTTCG
-    +
-    -86@BCFFFGF@FGGFG9,CF,,C6,<A<F@FGGGGA,C,C8C<<FEFG:@,,B,,CFE:
+```{r}
+here::here("data","raw","S11B_R2.fastq.gz") |>
+    gzfile() |>
+    readLines(n = 4) |>
+    substr(1,100) |>
+    cat(sep="\n")
 ```
 
 Per record: identifier, sequence, quality
 
 ## Identifier
 
-``` default
-    @M05074:31:000000000-BC3R3:1:1101:13622:1477 1:N:0:1
+```{r}
+here::here("data","raw","S11B_R1.fastq.gz") |>
+    gzfile() |>
+    readLines(n = 1) |>
+    cat()
 ```
+
 
 | Value           | Description                              |
 |-----------------|------------------------------------------|
@@ -81,7 +91,7 @@ Per record: identifier, sequence, quality
 
 ![](../img/read_example_1.svg)
 
--   The tag, informs you from which sample the read come from
+-   The tag informs you from which sample the read come from
 
 -   The primer used for the amplification
 
@@ -123,14 +133,15 @@ In raw data reads, the quality score rarely exceed 40, but higher scores are pos
 
 ## Strategies
 
+<br>
+
 * Genetic clustering based approaches producing OTUs:
-    * UCLUST
-    * Swarm (could be seen as denoising too)
+    * [UPARSE](https://doi.org/10.1038/nmeth.2604)
+    * [Swarm](https://doi.org/10.1093/bioinformatics/btab493) (could be seen as denoising too)
 
 * Denoising approaches producing ASVs:
-    * Deblur
-    * UNOISE
-    * DADA2
+    * [Deblur](https://doi.org/10.1128/mSystems.00191-16)
+    * [DADA2](https://doi.org/10.1038%2Fnmeth.3869)
 
 ## DADA2, qu'est-ce que c'est?
 
@@ -186,8 +197,12 @@ cutadapt \
 ::: {.column width="50%"}
 
 ```bash
-# blabla
-# fff
+# 
+# tags to look for at the beginning (5') of R1 files. ${BARCODES} is a fasta file containing the tags
+# demultiplexed R1 file output. name will be replace by the name of the tag
+# same as above but with R2 files
+# input R1 file
+# input R2 file
 ```
 :::
 
@@ -231,6 +246,16 @@ cutadapt \
 ```bash
 # 
 # error tolerance (default value)
+# forward primer
+# reverse primer
+# ask to print primer trimming statistics
+# reads not containing primers are discarded
+# read with a length below this threshold after trimming are discarded
+# no indels allowed when mathing primer to reads
+# R1 output
+# R2 output
+# R1 input
+# R2 input; 1> ${LOG} export the report in the file ${LOG}
 ```
 :::
 
@@ -248,7 +273,7 @@ As for demultiplexing, if reads are mix-orientated, run `cutadapt` twice
 
 ::: {.column width="50%"}
 
-The overall quality of the sequencing is checked using `plotQualityProfile()`
+Check the overall quality of a sequencing run using `plotQualityProfile()`
 
 Outside of DADA2, you can also use <a href="https://github.com/s-andrews/FastQC" target="_blank">FASTQC</a>
 
@@ -262,7 +287,7 @@ If the overall quality is too low, you will probably have to resequence your sam
 
 ::::
 
-A quality drop is often observed by the end of the reads
+A quality drop is often observed in the end of the reads
 
 ::: {.notes}
 * green line: mean
@@ -275,7 +300,8 @@ A quality drop is often observed by the end of the reads
 Trimming, at a given length, will improve the overall read quality
 
 ::: {.callout-caution}
-After trimming, make sure that forward and reverse reads still overlap
+# Danger zone
+After trimming, make sure that forward and reverse reads are still long enough to overlap
 :::
 
 Reads of low quality and/or with ambiguous nucleotides (N) after trimming are filtered out.
@@ -339,7 +365,7 @@ The error rates will be learned from the data using `learnErrors()`
 
 You can visualise the estimated error rates using the function `plotErrors()`
 
-![](../img/error_plot.svg)
+![](../img/error_plot.svg){fig-pos="center"}
 
 ## Run the DADA2 algorithm
 

@@ -12,7 +12,7 @@ The aim of this course is to teach you how to run microbial ecology analyses (mo
 * Monday 5<sup>th</sup>:
     * 09h30: Participants arrival
     * 12h30: {{< fa utensils >}}
-    * 14h00: R practical by Marc Garel + check technical issues
+    * 14h00: [R practical](practicals/rforbeginer.html) by Marc Garel + check technical issues
     * 19h00: {{< fa utensils >}}
 * Tuesday 6<sup>th</sup>:
     * 08h30: Introduction to metabarcoding by Loïs Maignien
@@ -25,7 +25,6 @@ The aim of this course is to teach you how to run microbial ecology analyses (mo
     * 18h00: free time
     * 19h00: {{< fa utensils >}}
 * Wednesday 7<sup>th</sup>:
-    * 08h30: SAMBA by Cyril Noël from Ifremer
     * 09h30: Course on alpha diversity 1/2 by Loïs Maignien
     * 10h15: {{< fa mug-hot >}}
     * 10h30: [Alpha diversity practical](practicals/alpha_diversity.html) by Loïs Maignien

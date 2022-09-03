@@ -7,6 +7,7 @@ output:
 author:
   - "Fabrice Armougom, MIO"
   - "Marc Garel, MIO"
+  - "Nicolas Henry, ABiMS"
 editor_options: 
   chunk_output_type: inline
 ---
@@ -24,29 +25,44 @@ Load `phyloseq`
 library(phyloseq)
 ```
 
-We import the ASV table, the taxonomy and the sequences from the text files
-we exported in the [dada2 practical](/practicals/preprocessing_dada2.html#export-asv-table)
+We import the ASV table, the taxonomic assignment results and the sequences from the text files
+we exported in the [dada2 practical](/practicals/preprocessing_dada2.html#export-asv-table).
+
+Define where the previous practical outputs are located:
 
 ```{r}
 input_dir <- here::here("outputs", "dada2", "asv_table")
+```
 
+Import the ASV table:
+
+```{r}
 asv_table <- read.table(file = file.path(input_dir, "asv_table.tsv"),
                         header = TRUE,
                         sep = "\t",
                         row.names = 1)
+```
 
+the results of the taxonomic assignment:
+
+```{r}
 taxonomy <- read.table(file = file.path(input_dir, "taxonomy.tsv"),
                         header = TRUE,
                         sep = "\t",
                         row.names = 1)
+```
 
+and the ASV sequences:
+
+```{r}
 asv_seq <- Biostrings::readDNAStringSet(
   filepath = file.path(input_dir, "asv.fasta"),
   format = "fasta"
 )
 ```
 
-We will also need some information about the samples.
+We will also need some information about the samples,
+the file is located is another folder.
 
 ```{r}
 context <- read.table(here::here("data",
@@ -98,9 +114,19 @@ physeq <- phyloseq::phyloseq(
 )
 ```
 
-## Add phylogenetic tree (optional)
+## Add a phylogenetic tree
 
-NB: This step can be skipped if too many ASVs.
+### Why?
+
+Knowing the ASVs phylogenetic relatedness will help you to have a better understanding
+of the communities your studying.
+
+To quote the evolutionary biologist Theodosius Dobzhansky:
+
+> Nothing in Biology Makes Sense Except in the Light of Evolution.
+
+A phylogenetic tree reconstructed from the ASV sequences will be used to measure their
+relatedness.
 
 ### Alignment using DECIPHER
 
@@ -156,8 +182,26 @@ Once we have a rooted tree, we can add it to the phyloseq object.
 physeq <- phyloseq::merge_phyloseq(physeq,treeNJ)
 ```
 
+### If I do not have a tree
+
+For some reasons, it is sometimes not relevant or not possible to infer a tree
+from our data.
+
+For example, the metabarcode you are using is not carrying enough
+phylogenetic information to reconstruct a tree.
+
+Or you have so many ASVs that infering a tree would require more computational
+ressource that what you can afford.
+
+In that case, it is fine. You will still be able to perform most of the analyses
+introduced in the [alpha](/practicals/alpha_diversity.html) and
+[beta diversity](/practicals/beta_diversity.html) practicals.
+
 ## Extract information from a phyloseq object
- 
+
+Here a list of `phyloseq` functions to extract diverse information
+from your `phyloseq` object.
+
 * **Get the total number of ASVs**
 
 ```{r}
@@ -207,8 +251,6 @@ phyloseq::taxa_sums(physeq) |>
   head()
 ```
 
-Looking for the 2 last commands you can notice that dada2 has already ranked ASV... ASV1 the most abundant and after decreasing. 
-
 * **Get taxonomic ranks (useful for other commands)**
 
 ```{r}
@@ -232,11 +274,7 @@ phyloseq::get_taxa_unique(physeq, taxonomic.rank = "Phylum")
 ```
 
 If you do not remember the name of the taxonomic ranks in your
-phyloseq object
-
-```{r}
-rank_names(physeq)
-```
+phyloseq object use `phyloseq::rank_names(physeq)`
 
 * **Number of ASVs per phylum**
 
