@@ -279,11 +279,23 @@ head(nopFw)
 ```
 
 ### Remove primers
-
+The data you are working with correspond to the V3-V4 region using the primers Pro341F (`CCTACGGGNBGCASCAG`)
+and Pro805R (`GACTACNVGGGTATCTAAT`)
 Save into variables the forward and reverse primers.
 ```{r}
 primer_fwd  <- "CCTACGGGNBGCASCAG"
+#regular expression: CCTACGGG.[CGT]GCA[GC]CAG
 primer_rev  <- "GACTACNVGGGTATCTAAT"
+```
+
+Let's have a closer look to sequences:
+
+```{r}
+seq_zoom <- Biostrings::readDNAStringSet(fnFs[1],
+                             format = "fastq",
+                             nrec = 10)
+
+seq_zoom
 ```
 
 Use the function `dada2::removePrimers()` twice to remove the primers 

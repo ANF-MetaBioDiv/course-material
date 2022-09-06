@@ -256,7 +256,7 @@ nrow(m1)
 c2 <- m1[, 2]
 c2
 
-#Select data inside 3th column and 4rd line
+#Select data inside 3rd column and 4th line
 m1[4, 3]
 
 #delete a column
@@ -348,8 +348,10 @@ df <- cbind(date, temperature, rain)
 str(df)
 
 # make data.frame
-df <- data.frame(date, temperature, rain)
+df <- data.frame(date, temperature)
 str(df)
+
+df$rain <- rain
 
 #Give me the difference between cbind() and data.frame()
 View(df)
