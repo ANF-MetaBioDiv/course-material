@@ -24,7 +24,7 @@ library(dplyr)
 
 ```{r}
 output_beta <- here::here("outputs", "beta_diversity")
-if (!dir.exists(output_beta)) dir.create(output_beta)
+if (!dir.exists(output_beta)) dir.create(output_beta, recursive = TRUE)
 ```
 
 ### Load the data in R
