@@ -25,7 +25,7 @@ The aim of this course is to teach you how to run microbial ecology analyses (mo
     * 18h00: free time
     * 19h00: {{< fa utensils >}}
 * Wednesday 7<sup>th</sup>:
-    * 09h30: Course on alpha diversity 1/2 by Loïs Maignien
+    * 09h00: Course on alpha diversity 1/2 by Loïs Maignien
     * 10h15: {{< fa mug-hot >}}
     * 10h30: [Alpha diversity practical](practicals/alpha_diversity.html) by Loïs Maignien
     * 12h30: {{< fa utensils >}}
@@ -34,7 +34,7 @@ The aim of this course is to teach you how to run microbial ecology analyses (mo
     * 18h00: free time
     * 19h00: {{< fa utensils >}}
 * Thursday 8<sup>th</sup>:
-    * 09h30: Course on beta diversity 1/2 by Jean-Christophe Auguet
+    * 09h00: Course on beta diversity 1/2 by Jean-Christophe Auguet
     * 10h15: {{< fa mug-hot >}}
     * 10h30: [Beta diversity practical](practicals/beta_diversity.html) by Jean-Christophe Auguet
     * 12h30: {{< fa utensils >}}
@@ -43,6 +43,6 @@ The aim of this course is to teach you how to run microbial ecology analyses (mo
     * 18h00: free time
     * 19h00: {{< fa champagne-glasses >}} {{< fa utensils >}}
 * Friday 9<sup>th</sup>:
-    * 09h30: À la carte with {{< fa mug-hot >}}
+    * 09h00: À la carte with {{< fa mug-hot >}}
     * 12h30: {{< fa utensils >}}
     * 14h00: End of the course
