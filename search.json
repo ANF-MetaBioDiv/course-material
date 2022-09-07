@@ -627,7 +627,7 @@
     "href": "practicals/beta_diversity.html",
     "title": "PARTIII_BETA_Diversity_ANF",
     "section": "",
-    "text": "library(phyloseq)\nlibrary(ggplot2)\nlibrary(dplyr)\n\n\noutput_beta <- here::here(\"outputs\", \"beta_diversity\")\nif (!dir.exists(output_beta)) dir.create(output_beta)\n\n\n\n\nLoad the data and inspect the phyloseq object\n\nphyseq <- readRDS(here::here(\"data\",\n                             \"asv_table\",\n                             \"phyloseq_object_alpha_beta_div.rds\"))"
+    "text": "library(phyloseq)\nlibrary(ggplot2)\nlibrary(dplyr)\n\n\noutput_beta <- here::here(\"outputs\", \"beta_diversity\")\nif (!dir.exists(output_beta)) dir.create(output_beta, recursive = TRUE)\n\n\n\n\nLoad the data and inspect the phyloseq object\n\nphyseq <- readRDS(here::here(\"data\",\n                             \"asv_table\",\n                             \"phyloseq_object_alpha_beta_div.rds\"))"
   },
   {
     "objectID": "practicals/beta_diversity.html#normalisation",
