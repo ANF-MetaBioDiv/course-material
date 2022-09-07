@@ -19,28 +19,22 @@ knitr::opts_chunk$set(message = FALSE,
 
 ### Get the repository files
 
-To begin with, download the course repository on your computer or virtual
-machine.
+To begin with, download the course repository on your computer or virtual machine.
 
-To do so, visit the repository on github 
-([ANF-metabarcoding](https://github.com/nhenry50/ANF-metabarcoding)) 
-and download it as a zip file.
+To do so, visit the repository on github ([ANF-metabarcoding](https://github.com/nhenry50/ANF-metabarcoding)) and download it as a zip file.
 
-Once on your machine, unzip the file and place the resulting folder
-in the most covenient location (`~/Documents/` for example).
+Once on your machine, unzip the file and place the resulting folder in the most covenient location (`~/Documents/` for example).
 
 ### Dowload the reference database
 
-Save as a variable the path to the folder where you will place 
-the references databases.
+Save as a variable the path to the folder where you will place the references databases.
 
 ```{r}
 refdb_folder <- here::here("data", "refdb")
 refdb_folder
 ```
 
-The reason why we use here::here() is that when you render a
-Rmarkdown file, the working directory is where the Rmarkdown file is:
+The reason why we use here::here() is that when you render a Rmarkdown file, the working directory is where the Rmarkdown file is:
 
 ```{r}
 getwd()
@@ -60,22 +54,13 @@ if (!dir.exists(refdb_folder)) dir.create(refdb_folder)
 
 You can also create the folder from RStudio in the `Files` window
 
-**Tip:** You can access the documentation of any R function using `?`
-in the console. If you to know everything about the function
-`dir.create()`, simply run `?dir.create()` 
+**Tip:** You can access the documentation of any R function using `?` in the console. If you to know everything about the function `dir.create()`, simply run `?dir.create()`
 
-The Silva reference database, commonly used to assign 16S metabarcoding data,
-will be used in practical.
+The Silva reference database, commonly used to assign 16S metabarcoding data, will be used in practical.
 
-In case you are working with 18S sequences, you will have better assignements
-using PR2 (https://pr2-database.org/) or EukRibo (https://doi.org/10.5281/zenodo.6327891)
-especially if you are interested in protists.
+In case you are working with 18S sequences, you will have better assignements using PR2 (https://pr2-database.org/) or EukRibo (https://doi.org/10.5281/zenodo.6327891) especially if you are interested in protists.
 
-The following code downloads dada2 formated silva reference databases. 
-If you are not confortable with it, you can simply
-download the reference database files from your web browser
-[here]("https://zenodo.org/record/4587955/files/silva_nr99_v138.1_train_set.fa.gz") and
-[here]("https://zenodo.org/record/4587955/files/silva_species_assignment_v138.1.fa.gz").
+The following code downloads dada2 formated silva reference databases. If you are not confortable with it, you can simply download the reference database files from your web browser [here](%22https://zenodo.org/record/4587955/files/silva_nr99_v138.1_train_set.fa.gz%22) and [here](%22https://zenodo.org/record/4587955/files/silva_species_assignment_v138.1.fa.gz%22).
 
 ```{r}
 # R stop dowloading after timeout which is
@@ -115,13 +100,10 @@ if (!file.exists(silva_species_assignment)) {
 
 ### Attach custom functions
 
-We will use in this practical R functions especially written for this course.
-The "classic" way to import functions is to use `source()` 
-with the name of the R script to source.
+We will use in this practical R functions especially written for this course. The "classic" way to import functions is to use `source()` with the name of the R script to source.
 
-Instead, we use `devtools::load_all()`. This function will source all the 
-scripts from the folder `R/` along with the documentation in `man/`
-`
+Instead, we use `devtools::load_all()`. This function will source all the scripts from the folder `R/` along with the documentation in `man/` \`
+
 ```{r}
 devtools::load_all()
 ```
@@ -130,25 +112,18 @@ devtools::load_all()
 
 ### Locate the sequencing files
 
-Save the path to the directory containing your raw data
-(paired-end sequencing fastq files) in a variable named `path_to_fastqs`
+Save the path to the directory containing your raw data (paired-end sequencing fastq files) in a variable named `path_to_fastqs`
 
 ```{r}
 path_to_fastqs <- here::here("data", "raw")
 ```
 
-The [gzipped](https://en.wikipedia.org/wiki/Gzip) (compressed)
-[FASTQ](https://en.wikipedia.org/wiki/FASTQ_format) formated 
-"forward" (R1) and "reverse" (R2) files
-are named as follow:
+The [gzipped](https://en.wikipedia.org/wiki/Gzip) (compressed) [FASTQ](https://en.wikipedia.org/wiki/FASTQ_format) formated "forward" (R1) and "reverse" (R2) files are named as follow:
 
-* `${SAMPLENAME}_R1.fastq.gz` for the forward files
-* `${SAMPLENAME}_R2.fastq.gz` for the reverse files.
+-   `${SAMPLENAME}_R1.fastq.gz` for the forward files
+-   `${SAMPLENAME}_R2.fastq.gz` for the reverse files.
 
-We list the forward files using the function `list.files()`.
-The argument `pattern` gives you the possibility to only select
-file names matching a regular expression. In our case, we select
-all file names finising by `_R1.fastq.gz`.
+We list the forward files using the function `list.files()`. The argument `pattern` gives you the possibility to only select file names matching a regular expression. In our case, we select all file names finising by `_R1.fastq.gz`.
 
 ```{r}
 fnFs <- sort(list.files(path_to_fastqs,
@@ -182,15 +157,11 @@ sample_names <- basename(fnFs) |>
 
 `basename()`: remove path to only keep file name.
 
-`|>`: R "pipe". It allows you to chain functions, avoiding intermediate variables and
-nested parenthesis. It basically transfers the output of the left expression to the input
-of the right expression. You need R > 4.1 to use this pipe, otherwise use `%>%` from
-[`magrittr`](https://magrittr.tidyverse.org/).
+`|>`: R "pipe". It allows you to chain functions, avoiding intermediate variables and nested parenthesis. It basically transfers the output of the left expression to the input of the right expression. You need R \> 4.1 to use this pipe, otherwise use `%>%` from [`magrittr`](https://magrittr.tidyverse.org/).
 
 `strsplit()`: split character chain according to a defined pattern. `?strsplit` for documentation.
 
-`sapply()`: apply a function to each element of a list or vector. The output is simplified to
-be vector.
+`sapply()`: apply a function to each element of a list or vector. The output is simplified to be vector.
 
 Let's go step by step. First list the R1 file names.
 
@@ -199,9 +170,7 @@ basename(fnFs) |>
   head()
 ```
 
-We can see that the sample name is before the first `_`.
-With `strsplit()`, we can split each file name into a 2 elements vector.
-The result is a list of 2 elements vectors.
+We can see that the sample name is before the first `_`. With `strsplit()`, we can split each file name into a 2 elements vector. The result is a list of 2 elements vectors.
 
 ```{r}
 basename(fnFs) |>
@@ -224,15 +193,11 @@ basename(fnFs) |>
 gsub("^.+/|_.+$", "", fnFs) |> head()
 ```
 
-Regular expressions are extremly useful. If you are keen to learn
-how to use them, have a look
-[here](https://bookdown.org/rdpeng/rprogdatascience/regular-expressions.html)
+Regular expressions are extremly useful. If you are keen to learn how to use them, have a look [here](https://bookdown.org/rdpeng/rprogdatascience/regular-expressions.html)
 
 ## Sequence quality check
 
-We use a custom function, `qualityprofile()`,
-implemented in `R/preprocessing.R` to check the 
-quality of the raw sequences.
+We use a custom function, `qualityprofile()`, implemented in `R/preprocessing.R` to check the quality of the raw sequences.
 
 Run `?qualityprofile` to know more about this function.
 
@@ -255,10 +220,9 @@ qualityprofile(fnFs,
 
 ## Primer removal
 
-### Prepare outputs 
+### Prepare outputs
 
-We first create a folder where to save the reads once
-they are trimmed:
+We first create a folder where to save the reads once they are trimmed:
 
 ```{r}
 path_to_trimmed_reads <- here::here("outputs",
@@ -268,8 +232,7 @@ path_to_trimmed_reads <- here::here("outputs",
 if (!dir.exists(path_to_trimmed_reads)) dir.create(path_to_trimmed_reads)
 ```
 
-Then we prepare a list of paths where to save the results
-(*e.g.* sequences without primers)
+Then we prepare a list of paths where to save the results (*e.g.* sequences without primers)
 
 ```{r}
 nopFw <- file.path(path_to_trimmed_reads, basename(fnFs))
@@ -279,9 +242,9 @@ head(nopFw)
 ```
 
 ### Remove primers
-The data you are working with correspond to the V3-V4 region using the primers Pro341F (`CCTACGGGNBGCASCAG`)
-and Pro805R (`GACTACNVGGGTATCTAAT`)
-Save into variables the forward and reverse primers.
+
+The data you are working with correspond to the V3-V4 region using the primers Pro341F (`CCTACGGGNBGCASCAG`) and Pro805R (`GACTACNVGGGTATCTAAT`) Save into variables the forward and reverse primers.
+
 ```{r}
 primer_fwd  <- "CCTACGGGNBGCASCAG"
 #regular expression: CCTACGGG.[CGT]GCA[GC]CAG
@@ -298,9 +261,7 @@ seq_zoom <- Biostrings::readDNAStringSet(fnFs[1],
 seq_zoom
 ```
 
-Use the function `dada2::removePrimers()` twice to remove the primers 
-from forward `fnFs` and reverse `fnRs` reads and save the results
-in `nopFs` and `nopRs` respectively.
+Use the function `dada2::removePrimers()` twice to remove the primers from forward `fnFs` and reverse `fnRs` reads and save the results in `nopFs` and `nopRs` respectively.
 
 ```{r}
 dada2::removePrimers(fn = fnFs,
@@ -318,11 +279,9 @@ dada2::removePrimers(fn = fnRs,
 
 ### For more complex situations
 
-If you have to deal with a lot of samples and/or mixed orientated reads,
-we would recommend using dedicated tools such as [cutadapt](https://github.com/marcelm/cutadapt).
+If you have to deal with a lot of samples and/or mixed orientated reads, we would recommend using dedicated tools such as [cutadapt](https://github.com/marcelm/cutadapt).
 
-If you have to deal with mix-orientated paired-end reads,
-you may find inspiration [here](https://gitlab.sb-roscoff.fr/nhenry/abims-metabarcoding-pipeline-dada2)
+If you have to deal with mix-orientated paired-end reads, you may find inspiration [here](https://gitlab.sb-roscoff.fr/nhenry/abims-metabarcoding-pipeline-dada2)
 
 ## Trimming and quality filtering
 
@@ -342,8 +301,7 @@ filtFs <- file.path(path_to_filtered_reads, basename(fnFs))
 filtRs <- file.path(path_to_filtered_reads, basename(fnRs))
 ```
 
-To make the link between files and sample names,
-simply name the file names vector using the sample names
+To make the link between files and sample names, simply name the file names vector using the sample names
 
 ```{r}
 names(filtFs) <- sample_names
@@ -352,8 +310,7 @@ names(filtRs) <- sample_names
 
 #### Use `dada2::filterAndTrim()`
 
-Let's have a look at what the function is doing.
-To do so, type `?dada2::filterAndTrim()` in the console.
+Let's have a look at what the function is doing. To do so, type `?dada2::filterAndTrim()` in the console.
 
 Let's run the function.
 
@@ -373,39 +330,15 @@ Let's run the function.
 
 **What happened?**
 
-Details about the function arguments:
-* **nopFw** : input, where the forward reads without primers are (path)
-* **filtFs** : output, where forward filtered reads are written (path)
-* **nopRv** and **filRs** : same as above, but wiht reverse reads
-* **TruncLen** : truncate reads after truncLen bases.
-Reads shorter than that are discarded.
-Exple : TruncLen=c(200,150), means forward and reverse reads are cut
-at 200 bp and 150 bp respectively.
-* **TrimLeft** : number of nucleotides to remove from the start
-* **Trimright** : number of nucleotides to remove from the end
-* **maxN** : max number of ambiguous bases accepted
-* **maxEE** : read expected errors (EE) threshold.
-The EE of a read is the sum of the error probability
-of each base composing it.
-Increase that value to accept more low quality reads.
-The first value refers to the forward reads and
-the second to the reverse reads.
-* **TruncQ=2**: truncate reads at the first instance of a
-quality score less than or equal to truncQ.
+Details about the function arguments: \* **nopFw** : input, where the forward reads without primers are (path) \* **filtFs** : output, where forward filtered reads are written (path) \* **nopRv** and **filRs** : same as above, but wiht reverse reads \* **TruncLen** : truncate reads after truncLen bases. Reads shorter than that are discarded. Exple : TruncLen=c(200,150), means forward and reverse reads are cut at 200 bp and 150 bp respectively. \* **TrimLeft** : number of nucleotides to remove from the start \* **Trimright** : number of nucleotides to remove from the end \* **maxN** : max number of ambiguous bases accepted \* **maxEE** : read expected errors (EE) threshold. The EE of a read is the sum of the error probability of each base composing it. Increase that value to accept more low quality reads. The first value refers to the forward reads and the second to the reverse reads. \* **TruncQ=2**: truncate reads at the first instance of a quality score less than or equal to truncQ.
 
 ## Denoising
+
 ### Learn the error model
 
-To be able to denoise your data, you need an error model.
-The error model will tell you at which rate a nucleotide is
-replace by another for a given quality score. For example,
-for a quality score Q of 30, what is the probability
-of an A being wrongly read as a T.
+To be able to denoise your data, you need an error model. The error model will tell you at which rate a nucleotide is replace by another for a given quality score. For example, for a quality score Q of 30, what is the probability of an A being wrongly read as a T.
 
-This error model can be learnt directly from the data with
-the function `dada2::learnErrors()`. You can come back to the
-[course](/courses/dada2.html#/dada2-workflow-denoising-approach)
-for more details about the maths behind.
+This error model can be learnt directly from the data with the function `dada2::learnErrors()`. You can come back to the [course](/courses/dada2.html#/dada2-workflow-denoising-approach) for more details about the maths behind.
 
 ```{r}
 errF <- dada2::learnErrors(filtFs,
@@ -417,16 +350,15 @@ errR <- dada2::learnErrors(filtRs,
                            multithread = TRUE)
 ```
 
-You can visualise the resulting error model using
-the function `dada2::plotErrors()`
+You can visualise the resulting error model using the function `dada2::plotErrors()`
+
 ```{r}
 dada2::plotErrors(errF, nominalQ=TRUE)
 ```
 
 ### Dereplication
 
-Before denoising, we need to dereplicate the sequences. It means,
-for each unique sequence, count the number of reads.
+Before denoising, we need to dereplicate the sequences. It means, for each unique sequence, count the number of reads.
 
 The dereplication is achieved using the function `dada2::derepFastq()`
 
@@ -438,9 +370,7 @@ derepRs <- dada2::derepFastq(filtRs, verbose = TRUE)
 
 ### Run dada
 
-Now we are ready to run the denoising algorithm with
-`dada2::dada()`. As input, we need the error model and
-the dereplicated sequences.
+Now we are ready to run the denoising algorithm with `dada2::dada()`. As input, we need the error model and the dereplicated sequences.
 
 ```{r}
 dadaFs <- dada2::dada(derepFs, err = errF, multithread = TRUE)
@@ -450,8 +380,7 @@ dadaRs <- dada2::dada(derepRs, err = errR, multithread = TRUE)
 
 ## Merge paired-end reads
 
-Once forward and reverse reads have been denoised,
-we can merge them with `dada2::mergePairs()`.
+Once forward and reverse reads have been denoised, we can merge them with `dada2::mergePairs()`.
 
 ```{r}
 mergers <- dada2::mergePairs(
@@ -466,8 +395,7 @@ mergers <- dada2::mergePairs(
 
 ## Build the ASV table
 
-At this point we have ASVs and we know their number of reads in each sample.
-Whe have enough information to build an ASV table.
+At this point we have ASVs and we know their number of reads in each sample. Whe have enough information to build an ASV table.
 
 ```{r}
 seqtab <- dada2::makeSequenceTable(mergers)
@@ -475,8 +403,7 @@ seqtab <- dada2::makeSequenceTable(mergers)
 
 ## Remove Chimera
 
-Chimeras are artifact sequences formed by two or more biological sequences incorrectly joined together.
-We find and remove bimeras (two-parent chimeras) using the function `dada2::removeBimeraDenovo()`
+Chimeras are artifact sequences formed by two or more biological sequences incorrectly joined together. We find and remove bimeras (two-parent chimeras) using the function `dada2::removeBimeraDenovo()`
 
 ```{r}
 seqtab_nochim <- dada2::removeBimeraDenovo(seqtab,
@@ -487,17 +414,11 @@ seqtab_nochim <- dada2::removeBimeraDenovo(seqtab,
 
 ## Taxonomic assignment from dada2
 
-The ASV table is ready. But without a clue about the ASVs taxonomic
-identity, we won't go far in ecological interpretations.
-We can have an idea of ASV taxonomic identity comparing their sequences
-to references databases such as SILVA.
+The ASV table is ready. But without a clue about the ASVs taxonomic identity, we won't go far in ecological interpretations. We can have an idea of ASV taxonomic identity comparing their sequences to references databases such as SILVA.
 
 The taxonomic assignment is done in two steps.
 
-First, each ASV is assigned to a taxonomy using
-the RDP Naive Bayesian Classifier algorithm described
-in [Wang et al. 2007](https://doi.org/10.1128/aem.00062-07)
-called by the function `dada2::assignTaxonomy()`.
+First, each ASV is assigned to a taxonomy using the RDP Naive Bayesian Classifier algorithm described in [Wang et al. 2007](https://doi.org/10.1128/aem.00062-07) called by the function `dada2::assignTaxonomy()`.
 
 ```{r}
 taxonomy <- dada2::assignTaxonomy(
@@ -513,8 +434,7 @@ taxonomy <- dada2::assignTaxonomy(
 
 The method is robust, however, it often fails to assign at the species level.
 
-If you consider that in case an ASV is 100% similar to a reference sequence,
-it belongs to the same species, then you can use `dada2::addSpecies()`
+If you consider that in case an ASV is 100% similar to a reference sequence, it belongs to the same species, then you can use `dada2::addSpecies()`
 
 ```{r}
 taxonomy <- dada2::addSpecies(taxonomy,
@@ -522,8 +442,7 @@ taxonomy <- dada2::addSpecies(taxonomy,
                           allowMultiple = FALSE)
 ```
 
-This function assign to the species level ASVs which are identical to a reference
-sequence.
+This function assign to the species level ASVs which are identical to a reference sequence.
 
 ## Export
 
@@ -531,8 +450,7 @@ All the preprocessing is done. Now we export our results.
 
 ### R objects
 
-The results can be exported as a R objects, one object for the ASV table
-and another one for the taxonomy.
+The results can be exported as a R objects, one object for the ASV table and another one for the taxonomy.
 
 ```{r}
 export_folder <- here::here("outputs", "dada2", "asv_table")
@@ -548,22 +466,17 @@ saveRDS(object = taxonomy,
 
 ### Text files
 
-We recommand to export your results as text files.
-They are then easy reusable by other programs/languages.
+We recommand to export your results as text files. They are then easy reusable by other programs/languages.
 
 But before, we need to format the data a little bit.
 
 First we create a new variable to collect the ASV sequences:
+
 ```{r}
 asv_seq <- colnames(seqtab_nochim)
 ```
 
-We create unique ids for each ASV. The sequence itself is an unique id,
-but we would like to have something shorter. The ids are generated using
-the cryptographic hash function SHA-1. A given sequence will always give
-you the same result, which means that if you have the same id in two different
-datasets, it means that it is the same sequence. It won't be true for
-arbitrary ids such as ASV1, ASV2 and so on.
+We create unique ids for each ASV. The sequence itself is an unique id, but we would like to have something shorter. The ids are generated using the cryptographic hash function SHA-1. A given sequence will always give you the same result, which means that if you have the same id in two different datasets, it means that it is the same sequence. It won't be true for arbitrary ids such as ASV1, ASV2 and so on.
 
 To do so we use the function `digest::digest()`:
 
@@ -578,9 +491,7 @@ and rename the different variables with the new ids
 row.names(taxonomy) <- colnames(seqtab_nochim) <- names(asv_seq) <- asv_id
 ```
 
-Before exporting the data frames (`taxonomy` and `seqtab_nochim`) as a text file,
-we convert their row names (ASV ids) into a new column named `asv`. This
-is achieved using the custom function `df_export()`
+Before exporting the data frames (`taxonomy` and `seqtab_nochim`) as a text file, we convert their row names (ASV ids) into a new column named `asv`. This is achieved using the custom function `df_export()`
 
 ```{r}
 taxonomy_export <- df_export(taxonomy, new_rn = "asv")
