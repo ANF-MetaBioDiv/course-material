@@ -28,6 +28,8 @@ website:
       - text: Day 2
         menu:
         - text: "Courses"
+        - text: "Introduction"
+          href: courses/introduction.pdf
         - text: "Analysing metabarcoding data with dada2"
           href: courses/dada2.html
         - text: "Introduction to phyloseq"
