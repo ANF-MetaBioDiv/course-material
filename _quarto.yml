@@ -39,6 +39,11 @@ website:
           href: practicals/preprocessing_phyloseq.html
       - text: Day 3
         menu:
+        - text: "Courses"
+        - text: "Alpha diversity"
+          href: courses/alpha_diversity.pdf
+        - text: "Introduction to univariate statistics"
+          href: courses/stat_mean_comparison.pdf
         - text: "Practicals"
         - text: "Alpha diversity"
           href: practicals/alpha_diversity.html
