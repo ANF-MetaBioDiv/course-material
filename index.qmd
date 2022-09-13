@@ -34,11 +34,11 @@ The aim of this course is to teach you how to run microbial ecology analyses (mo
     * 18h00: free time
     * 19h00: {{< fa utensils >}}
 * Thursday 8<sup>th</sup>:
-    * 09h00: Course on beta diversity 1/2 by Jean-Christophe Auguet
+    * 09h00: Course on [beta diversity](courses/beta_diversity.pdf) 1/2 by Jean-Christophe Auguet
     * 10h15: {{< fa mug-hot >}}
-    * 10h30: [Beta diversity practical](practicals/beta_diversity.html) by Jean-Christophe Auguet
+    * 10h30: [Beta diversity practical](practicals/beta_diversity.html) 2/2 by Jean-Christophe Auguet
     * 12h30: {{< fa utensils >}}
-    * 14h00: Course on beta diversity 2/2 by Jean-Christophe Auguet
+    * 14h00: Course on [beta diversity](courses/beta_diversity.pdf) by Jean-Christophe Auguet
     * 15h00: [Beta diversity practical](practicals/beta_diversity.html) by Jean-Christophe Auguet with {{< fa mug-hot >}}
     * 18h00: free time
     * 19h00: {{< fa champagne-glasses >}} {{< fa utensils >}}

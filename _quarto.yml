@@ -51,6 +51,9 @@ website:
           href: practicals/alpha_diversity.html
       - text: Day 4
         menu:
+        - text: "Courses"
+        - text: "Beta diversity"
+          href: courses/beta_diversity.pdf
         - text: "Practicals"
         - text: "Beta diversity"
           href: practicals/beta_diversity.html
