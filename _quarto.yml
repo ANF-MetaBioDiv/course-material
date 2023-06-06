@@ -14,7 +14,7 @@ execute:
   freeze: auto  # re-render only when source changes
 website:
   title: "ANF MetaBioDiv"
-  repo-url: https://github.com/nhenry50/ANF-metabarcoding
+  repo-url: https://github.com/ANF-MetaBioDiv/course-material
   repo-actions: [edit, issue]
   navbar:
     left:
@@ -61,7 +61,7 @@ website:
         href: about.qmd
     right:
       - icon: github
-        href: https://github.com/nhenry50/ANF-metabarcoding    
+        href: https://github.com/ANF-MetaBioDiv/course-material
   page-footer:
     center: |
       [![](/img/logo_abims.png){fig-alt="ABiMS" height=35px}](http://abims.sb-roscoff.fr/)
