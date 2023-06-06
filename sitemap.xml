@@ -1,39 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://nhenry50.github.io/ANF-metabarcoding/index.html</loc>
-    <lastmod>2022-09-13T11:03:38.358Z</lastmod>
+    <loc>https://ANF-MetaBioDiv.github.io/course-material/index.html</loc>
+    <lastmod>2023-06-06T12:11:37.628Z</lastmod>
   </url>
   <url>
-    <loc>https://nhenry50.github.io/ANF-metabarcoding/about.html</loc>
-    <lastmod>2022-09-13T11:03:39.402Z</lastmod>
+    <loc>https://ANF-MetaBioDiv.github.io/course-material/about.html</loc>
+    <lastmod>2023-06-06T12:11:38.792Z</lastmod>
   </url>
   <url>
-    <loc>https://nhenry50.github.io/ANF-metabarcoding/practicals/rforbeginer.html</loc>
-    <lastmod>2022-09-13T11:03:40.682Z</lastmod>
+    <loc>https://ANF-MetaBioDiv.github.io/course-material/practicals/rforbeginer.html</loc>
+    <lastmod>2023-06-06T12:11:41.120Z</lastmod>
   </url>
   <url>
-    <loc>https://nhenry50.github.io/ANF-metabarcoding/courses/dada2.html</loc>
-    <lastmod>2022-09-13T11:03:41.478Z</lastmod>
+    <loc>https://ANF-MetaBioDiv.github.io/course-material/courses/dada2.html</loc>
+    <lastmod>2023-06-06T12:11:42.740Z</lastmod>
   </url>
   <url>
-    <loc>https://nhenry50.github.io/ANF-metabarcoding/practicals/preprocessing_dada2.html</loc>
-    <lastmod>2022-09-13T11:03:42.538Z</lastmod>
+    <loc>https://ANF-MetaBioDiv.github.io/course-material/practicals/preprocessing_dada2.html</loc>
+    <lastmod>2023-06-06T12:11:44.652Z</lastmod>
   </url>
   <url>
-    <loc>https://nhenry50.github.io/ANF-metabarcoding/courses/phyloseq.html</loc>
-    <lastmod>2022-09-13T11:03:43.798Z</lastmod>
+    <loc>https://ANF-MetaBioDiv.github.io/course-material/courses/phyloseq.html</loc>
+    <lastmod>2023-06-06T12:11:47.941Z</lastmod>
   </url>
   <url>
-    <loc>https://nhenry50.github.io/ANF-metabarcoding/practicals/preprocessing_phyloseq.html</loc>
-    <lastmod>2022-09-13T11:03:44.538Z</lastmod>
+    <loc>https://ANF-MetaBioDiv.github.io/course-material/practicals/preprocessing_phyloseq.html</loc>
+    <lastmod>2023-06-06T12:11:49.301Z</lastmod>
   </url>
   <url>
-    <loc>https://nhenry50.github.io/ANF-metabarcoding/practicals/alpha_diversity.html</loc>
-    <lastmod>2022-09-13T11:03:46.290Z</lastmod>
+    <loc>https://ANF-MetaBioDiv.github.io/course-material/practicals/alpha_diversity.html</loc>
+    <lastmod>2023-06-06T12:11:52.369Z</lastmod>
   </url>
   <url>
-    <loc>https://nhenry50.github.io/ANF-metabarcoding/practicals/beta_diversity.html</loc>
-    <lastmod>2022-09-13T11:03:48.626Z</lastmod>
+    <loc>https://ANF-MetaBioDiv.github.io/course-material/practicals/beta_diversity.html</loc>
+    <lastmod>2023-06-06T12:11:57.373Z</lastmod>
   </url>
 </urlset>

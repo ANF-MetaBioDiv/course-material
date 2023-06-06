@@ -1,1 +1,1 @@
-Sitemap: https://nhenry50.github.io/ANF-metabarcoding/sitemap.xml
+Sitemap: https://ANF-MetaBioDiv.github.io/course-material/sitemap.xml
