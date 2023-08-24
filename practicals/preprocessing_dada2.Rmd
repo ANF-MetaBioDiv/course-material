@@ -21,7 +21,7 @@ knitr::opts_chunk$set(message = FALSE,
 
 To begin with, download the course repository on your computer or virtual machine.
 
-To do so, visit the repository on github ([ANF-metabarcoding](https://github.com/nhenry50/ANF-metabarcoding)) and download it as a zip file.
+To do so, visit the ([ANF-metabarcoding](https://github.com/ANF-MetaBioDiv/course-material)) repository on github and download it as a zip file.
 
 Once on your machine, unzip the file and place the resulting folder in the most covenient location (`~/Documents/` for example).
 
@@ -100,9 +100,11 @@ if (!file.exists(silva_species_assignment)) {
 
 ### Attach custom functions
 
-We will use in this practical R functions especially written for this course. The "classic" way to import functions is to use `source()` with the name of the R script to source.
+We will use in this practical R functions especially written for this course.
+The "classic" way to import functions is to use `source()` with the name of the R script to source.
 
-Instead, we use `devtools::load_all()`. This function will source all the scripts from the folder `R/` along with the documentation in `man/` \`
+Instead, we use `devtools::load_all()`. This function will source all the scripts from the folder `R/`
+along with the documentation in `man/` \`
 
 ```{r}
 devtools::load_all()
@@ -150,14 +152,16 @@ head(fnFs)
 ```{r}
 sample_names <- basename(fnFs) |>
   strsplit(split = "_") |>
-  sapply(`[`, 1)
+  sapply(head, 1)
 ```
 
 **To understand:**
 
 `basename()`: remove path to only keep file name.
 
-`|>`: R "pipe". It allows you to chain functions, avoiding intermediate variables and nested parenthesis. It basically transfers the output of the left expression to the input of the right expression. You need R \> 4.1 to use this pipe, otherwise use `%>%` from [`magrittr`](https://magrittr.tidyverse.org/).
+`|>`: R "pipe". It allows you to chain functions, avoiding intermediate variables and nested parenthesis.
+It basically transfers the output of the left expression to the input of the right expression.
+You need R \> 4.1 to use this pipe, otherwise use `%>%` from [`magrittr`](https://magrittr.tidyverse.org/).
 
 `strsplit()`: split character chain according to a defined pattern. `?strsplit` for documentation.
 
@@ -183,7 +187,7 @@ Now, We just have to extract the first element for each file.
 ```{r}
 basename(fnFs) |>
   strsplit(split = "_") |>
-  sapply(`[`, 1) |>
+  sapply(head, 1) |>
   head()
 ```
 
@@ -225,20 +229,13 @@ qualityprofile(fnFs,
 We first create a folder where to save the reads once they are trimmed:
 
 ```{r}
-path_to_trimmed_reads <- here::here("outputs",
-                                    "dada2",
-                                    "trimmed")
+path_to_trimmed_reads <- here::here(
+  "outputs",
+  "dada2",
+  "trimmed"
+)
 
 if (!dir.exists(path_to_trimmed_reads)) dir.create(path_to_trimmed_reads)
-```
-
-Then we prepare a list of paths where to save the results (*e.g.* sequences without primers)
-
-```{r}
-nopFw <- file.path(path_to_trimmed_reads, basename(fnFs))
-nopRv <- file.path(path_to_trimmed_reads, basename(fnRs))
-
-head(nopFw)
 ```
 
 ### Remove primers
@@ -247,39 +244,38 @@ The data you are working with correspond to the V3-V4 region using the primers P
 
 ```{r}
 primer_fwd  <- "CCTACGGGNBGCASCAG"
-#regular expression: CCTACGGG.[CGT]GCA[GC]CAG
 primer_rev  <- "GACTACNVGGGTATCTAAT"
 ```
 
 Let's have a closer look to sequences:
 
 ```{r}
-seq_zoom <- Biostrings::readDNAStringSet(fnFs[1],
-                             format = "fastq",
-                             nrec = 10)
+seq_zoom <- Biostrings::readDNAStringSet(
+  fnFs[1],
+  format = "fastq",
+  nrec = 10
+)
 
 seq_zoom
 ```
 
-Use the function `dada2::removePrimers()` twice to remove the primers from forward `fnFs` and reverse `fnRs` reads and save the results in `nopFs` and `nopRs` respectively.
+Use the function 
 
 ```{r}
-dada2::removePrimers(fn = fnFs,
-                     fout = nopFw,
-                     primer.fwd = primer_fwd,
-                     max.mismatch = 1,
-                     verbose = TRUE)
+primer_trim(
+  forward_files = fnFs,
+  reverse_files = fnRs,
+  primer_fwd = primer_fwd,
+  primer_rev = primer_rev,
+  output_dir = path_to_trimmed_reads,
+  min_size = 200
+)
 
-dada2::removePrimers(fn = fnRs,
-                     fout = nopRv,
-                     primer.fwd = primer_rev,
-                     max.mismatch = 1,
-                     verbose = TRUE)
+nopFw <- sort(list.files(path_to_trimmed_reads, pattern = "R1", full.names = TRUE))
+nopRv <- sort(list.files(path_to_trimmed_reads, pattern = "R2", full.names = TRUE))
 ```
 
 ### For more complex situations
-
-If you have to deal with a lot of samples and/or mixed orientated reads, we would recommend using dedicated tools such as [cutadapt](https://github.com/marcelm/cutadapt).
 
 If you have to deal with mix-orientated paired-end reads, you may find inspiration [here](https://gitlab.sb-roscoff.fr/nhenry/abims-metabarcoding-pipeline-dada2)
 
@@ -437,9 +433,11 @@ The method is robust, however, it often fails to assign at the species level.
 If you consider that in case an ASV is 100% similar to a reference sequence, it belongs to the same species, then you can use `dada2::addSpecies()`
 
 ```{r}
-taxonomy <- dada2::addSpecies(taxonomy,
-                          silva_species_assignment,
-                          allowMultiple = FALSE)
+taxonomy <- dada2::addSpecies(
+  taxonomy,
+  silva_species_assignment,
+  allowMultiple = FALSE
+)
 ```
 
 This function assign to the species level ASVs which are identical to a reference sequence.
@@ -466,7 +464,7 @@ saveRDS(object = taxonomy,
 
 ### Text files
 
-We recommand to export your results as text files. They are then easy reusable by other programs/languages.
+We recommand to export your results as text files. They are then reusable by other programs/languages.
 
 But before, we need to format the data a little bit.
 
@@ -476,13 +474,11 @@ First we create a new variable to collect the ASV sequences:
 asv_seq <- colnames(seqtab_nochim)
 ```
 
-We create unique ids for each ASV. The sequence itself is an unique id, but we would like to have something shorter. The ids are generated using the cryptographic hash function SHA-1. A given sequence will always give you the same result, which means that if you have the same id in two different datasets, it means that it is the same sequence. It won't be true for arbitrary ids such as ASV1, ASV2 and so on.
-
-To do so we use the function `digest::digest()`:
+We create unique ids for each ASV. The sequence itself is an unique id, but we would like to have something shorter. 
 
 ```{r}
-asv_id <- sapply(asv_seq,
-                 function(x) unname(digest::digest(x, algo = "sha1")))
+ndigits <- nchar(length(asv_seq))
+asv_id <- sprintf(paste0("ASV_%0", ndigits, "d"), seq_along(asv_seq))
 ```
 
 and rename the different variables with the new ids
