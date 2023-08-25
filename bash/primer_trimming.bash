@@ -6,13 +6,14 @@ PRIMER_F=$3
 PRIMER_R=$4
 OUT_DIR=$5
 MIN_LENGTH=$6
+LOG_DIR=$7
 
 FORWARD_OUT="${OUT_DIR}/$(basename ${FORWARD_IN})"
 REVERSE_OUT="${OUT_DIR}/$(basename ${REVERSE_IN})"
 
 SAMPLE=$(basename ${FORWARD_IN/_R[12].fastq.gz/})
 
-LOG="outputs/dada2/log/${SAMPLE}_primer_trimming.log"
+LOG="${LOG_DIR}/${SAMPLE}_primer_trimming.log"
 TMP_LOG=$(mktemp --tmpdir=".")
 
 cutadapt \

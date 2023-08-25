@@ -58,7 +58,7 @@ You can also create the folder from RStudio in the `Files` window
 
 The Silva reference database, commonly used to assign 16S metabarcoding data, will be used in practical.
 
-In case you are working with 18S sequences, you will have better assignements using PR2 (https://pr2-database.org/) or EukRibo (https://doi.org/10.5281/zenodo.6327891) especially if you are interested in protists.
+In case you are working with 18S sequences, you will have better assignements using PR2 (<https://pr2-database.org/>) or EukRibo (<https://doi.org/10.5281/zenodo.6327891>) especially if you are interested in protists.
 
 The following code downloads dada2 formated silva reference databases. If you are not confortable with it, you can simply download the reference database files from your web browser [here](%22https://zenodo.org/record/4587955/files/silva_nr99_v138.1_train_set.fa.gz%22) and [here](%22https://zenodo.org/record/4587955/files/silva_species_assignment_v138.1.fa.gz%22).
 
@@ -100,14 +100,14 @@ if (!file.exists(silva_species_assignment)) {
 
 ### Attach custom functions
 
-We will use in this practical R functions especially written for this course.
-The "classic" way to import functions is to use `source()` with the name of the R script to source.
+We will use in this practical R functions especially written for this course. The "classic" way to import functions is to use `source()` with the name of the R script to source.
 
-Instead, we use `devtools::load_all()`. This function will source all the scripts from the folder `R/`
-along with the documentation in `man/` \`
+Instead, we use `devtools::load_all()`. This function will source all the scripts from the folder `R/` along with the documentation in `man/` \`
 
 ```{r}
 devtools::load_all()
+
+Sys.sleep(2)
 ```
 
 ## Inputs files
@@ -159,9 +159,7 @@ sample_names <- basename(fnFs) |>
 
 `basename()`: remove path to only keep file name.
 
-`|>`: R "pipe". It allows you to chain functions, avoiding intermediate variables and nested parenthesis.
-It basically transfers the output of the left expression to the input of the right expression.
-You need R \> 4.1 to use this pipe, otherwise use `%>%` from [`magrittr`](https://magrittr.tidyverse.org/).
+`|>`: R "pipe". It allows you to chain functions, avoiding intermediate variables and nested parenthesis. It basically transfers the output of the left expression to the input of the right expression. You need R \> 4.1 to use this pipe, otherwise use `%>%` from [`magrittr`](https://magrittr.tidyverse.org/).
 
 `strsplit()`: split character chain according to a defined pattern. `?strsplit` for documentation.
 
@@ -240,14 +238,14 @@ if (!dir.exists(path_to_trimmed_reads)) dir.create(path_to_trimmed_reads)
 
 ### Remove primers
 
-The data you are working with correspond to the V3-V4 region using the primers Pro341F (`CCTACGGGNBGCASCAG`) and Pro805R (`GACTACNVGGGTATCTAAT`) Save into variables the forward and reverse primers.
+The data you are working with correspond to the V3-V4 region using the primers Pro341F (`CCTACGGGNBGCASCAG`) and Pro805R (`GACTACNVGGGTATCTAAT`). Save into variables the forward and reverse primers:
 
 ```{r}
 primer_fwd  <- "CCTACGGGNBGCASCAG"
 primer_rev  <- "GACTACNVGGGTATCTAAT"
 ```
 
-Let's have a closer look to sequences:
+Let's have a closer look at sequences:
 
 ```{r}
 seq_zoom <- Biostrings::readDNAStringSet(
@@ -259,7 +257,9 @@ seq_zoom <- Biostrings::readDNAStringSet(
 seq_zoom
 ```
 
-Use the function 
+We use a custom function, `primer_trim()`, implemented in `R/preprocessing.R` to remove the primers using cutadapt.
+
+Run `?primer_trim` to know more about this function.
 
 ```{r}
 primer_trim(
@@ -297,7 +297,7 @@ filtFs <- file.path(path_to_filtered_reads, basename(fnFs))
 filtRs <- file.path(path_to_filtered_reads, basename(fnRs))
 ```
 
-To make the link between files and sample names, simply name the file names vector using the sample names
+To make the link between files and sample names, simply name vector of file names using the sample names
 
 ```{r}
 names(filtFs) <- sample_names
@@ -474,7 +474,7 @@ First we create a new variable to collect the ASV sequences:
 asv_seq <- colnames(seqtab_nochim)
 ```
 
-We create unique ids for each ASV. The sequence itself is an unique id, but we would like to have something shorter. 
+We create unique ids for each ASV. The sequence itself is an unique id, but we would like to have something shorter.
 
 ```{r}
 ndigits <- nchar(length(asv_seq))

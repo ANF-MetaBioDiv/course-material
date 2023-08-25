@@ -34,5 +34,7 @@ pair of gunzipped fastq files (R1 and R2) of primer trimmed sequences
 Primer trimming using cutadapt
 }
 \details{
-Input file names have to end with _R1.fastq.gz or _R2.fastq.gz
+Input file names have to end with _R1.fastq.gz or _R2.fastq.gz.
+
+Cutadapt need to be installed on your system.
 }

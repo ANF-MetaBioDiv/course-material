@@ -27,7 +27,9 @@ qualityprofile <- function(filefw, filerev, outfile) {
 #' @param output_dir folder name where to write trimmed sequences
 #' @param min_size sequences shorter than min_size after trimming are
 #' filtered out
-#' @details Input file names have to end with _R1.fastq.gz or _R2.fastq.gz
+#' @details Input file names have to end with _R1.fastq.gz or _R2.fastq.gz.
+#' 
+#' Cutadapt need to be installed on your system. 
 #' @export
 
 primer_trim <- function(forward_files, reverse_files,
@@ -52,7 +54,7 @@ primer_trim <- function(forward_files, reverse_files,
   invisible(
     mapply(
       function(x, y) {
-        run_cutadapt_command(x, y, primer_fwd, primer_rev, output_dir, min_size)
+        run_cutadapt_command(x, y, primer_fwd, primer_rev, output_dir, min_size, path_to_dada2_log)
       },
       forward_files,
       reverse_files
@@ -88,15 +90,20 @@ primer_trim <- function(forward_files, reverse_files,
 
 run_cutadapt_command <- function(forward_file, reverse_file,
                                  primer_fwd, primer_rev,
-                                 output_dir, min_size) {
+                                 output_dir, min_size, log_dir) {
+  bash_script <- here::here("bash","primer_trimming.bash")
+  
   command <- paste(
-    "bash bash/primer_trimming.bash",
+    "bash",
+    bash_script,
     forward_file,
     reverse_file,
     primer_fwd,
     primer_rev,
     output_dir,
-    min_size
+    min_size,
+    log_dir
   )
   system(command)
 }
+

@@ -10,7 +10,8 @@ run_cutadapt_command(
   primer_fwd,
   primer_rev,
   output_dir,
-  min_size
+  min_size,
+  log_dir
 )
 }
 \description{
