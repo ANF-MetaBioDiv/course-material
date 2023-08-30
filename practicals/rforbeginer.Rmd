@@ -80,7 +80,9 @@ devtools::install_github("your_package")
 To use functions from a specific package you can either load the entire package:
 
 ```{r eval=FALSE}
-library("your_package")
+library("your package1")
+library("your package2")
+library("your package3")
 ```
 
 or call the function this way:
@@ -89,6 +91,7 @@ or call the function this way:
 your_package::yourfunction()
 ```
 
+**<span style="color: red;">On your R session using cloud IFB all the necessary packages are installed</span>**
 
 ## Expression and affectation
 ### Expression
@@ -108,37 +111,52 @@ In this example expression, constant, array, matrix, data frame, list
 Example :
 
 ```{r}
-a <- 2 + 3
+a=2+3
+b="madame"
 ```
 
-You can also assigned a expression to variable using `=`, like in most
-of other languages.
+**<span style="color: red;"> What happens when you execute this cell?</span>**
 
 ```{r}
-b = 3 + 3
+a
+b
 ```
 
-There are debates about which one to use.
-It is not really important which one you use, just be
-consistant and always use the same way to assign.
+```{r}
+a=10
+b="5"
+somme<-a+b
+```
+**<span style="color: red;"> Why do we have an error ? I need to know the type of the object</span>**
+```{r}
+str(a)
+str(b)
+```
+**<span style="color: red;"> What kind of information do we get?</span>**
 
-To list object/variable from your environment:
+We can also perform mathematical operations on numerical objects.
 
 ```{r}
-ls()
+log(a) # to obtain the logarithm of a
+sqrt(a)# to obtain the square root of a
+```
+
+```{r}
+# we can compare it
+log(a)>sqrt(a)
 ```
 
 ### Type of objects
 
 #### Vectors
 
-Vectors are objects composed by values with the same type (i.e, numeric, characters...)
+Vectors are objects composed by values with the same type or (i.e, numeric, characters...)
 
 ```{r}
 V1 <- c(2, 6, 9) # numeric vector
 V2 <- c("monday", "Tuesday", "Wednesday")# character vector
 V3 <- rep(6, 3) # repetition of the same value
-V4 <- seq(1, 3, 0.1)
+V4 <- seq(1, 3, 0.1)# sequence of number
 V5 <- 1:100
 V5
 ```
@@ -234,64 +252,6 @@ Considering the vector `a` such as
 
 3. Create a vector `b` containing all even integers from 2 to 100 using `seq()`
 
-#### Matrices
-
-Matrices are objects in which the elements are arranged in a two-dimensional rectangular layout.
-As for vector all the elements are of the same type.
-
-```{r}
-m1 <- matrix(1:12, ncol = 3, byrow = TRUE)
-m2 <- matrix(1:12, ncol = 3, byrow = FALSE)
-m1
-# to know the dimension of the matrix (number of line and number of column)
-dim(m1)
-ncol(m1)
-nrow(m1)
-```
-
-**Some operation on matrix**
-
-```{r}
-#Selection all data inside 2 column
-c2 <- m1[, 2]
-c2
-
-#Select data inside 3rd column and 4th line
-m1[4, 3]
-
-#delete a column
-m3 <- m1[, -2]
-m3
-m3[2]
-```
-
-*Exo3*
-
-1. Run the command `a <- rep(c(0,1), 50)`. What happened?
-
-2. Use `a` to construct a matrix `A` with 10 rows and 10 columns. 
-
-3. Print the dimensions of this matrix.
-
-4. Use `t()` on this matrix to create a matrix `B`. What happened?
-
-5. The commands `A[1:5, ]` and `B[, 1:5]` retrieve the first 5 rows of A 
-and the first 5 columns of B. Use these commands to retrieve the rows containing
-only 1s from A and the columns containing only 0s from B.
-
-*Exo 4 sup*
-
-1. Create matrix M
-
-$$M = \begin{bmatrix}3 & 5 & 6\\
--1 & 2 & 2 \\
-1 & -1 & -1 \\
-\end{bmatrix}$$
-
-2. Display the dimension of `A`, its number of columns, its number of rows and its length
-3. Extract the second column of `A`, then the first row
-4. Extract the element at the third position of the first line;
-5. Compute the sum of the columns and rows of `A` using `colSums()`, `rowSums()`
 
 #### Data frames
 
@@ -343,18 +303,9 @@ rain <- c(1, 0, 0,
 
 is.numeric(rain)
 
-# add column together
-df <- cbind(date, temperature, rain)
-str(df)
-
 # make data.frame
-df <- data.frame(date, temperature)
+df <- data.frame(date, temperature, rain)
 str(df)
-
-df$rain <- rain
-
-#Give me the difference between cbind() and data.frame()
-View(df)
 
 #To select a column or vector
 df$temperature
@@ -367,76 +318,6 @@ day <- list("8_monday", 29, 1)
 new_def <- rbind(df, day)# add row to a data frame
 new_def
 ```
-
-##### Use dplyr to select, filter a data frame
-
-`dplyr` is part of the library set named `tidyverse`
-(contraction of "tidy" and "universe", it's a tidy universe). 
-`tidyverse` packages are designed to work together and thus follow
-the same code logic and a common grammar.
-
-The pipe, `%>%`, is one of the useful elements of the tidyverse. 
-It allows to structure sequences of operations by minimizing 
-the creation of intermediate objects and by facilitating 
-the addition of a step anywhere in this sequence. Note that from
-R 4.1 you can use a new pipe, `|>` without the need of loading any
-library.
-
-The most commonly used tidyverse packages are loaded in your session:
-
-- `ggplot2`
-- `dplyr`
-- `tidyr`
-- `readr`
-- `tibble`
-- `stringr`
-
-
-```{r}
-tidyverse::tidyverse_packages()
-```
-
-
-```{r}
-library(tidyverse)
-
-#To select a variable with tidyverse
-#Command line widely used to select data
-iris$Sepal.Width %>%
-  head()
-iris[, "Sepal.Width"] %>%
-  head()
-
-#With dplyr
-select(iris, Sepal.Width) %>%
-  head()
-
-```
-
-```{r}
-#Command line widely used to select data
-iris[, c("Sepal.Length", "Sepal.Width", "Species")] %>%
-  head()
-#With tidyverse command
-iris %>%
-  select(Sepal.Length, Sepal.Width, Species) %>%
-  head()
-```
-
-To sort and select data inside data frame
-
-```{r}
-# Command line widely used to select data
-iris[which(iris$Sepal.Width > 3 & iris$Species == "virginica"), ] %>%
-  head()
-
-#With tidyverse command
-iris %>%
-  filter(Sepal.Width > 3) %>%
-  filter(Species == "virginica") %>%
-  head()
-```
-
 
 ## Functions
 ### Definition
@@ -484,27 +365,111 @@ str(df)
 # for margin=2 return mean for each selected column.
 apply(df[, 2:3], 2, mean)
 ```
+*Exo 3*
 
-**Example function plot**
+**From data set iris in package **datasets** Load package datasets and load data set iris using `data()`
 
-The function `plot()` is a very useful function to make a graph for examination for your data set
+1.  Give the class Sepal.Width and Species vectors
+2.  What is the minimum / maximum / average sepal length of these irises?
+3.  What are the values of the first 10 irises?
+4.  Calculate standard deviation for every numeric vector (function : `sd()`)
+5.  Calculate mean for every numeric vector
+6.  Create a data frame with mean and sd as line and give a name for each line
+7.  An error of 0.5cm was made in the measurement of the length of the sepal of the 41st iris: add 0.5cm to this measurement
 
-Let's have a look at the documentation of this function `?plot`
+### Use dplyr to select, filter a data frame
 
-*Exo 5*
+`dplyr` is part of the library set named `tidyverse`
+(contraction of "tidy" and "universe", it's a tidy universe). 
+`tidyverse` packages are designed to work together and thus follow
+the same code logic and a common grammar.
 
-Load data set iris using `data()`
+The pipe, `%>%`, is one of the useful elements of the tidyverse. 
+It allows to structure sequences of operations by minimizing 
+the creation of intermediate objects and by facilitating 
+the addition of a step anywhere in this sequence. Note that from
+R 4.1 you can use a new pipe, `|>` without the need of loading any
+library.
 
-1. Give the class Sepal.Width and Species vectors
-2. What is the minimum / maximum / average sepal length of these irises?
-3. What is the values of the 10 first sepals?
-4. Calculate standard deviation for every numeric vector
-5. Calculate standard mean for every numeric vector
-6. Create a data frame with mean and sd as line and give a name for each line
-7. An error of 0.5cm was made in the measurement of the length of the sepal of the 41st iris: add 0.5cm to this measurement
-8. Plot Sepal.Length as fonction of Sepal.Width adding title "Sepal" xlab "Sepal.Length" and ylab "Sepal.Length"
-9. Run once again plot giving the following parameters pch=19, cex=2, col="red", cex.axis=2, cex.lab=2. What do you see?
+The most commonly used tidyverse packages are loaded in your session:
 
+- [`ggplot2`](https://github.com/rstudio/cheatsheets/blob/main/data-visualization.pdf)
+- [`dplyr`](https://github.com/rstudio/cheatsheets/blob/main/data-transformation.pdf)
+- [`tidyr`](https://github.com/rstudio/cheatsheets/blob/main/tidyr.pdf)
+- [`readr`](https://raw.githubusercontent.com/rstudio/cheatsheets/main/data-import.pdf)
+- [`tibble`](https://r4ds.had.co.nz/tibbles.html)
+- [`stringr`](https://github.com/rstudio/cheatsheets/blob/main/strings.pdf)
+
+
+
+```{r}
+tidyverse::tidyverse_packages()
+```
+##### Filter and select variable in data frame
+
+```{r}
+library(tidyverse)
+data("iris")
+#To select a variable with tidyverse
+dplyr::select(iris, Species)
+```
+
+```{r}
+#To select several variables with tidyverse
+dplyr::select(iris,Species, Sepal.Length, Sepal.Width)
+
+# To select several lines inside data frame 
+dplyr::slice(iris,22:30)
+# I can affect it to an object 
+
+subdata=dplyr::slice(iris,22:30)
+
+#or choosing different lines
+myline=c(22, 38, 120) # I build a vector containing the line that I want
+dplyr::slice(iris,myline)
+```
+##### Bonus : to pipe many function serval function together
+The pipe <span style="color: steelblue;"> **>|** </span>, or <span style="color: steelblue;">**%>%**</span>, is one of the useful elements of the tidyverse. It allows to structure sequences of operations by minimizing the creation of intermediate objects and by facilitating the addition of a step anywhere in this sequence.
+
+The useful command to manage data frame : 1) select() to select vector or variable from a data frame ; 2) filter() is used to subset a data frame, retaining all rows that satisfy your conditions ; mutate() adds new variables and preserves existing ones.
+
+```{r}
+library(dplyr)
+iris %>%
+filter(Sepal.Length > 6) %>% # filtered using size of Sepal Length
+filter(Species == "versicolor") # and the species 
+
+```
+
+```{r}
+iris %>%
+ select(Sepal.Length, Species) %>%
+ mutate(Sepal.Length2 = Sepal.Length * 2)%>%
+ mutate(Sepal.Length2_squared = Sepal.Length2 * Sepal.Length2)
+
+iris %>%
+  select(Sepal.Length, Species) %>%
+  mutate(Sepal.Length = Sepal.Length / mean(Sepal.Length, na.rm = TRUE))
+
+#Sepal.Length_norm is calculated using the mean of the Sepal.Length for all data set.
+
+iris %>%
+  select(Sepal.Length, Species) %>%
+  group_by(Species) %>%
+  mutate(Sepal.Length_norm = Sepal.Length / mean(Sepal.Length, na.rm = TRUE))
+
+# In this last example Sepal.Length_norm is calculated using the mean of the Sepal.Length for each species using group_by()
+```
+
+**<span style="color: red;"> These commands are non-persistent, no changes are made on the original iris data frame.</span>**
+**<span style="color: red;">If you want to store it, you must assign your changes to a object</span>**
+
+```{r}
+iris_modif<-iris %>%
+  select(Sepal.Length, Species) %>%
+  group_by(Species) %>%
+  mutate(Sepal.Length_norm = Sepal.Length / mean(Sepal.Length, na.rm = TRUE))
+```
 
 #### How to import external data frame issue from .txt or .csv
 
@@ -552,132 +517,69 @@ To keep our working directory tidy, we now delete `ds.txt`
 ```{r}
 file.remove("ds.txt")
 ```
+Exo 4
 
-## The world of "PLOT"
+1. In the dataset Iris select Sepal Width, Sepal length and  Species,to create a new data frame name "subset_iris"
+2. Save this new data frame as text file 
 
-We load data set included in R 
+## How to represent your data
+
+**ggplot2** is a powerfull packages to make a very smart graph "ready to use" for publication. **gg** means grammar and graph, a concept which describe a graph using grammar. This package belong to tidyverse according to `dplyr`. According to the ggplot2 concept, a graph can be divided into different basic parts:**Plot = data + Aesthetics + Geometry**
+
+- *data* : data frame
+- *aesthetics* : allows to indicate the x and y variables. It can also be used to control the color, size and shape of the points, etc...
+- *geometry* : corresponds to the type of graph (histogram, box plot, line plot, .....)
 
 ```{r}
-data("airquality")
+library(ggplot2)
+# scatter plot 
+ggplot(data = iris, aes(Sepal.Length, Sepal.Width))+ #  what I want to represent 
+  geom_point() # how I represent it 
 ```
 
-How can I check data ? before to plot, could you check the structure of data.frame
-
 ```{r}
-plot(airquality$Month, airquality$Ozone)
+# We can calorize and give a shape by month 
+# scatter plot 
+ggplot(data = iris, aes(Sepal.Length, Sepal.Width))+ 
+  geom_point(aes(color = Species, shape = Species)) # shape is the same thing with classical plot on R
 ```
-
-add label for each axes, change the symbol by square and color blue
-
 ```{r}
-boxplot(airquality$Ozone ~ airquality$Month,
-        col=c("orange", "yellow", "blue", "red", "green"))
+# You can change manually color with la fonction scale_color_manual()
+ggplot(data = iris, aes(Sepal.Length, Sepal.Width))+  
+ geom_point(aes(color = Species, shape = Species))  +
+  scale_color_manual(values = c("#00AFBB", "#E7B800", "#FC4E07"))
 ```
-
-**Use of ggplot2 packages to generate smart plot**
-
-`ggplot2` is part of tidyverse, so it is already loaded
-
 ```{r}
-g1 <- ggplot(data = airquality) +
-  geom_point(aes(Month, Ozone))
-
-g1
-
-g2 <- ggplot(data = airquality) +
-  geom_point(aes(Month, Ozone), size = 3, colour = "red") +
-  theme_bw()
-
-g2
-```
-
-What do you notice? 
-
-```{r}
-df <- data.frame(airquality$Month, airquality$Temp)
-df$airquality.Month <- as.factor(df$airquality.Month)
-g3 <- ggplot(data = df, aes(x = airquality.Month, y = airquality.Temp)) +
-  geom_boxplot() +
-  theme_bw()
-g3
-
-g4 <- ggplot(data = df, aes(x = airquality.Month,
-                            y = airquality.Temp,
-                            color = airquality.Month)) +
-  geom_boxplot() +
-  theme_bw()
-g4
-
+#Boxplot 
+ggplot(data = iris, aes(Species, Sepal.Length))+ #  what I want to represent 
+  geom_boxplot(aes(color=Species, fill=Species), alpha=0.4)+# how I represent it. Here I changed geometry using boxplot.
+  labs(x="Species", y="Sepal.Length (mm)")+
+  theme_minimal()
 ```
 
 **Save your plot**
 
 Using the function `pdf()`
 
+Firstly you have to store plot inside and object
+
+```{r}
+#Boxplot 
+g1<-ggplot(data = iris, aes(Species, Sepal.Length))+ #  what I want to represent 
+  geom_boxplot(aes(color=Species, fill=Species), alpha=0.4)+# how I represent it. Here I changed geometry using boxplot.
+  labs(x="Species", y="Sepal.Length (mm)")+
+  theme_minimal()
+```
+
+
 ```{r}
 pdf("yourfile.pdf")
-g4
+g1
 dev.off()
 ```
 
 or `ggplot2::ggsave()`
 
 ```{r}
-ggsave("yourfile2.pdf", g4)
+ggsave("yourfile2.pdf", g1)
 ```
-
-```{r}
-list.files(pattern = ".pdf") %>%
-  file.remove()
-```
-
-```{r}
-data("BCI", package = "vegan")
-chart <- apply(BCI, 2, sum)
-selection1 <- chart[1:30]
-dotchart(selection1, cex = 0.7, bg = "blue")
-row.label <- names(selection1)
-df2 <- data.frame(row.label, selection1)
-
-ggplot(df2) +
-  geom_point(aes(x = selection1, y = row.label))
-
-
-g6 <- ggplot(df2, aes(x = selection1, y = row.label)) +
-  labs(tag = "A", x = "Species", y = "Count")
-
-g6 +
-  geom_bar(stat = "identity")
-
-g6 +
-  geom_bar(stat = "identity", color = "lightblue", bg = "lightblue")
-```
-
-Save this plot using command `ggsave()`. The documentation is
-your best friend. 
-
-*Exo6*
-
-We propose to evaluate the effect of a vitamin treatment supposed
-to make students more resistant to fatigue during exams.
-
-To do this, different students are tested: a score out of 10
-is attributed to them and expresses the degree of rest called
-here "Acuity", 0 for very tired and 10 for in full form.
-
-10 students take a treatment (Treatment = "O" for "Yes")
-and their fatigue is evaluated every day during 5 days
-of intense revision where the fatigue increases progressively.
-
-10 students take a placebo (Treatment = "N" for "No") and
-their fatigue is assessed every day for 5 days.
-
-1. Load the table "exercise6.txt". This table has a header and a tab separation.
-
-2. Plot the tiredness (here "Fatigue") as a function of time for all tested individuals.
-Display the treated individuals in blue and the untreated ones in red (see example).
-(*To filter data set use `by()` function*)
-
-3. Try with ggplot
-
-4. Save your plot as a pdf
