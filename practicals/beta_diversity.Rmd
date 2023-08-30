@@ -42,7 +42,7 @@ physeq <- readRDS(here::here("data",
 
 ### Normalisation
 
-Here we will consider two approaches for library size normalization. The first will involve simply subsampling the data without replacement; however, this approach comes with limitations that are well described [here](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003531).
+Here we will consider two approaches for library size normalization. The first will involve simply subsampling the data without replacement; however, this approach comes with limitations that are well described [here](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003531){target="_blank"}.
 
 The second will employ a compositional data analysis approach and involves working with log-ratios.
 
@@ -106,7 +106,7 @@ physeq_rar
 
 #### Centered log-ratio (CLR) transformation
 
-A detailed discussion of compositional data analysis (CoDA) is beyond the scope of this session but just know that microbiome data is compositional since reads total is constrained by the sequencing depth. Relative abundances (proportions) are obviously constraint by a sum equal to one. This total constraint induces strong dependencies among the observed abundances of the different taxa. In fact, nor the absolute abundance (read counts) nor the relative abundance (proportion) of one taxon alone are informative of the real abundance of the taxon in the environment. Instead, they provide information on the relative measure of abundance when compared to the abundance of other taxa in the same sample. For this reason, these data fail to meet many of the assumptions of our favorite statistical methods developed for unconstrained random variables. Working with ratios of compositional elements lets us transform these data to the Euclidian space and apply our favorite methods. There are different types of log-ratio "transformations" including the additive log-ratio, centered log-ratio, and isometric log-ratio transforms. Find more information [here](https://academic.oup.com/bioinformatics/article/34/16/2870/4956011?login=false), [here](https://www.springer.com/us/book/9789811315336?gclid=Cj0KCQjw3uboBRDCARIsAO2XcYAphJ23am-AoIBh18HoW-WpAd8TwbQUEhc_DJV9gM-zWYtXe0-6l8saAkNHEALw_wcB) and [here](https://www.frontiersin.org/articles/10.3389/fmicb.2017.02224/full)
+A detailed discussion of compositional data analysis (CoDA) is beyond the scope of this session but just know that microbiome data is compositional since reads total is constrained by the sequencing depth. Relative abundances (proportions) are obviously constraint by a sum equal to one. This total constraint induces strong dependencies among the observed abundances of the different taxa. In fact, nor the absolute abundance (read counts) nor the relative abundance (proportion) of one taxon alone are informative of the real abundance of the taxon in the environment. Instead, they provide information on the relative measure of abundance when compared to the abundance of other taxa in the same sample. For this reason, these data fail to meet many of the assumptions of our favorite statistical methods developed for unconstrained random variables. Working with ratios of compositional elements lets us transform these data to the Euclidian space and apply our favorite methods. There are different types of log-ratio "transformations" including the additive log-ratio, centered log-ratio, and isometric log-ratio transforms. Find more information [here](https://academic.oup.com/bioinformatics/article/34/16/2870/4956011?login=false), [here](https://www.springer.com/us/book/9789811315336?gclid=Cj0KCQjw3uboBRDCARIsAO2XcYAphJ23am-AoIBh18HoW-WpAd8TwbQUEhc_DJV9gM-zWYtXe0-6l8saAkNHEALw_wcB) and [here](https://www.frontiersin.org/articles/10.3389/fmicb.2017.02224/full){target="_blank"}
 
 Let's perform the CLR transformation
 
@@ -134,7 +134,7 @@ data.frame(physeq_clr@otu_table@.Data[1:5,1:10])
 
 We can see that the values are now no longer counts, but rather the dominance (or lack thereof) for each taxa relative to the geometric mean of all taxa on the logarithmic scale. This centered log-ratio (CLR) transformed table can be used directly in a PCA or RDA to generate a beta diveristy ordination using the Aitchison distance.
 
-*Tips: This chunk can be coded in one line using the [microbiome package](https://microbiome.github.io/tutorials/): physeq_clr \<- microbiome::transform(physeq, "clr")*
+*Tips: This chunk can be coded in one line using the [microbiome package](https://microbiome.github.io/tutorials/){target="_blank"}: physeq_clr \<- microbiome::transform(physeq, "clr")*
 
 ## Visualisation of the meta-community composition
 
@@ -296,7 +296,7 @@ physeq_rar_dw <- unifracs[, , "d_1"]   # Weighted UniFrac
 
 ### Visualisation
 
-You can actually calculate all these distances directly in phyloseq using *dist.calc()*. There are currently 44 explicitly supported method options in the phyloseq package, see <https://joey711.github.io/phyloseq/distance.html> for more informations. Here, we will loop through each distance method, save each plot to a list and then plot these results in a combined graphic using ggplot2.
+You can actually calculate all these distances directly in phyloseq using *dist.calc()*. There are currently 44 explicitly supported method options in the phyloseq package, see [here](https://joey711.github.io/phyloseq/distance.html){target="_blank"} for more informations. Here, we will loop through each distance method, save each plot to a list and then plot these results in a combined graphic using ggplot2.
 
 ```{r}
 dist_methods <- unlist(distanceMethodList)
@@ -347,7 +347,7 @@ We can observe that there is a fairly good separation between North and South sa
 
 ### Hierarchical ascendant classification (HAC)
 
-A first step in many microbiome projects is to examine how samples cluster on some measure of (dis)similarity. There are many ways to do perform such clustering, see [here](https://sites.google.com/site/mb3gustame/dissimilarity-based-methods/cluster-analysis). Since microbiome data is compositional, we will perform here a hierarchical ascendant classification (HAC) of samples based on Aitchison distance.
+A first step in many microbiome projects is to examine how samples cluster on some measure of (dis)similarity. There are many ways to do perform such clustering, see [here](https://sites.google.com/site/mb3gustame/dissimilarity-based-methods/cluster-analysis){target="_blank"}. Since microbiome data is compositional, we will perform here a hierarchical ascendant classification (HAC) of samples based on Aitchison distance.
 
 ```{r}
 #distance matrix calculation
@@ -459,16 +459,13 @@ text(x = spe_upgma$height,
 
 ```
 
-From right to left, this first graph shows clear jumps after each fusion between 2 groups.
-We'll use the package NbClust which will compute, with a single function call,
-24 indices for confirming the right number of clusters in the dataset:
+From right to left, this first graph shows clear jumps after each fusion between 2 groups. We'll use the package NbClust which will compute, with a single function call, 24 indices for confirming the right number of clusters in the dataset:
 
 ```{r}
 nclust <- nb_clust_all(data = t(physeq_clr_asv), seed = 1000)
 ```
 
-NbClust confirm the identification of two clusters of samples.
-We will go back to the dendrogram and cut it at the corresponding distances.
+NbClust confirm the identification of two clusters of samples. We will go back to the dendrogram and cut it at the corresponding distances.
 
 ```{r}
 #Cut the dendrogram in order to obtain K groups and compare their compositionC
@@ -649,7 +646,7 @@ While cluster analysis looks for discontinuities in a dataset, ordination extrac
 
 ### Principal component analysis (PCA)
 
-Principal components analysis (PCA) is a method to summarise, in a low-dimensional space, the variance in a multivariate scatter of points. In doing so, it provides an overview of linear relationships between your objects and variables. This can often act as a good starting point in multivariate data analysis by allowing you to note trends, groupings, key variables, and potential outliers. Again, because of the compositional nature of microbiome data, we will use the Aitchinson distance here. Be aware that this is the CLR transformed ASV table which is used directly not the Aitchinson distance matrix. The function will calculate a euclidean distance on this CLR transformed table to get the Aitchison matrix. There are many packages allowing PCA analysis. We will use the recent [PCAtools](https://bioconductor.org/packages/devel/bioc/vignettes/PCAtools/inst/doc/PCAtools.html) package wich provides functions for data exploration via PCA, and allows the user to generate publication-ready figures.
+Principal components analysis (PCA) is a method to summarise, in a low-dimensional space, the variance in a multivariate scatter of points. In doing so, it provides an overview of linear relationships between your objects and variables. This can often act as a good starting point in multivariate data analysis by allowing you to note trends, groupings, key variables, and potential outliers. Again, because of the compositional nature of microbiome data, we will use the Aitchinson distance here. Be aware that this is the CLR transformed ASV table which is used directly not the Aitchinson distance matrix. The function will calculate a euclidean distance on this CLR transformed table to get the Aitchison matrix. There are many packages allowing PCA analysis. We will use the recent [PCAtools](https://bioconductor.org/packages/devel/bioc/vignettes/PCAtools/inst/doc/PCAtools.html){target="_blank"} package wich provides functions for data exploration via PCA, and allows the user to generate publication-ready figures.
 
 #### Number of PCs to retain
 
@@ -947,7 +944,7 @@ We saw some segregation between Northern and Southern samples suggesting some di
 
 ### PERmutational Multiple ANalysis Of VAriance (PERMANOVA)
 
-PERMANOVA was proposed by Anderson and McArdle to apply the powerful ANOVA to multivariate ecological datasets. PERMANOVA is one of most widely used nonparametric methods to fit multivariate models to microbiome data. It is a multivariate analysis of variance based on distance matrices and permutation. It does this by partitioning the sums of squares for the within- and between-cluster components using the concept of centroids. Many permutations of the data (i.e. random shuffling) are used to generate the null distribution. Find more informations on PERMANOVA [here](https://onlinelibrary.wiley.com/doi/full/10.1002/9781118445112.stat07841) and on the `adonis2()` function [here](https://www.researchgate.net/topic/Adonis) Now let us evaluate whether the group (North vs. South) has a significant effect on overall bacterial community composition.
+PERMANOVA was proposed by Anderson and McArdle to apply the powerful ANOVA to multivariate ecological datasets. PERMANOVA is one of most widely used nonparametric methods to fit multivariate models to microbiome data. It is a multivariate analysis of variance based on distance matrices and permutation. It does this by partitioning the sums of squares for the within- and between-cluster components using the concept of centroids. Many permutations of the data (i.e. random shuffling) are used to generate the null distribution. Find more informations on PERMANOVA [here](https://onlinelibrary.wiley.com/doi/full/10.1002/9781118445112.stat07841){target="_blank"} and on the `adonis2()` function [here](https://www.researchgate.net/topic/Adonis){target="_blank"} Now let us evaluate whether the group (North vs. South) has a significant effect on overall bacterial community composition.
 
 ```{r}
 #PERMANOVA
@@ -958,15 +955,14 @@ results_permanova <- vegan::adonis2(physeq_clr_dist ~ Geo,
 results_permanova
 ```
 
-Here we can see that the North/South grouping explain significantly (p < 0.001) 20% of the variance in the ASV Aitchison matrix. In other words Nothern and Southern bacterial differ significatively in their bacterial composition. The test from ADONIS can be confounded by differences in dispersion (or spread) so we want to check this as well..
+Here we can see that the North/South grouping explain significantly (p \< 0.001) 20% of the variance in the ASV Aitchison matrix. In other words Nothern and Southern bacterial differ significatively in their bacterial composition. The test from ADONIS can be confounded by differences in dispersion (or spread) so we want to check this as well..
 
 ```{r}
 # Testing the assumption of similar multivariate spread among the groups (ie. analogous to variance homogeneity)
 anova(vegan::betadisper(physeq_clr_dist, metadata$Geo))
 ```
 
-Here the groups have significant different spreads and permanova result may be impacted by that although PERMANOVA is very robust to difference in group dispersion.
-We can also check which taxa contribute most to the community differences using the ancient adonis() function and the ASV table of CLR transformed counts.
+Here the groups have significant different spreads and permanova result may be impacted by that although PERMANOVA is very robust to difference in group dispersion. We can also check which taxa contribute most to the community differences using the ancient adonis() function and the ASV table of CLR transformed counts.
 
 ```{r}
 #Show coefficients for the top taxa separating the groups
@@ -991,7 +987,7 @@ barplot(sort(top.coef),
 
 *Are these ASVs the same or different compared to ASV contributing the most to PC axes?*
 
-`adonis()` and `adonis2()` allow us to explore the effect of categorical or [continuous](https://stats.stackexchange.com/questions/449176/the-way-permanova-handling-continuous-explanatory-variable) variables.
+`adonis()` and `adonis2()` allow us to explore the effect of categorical or [continuous](https://stats.stackexchange.com/questions/449176/the-way-permanova-handling-continuous-explanatory-variable){target="_blank"} variables.
 
 **NB**: An important difference between adonis et adonis2: in adonis terms are tested sequentially and this is the only option. This means that the order you enter your variables is important (if design is unbalanced). This is because the first explanatory variable is added to the model. Then the next one is added to see if it explains significantly more variation not explained by the previous variables. This is equivalent to using by="terms" in adonis2. If you don't want the order to matter you can use adonis2 with by="margin", or if you want to check if the model as a whole is significant you can use by=NULL. Order does not matter when by="margin" because the significance is tested against a model that includes all other variables not just the ones preceding it in the formula.
 
@@ -1071,10 +1067,9 @@ permanova_cor_pars
 
 The updated PERMANOVA model is improved over the original. We see that salinity is again significantly related to the response variable. However, the model with only salinity is even much better. The take home message is that true relationships among variables will be masked if explanatory variables are collinear. This creates problems in model creation which lead to complications in model inference. Taking the extra time to evaluate collinearity is a critical first step to creating more robust ecological models.
 
-
 ### ANalysis Of SIMilarity (ANOSIM)
 
-[ANOSIM](https://sites.google.com/site/mb3gustame/hypothesis-tests/anosim) tests for significant difference between two or more classes of objects based on any (dis)similarity measure (Clarke 1993). It compares the ranks of distances between objects of different classes with ranks of object distances within classes. The basis of this approach is similar to the NMDS ordination technique described above.
+[ANOSIM](https://sites.google.com/site/mb3gustame/hypothesis-tests/anosim){target="_blank"} tests for significant difference between two or more classes of objects based on any (dis)similarity measure (Clarke 1993). It compares the ranks of distances between objects of different classes with ranks of object distances within classes. The basis of this approach is similar to the NMDS ordination technique described above.
 
 ```{r}
 #ANOSIM
@@ -1117,8 +1112,7 @@ R2adj <- vegan::RsquareAdj(spe_rda)$adj.r.squared
 R2adj
 ```
 
-In reality, the proportion of variance explained dropped to 16.25 %. The numerical output shows that the first two canonical axes explain together 35.1% of the total variance of the data, the first axis alone explaining 25.9%. These are unadjusted values, however. Since R2 adj = 16.2 %, the percentages of accumulated constrained adj eigenvalues show that the first axis alone explains 0.162 * 0.368 = 0.059 or 5.9% variance.
-Because ecological data are generally quite noisy, one should never expect to obtain a very high value of R2 . Furthermore, the first unconstrained eigenvalue (PC1), the first unconstrained axe for the residuals, is comparatively high, which means that it does display an important residual structure of the response data that is not explain by the environmental parameters measure here.
+In reality, the proportion of variance explained dropped to 16.25 %. The numerical output shows that the first two canonical axes explain together 35.1% of the total variance of the data, the first axis alone explaining 25.9%. These are unadjusted values, however. Since R2 adj = 16.2 %, the percentages of accumulated constrained adj eigenvalues show that the first axis alone explains 0.162 \* 0.368 = 0.059 or 5.9% variance. Because ecological data are generally quite noisy, one should never expect to obtain a very high value of R2 . Furthermore, the first unconstrained eigenvalue (PC1), the first unconstrained axe for the residuals, is comparatively high, which means that it does display an important residual structure of the response data that is not explain by the environmental parameters measure here.
 
 #### Significance testing
 
@@ -1131,7 +1125,7 @@ anova(spe_rda, step = 1000)
 anova(spe_rda, by = "axis", step = 1000)
 ```
 
-Here we can see that ur full model is statistically non significant (p = 0.08), and every canonical axis resulting from the RDA are not either statistically significant (p > 0.05). This RDA model is not interpretable.
+Here we can see that ur full model is statistically non significant (p = 0.08), and every canonical axis resulting from the RDA are not either statistically significant (p \> 0.05). This RDA model is not interpretable.
 
 *Can you tell why?*
 
@@ -1146,8 +1140,7 @@ A simple approach to identify collinearity among explanatory variables is the us
 vegan::vif.cca(spe_rda)
 ```
 
-Salinity, Temperature and Sigma.t have very hight VIFs wich confirm the collinearities observed earlier between explanatory variables (see the PERMANOVA section). A reduction of the number of explanatory variables is justified. In order to simplify this model, we can perform a forward selection (or backwards or stepwise). These types of selections help us select variables that are statistically important. However, it is important to note that selecting variables ecologically is much more important than performing selection in this way. If a variable of ecological interest is not selected, this does not mean it has to be removed from the RDA.
-Here, we will be performing forward selection on our 11 environmental variables. To do this, we can use the *ordiR2step()* function:
+Salinity, Temperature and Sigma.t have very hight VIFs wich confirm the collinearities observed earlier between explanatory variables (see the PERMANOVA section). A reduction of the number of explanatory variables is justified. In order to simplify this model, we can perform a forward selection (or backwards or stepwise). These types of selections help us select variables that are statistically important. However, it is important to note that selecting variables ecologically is much more important than performing selection in this way. If a variable of ecological interest is not selected, this does not mean it has to be removed from the RDA. Here, we will be performing forward selection on our 11 environmental variables. To do this, we can use the *ordiR2step()* function:
 
 ```{r}
 # Forward selection of explanatory variables using vegan's ordiR2step()
@@ -1158,8 +1151,7 @@ step_forward <- vegan::ordiR2step(vegan::rda(t(physeq_clr_asv) ~ 1,
                                   pstep = 1000)
 ```
 
-Here, we are essentially adding one variable at a time, and retaining it if it significantly increases the model's adjusted
-R2. The forward selection show us that a model with only salinity has higher R2 adjust than with all variable and explain 18.4 % of the variance. Lets calculate this most parsimonious RDA and check its significance.
+Here, we are essentially adding one variable at a time, and retaining it if it significantly increases the model's adjusted R2. The forward selection show us that a model with only salinity has higher R2 adjust than with all variable and explain 18.4 % of the variance. Lets calculate this most parsimonious RDA and check its significance.
 
 ```{r}
 # Parsimonious RDA
@@ -1174,7 +1166,7 @@ vegan::vif.cca(spe_rda_pars)
 
 ```
 
-Now, both the model and the first canonical axis resulting from the RDA are statistically significant (p < 0.05). The VIF of salinity is only 1. This RDA model is interpretable. Lets plot it.
+Now, both the model and the first canonical axis resulting from the RDA are statistically significant (p \< 0.05). The VIF of salinity is only 1. This RDA model is interpretable. Lets plot it.
 
 #### RDA plot
 
@@ -1233,12 +1225,11 @@ ggplot() +
   theme(panel.grid = element_blank())
 ```
 
-One of the most powerful aspects of RDA is the simultaneous visualization of your response and explanatory variables (i.e. species and environmental variables). From this ordination, we can really say now that salinity is the main environmental driver measured shaping bacterial communities. Among all the ASVs, some are more related to this gradient of salinity. This is the case of ASV 12 and 11 for which abundance increase when salinity decreases and ASV 7 which presents the opposite pattern. These differential abundance patterns can be explored with many kind of analyses (see next chapter) but what is really powerful with RDA is that you highlight gradient relationships not a difference of abundance between two conditions.
-However, a large part of the variance in the bacterial community remains unexplained. Variance in species communities can be explained by deterministic processes such as species sorting (influence of the environment as we've seen here) but also by stochastic processes such as dispersal which depend, among other things, of the distance between communities. Since we have this information, lets take a look at a very common pattern in community ecology: the distance-decay pattern.
+One of the most powerful aspects of RDA is the simultaneous visualization of your response and explanatory variables (i.e. species and environmental variables). From this ordination, we can really say now that salinity is the main environmental driver measured shaping bacterial communities. Among all the ASVs, some are more related to this gradient of salinity. This is the case of ASV 12 and 11 for which abundance increase when salinity decreases and ASV 7 which presents the opposite pattern. These differential abundance patterns can be explored with many kind of analyses (see next chapter) but what is really powerful with RDA is that you highlight gradient relationships not a difference of abundance between two conditions. However, a large part of the variance in the bacterial community remains unexplained. Variance in species communities can be explained by deterministic processes such as species sorting (influence of the environment as we've seen here) but also by stochastic processes such as dispersal which depend, among other things, of the distance between communities. Since we have this information, lets take a look at a very common pattern in community ecology: the distance-decay pattern.
 
 ### Multiple Regression on dissimilarity Matrices (MRM)
 
-The decay of assemblage similarity with spatial distance can be explained by alternative mechanisms: dispersal limitation and species sorting. To understand their relative contributions, we compare the decay in bacterial similarity with spatial distance and, independently, with environmental distance. You will find excellent articles on distance-decay relationship [Here](https://onlinelibrary.wiley.com/doi/epdf/10.1111/ecog.03693) and [here](https://www.frontiersin.org/articles/10.3389/fmicb.2021.702016/full).
+The decay of assemblage similarity with spatial distance can be explained by alternative mechanisms: dispersal limitation and species sorting. To understand their relative contributions, we compare the decay in bacterial similarity with spatial distance and, independently, with environmental distance. You will find excellent articles on distance-decay relationship [here](https://onlinelibrary.wiley.com/doi/epdf/10.1111/ecog.03693){target="_blank"} and [here](https://www.frontiersin.org/articles/10.3389/fmicb.2021.702016/full){target="_blank"}.
 
 A combination of Mantel correlation and multiple regression, multiple regression on distance matrices (MRM; Manly, 1986; Smouse et al., 1986; Legendre et al., 1994) allows a regression-type analysis of two or more (dis)similarity matrices, using permutations to determine the significance of the coefficients of determination. One matrix must contain (dis)similarities calculated from response data, such as OTU abundances, and the other matrices must contain (dis)similarities calculated from explanatory data (e.g. environmental parameters or space).
 
@@ -1275,13 +1266,13 @@ betapart::plot.decay(ANF_decay_exp, col = "blue",
                      remove.dots = TRUE, add = TRUE)
 
 legend("bottomright",
-       paste("exp: (Beta =", round(ANF_decay_exp$b.slope, 4),
+       paste("exp: (Beta =", round(ANF_decay_exp$second.parameter, 4),
              ", Rsqr =", round(ANF_decay_exp$pseudo.r.squared, 2),
              ", p =", round(ANF_decay_exp$p.value, 2)),
        fill = "blue")
 ```
 
-The negative exponential model significantly explained the decay in similarity with spatial distance (p < 0.01). But what is the contribution of dispersal and species sorting in this pattern? Lets find out by decomposing the variance between the spatial and the envirnomental matrices.
+The negative exponential model significantly explained the decay in similarity with spatial distance (p \< 0.01). But what is the contribution of dispersal and species sorting in this pattern? Lets find out by decomposing the variance between the spatial and the envirnomental matrices.
 
 ```{r}
 #Variance partitioning
@@ -1318,28 +1309,28 @@ Similarly to indirect gradient analyses, many different types of direct gradient
 
 ## Diffential abundance analysis (DAA)
 
-The goal of differential abundance testing is to identify specific taxa associated with metadata variables of interest. This is a difficult task. It is also one of the more controversial areas in microbiome data analysis as illustrated in this [preprint](https://arxiv.org/abs/2104.07266). This is related to concerns that normalization and testing approaches have generally failed to control false discovery rates. For more details see these papers [here](https://www.biorxiv.org/content/10.1101/559831v1) and [here](https://www.nature.com/articles/s41467-019-10656-5).
+The goal of differential abundance testing is to identify specific taxa associated with metadata variables of interest. This is a difficult task. It is also one of the more controversial areas in microbiome data analysis as illustrated in this [preprint](https://arxiv.org/abs/2104.07266){target="_blank"}. This is related to concerns that normalization and testing approaches have generally failed to control false discovery rates. For more details see these papers [here](https://www.biorxiv.org/content/10.1101/559831v1){target="_blank"} and [here](https://www.nature.com/articles/s41467-019-10656-5){target="_blank"}.
 
 There are many tools to perform DAA. The most popular tools, without going into evaluating whether or not they perform well for this task, are:\
--[ALDEx2](https://bioconductor.org/packages/release/bioc/html/ALDEx2.html)\
--[ANCOM-BC](https://bioconductor.org/packages/release/bioc/html/ANCOMBC.html)\
--[conrcob](https://cran.r-project.org/web/packages/corncob/index.html)\
--[DESeq2](https://bioconductor.org/packages/release/bioc/html/DESeq2.html)\
--[edgeR](https://bioconductor.org/packages/release/bioc/html/edgeR.html)\
--[LEFse](https://bioconductor.org/packages/release/bioc/html/lefser.html)\
--[limma voom](https://bioconductor.org/packages/release/bioc/html/limma.html)\
--[LinDA](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-022-02655-5)\
--[MaAsLin2](https://www.bioconductor.org/packages/release/bioc/html/Maaslin2.html)\
--[metagenomeSeq](https://www.bioconductor.org/packages/release/bioc/html/metagenomeSeq.html)\
--[IndVal](https://www.rdocumentation.org/packages/labdsv/versions/2.0-1/topics/indval)\
--[t-test](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/t.test)\
--[Wilcoxon test](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/wilcox.test)\
+-[ALDEx2](https://bioconductor.org/packages/release/bicoc/html/ALDEx2.html){target="_blank"}\
+-[ANCOM-BC](https://bioconductor.org/packages/release/cbioc/html/ANCOMBC.html){target="_blank"}\
+-[conrcob](https://cran.r-project.org/web/packages/corcncob/index.html){target="_blank"}\
+-[DESeq2](https://bioconductor.org/packages/release/bicoc/html/DESeq2.html){target="_blank"}\
+-[edgeR](https://bioconductor.org/packages/release/biocc/html/edgeR.html){target="_blank"}\
+-[LEFse](https://bioconductor.org/packages/release/biocc/html/lefser.html){target="_blank"}\
+-[limma voom](https://bioconductor.org/packages/releasce/bioc/html/limma.html){target="_blank"}\
+-[LinDA](https://genomebiology.biomedcentral.com/articcles/10.1186/s13059-022-02655-5){target="_blank"}\
+-[MaAsLin2](https://www.bioconductor.org/packages/relecase/bioc/html/Maaslin2.html){target="_blank"}\
+-[metagenomeSeq](https://www.bioconductor.org/packagesc/release/bioc/html/metagenomeSeq.html){target="_blank"}\
+-[IndVal](https://www.rdocumentation.org/packages/labdcsv/versions/2.0-1/topics/indval){target="_blank"}\
+-[t-test](https://www.rdocumentation.org/packages/statcs/versions/3.6.2/topics/t.test){target="_blank"}\
+-[Wilcoxon test](https://www.rdocumentation.org/packagces/stats/versions/3.6.2/topics/wilcox.test){target="_blank"}\
 
-Nearing et al. ([2022](https://www.nature.com/articles/s41467-022-28034-z)) compared all these listed methods across 38 different datasets and showed that ALDEx2 and ANCOM-BC produce the most consistent results across studies. Because different methods use different approaches (parametric vs non-parametric, different normalization techniques, assumptions etc.), results can differ between methods.Therefore, it is highly recommended to pick several methods to get an idea about how robust and potentially reproducible your findings are depending on the method. Here, we will apply 3 methods that are currently used in microbial ecology or that can be recommended based on recent literature (ANCOM-BC, ALDEx2 and LEFse) and we will compare the results between them. For this, we will use the recent **microbiome_marker** package.
+Nearing et al. ([2022](https://www.nature.com/articles/s41467-022-28034-z){target="_blank"}) compared all these listed methods across 38 different datasets and showed that ALDEx2 and ANCOM-BC produce the most consistent results across studies. Because different methods use different approaches (parametric vs non-parametric, different normalization techniques, assumptions etc.), results can differ between methods.Therefore, it is highly recommended to pick several methods to get an idea about how robust and potentially reproducible your findings are depending on the method. Here, we will apply 3 methods that are currently used in microbial ecology or that can be recommended based on recent literature (ANCOM-BC, ALDEx2 and LEFse) and we will compare the results between them. For this, we will use the recent **microbiome_marker** package.
 
 ### Linear discriminant analysis Effect Size (LEFse)
 
-LEFSE has been developped by Segata et al. ([2011](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3218848/)). LEFse first use the non-parametric factorial Kruskal-Wallis (KW) sum-rank test to detect features with significant differential abundance with respect to the class of interest; biological consistency is subsequently investigated using a set of pairwise tests among subclasses using the (unpaired) Wilcoxon rank-sum test. As a last step, LEfSe uses LDA to estimate the effect size of each differentially abundant features.
+LEFSE has been developped by Segata et al. ([2011](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3218848/){target="_blank"}). LEFse first use the non-parametric factorial Kruskal-Wallis (KW) sum-rank test to detect features with significant differential abundance with respect to the class of interest; biological consistency is subsequently investigated using a set of pairwise tests among subclasses using the (unpaired) Wilcoxon rank-sum test. As a last step, LEfSe uses LDA to estimate the effect size of each differentially abundant features.
 
 ```{r message=FALSE, warning=FALSE}
 #LEFSE
@@ -1363,11 +1354,11 @@ LEFse identifies 12 biomarkers and among them ASV 7, 11 and 12 that we already i
 
 ### Differential analysis of compositions of microbiomes with bias correction (ANCOM-BC)
 
-The ANCOM-BC [methodology](https://www.nature.com/articles/s41467-020-17041-7) assumes that the observed sample is an unknown fraction of a unit volume of the ecosystem, and the sampling fraction varies from sample to sample. ANCOM-BC accounts for sampling fraction by introducing a sample-specific offset term in a linear regression framework, that is estimated from the observed data. The offset term serves as the bias correction, and the linear regression framework in log scale is analogous to log-ratio transformation to deal with the compositionality of microbiome data. Furthermore, this method provides p-values and confidence intervals for each taxon. It also controls the FDR and it is computationally simple to implement.
+The ANCOM-BC [methodology](https://www.nature.com/articles/s41467-020-17041-7){target="_blank"} assumes that the observed sample is an unknown fraction of a unit volume of the ecosystem, and the sampling fraction varies from sample to sample. ANCOM-BC accounts for sampling fraction by introducing a sample-specific offset term in a linear regression framework, that is estimated from the observed data. The offset term serves as the bias correction, and the linear regression framework in log scale is analogous to log-ratio transformation to deal with the compositionality of microbiome data. Furthermore, this method provides p-values and confidence intervals for each taxon. It also controls the FDR and it is computationally simple to implement.
 
 ```{r message=FALSE, warning=FALSE}
 #ancomBC
-mm_ancombc <- microbiomeMarker::run_ancombc(physeq, group = "Geo",
+mm_ancombc <- run_ancombc_patched(physeq, group = "Geo",
                                             taxa_rank = "none",
                                             pvalue_cutoff = 0.001,
                                             p_adjust = "fdr")
@@ -1384,7 +1375,7 @@ ANCOM-BC identifies 10 biomarkers and all in common with the results of the LEFs
 
 ### ANOVA-like differential expression (ALDEx2)
 
-ALDEx2 estimates technical variation within each sample per taxon by utilizing the Dirichlet distribution. It furthermore applies the centered-log-ratio transformation (or closely related log-ratio transforms). Depending on the experimental setup, it will perform a two sample Welch’s T-test and Wilcoxon-test or a one-way ANOVA and Kruskal-Wallis-test. The Benjamini-Hochberg procedure is applied in any case to correct for multiple testing.
+ALDEx2 estimates technical variation within each sample per taxon by utilizing the Dirichlet distribution. It furthermore applies the centered-log-ratio transformation (or closely related log-ratio transforms). Depending on the experimental setup, it will perform a two sample Welch's T-test and Wilcoxon-test or a one-way ANOVA and Kruskal-Wallis-test. The Benjamini-Hochberg procedure is applied in any case to correct for multiple testing.
 
 ```{r message=FALSE, warning=FALSE}
 mm_aldex <- microbiomeMarker::run_aldex(physeq, group = "Geo",
