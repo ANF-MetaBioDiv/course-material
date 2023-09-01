@@ -2,14 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.361">
+<meta name="generator" content="quarto-1.4.339">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Fabrice Armougom, MIO">
 <meta name="author" content="Marc Garel, MIO">
 <meta name="author" content="Nicolas Henry, ABiMS">
-<meta name="dcterms.date" content="2022-08-01">
+<meta name="dcterms.date" content="2023-09-01">
 
 <title>ANF MetaBioDiv - Preprocessing : phyloseq</title>
 <style>
@@ -84,6 +84,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   "panel-placement": "end",
   "type": "overlay",
   "limit": 20,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -107,7 +112,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <header id="quarto-header" class="headroom fixed-top">
     <nav class="navbar navbar-expand-lg navbar-dark ">
       <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container">
+      <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">ANF MetaBioDiv</span>
     </a>
@@ -119,103 +124,103 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../index.html" rel="" target="">
- <span class="menu-text">Home</span></a>
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-day-1" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-day-1" role="button" data-bs-toggle="dropdown" aria-expanded="false">
  <span class="menu-text">Day 1</span>
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-day-1">    
         <li class="dropdown-header">Practicals</li>
         <li>
-    <a class="dropdown-item" href="../practicals/rforbeginer.html" rel="" target="">
+    <a class="dropdown-item" href="../practicals/rforbeginer.html">
  <span class="dropdown-text">R for beginners</span></a>
   </li>  
     </ul>
   </li>
   <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-day-2" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-day-2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
  <span class="menu-text">Day 2</span>
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-day-2">    
         <li class="dropdown-header">Courses</li>
         <li>
-    <a class="dropdown-item" href="../courses/introduction.pdf" rel="" target="">
+    <a class="dropdown-item" href="../courses/introduction.pdf">
  <span class="dropdown-text">Introduction</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../courses/dada2.html" rel="" target="">
+    <a class="dropdown-item" href="../courses/dada2.html" target="_blank">
  <span class="dropdown-text">Analysing metabarcoding data with dada2</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../courses/phyloseq.html" rel="" target="">
+    <a class="dropdown-item" href="../courses/phyloseq.html" target="_blank">
  <span class="dropdown-text">Introduction to phyloseq</span></a>
   </li>  
         <li class="dropdown-header">Practicals</li>
         <li>
-    <a class="dropdown-item" href="../practicals/preprocessing_dada2.html" rel="" target="">
+    <a class="dropdown-item" href="../practicals/preprocessing_dada2.html">
  <span class="dropdown-text">Preprocessing: dada2</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../practicals/preprocessing_phyloseq.html" rel="" target="">
+    <a class="dropdown-item" href="../practicals/preprocessing_phyloseq.html">
  <span class="dropdown-text">Preprocessing: phyloseq</span></a>
   </li>  
     </ul>
   </li>
   <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-day-3" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-day-3" role="button" data-bs-toggle="dropdown" aria-expanded="false">
  <span class="menu-text">Day 3</span>
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-day-3">    
         <li class="dropdown-header">Courses</li>
         <li>
-    <a class="dropdown-item" href="../courses/alpha_diversity.pdf" rel="" target="">
+    <a class="dropdown-item" href="../courses/alpha_diversity.pdf" target="_blank">
  <span class="dropdown-text">Alpha diversity</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../courses/stat_mean_comparison.pdf" rel="" target="">
+    <a class="dropdown-item" href="../courses/stat_mean_comparison.pdf" target="_blank">
  <span class="dropdown-text">Introduction to univariate statistics</span></a>
   </li>  
         <li class="dropdown-header">Practicals</li>
         <li>
-    <a class="dropdown-item" href="../practicals/alpha_diversity.html" rel="" target="">
+    <a class="dropdown-item" href="../practicals/alpha_diversity.html">
  <span class="dropdown-text">Alpha diversity</span></a>
   </li>  
     </ul>
   </li>
   <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-day-4" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-day-4" role="button" data-bs-toggle="dropdown" aria-expanded="false">
  <span class="menu-text">Day 4</span>
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-day-4">    
         <li class="dropdown-header">Courses</li>
         <li>
-    <a class="dropdown-item" href="../courses/beta_diversity.pdf" rel="" target="">
+    <a class="dropdown-item" href="../courses/beta_diversity.pdf" target="_blank">
  <span class="dropdown-text">Beta diversity</span></a>
   </li>  
         <li class="dropdown-header">Practicals</li>
         <li>
-    <a class="dropdown-item" href="../practicals/beta_diversity.html" rel="" target="">
+    <a class="dropdown-item" href="../practicals/beta_diversity.html">
  <span class="dropdown-text">Beta diversity</span></a>
   </li>  
     </ul>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="../about.html" rel="" target="">
- <span class="menu-text">About</span></a>
+    <a class="nav-link" href="../about.html"> 
+<span class="menu-text">About</span></a>
   </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/ANF-MetaBioDiv/course-material" rel="" target=""><i class="bi bi-github" role="img">
+    <a class="nav-link" href="https://github.com/ANF-MetaBioDiv/course-material" target="_blank"> <i class="bi bi-github" role="img">
 </i> 
- <span class="menu-text"></span></a>
+<span class="menu-text"></span></a>
   </li>  
 </ul>
-            <div class="quarto-navbar-tools">
-</div>
           </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
       </div> <!-- /container-fluid -->
     </nav>
 </header>
@@ -243,7 +248,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul></li>
   <li><a href="#extract-information-from-a-phyloseq-object" id="toc-extract-information-from-a-phyloseq-object" class="nav-link" data-scroll-target="#extract-information-from-a-phyloseq-object"><span class="header-section-number">4</span> Extract information from a phyloseq object</a></li>
   </ul>
-<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/ANF-MetaBioDiv/course-material/edit/main/practicals/preprocessing_phyloseq.Rmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/ANF-MetaBioDiv/course-material/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/ANF-MetaBioDiv/course-material/edit/main/practicals/preprocessing_phyloseq.Rmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ANF-MetaBioDiv/course-material/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -269,13 +274,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">August 1, 2022</p>
+      <p class="date">September 1, 2023</p>
     </div>
   </div>
   
     
   </div>
   
+
 
 </header>
 
@@ -401,7 +407,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>treeNJ <span class="ot">&lt;-</span> phangorn<span class="sc">::</span><span class="fu">NJ</span>(dm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Other approaches to reconstruct a phylogenetic tree exist. If you want to try them with <code>phangorn</code>, have a look <a href="https://cran.r-project.org/web/packages/phangorn/vignettes/Trees.html">here</a></p>
+<p>Other approaches to reconstruct a phylogenetic tree exist. If you want to try them with <code>phangorn</code>, have a look <a href="https://cran.r-project.org/web/packages/phangorn/vignettes/Trees.html" target="_blank">here</a></p>
 <p>We need the tree to be rooted for future analysis. We can do that using the function <code>phangorn::midpoint()</code></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>treeNJ <span class="ot">&lt;-</span> phangorn<span class="sc">::</span><span class="fu">midpoint</span>(<span class="at">tree =</span> treeNJ)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -428,7 +434,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>phyloseq<span class="sc">::</span><span class="fu">ntaxa</span>(physeq)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 155</code></pre>
+<pre><code>[1] 160</code></pre>
 </div>
 </div>
 <ul>
@@ -456,12 +462,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>phyloseq<span class="sc">::</span><span class="fu">taxa_names</span>(physeq) <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "8e57b5813bc7e9f8e856bee05e4dfc9461d3ab0d"
-[2] "75ca2ab3b10206afb2a3fec2fa754eed9c74a10f"
-[3] "7636c4b6a068bda08f8403aa30257c8bb0e600a1"
-[4] "da30b71ca1d8c9535e53e7625851ed01643cecab"
-[5] "9afe9ffe57ea2823eeac848b4298d427a7c6f3d2"
-[6] "ab1fe7bea9d0c4e38d145e8b804f46ec19d91a75"</code></pre>
+<pre><code>[1] "ASV_001" "ASV_002" "ASV_003" "ASV_004" "ASV_005" "ASV_006"</code></pre>
 </div>
 </div>
 <ul>
@@ -529,9 +530,9 @@ S9S  0.139 0.644 0.373 0.167 9.817 3.689 0.0062 22.9545 38.7777 26.8172</code></
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>phyloseq<span class="sc">::</span><span class="fu">sample_sums</span>(physeq)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>S11B  S1B  S2B  S2S  S3B  S3S  S4B  S4S  S5B  S5S  S6B  S6S  S7B  S7S  S8B  S8S 
- 749  708  672  783  672  776  687  870  770  766  817  738  684  754  694  742 
+ 879  835  783  929  786  904  808 1050  905  896  970  900  823  852  842  849 
  S9B  S9S 
- 650  746 </code></pre>
+ 787  873 </code></pre>
 </div>
 </div>
 <ul>
@@ -540,18 +541,8 @@ S9S  0.139 0.644 0.373 0.167 9.817 3.689 0.0062 22.9545 38.7777 26.8172</code></
 <div class="cell">
 <div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>phyloseq<span class="sc">::</span><span class="fu">taxa_sums</span>(physeq) <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>8e57b5813bc7e9f8e856bee05e4dfc9461d3ab0d 
-                                    1363 
-75ca2ab3b10206afb2a3fec2fa754eed9c74a10f 
-                                     822 
-7636c4b6a068bda08f8403aa30257c8bb0e600a1 
-                                     709 
-da30b71ca1d8c9535e53e7625851ed01643cecab 
-                                     663 
-9afe9ffe57ea2823eeac848b4298d427a7c6f3d2 
-                                     611 
-ab1fe7bea9d0c4e38d145e8b804f46ec19d91a75 
-                                     554 </code></pre>
+<pre><code>ASV_001 ASV_002 ASV_003 ASV_004 ASV_005 ASV_006 
+   1528     958     896     803     681     640 </code></pre>
 </div>
 </div>
 <ul>
@@ -562,18 +553,8 @@ ab1fe7bea9d0c4e38d145e8b804f46ec19d91a75
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sort</span>(<span class="at">decreasing =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
 <span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>8e57b5813bc7e9f8e856bee05e4dfc9461d3ab0d 
-                                    1363 
-75ca2ab3b10206afb2a3fec2fa754eed9c74a10f 
-                                     822 
-7636c4b6a068bda08f8403aa30257c8bb0e600a1 
-                                     709 
-da30b71ca1d8c9535e53e7625851ed01643cecab 
-                                     663 
-9afe9ffe57ea2823eeac848b4298d427a7c6f3d2 
-                                     611 
-ab1fe7bea9d0c4e38d145e8b804f46ec19d91a75 
-                                     554 </code></pre>
+<pre><code>ASV_001 ASV_002 ASV_003 ASV_004 ASV_005 ASV_006 
+   1528     958     896     803     681     640 </code></pre>
 </div>
 </div>
 <ul>
@@ -589,12 +570,12 @@ ab1fe7bea9d0c4e38d145e8b804f46ec19d91a75
 <li><strong>Show abundance of a given ASV</strong></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>phyloseq<span class="sc">::</span><span class="fu">get_sample</span>(physeq, <span class="at">i =</span> <span class="st">"7636c4b6a068bda08f8403aa30257c8bb0e600a1"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>phyloseq<span class="sc">::</span><span class="fu">get_sample</span>(physeq, <span class="at">i =</span> <span class="st">"ASV_001"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>S11B  S1B  S2B  S2S  S3B  S3S  S4B  S4S  S5B  S5S  S6B  S6S  S7B  S7S  S8B  S8S 
-  22    0    0   66    8    0    0    0    0    0   68  236   86   32   46    7 
+ 111   60   45  104   60   78   13   66  180  178  155   70   48   79   52   67 
  S9B  S9S 
-  82   56 </code></pre>
+  74   88 </code></pre>
 </div>
 </div>
 <ul>
@@ -603,18 +584,8 @@ ab1fe7bea9d0c4e38d145e8b804f46ec19d91a75
 <div class="cell">
 <div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>phyloseq<span class="sc">::</span><span class="fu">get_taxa</span>(physeq, <span class="at">i =</span> <span class="st">"S2B"</span>) <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>8e57b5813bc7e9f8e856bee05e4dfc9461d3ab0d 
-                                      40 
-75ca2ab3b10206afb2a3fec2fa754eed9c74a10f 
-                                      43 
-7636c4b6a068bda08f8403aa30257c8bb0e600a1 
-                                       0 
-da30b71ca1d8c9535e53e7625851ed01643cecab 
-                                       0 
-9afe9ffe57ea2823eeac848b4298d427a7c6f3d2 
-                                       0 
-ab1fe7bea9d0c4e38d145e8b804f46ec19d91a75 
-                                       0 </code></pre>
+<pre><code>ASV_001 ASV_002 ASV_003 ASV_004 ASV_005 ASV_006 
+     45      52       0       0       0       0 </code></pre>
 </div>
 </div>
 <ul>
@@ -626,8 +597,8 @@ ab1fe7bea9d0c4e38d145e8b804f46ec19d91a75
 <pre><code> [1] "Cyanobacteria"                 "Proteobacteria"               
  [3] "Thermoplasmatota"              "Actinobacteriota"             
  [5] "Bacteroidota"                  "Dadabacteria"                 
- [7] "SAR324 clade(Marine group B)"  "Verrucomicrobiota"            
- [9] "Chloroflexi"                   "Marinimicrobia (SAR406 clade)"
+ [7] "SAR324 clade(Marine group B)"  "Chloroflexi"                  
+ [9] "Verrucomicrobiota"             "Marinimicrobia (SAR406 clade)"
 [11] "Desulfobacterota"             </code></pre>
 </div>
 </div>
@@ -640,15 +611,15 @@ ab1fe7bea9d0c4e38d145e8b804f46ec19d91a75
 <div class="cell-output cell-output-stdout">
 <pre><code>
              Actinobacteriota                  Bacteroidota 
-                           13                            13 
+                           14                            11 
                   Chloroflexi                 Cyanobacteria 
-                            3                             9 
+                            2                             9 
                  Dadabacteria              Desulfobacterota 
                             2                             1 
 Marinimicrobia (SAR406 clade)                Proteobacteria 
-                            7                            82 
+                            8                            87 
  SAR324 clade(Marine group B)              Thermoplasmatota 
-                            2                            19 
+                            2                            20 
             Verrucomicrobiota 
                             4 </code></pre>
 </div>
@@ -745,10 +716,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -758,8 +728,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -772,6 +751,81 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
       return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        for (let i = 0; i < 2; i++) {
+          container.appendChild(note.children[i].cloneNode(true));
+        }
+        return container.innerHTML
+      } else {
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      return note.innerHTML;
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -815,6 +869,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -840,6 +895,33 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        console.log("RESIZE");
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -897,6 +979,20 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       });
     }
   }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var filterRegex = new RegExp("https:\/\/ANF-MetaBioDiv\.github\.io\/course-material\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+      }
+    }
 });
 </script>
 </div> <!-- /content -->
@@ -905,12 +1001,15 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     <div class="nav-footer-left">
       &nbsp;
     </div>   
-    <div class="nav-footer-center"><a href="http://abims.sb-roscoff.fr/"><img src="../img/logo_abims.png" alt="ABiMS" height="35"></a> <a href="https://www.umr-beep.fr/"><img src="../img/logo_beep.png" alt="beep" height="40"></a> <a href="https://www.france-bioinformatique.fr/"><img src="../img/logo_ifb.svg" alt="IFB" height="40"></a> <a href="https://www.cnrs.fr//"><img src="../img/logo_cnrs.svg" alt="CNRS" height="40"></a> <a href="https://www.ird.fr/"><img src="../img/logo_ird.png" alt="IRD" height="40"></a> <a href="https://www.mio.osupytheas.fr/"><img src="../img/logo_mio.png" alt="MIO" height="40"></a> <a href="https://umr-marbec.fr/"><img src="../img/logo_marbec.jpeg" alt="marbec" height="40"></a> <a href="https://umr-marbec.fr/"><img src="../img/logo_tara.png" alt="marbec" height="30"></a></div>
+    <div class="nav-footer-center">
+<p><a href="http://abims.sb-roscoff.fr/"><img src="../img/logo_abims.png" alt="ABiMS" height="35"></a> <a href="https://www.umr-beep.fr/"><img src="../img/logo_beep.png" alt="beep" height="40"></a> <a href="https://www.france-bioinformatique.fr/"><img src="../img/logo_ifb.png" alt="IFB" height="40"></a> <a href="https://www.cnrs.fr//"><img src="../img/logo_cnrs.svg" alt="CNRS" height="40"></a> <a href="https://www.ird.fr/"><img src="../img/logo_ird.png" alt="IRD" height="40"></a> <a href="https://www.mio.osupytheas.fr/"><img src="../img/logo_mio.png" alt="MIO" height="40"></a> <a href="https://umr-marbec.fr/"><img src="../img/logo_marbec.jpeg" alt="marbec" height="40"></a> <a href="https://umr-marbec.fr/"><img src="../img/logo_tara.png" alt="marbec" height="30"></a></p>
+</div>
     <div class="nav-footer-right">
       &nbsp;
     </div>
   </div>
 </footer>
+
 
 
 

@@ -1,39 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://ANF-MetaBioDiv.github.io/course-material/index.html</loc>
-    <lastmod>2023-06-06T12:11:37.628Z</lastmod>
-  </url>
-  <url>
-    <loc>https://ANF-MetaBioDiv.github.io/course-material/about.html</loc>
-    <lastmod>2023-06-06T12:11:38.792Z</lastmod>
-  </url>
-  <url>
-    <loc>https://ANF-MetaBioDiv.github.io/course-material/practicals/rforbeginer.html</loc>
-    <lastmod>2023-06-06T12:11:41.120Z</lastmod>
-  </url>
-  <url>
-    <loc>https://ANF-MetaBioDiv.github.io/course-material/courses/dada2.html</loc>
-    <lastmod>2023-06-06T12:11:42.740Z</lastmod>
-  </url>
-  <url>
-    <loc>https://ANF-MetaBioDiv.github.io/course-material/practicals/preprocessing_dada2.html</loc>
-    <lastmod>2023-06-06T12:11:44.652Z</lastmod>
-  </url>
-  <url>
-    <loc>https://ANF-MetaBioDiv.github.io/course-material/courses/phyloseq.html</loc>
-    <lastmod>2023-06-06T12:11:47.941Z</lastmod>
+    <loc>https://ANF-MetaBioDiv.github.io/course-material/practicals/beta_diversity.html</loc>
+    <lastmod>2023-09-01T12:16:46.637Z</lastmod>
   </url>
   <url>
     <loc>https://ANF-MetaBioDiv.github.io/course-material/practicals/preprocessing_phyloseq.html</loc>
-    <lastmod>2023-06-06T12:11:49.301Z</lastmod>
+    <lastmod>2023-08-30T10:13:18.364Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ANF-MetaBioDiv.github.io/course-material/practicals/rforbeginer.html</loc>
+    <lastmod>2023-09-01T12:26:00.494Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ANF-MetaBioDiv.github.io/course-material/index.html</loc>
+    <lastmod>2023-09-01T12:26:16.594Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ANF-MetaBioDiv.github.io/course-material/about.html</loc>
+    <lastmod>2023-08-07T12:14:50.676Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ANF-MetaBioDiv.github.io/course-material/practicals/preprocessing_dada2.html</loc>
+    <lastmod>2023-09-01T11:29:01.522Z</lastmod>
   </url>
   <url>
     <loc>https://ANF-MetaBioDiv.github.io/course-material/practicals/alpha_diversity.html</loc>
-    <lastmod>2023-06-06T12:11:52.369Z</lastmod>
-  </url>
-  <url>
-    <loc>https://ANF-MetaBioDiv.github.io/course-material/practicals/beta_diversity.html</loc>
-    <lastmod>2023-06-06T12:11:57.373Z</lastmod>
+    <lastmod>2023-08-30T14:01:41.540Z</lastmod>
   </url>
 </urlset>
