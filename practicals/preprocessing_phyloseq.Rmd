@@ -1,9 +1,7 @@
 ---
 title: "Preprocessing : phyloseq"
-date: "August 2022"
-output:
-  html_notebook:
-  html_document:
+date: "September 2023"
+output: html_document
 author:
   - "Fabrice Armougom, MIO"
   - "Marc Garel, MIO"
@@ -61,8 +59,7 @@ asv_seq <- Biostrings::readDNAStringSet(
 )
 ```
 
-We will also need some information about the samples,
-the file is located is another folder.
+We will also need some information about the samples, the file is located is another folder.
 
 ```{r}
 context <- read.table(here::here("data",
@@ -167,7 +164,7 @@ treeNJ <- phangorn::NJ(dm)
 
 Other approaches to reconstruct a phylogenetic tree exist.
 If you want to try them with `phangorn`, have a look
-[here](https://cran.r-project.org/web/packages/phangorn/vignettes/Trees.html)
+[here](https://cran.r-project.org/web/packages/phangorn/vignettes/Trees.html){target="_blank"}
 
 We need the tree to be rooted for future analysis.
 We can do that using the function `phangorn::midpoint()`
@@ -259,7 +256,7 @@ phyloseq::rank_names(physeq)
 
 * **Show abundance of a given ASV**
 ```{r}
-phyloseq::get_sample(physeq, i = "7636c4b6a068bda08f8403aa30257c8bb0e600a1")
+phyloseq::get_sample(physeq, i = "ASV_001")
 ```
 
 * **Show ASVs and abundance for a given sample**

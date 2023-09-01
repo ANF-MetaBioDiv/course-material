@@ -15,25 +15,29 @@ knitr::opts_chunk$set(message = FALSE,
 
 ## Prepare workspace
 
-Load libraries
+### Load libraries
+
 ```{r}
 library(phyloseq)
 library(ggplot2)
 library(patchwork)
 ```
 
-Load custom functions:
+### Load custom functions
+
 ```{r}
 devtools::load_all()
 ```
 
-Define output folder:
+### Define output folder
+
 ```{r}
 output_alpha <- here::here("outputs", "alpha_diversity")
 if (!dir.exists(output_alpha)) dir.create(output_alpha)
 ```
 
-Load the data and inspect the phyloseq object:
+### Load the data and inspect the phyloseq object
+
 ```{r}
 physeq <- readRDS(here::here("data",
                              "asv_table",
@@ -42,12 +46,13 @@ physeq <- readRDS(here::here("data",
 
 ## Data Structure 
 
-Have a look at the phyloseq object:
+- **<span style="color: steelblue;"><font size="5"> Phyloseq object </font></span>**
+
 ```{r}
 physeq
 ```
 
-### Our phyloseq object `physeq` is composed of:
+### Composition of our phyloseq object `physeq`
 
 #### An ASV table with the absolute counts
 
@@ -58,38 +63,46 @@ physeq@otu_table[1:10,1:10]
 ```
 
 #### A metadata table with information (e.g. physicochemical, categorical variables) about samples
+
 ```{r}
 physeq@sam_data
 ```
 
-#### A table of Taxonomic classification of each ASV
+#### A table of taxonomic classification level of each ASV
+
 ```{r}
 physeq@tax_table[1:10,]
 ```
 
-#### A Phylogenetic Tree
+#### A Phylogenetic tree
+
 ```{r}
 physeq@phy_tree
 ```
 
-#### A table with the ASV Sequences
+#### A table with the ASV sequences
 ```{r}
 physeq@refseq
 ```
 
-## Subsampling normalization
+##  Subsampling normalization
+
 ### Rarefaction Curves
 
 Before normalization by sub-sampling, let's have a look at rarefaction curves,
 evaluate your sequencing effort and make decisions
 
 #### Identify your minimum sample size
+
 ```{r}
 phyloseq::sample_sums(physeq)
 ```
 
-#### What is the minimum sample size?
-Run rarefaction curves using our custom function `ggrare()` (defined in `R/alpha_diversity.R`)
+**What is the minimum sample size?**
+
+
+#### Run rarefaction curves using our custom function `ggrare()` (defined in `R/alpha_diversity.R`)
+
 ```{r,results='hide'}
 #Make rarefaction curves & Add min sample size line
 ggrare(physeq, step = 10, color = "Description", se = FALSE) +
@@ -100,6 +113,7 @@ ggrare(physeq, step = 10, color = "Description", se = FALSE) +
 **Do you think is a good idea to normalize your data using this minimal sample size?**
 
 ### Normalization process for alpha diversity: sub-sampling
+
 ```{r}
 physeq_rar <- phyloseq::rarefy_even_depth(physeq, rngseed = TRUE)
 ```
@@ -109,18 +123,32 @@ physeq_rar <- phyloseq::rarefy_even_depth(physeq, rngseed = TRUE)
 **Did you lost a lot of ASVs?**
 
 ### Run rarefaction curves on normalized data
+
 ```{r,results='hide'}
 p0 <- ggrare(physeq_rar, step = 10, color = "Description", se = TRUE)
 ```
 
 ### Group separation
+
 ```{r}
 p0 + facet_wrap(~Geo, ncol = 2)
 ```
 
-## Alpha Diversity
+### Rank Abundance Curves
+
+```{r}
+tableASV <- data.frame(phyloseq::otu_table(physeq_rar))
+metadonnees <- data.frame(physeq_rar@sam_data)
+metadonnees$Geo <- factor(metadonnees$Geo)
+ab_ranktab <- rankabuncomp(tableASV, y=metadonnees, factor='Geo',scale='logabun', legend="topright")
+```
+
+##  IV-Alpha Diversity 
+
 ### Indices
-#### Get taxonomy-based diversity indices
+
+####  Get taxonomy-based diversity indices
+
 ```{r}
 #Get indices with alpha function (NB: index="all" if you want all the indices)
 alpha_indices <- microbiome::alpha(
@@ -144,10 +172,13 @@ class(alpha_indices)
 alpha_indices
 ```
 
-**What can you say about S6S?**
+**What can you notice for one sample?**
+
+**How to show this graphically?**
 
 #### Add the alpha indices result to your metadata (sample_data) phyloseq object
 Important because many times you will probably want to add new variables in the phyloseq class object!!!
+
 ```{r}
 #Turn into sample_data object : sample_data function
 alpha_indices <- phyloseq::sample_data(alpha_indices)
@@ -164,6 +195,7 @@ sample_data(physeq_rar)
 
 
 #### Get phylogeny based diversity indices: get_NRI_NTI function
+
 ```{r}
 #CalculateNRI,NTI,PD...: get_NRI_NTI function
 ind_comp <- MicrobiotaProcess::get_NRI_NTI(physeq_rar,
@@ -189,63 +221,32 @@ physeq_rar <- phyloseq::merge_phyloseq(physeq_rar, NRI_NTI_PB)
 sample_data(physeq_rar)
 ```
 
-#### Importance of metadata table/file
+**Can you give me one of the most diversified sample based on Simpson/Shannon/Richness/Pielou/PD values observed?**
 
-*Metadata groups all the meta information (category/numerical) such as sample names, geographic group, treatment groups (disease/normal), measures of environmental factors, alpha diversity indices etc.* 
-*This table is central for further analyses and graphic representations*
-*You saw how to add alpha indices from calculation with alpha function*
-*Now, how to add a customized variable in metadata?*
-
-#### Add my own variable to metadata
-```{r}
-#create a dataframe with a vector with  values of your new variable
-mydataframe <- data.frame(MYNEWVAR = c("sediment", "mer", "sediment",
-                                       "trap", "mer", "mer",
-                                       "trap", "trap", "trap",
-                                       "sediment", "mer", "mer",
-                                       "mer", "trap", "trap",
-                                       "mer", "mer", "sediment"))
-
-#Add rownames=samples names
-row.names(mydataframe) <- c("S2S", "S1B", "S2B",
-                            "S3S", "S3B", "S4S",
-                            "S4B", "S5S", "S5B",
-                            "S6S", "S6B", "S7S",
-                            "S7B", "S8S", "S8B",
-                            "S9S", "S9B", "S11B")
-
-# See & notice that order of sample names is not the same as in physeq_rar@sam_data
-mydataframe
-```
-
-```{r, results='hide'}
-mydataframe <- phyloseq::sample_data(mydataframe)
-# Add your own variable
-physeq_rar <- phyloseq::merge_phyloseq(physeq_rar, mydataframe)
-# See the result with your MYNEWVAR with ordenring Ok as merge_phyloseq manages it for you
-sample_data(physeq_rar)
-```
-
-### Alpha diversity representations
+### Alpha diversity representations 
 
 *This section will show you how to plot by different ways the alpha diversity and its customization.*
 *Understand how it works!*
 
 #### Alpha representations using phyloseq::plot_richness()
+
 *You are limited to the indices calculated by the phyloseq::estimate_richness function*
 *(i.e."Observed", "Chao1", "ACE", "Shannon", "Simpson", "InvSimpson", "Fisher").*
 
 ##### Selected indices + SampName
+
 `x` allow you to choose the column from sample_data(physeq_rar) for applying the label
+
 ```{r}
 phyloseq::plot_richness(physeq_rar, x = "SampName",
                         measures = c("Observed", "Shannon", "Simpson"))
 ```
 
-##### Color by group: `color = Geo` & change sample name
+#### Color by group: `color = Geo` & change sample name
 
 For color option pass the column of `sample_data(physeq_rar)` that you want.
 Here different colors is applied depending on `Geo` (which is North and South, so 2 different colors)
+
 ```{r}
 phyloseq::plot_richness(physeq_rar,
                         x = "Description",
@@ -253,7 +254,8 @@ phyloseq::plot_richness(physeq_rar,
                         measures=c("Observed", "Shannon", "Simpson"))
 ```
 
-##### Make box_plot by adding geom_boxplot function
+#### Make box_plot by adding geom_boxplot function
+
 ```{r}
 phyloseq::plot_richness(physeq_rar,
                         x="Geo",
@@ -262,32 +264,30 @@ phyloseq::plot_richness(physeq_rar,
   ggplot2::geom_boxplot()
 ```
 
-##### Make box_plot : geom_boxplot + fill color of boxplot (fill) + transparency (with alpha)
+#### Make box_plot : geom_boxplot + fill color of boxplot (fill) + transparency (with alpha)
+
 ```{r}
 phyloseq::plot_richness(physeq_rar,
-                        x="Geo",
-                        measures=c("Observed", "Shannon", "Simpson")) +
-  ggplot2::geom_boxplot(aes(fill = Geo), alpha = 0.4) 
+                        x = "Geo",
+                        measures = c("Observed", "Shannon", "Simpson")) +
+  ggplot2::geom_boxplot(aes(fill = Geo), alpha = 0.4)
 ```
 
-#### Alpha representations using `Microbiome::boxplot_alpha`
+#### Alpha representations using `Microbiome::boxplot_alpha` (not shown)
+
 Again, you are limited to the indices calculated by the Microbiome::alpha function
-```{r}
-microbiome::boxplot_alpha(physeq_rar,
-                          index = "observed",
-                          violin = TRUE,
-                          x_var = "Geo",
-                          fill.colors = c(North="#00AFBB", South="#E7B800"))
-```
 
 #### Alpha representations using ggplot2
+
 Interest: Freedom!! you can use ANY indices that you have calculated from different packages & included in sample_data
+
 ```{r}
 #Before : Change your phyloseq class oject sample_data as a dataframe
 metadata <- data.frame(sample_data(physeq_rar))
 ```
 
 ##### basic: points & color
+
 ```{r}
 #You use the columns of the metadata (Geo, observed, groupe etc)
 ggplot(metadata, aes(x = Geo, y = observed)) +
@@ -295,6 +295,7 @@ ggplot(metadata, aes(x = Geo, y = observed)) +
 ```
 
 ##### Deals with superposed points: `geom_dotplot()`
+
 ```{r,results='hide',warning=FALSE}
 ggplot(metadata, aes(x = Geo, y = observed)) +
   geom_dotplot(binaxis = "y", stackdir = "center", stackgroups = TRUE,
@@ -302,7 +303,9 @@ ggplot(metadata, aes(x = Geo, y = observed)) +
   xlab("Geographic position") +
   ylab("Number of Observed ASVs") 
 ```
+
 ##### Boxplot & color control : `scale_fill` & `scale_color`
+
 ```{r}
 ggplot(metadata, aes(x = Geo, y = observed)) +
   geom_boxplot(alpha = 0.7, aes(color = Geo, fill = Geo)) +
@@ -327,6 +330,7 @@ ggplot(metadata, aes(x = Geo, y = observed)) +
 ```
 
 ##### Boxplot, color control, points and Mean SD: `stat_summary()`
+
 ```{r}
 ggplot(metadata, aes(x = Geo, y = observed)) +
   geom_boxplot(alpha = 0.6,
@@ -336,7 +340,6 @@ ggplot(metadata, aes(x = Geo, y = observed)) +
   stat_summary(fun = mean, geom = "point", shape = 17, size = 3, color = "white") +
   stat_summary(fun.data = "mean_se", geom = "errorbar", width = .1, color = "white")
 ```
-
 
 ##### Combine graphs on same figure: `patchwork`
 
@@ -365,21 +368,23 @@ p3 <- ggplot(metadata, aes(x = Geo, y = diversity_gini_simpson)) +
 ```
 
 ```{r, results='hide'}
-#Put the grpah of p1, p2 and p3 on same Figure
-p1 + p2 + p3 + 
+#Put the graph of p1, p2 and p3 on same Figure
+p1 + p2 + p3 +
   patchwork::plot_annotation(tag_levels = "A") +
   patchwork::plot_layout(guides = "collect")
 
-# ggpubr::ggarrange(p1, p2, p3, ncol = 3, nrow = 1,common.legend = TRUE, legend = "right",labels=c("A","B","C"))
 ```
 
-### Univariate Statistics for alpha diversity
+## Statistical hypothesis for alpha diversity 
 
 #### Normality test: Check the Normal or not normal distribution of your data to choose the right test!
+
 ##### Shapiro test: H0 Null Hypothesis: follows Normal distribution!
+
 Means if p<0.05 -> reject the H0 (so does not follow a normal distribution)
 
 ##### Q-Qplots: Compare your distribution with a theoretical normal distribution
+
 If your data follow a normal distribution, you're expecting a linear relationship theoritical vs. experimental
 
 Our custom function `indices_normality()` (defined in `R/alpha_diversity.R`) plots the results
@@ -397,14 +402,19 @@ metadata |>
   indices_normality(nrow = 3, ncol = 2)
 ```
 
-What are your conclusions?
+**What are your conclusions?**
 
-#### ANOVA: parametric (follows normal distribution) AND at least 3 groups
+### ANOVA: parametric (follows normal distribution) AND at least 3 groups
+
 ##### Anova for Observed ASV and 4 groups
+
 ```{r}
 # How many groups used? See the column "groupe" of metadata:
 factor(metadata$groupe)
 ```
+
+#####  Variance
+
 ```{r}
 # Check homogeneity of variance between groups
 # (avoid bias in ANOVA result & keep the power of the test)
@@ -414,7 +424,7 @@ stats::bartlett.test(observed ~ groupe, metadata)
 
 **Conclusion?** 
 
-#### Alternative to Bartlett : Levene test (package car), less sensitive to normality deviation
+#### Alternative to Bartlett : Levene test (package `car`), less sensitive to normality deviation
 
 Global Test: Anova tell you if that some of the group means are different, but you don't know which pairs of groups are different!
 
@@ -423,14 +433,15 @@ aov_observed <- stats::aov(observed ~ groupe, metadata)
 summary(aov_observed)
 ```
 
-Which pairs of groups are different? -> Post-hoc test: Tukey multiple pairwise-comparisons
+##### Which pairs of groups are different? -> Post-hoc test: Tukey multiple pairwise-comparisons
 
 ```{r}
 signif_pairgroups <- stats::TukeyHSD(aov_observed, method = "bh")
 signif_pairgroups
 ```
 
-#### Kruskal-Wallis: non-parametric & at least three groups
+### Kruskal-Wallis: non-parametric & at least three groups
+
 ##### Kruskal for diversity_shannon and 4 groups
 
 Global test
@@ -439,7 +450,7 @@ Global test
 stats::kruskal.test(diversity_shannon ~ groupe, data = metadata)
 ```
 
-Post hoc test: Dunn test (pairwise group test)
+##### Post hoc test: Dunn test (pairwise group test)
 
 ```{r}
 signifgroup <- FSA::dunnTest(diversity_shannon ~ groupe,
@@ -449,7 +460,7 @@ signifgroup <- FSA::dunnTest(diversity_shannon ~ groupe,
 signifgroup
 ```
 
-#### T-test: parametric, 2 groups (*i.e* North Vs. Sud)
+### T-test: parametric, 2 groups (*i.e* North Vs. Sud)
 ```{r}
 stats::bartlett.test(observed ~ Geo, metadata)
 ```
@@ -460,7 +471,8 @@ observed_ttest <- stats::t.test(observed ~ Geo, data = metadata)
 observed_ttest
 ```
 
-#### Wilcoxon rank sum: non-parametric & 2 Groups
+### Wilcoxon rank sum: non-parametric & 2 Groups
+
 ```{r}
 pairwise_test <- ggpubr::compare_means(diversity_shannon ~ Geo,
                                        metadata,
@@ -496,7 +508,7 @@ graph_shan + ggpubr::stat_pvalue_manual(
 ```
 
 
-## Bivariate statistics & linear Regression
+## Correlation & linear Regression
 
 ### Correlation analysis
 
@@ -512,13 +524,13 @@ Considerations for statistical tests (test of the value being zero):
 #### Select variables
 ```{r}
 #Select variables for bivariate correlation
-myvariables <- dplyr::select(metadata, SiOH4:PO4, observed,
-                             diversity_shannon, PD)
+myvariables <- dplyr::select(metadata, SiOH4:PO4,diversity_shannon)
 #see
 myvariables
 ```
 
 #### Apply the method
+
 ```{r}
 #Apply method pearson
 matrixCor <- stats::cor(myvariables, method = "pearson")
@@ -541,6 +553,7 @@ write.table(df_export(matrixCor, new_rn = "variable"),
 
 
 ####	Plot results: corrplot function
+
 ```{r}
 corrplot::corrplot(
   matrixCor,
@@ -555,6 +568,7 @@ corrplot::corrplot(
 ```
 
 ####	Is the correlation is due to chance? Significance test!
+
 The idea: Test the correlation at the population scale (=Rho) and compare to r (your samples). 
 HO is : there is not a significant linear correlation between x and y in the population.
 For instance t-test allows to use sample data to generalize an assumption to an entire population.
@@ -564,7 +578,7 @@ For instance t-test allows to use sample data to generalize an assumption to an 
 ptest <- corrplot::cor.mtest(matrixCor, conf.level = .95)
 #The p-value are stored in ptest$p
 #see
-ptest$p 
+ptest$p
 ```
 
 #### Show only correlations with significant p-values
@@ -583,13 +597,13 @@ corrplot::corrplot(
 )
 ```
 
-#### Linear regression
+### Linear regression
 
 Determination coefficient R<sup>2</sup> provides percentage variation in y which is explained by all the x together.
 Its value is (usually) between 0 and 1 and it indicates strength of Linear Regression model.
 Higher the R<sup>2</sup> value, data points are less scattered so it is a good model. Lesser the R<sup>2</sup> value is more scattered the data points.
 
-##### Shannon ~ Observed
+####  Shannon ~ Observed
 
 ```{r,results='hide'}
 ggplot(metadata, aes(x = observed, y = diversity_shannon)) +
@@ -600,27 +614,17 @@ ggplot(metadata, aes(x = observed, y = diversity_shannon)) +
                                           sep = "*\", \"*")))
 ```
 
-##### PD ~ Observed
 
-```{r,results='hide'}
-ggplot2::ggplot(metadata, aes(x = observed, y = PD)) +
-  geom_point() +
-  stat_smooth(method = "lm", col = "red") +
-  ggpmisc::stat_poly_eq(aes(label = paste(after_stat(rr.label),
-                                          after_stat(p.value.label),
-                                          sep = "*\", \"*")))
-```
+What should be your conclusions...be careful...
 
-Using these two examples, what should be your conclusions...be careful...
-
-What are √R<sup>2</sup> of these exemple? See matrixCor. Do you see the relation beetween R<sup>2</sup> and r?
-
+What is the r value?
 
 ## Taxonomy: barplot graph
 
 ### Abundance Transformation
 
 #### Counts in percentage using `phyloseq::transform_sample_counts()`
+
 ```{r}
 pourcentS <- phyloseq::transform_sample_counts(physeq_rar, function(x) x/sum(x) * 100)
 ```
@@ -633,6 +637,7 @@ phyloseq::plot_bar(pourcentS)
 What are the separation lines?
 
 #### Summarise at a given taxonomic level with `phyloseq::tax_glom()`
+
 Remember ranks can be obtained with `phyloseq::rank_names()`
 
 ```{r}
@@ -651,6 +656,7 @@ phyloseq::plot_bar(Phylum_glom, fill = "Phylum")
 *NArm?*
 
 #### Filter phylum (mean of the line): `phyloseq::filter_taxa()`
+
 Let's filter out the phylums with a mean relative abundance inferior to 1%
 ```{r, results='hide'}
 Phylum_1 <- phyloseq::filter_taxa(Phylum_glom,
@@ -662,6 +668,7 @@ phyloseq::plot_bar(Phylum_1, fill = "Phylum")
 ```
 
 #### How to save a table into a file: exemple of phylum taxonomic table
+
 ```{r}
 write.table(df_export(otu_table(Phylum_glom)),
             row.names = FALSE,
@@ -670,14 +677,15 @@ write.table(df_export(otu_table(Phylum_glom)),
 ```
 
 #### Remove black lines
+
 ```{r}
 phyloseq::plot_bar(Phylum_glom, "Description", fill = "Phylum") +
   geom_bar(aes(colour = Phylum), stat = "identity")
 ```
 
+### Microbiome package
 
-##### Microbiome package
-###### `microbiome::aggregate_taxa()`
+#### `microbiome::aggregate_taxa()`
 
 ```{r}
 # Order Rank
@@ -687,7 +695,7 @@ Order_microb <- microbiome::aggregate_taxa(pourcentS, "Order")
 Order1 <- phyloseq::filter_taxa(Order_microb, function(x) mean(x) >= 1, prune = TRUE) 
 ```
 
-###### `microbiome::plot_composition()`
+#### `microbiome::plot_composition()`
 
 ```{r}
 p_order <- microbiome::plot_composition(Order1,
@@ -700,7 +708,6 @@ p_order <- microbiome::plot_composition(Order1,
 #see
 p_order
 ```
-
 
 ```{r}
 #Average by group :average_by option
@@ -717,13 +724,13 @@ p_order_groupe <- microbiome::plot_composition(Order1,
 p_order_groupe
 ```
 
-##### Interactive barplot with `plotly::ggplotly()`
+#### Interactive barplot with `plotly::ggplotly()`
 ```{r}
 plotly::ggplotly(p_order)
 ```
 
 
-### How to manage colors in barplots
+#### How to manage colors in barplots
 
 With the number of Phyla, Order etc a barplot can become very confusing...
 Need to have distinct color for each taxonomic groups.
@@ -751,6 +758,7 @@ mycolors <- c(col1, col2)
 ```
 
 #### Use your palette in the p_order barplot
+
 ```{r}
 #Use scale_fill_manual
 p_order +
@@ -776,9 +784,11 @@ phyloseq::plot_bar(myselection1, x = "Description",
 ```
 
 #### Keep all with the exception of a class, a genus etc (e.g. contamination)
+
 ```{r}
 myselection2 <- phyloseq::subset_taxa(physeq, Class != "Thermoplasmata" | is.na(Class))
 ```
+
 #### Understand:
 
 <span style="color: red;">!</span> <span style="color: steelblue;">__= means  IS NOT__</span>
@@ -800,7 +810,6 @@ Use a column from metadata to group/merge samples (North & South)
 (sub_North <- phyloseq::subset_samples(pourcentS, Geo == "North"))
 ```
 
-
 #### Alternative way: `phyloseq::prune_samples`
 Define what you want to keep
 
@@ -814,18 +823,16 @@ keep2samples <- phyloseq::prune_samples(keep, pourcentS)
 sample_names(keep2samples)
 ```
 
-### Retrieve fasta sequences from a phyloseq object
+### Retrieve sequences from a phyloseq object
 
-#### Create a fasta file from your sequences
-One sequence:
+#### One sequence:
 ```{r}
 Biostrings::writeXStringSet(physeq_rar@refseq["ASV1"],
                             filepath = file.path(output_alpha,"ASV1.fasta"),
                             format = "fasta")
 ```
 
-#### Retrieve a subset of sequences
-##### By name
+#### By name
 ```{r}
 listASV <- c("ASV2", "ASV8", "ASV32", "ASV58")
 ```
@@ -836,7 +843,7 @@ Biostrings::writeXStringSet(physeq_rar@refseq[listASV],
                             format = "fasta")
 ```
 
-##### From a selection
+#### From a selection
 
 Let's export a fasta files of all ASVs with a maximum relative abundance
 superior to 10% in North samples:
@@ -851,7 +858,8 @@ phyloseq::subset_samples(pourcentS, Geo == "North") |>
   )
 ```
 
-##### Retrieve all sequences
+#### Retrieve all sequences
+
 ```{r}
 Biostrings::writeXStringSet(physeq_rar@refseq,
                             filepath = file.path(output_alpha,"all_asvs.fasta"),
@@ -859,8 +867,11 @@ Biostrings::writeXStringSet(physeq_rar@refseq,
 ```
 
 ## Core microbiota analysis
-### Identify the taxa names of the core microbiota
+
+**Identify the taxa names of the core microbiota**
+
 #### Which core? Compare North & South core microbiota
+
 ```{r}
 #Create 2 phyloseq objects for North and South sample groups
 sub_North <- phyloseq::subset_samples(pourcentS, Geo == "North")
@@ -868,13 +879,14 @@ sub_South <- phyloseq::subset_samples(pourcentS, Geo == "South")
 ```
 
 ```{r}
-#Check groups ok
-sub_South@sam_data
+#Check group North ok
 sub_North@sam_data
 ```
 
 #### Change first column name of taxonomy rank
+
 Replace "Kingdom" by "Domain", needed for the use of add_best function
+
 ```{r}
 #Before
 colnames(sub_North@tax_table)[1]
@@ -882,15 +894,14 @@ colnames(sub_North@tax_table)[1]
 colnames(sub_North@tax_table)[1] <- "Domain"
 #See 
 colnames(sub_North@tax_table)[1]
-#Apply change for South
-colnames(sub_South@tax_table)[1] <- "Domain"
 ```
 
 #### Add the lowest taxonomy classification
+
 https://rdrr.io/github/microbiome/microbiome/man/add_besthit.html
+
 ```{r}
 sub_North <- microbiome::add_besthit(sub_North, sep = ":")
-sub_South <- microbiome::add_besthit(sub_South, sep = ":")
 ```
 
 #### See the transformation of tax_table
@@ -899,20 +910,19 @@ head(sub_North@tax_table)
 ```
 
 #### Identify Core microbiota
+
 https://rdrr.io/github/microbiome/microbiome/man/core_members.html
+
 ```{r}
 #North
 (core_taxa_north <- microbiome::core_members(sub_North,
                                             detection = 0.0001,
                                             prevalence = 50/100))
 
-#South
-(core.taxa.South <- microbiome::core_members(sub_South,
-                                            detection = 0.0001,
-                                            prevalence = 50/100))
 ```
 
 #### Get core microbiota phyloseq object
+
 Get the phyloseq object with also sequences, phylo tree etc.
 ```{r}
 (phyloseq_core_north <- microbiome::core(sub_North,
@@ -925,10 +935,10 @@ See full taxanomy of core members
 (tax_mat <- as.data.frame(phyloseq::tax_table(phyloseq_core_north)))
 ```
 
-### Visualise core microbiome with `microbiome::plot_core()`
+#### Visualise core microbiome with `microbiome::plot_core()`
 
 Visualise the core microbiome of North samples
-```{r,fig.height = 6, fig.width = 8}
+```{r,fig.height = 6, fig.width = 8, results='hide'}
 microbiome::plot_core(phyloseq_core_north,
                       plot.type = "heatmap",
                       colours = rev(RColorBrewer::brewer.pal(8, "RdBu")),
@@ -943,7 +953,6 @@ microbiome::plot_core(phyloseq_core_north,
 Do the same for the South samples .. please!
 
 What are your conclusions about the comparison between North & South core micobiota at the ASV level?
-
 
 
 

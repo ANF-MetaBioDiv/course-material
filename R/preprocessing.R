@@ -81,6 +81,8 @@ primer_trim <- function(forward_files, reverse_files,
   write.table(all_logs, log_file_export, row.names = FALSE, quote = FALSE)
 
   invisible(file.remove(all_logs_names))
+  
+  return(all_logs)
 }
 
 
@@ -91,8 +93,9 @@ primer_trim <- function(forward_files, reverse_files,
 run_cutadapt_command <- function(forward_file, reverse_file,
                                  primer_fwd, primer_rev,
                                  output_dir, min_size, log_dir) {
-  bash_script <- here::here("bash","primer_trimming.bash")
-  
+
+  bash_script <- here::here("bash", "primer_trimming.bash")
+
   command <- paste(
     "bash",
     bash_script,
@@ -106,4 +109,3 @@ run_cutadapt_command <- function(forward_file, reverse_file,
   )
   system(command)
 }
-
