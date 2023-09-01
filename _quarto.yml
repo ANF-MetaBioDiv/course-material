@@ -4,9 +4,7 @@ project:
     - "index.qmd"
     - "about.qmd"
     - "/practicals/rforbeginer.Rmd"
-    - "/courses/dada2.qmd"
     - "/practicals/preprocessing_dada2.Rmd"
-    - "/courses/phyloseq.qmd"
     - "/practicals/preprocessing_phyloseq.Rmd"
     - "/practicals/alpha_diversity.Rmd"
     - "/practicals/beta_diversity.Rmd"
@@ -31,9 +29,11 @@ website:
         - text: "Introduction"
           href: courses/introduction.pdf
         - text: "Analysing metabarcoding data with dada2"
+          target: "_blank"
           href: courses/dada2.html
         - text: "Introduction to phyloseq"
           href: courses/phyloseq.html
+          target: "_blank"
         - text: "Practicals"
         - text: "Preprocessing: dada2"
           href: practicals/preprocessing_dada2.html
@@ -44,8 +44,10 @@ website:
         - text: "Courses"
         - text: "Alpha diversity"
           href: courses/alpha_diversity.pdf
+          target: "_blank"
         - text: "Introduction to univariate statistics"
           href: courses/stat_mean_comparison.pdf
+          target: "_blank"
         - text: "Practicals"
         - text: "Alpha diversity"
           href: practicals/alpha_diversity.html
@@ -54,6 +56,7 @@ website:
         - text: "Courses"
         - text: "Beta diversity"
           href: courses/beta_diversity.pdf
+          target: "_blank"
         - text: "Practicals"
         - text: "Beta diversity"
           href: practicals/beta_diversity.html
@@ -62,11 +65,12 @@ website:
     right:
       - icon: github
         href: https://github.com/ANF-MetaBioDiv/course-material
+        target: "_blank"
   page-footer:
     center: |
       [![](/img/logo_abims.png){fig-alt="ABiMS" height=35px}](http://abims.sb-roscoff.fr/)
       [![](/img/logo_beep.png){fig-alt="beep" height=40px}](https://www.umr-beep.fr/)
-      [![](/img/logo_ifb.svg){fig-alt="IFB" height=40px}](https://www.france-bioinformatique.fr/)
+      [![](/img/logo_ifb.png){fig-alt="IFB" height=40px}](https://www.france-bioinformatique.fr/)
       [![](/img/logo_cnrs.svg){fig-alt="CNRS" height=40px}](https://www.cnrs.fr//)
       [![](/img/logo_ird.png){fig-alt="IRD" height=40px}](https://www.ird.fr/)
       [![](/img/logo_mio.png){fig-alt="MIO" height=40px}](https://www.mio.osupytheas.fr/)
@@ -81,6 +85,7 @@ format:
      - lumen
      - custom_site_style.scss
     toc: true
+    link-external-newwindow: true
 
 editor: visual
 

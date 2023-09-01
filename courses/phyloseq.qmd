@@ -1,16 +1,23 @@
 ---
 title: "Introduction to phyloseq"
-author: "Nicolas Henry"
+author:
+  - name: Nicolas Henry
+    affiliations:
+    orcid: 0000-0002-7702-1382
+    email: nicolas.henry@cnrs.fr
 format:
   revealjs:
     slide-number: true
-    footer: "[{{< fa house >}}](/)"
-    theme: ../simple_nico.scss
-editor: visual
+    theme: night
+    embed-resources: true
+bibliography: ../references.bib
 ---
 
 ```{r}
 #| include: false
+
+library(tidyverse)
+
 input_dir <- here::here("outputs","dada2","asv_table")
 
 asv_table <- read.table(file = file.path(input_dir, "asv_table.tsv"),
@@ -38,7 +45,9 @@ context <- read.table(here::here("data",
 ## ASV table
 
 ```{r}
-head(asv_table, n = 10) |> knitr::kable()
+head(asv_table, n = 20) |>
+  knitr::kable() |>
+  kableExtra::kable_styling(font_size = 16)
 ```
 
 ## Information about one ASV
@@ -51,19 +60,23 @@ taxonomy[1,]
 ```
 
 ```{r}
-taxonomy[1,] |> knitr::kable()
+taxonomy[1,] |>
+  knitr::kable() |>
+  kableExtra::kable_styling(font_size = 16)
 ```
 
 * Sequence
 ```{r}
 #| echo: true
-asv_seq[["8e57b5813bc7e9f8e856bee05e4dfc9461d3ab0d"]]
+asv_seq[["ASV_001"]]
 ```
 
 ## Information about the samples
 
 ```{r}
-head(context, n = 10) |> knitr::kable()
+context |>
+  knitr::kable() |>
+  kableExtra::kable_styling(font_size = 16)
 ```
 
 # A fasta file of Cyanobacteria ASVs found in south samples?
@@ -81,7 +94,10 @@ south_context <- subset(context, Geo == "South")
 :::{.fragment}
 ```{r}
 south_context <- subset(context, Geo == "South")
-head(south_context) |> knitr::kable()
+
+south_context |>
+  knitr::kable() |>
+  kableExtra::kable_styling(font_size = 16)
 ```
 :::
 
@@ -111,7 +127,9 @@ cyano_taxo <- subset(taxonomy, Phylum == "Cyanobacteria")
 
 ```{r}
 cyano_taxo <- subset(taxonomy, Phylum == "Cyanobacteria")
-head(cyano_taxo, n = 4) |> knitr::kable()
+cyano_taxo |>
+  knitr::kable() |>
+  kableExtra::kable_styling(font_size = 16)
 ```
 
 <br>
@@ -134,7 +152,8 @@ asv_table_cyano <- asv_table[cyano_asvs,south_samples]
 
 ```{r}
 asv_table_cyano <- asv_table[cyano_asvs,south_samples]
-knitr::kable(asv_table_cyano)
+knitr::kable(asv_table_cyano) |>
+  kableExtra::kable_styling(font_size = 16)
 ```
 
 ## Cyanobacteria present in south samples
@@ -210,7 +229,7 @@ graph G {
 ![](../img/phyloseq_pone_fig1.png){fig-align="center"}
 
 ::: aside
-https://doi.org/10.1371/journal.pone.0061217.g001
+@10.1371/journal.pone.0061217
 :::
 
 ## phyloseq workflow
@@ -218,7 +237,7 @@ https://doi.org/10.1371/journal.pone.0061217.g001
 ![](../img/phyloseq_pone_fig2.png){fig-align="center" height="500"}
 
 ::: aside
-https://doi.org/10.1371/journal.pone.0061217.g002
+@10.1371/journal.pone.0061217
 :::
 
 ## phyloseq object
@@ -226,7 +245,7 @@ https://doi.org/10.1371/journal.pone.0061217.g002
 ![](../img/phyloseq_pone_fig3.png){fig-align="center"}
 
 ::: aside
-https://doi.org/10.1371/journal.pone.0061217.g003
+@10.1371/journal.pone.0061217
 :::
 
 ## Create our phyloseq object
@@ -364,3 +383,5 @@ subset_taxa(physeq,Phylum == "Cyanobacteria") |>
 * [Compare](/practicals/beta_diversity.html#visualisation) communities composition with ordinations
 
 # Now it is your turn!
+
+# References

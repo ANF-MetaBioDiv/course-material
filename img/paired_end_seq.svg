@@ -1,0 +1,818 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="70.871971mm"
+   height="25.398294mm"
+   viewBox="0 0 70.871971 25.398294"
+   version="1.1"
+   id="svg20332"
+   sodipodi:docname="paired_end_seq.svg"
+   inkscape:version="1.2 (dc2aeda, 2022-05-15)"
+   inkscape:export-filename="paired_end_seq.png"
+   inkscape:export-xdpi="400"
+   inkscape:export-ydpi="400"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview20334"
+     pagecolor="#000000"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="3.2154257"
+     inkscape:cx="158.76591"
+     inkscape:cy="62.044661"
+     inkscape:window-width="1920"
+     inkscape:window-height="1016"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs20329">
+    <marker
+       style="overflow:visible"
+       id="TriangleStart"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="TriangleStart"
+       markerWidth="3"
+       markerHeight="3"
+       viewBox="0 0 5.3244081 6.1553851"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.5)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         id="path135" />
+    </marker>
+    <rect
+       x="172.69077"
+       y="7.6062493"
+       width="119.7558"
+       height="14.404673"
+       id="rect21747" />
+  </defs>
+  <g
+     inkscape:label="Calque 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-4.5916654,-2.0177601)">
+    <text
+       xml:space="preserve"
+       transform="scale(0.26458333)"
+       id="text21745"
+       style="font-size:8px;font-family:sans-serif;-inkscape-font-specification:sans-serif;white-space:pre;shape-inside:url(#rect21747);display:inline;fill:#ffffff;stroke:none;stroke-width:1.32283" />
+    <g
+       id="g23191"
+       transform="translate(0,5.2916667)">
+      <g
+         id="g22547">
+        <text
+           x="32.440525"
+           y="21.977367"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+           id="text20508-7"><tspan
+             x="32.440525"
+             y="21.977367"
+             id="tspan20506-5">G</tspan></text>
+        <text
+           x="31.084845"
+           y="21.977367"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+           id="text20512-3"><tspan
+             x="31.084845"
+             y="21.977367"
+             id="tspan20510-5">C</tspan></text>
+        <text
+           x="29.611269"
+           y="21.977367"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+           id="text20516-6"><tspan
+             x="29.611269"
+             y="21.977367"
+             id="tspan20514-2">A</tspan></text>
+        <text
+           x="28.269175"
+           y="21.977367"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+           id="text20520-9"><tspan
+             x="28.269175"
+             y="21.977367"
+             id="tspan20518-1">T</tspan></text>
+        <text
+           x="26.761412"
+           y="21.977367"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+           id="text20524-2"><tspan
+             x="26.761412"
+             y="21.977367"
+             id="tspan20522-7">A</tspan></text>
+        <text
+           x="25.315886"
+           y="21.977367"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+           id="text20528-0"><tspan
+             x="25.315886"
+             y="21.977367"
+             id="tspan20526-9">G</tspan></text>
+        <text
+           x="23.890959"
+           y="21.977367"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+           id="text20532-3"><tspan
+             x="23.890959"
+             y="21.977367"
+             id="tspan20530-6">G</tspan></text>
+        <text
+           x="22.56946"
+           y="21.977367"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+           id="text20536-0"><tspan
+             x="22.56946"
+             y="21.977367"
+             id="tspan20534-6">T</tspan></text>
+        <text
+           x="21.144533"
+           y="21.977367"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+           id="text20540-2"><tspan
+             x="21.144533"
+             y="21.977367"
+             id="tspan20538-6">T</tspan></text>
+        <text
+           x="19.685423"
+           y="21.977367"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+           id="text20544-1"><tspan
+             x="19.685423"
+             y="21.977367"
+             id="tspan20542-8">C</tspan></text>
+        <text
+           x="18.191248"
+           y="21.977367"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+           id="text20548-7"><tspan
+             x="18.191248"
+             y="21.977367"
+             id="tspan20546-9">G</tspan></text>
+        <text
+           x="16.835566"
+           y="21.977367"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+           id="text20552-2"><tspan
+             x="16.835566"
+             y="21.977367"
+             id="tspan20550-0">C</tspan></text>
+        <text
+           x="15.341393"
+           y="21.977367"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+           id="text20556-2"><tspan
+             x="15.341393"
+             y="21.977367"
+             id="tspan20554-3">G</tspan></text>
+        <text
+           x="14.019894"
+           y="21.977367"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+           id="text20560-7"><tspan
+             x="14.019894"
+             y="21.977367"
+             id="tspan20558-5">T</tspan></text>
+        <text
+           x="12.560781"
+           y="21.977367"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+           id="text20564-9"><tspan
+             x="12.560781"
+             y="21.977367"
+             id="tspan20562-2">C</tspan></text>
+        <path
+           style="fill:#ffffff;stroke:#00ffff;stroke-width:0.349999"
+           d="m 6.763815,21.323919 h 5.321131"
+           id="path20929-2" />
+        <text
+           xml:space="preserve"
+           style="font-size:2.11667px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#ffffff;stroke:none;stroke-width:0.349999"
+           x="4.4283676"
+           y="22.080463"
+           id="text20987-8"><tspan
+             sodipodi:role="line"
+             id="tspan20985-9"
+             style="font-size:2.11667px;fill:#ffffff;stroke:none;stroke-width:0.35"
+             x="4.4283676"
+             y="22.080463">5'</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-size:2.11667px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#ffffff;stroke:none;stroke-width:0.349999"
+           x="34.518871"
+           y="22.094416"
+           id="text21698-5"><tspan
+             sodipodi:role="line"
+             id="tspan21696-4"
+             style="font-size:2.11667px;fill:#ffffff;stroke:none;stroke-width:0.35"
+             x="34.518871"
+             y="22.094416">3'</tspan></text>
+      </g>
+      <g
+         id="g22510"
+         transform="translate(39.218771,-7.5808792)">
+        <text
+           x="12.64142"
+           y="29.558247"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+           id="text20742-7"><tspan
+             x="12.64142"
+             y="29.558247"
+             id="tspan20740-4">A</tspan></text>
+        <text
+           x="14.139945"
+           y="29.558247"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+           id="text20746-4"><tspan
+             x="14.139945"
+             y="29.558247"
+             id="tspan20744-3">T</tspan></text>
+        <text
+           x="15.521454"
+           y="29.558247"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+           id="text20750-0"><tspan
+             x="15.521454"
+             y="29.558247"
+             id="tspan20748-7">C</tspan></text>
+        <text
+           x="16.937147"
+           y="29.558247"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+           id="text20754-8"><tspan
+             x="16.937147"
+             y="29.558247"
+             id="tspan20752-6">C</tspan></text>
+        <text
+           x="18.387024"
+           y="29.558247"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+           id="text20758-8"><tspan
+             x="18.387024"
+             y="29.558247"
+             id="tspan20756-8">T</tspan></text>
+        <text
+           x="19.768534"
+           y="29.558247"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+           id="text20762-4"><tspan
+             x="19.768534"
+             y="29.558247"
+             id="tspan20760-3">C</tspan></text>
+        <text
+           x="21.114981"
+           y="29.558247"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+           id="text20766-1"><tspan
+             x="21.114981"
+             y="29.558247"
+             id="tspan20764-4">G</tspan></text>
+        <text
+           x="22.634104"
+           y="29.558247"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+           id="text20770-9"><tspan
+             x="22.634104"
+             y="29.558247"
+             id="tspan20768-2">T</tspan></text>
+        <text
+           x="23.966965"
+           y="29.558247"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+           id="text20774-0"><tspan
+             x="23.966965"
+             y="29.558247"
+             id="tspan20772-6">A</tspan></text>
+        <text
+           x="25.46549"
+           y="29.558247"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+           id="text20778-8"><tspan
+             x="25.46549"
+             y="29.558247"
+             id="tspan20776-9">T</tspan></text>
+        <text
+           x="26.846998"
+           y="29.558247"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+           id="text20782-2"><tspan
+             x="26.846998"
+             y="29.558247"
+             id="tspan20780-6">C</tspan></text>
+        <text
+           x="28.262691"
+           y="29.558247"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+           id="text20786-6"><tspan
+             x="28.262691"
+             y="29.558247"
+             id="tspan20784-4">C</tspan></text>
+        <text
+           x="29.629738"
+           y="29.558247"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+           id="text20790-9"><tspan
+             x="29.629738"
+             y="29.558247"
+             id="tspan20788-5">A</tspan></text>
+        <text
+           x="31.045431"
+           y="29.558247"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+           id="text20794-0"><tspan
+             x="31.045431"
+             y="29.558247"
+             id="tspan20792-4">A</tspan></text>
+        <text
+           x="32.440525"
+           y="29.558247"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+           id="text20798-8"><tspan
+             x="32.440525"
+             y="29.558247"
+             id="tspan20796-7">G</tspan></text>
+        <path
+           style="fill:#ffffff;stroke:#ff0000;stroke-width:0.349999"
+           d="m 6.763815,28.903923 h 5.321131"
+           id="path20927-1" />
+        <text
+           xml:space="preserve"
+           style="font-size:2.11667px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#ffffff;stroke:none;stroke-width:0.349999"
+           x="4.4283676"
+           y="29.660467"
+           id="text21706-7"><tspan
+             sodipodi:role="line"
+             id="tspan21704-2"
+             style="font-size:2.11667px;fill:#ffffff;stroke:none;stroke-width:0.35"
+             x="4.4283676"
+             y="29.660467">5'</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-size:2.11667px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#ffffff;stroke:none;stroke-width:0.349999"
+           x="34.518871"
+           y="29.675295"
+           id="text22473"><tspan
+             sodipodi:role="line"
+             id="tspan22471"
+             style="font-size:2.11667px;fill:#ffffff;stroke:none;stroke-width:0.35"
+             x="34.518871"
+             y="29.675295">3'</tspan></text>
+      </g>
+    </g>
+    <text
+       x="53.412128"
+       y="7.2347717"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+       id="text20488"><tspan
+         x="53.412128"
+         y="7.2347717"
+         id="tspan20486">T</tspan></text>
+    <text
+       x="51.904369"
+       y="7.2347717"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+       id="text20492"><tspan
+         x="51.904369"
+         y="7.2347717"
+         id="tspan20490">A</tspan></text>
+    <text
+       x="50.458843"
+       y="7.2347717"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+       id="text20496"><tspan
+         x="50.458843"
+         y="7.2347717"
+         id="tspan20494">G</tspan></text>
+    <text
+       x="49.033916"
+       y="7.2347717"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+       id="text20500"><tspan
+         x="49.033916"
+         y="7.2347717"
+         id="tspan20498">G</tspan></text>
+    <text
+       x="47.629585"
+       y="7.2347717"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+       id="text20504"><tspan
+         x="47.629585"
+         y="7.2347717"
+         id="tspan20502">A</tspan></text>
+    <text
+       x="46.184059"
+       y="7.2347717"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+       id="text20508"><tspan
+         x="46.184059"
+         y="7.2347717"
+         id="tspan20506">G</tspan></text>
+    <text
+       x="44.828377"
+       y="7.2347717"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+       id="text20512"><tspan
+         x="44.828377"
+         y="7.2347717"
+         id="tspan20510">C</tspan></text>
+    <text
+       x="43.354801"
+       y="7.2347717"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+       id="text20516"><tspan
+         x="43.354801"
+         y="7.2347717"
+         id="tspan20514">A</tspan></text>
+    <text
+       x="42.012707"
+       y="7.2347717"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+       id="text20520"><tspan
+         x="42.012707"
+         y="7.2347717"
+         id="tspan20518">T</tspan></text>
+    <text
+       x="40.504944"
+       y="7.2347717"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+       id="text20524"><tspan
+         x="40.504944"
+         y="7.2347717"
+         id="tspan20522">A</tspan></text>
+    <text
+       x="39.059418"
+       y="7.2347717"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+       id="text20528"><tspan
+         x="39.059418"
+         y="7.2347717"
+         id="tspan20526">G</tspan></text>
+    <text
+       x="37.634491"
+       y="7.2347717"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+       id="text20532"><tspan
+         x="37.634491"
+         y="7.2347717"
+         id="tspan20530">G</tspan></text>
+    <text
+       x="36.312992"
+       y="7.2347717"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+       id="text20536"><tspan
+         x="36.312992"
+         y="7.2347717"
+         id="tspan20534">T</tspan></text>
+    <text
+       x="34.888065"
+       y="7.2347717"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+       id="text20540"><tspan
+         x="34.888065"
+         y="7.2347717"
+         id="tspan20538">T</tspan></text>
+    <text
+       x="33.428955"
+       y="7.2347717"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+       id="text20544"><tspan
+         x="33.428955"
+         y="7.2347717"
+         id="tspan20542">C</tspan></text>
+    <text
+       x="31.934778"
+       y="7.2347717"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+       id="text20548"><tspan
+         x="31.934778"
+         y="7.2347717"
+         id="tspan20546">G</tspan></text>
+    <text
+       x="30.579096"
+       y="7.2347717"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+       id="text20552"><tspan
+         x="30.579096"
+         y="7.2347717"
+         id="tspan20550">C</tspan></text>
+    <text
+       x="29.084923"
+       y="7.2347717"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+       id="text20556"><tspan
+         x="29.084923"
+         y="7.2347717"
+         id="tspan20554">G</tspan></text>
+    <text
+       x="27.763424"
+       y="7.2347717"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+       id="text20560"><tspan
+         x="27.763424"
+         y="7.2347717"
+         id="tspan20558">T</tspan></text>
+    <text
+       x="26.304312"
+       y="7.2347717"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+       id="text20564"><tspan
+         x="26.304312"
+         y="7.2347717"
+         id="tspan20562">C</tspan></text>
+    <text
+       x="53.246464"
+       y="9.054884"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+       id="text20742"><tspan
+         x="53.246464"
+         y="9.054884"
+         id="tspan20740">A</tspan></text>
+    <text
+       x="51.912373"
+       y="9.054884"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+       id="text20746"><tspan
+         x="51.912373"
+         y="9.054884"
+         id="tspan20744">T</tspan></text>
+    <text
+       x="50.461262"
+       y="9.054884"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+       id="text20750"><tspan
+         x="50.461262"
+         y="9.054884"
+         id="tspan20748">C</tspan></text>
+    <text
+       x="49.044338"
+       y="9.054884"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+       id="text20754"><tspan
+         x="49.044338"
+         y="9.054884"
+         id="tspan20752">C</tspan></text>
+    <text
+       x="47.661602"
+       y="9.054884"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+       id="text20758"><tspan
+         x="47.661602"
+         y="9.054884"
+         id="tspan20756">T</tspan></text>
+    <text
+       x="46.210491"
+       y="9.054884"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+       id="text20762"><tspan
+         x="46.210491"
+         y="9.054884"
+         id="tspan20760">C</tspan></text>
+    <text
+       x="44.724323"
+       y="9.054884"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+       id="text20766"><tspan
+         x="44.724323"
+         y="9.054884"
+         id="tspan20764">G</tspan></text>
+    <text
+       x="43.410828"
+       y="9.054884"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+       id="text20770"><tspan
+         x="43.410828"
+         y="9.054884"
+         id="tspan20768">T</tspan></text>
+    <text
+       x="41.911072"
+       y="9.054884"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+       id="text20774"><tspan
+         x="41.911072"
+         y="9.054884"
+         id="tspan20772">A</tspan></text>
+    <text
+       x="40.576981"
+       y="9.054884"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+       id="text20778"><tspan
+         x="40.576981"
+         y="9.054884"
+         id="tspan20776">T</tspan></text>
+    <text
+       x="39.125874"
+       y="9.054884"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+       id="text20782"><tspan
+         x="39.125874"
+         y="9.054884"
+         id="tspan20780">C</tspan></text>
+    <text
+       x="37.70895"
+       y="9.054884"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+       id="text20786"><tspan
+         x="37.70895"
+         y="9.054884"
+         id="tspan20784">C</tspan></text>
+    <text
+       x="36.243378"
+       y="9.054884"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+       id="text20790"><tspan
+         x="36.243378"
+         y="9.054884"
+         id="tspan20788">A</tspan></text>
+    <text
+       x="34.826454"
+       y="9.054884"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+       id="text20794"><tspan
+         x="34.826454"
+         y="9.054884"
+         id="tspan20792">A</tspan></text>
+    <text
+       x="33.388931"
+       y="9.054884"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+       id="text20798"><tspan
+         x="33.388931"
+         y="9.054884"
+         id="tspan20796">G</tspan></text>
+    <text
+       x="32.041252"
+       y="9.054884"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+       id="text20802"><tspan
+         x="32.041252"
+         y="9.054884"
+         id="tspan20800">C</tspan></text>
+    <text
+       x="30.555082"
+       y="9.054884"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+       id="text20806"><tspan
+         x="30.555082"
+         y="9.054884"
+         id="tspan20804">G</tspan></text>
+    <text
+       x="29.207405"
+       y="9.054884"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+       id="text20810"><tspan
+         x="29.207405"
+         y="9.054884"
+         id="tspan20808">C</tspan></text>
+    <text
+       x="27.741835"
+       y="9.054884"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+       id="text20814"><tspan
+         x="27.741835"
+         y="9.054884"
+         id="tspan20812">A</tspan></text>
+    <text
+       x="26.304312"
+       y="9.054884"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.79512px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:-0.195831px;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:0.115648;stroke-dasharray:none;stroke-opacity:1"
+       id="text20818"><tspan
+         x="26.304312"
+         y="9.054884"
+         id="tspan20816">G</tspan></text>
+    <path
+       style="fill:#ffffff;stroke:#ff0000;stroke-width:0.349999"
+       d="m 55.269438,6.5813232 h 5.321131"
+       id="path20925" />
+    <path
+       style="fill:#ffffff;stroke:#ff0000;stroke-width:0.349999"
+       d="m 55.269438,8.4005591 h 5.321131"
+       id="path20927" />
+    <path
+       style="fill:#ffffff;stroke:#00ffff;stroke-width:0.349999"
+       d="m 20.507346,6.5813232 h 5.321131"
+       id="path20929" />
+    <path
+       style="fill:#ffffff;stroke:#00ffff;stroke-width:0.349999"
+       d="m 20.507346,8.4005591 h 5.321131"
+       id="path20931" />
+    <text
+       xml:space="preserve"
+       style="font-size:2.11667px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#ffffff;stroke:none;stroke-width:0.349999"
+       x="18.171898"
+       y="6.9526649"
+       id="text20987"><tspan
+         sodipodi:role="line"
+         id="tspan20985"
+         style="font-size:2.11667px;fill:#ffffff;stroke:none;stroke-width:0.35"
+         x="18.171898"
+         y="6.9526649">5'</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:2.11667px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#ffffff;stroke:none;stroke-width:0.349999"
+       x="61.400661"
+       y="6.9526649"
+       id="text21698"><tspan
+         sodipodi:role="line"
+         id="tspan21696"
+         style="font-size:2.11667px;fill:#ffffff;stroke:none;stroke-width:0.35"
+         x="61.400661"
+         y="6.9526649">3'</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:2.11667px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#ffffff;stroke:none;stroke-width:0.349999"
+       x="18.171898"
+       y="9.0693321"
+       id="text21702"><tspan
+         sodipodi:role="line"
+         id="tspan21700"
+         style="font-size:2.11667px;fill:#ffffff;stroke:none;stroke-width:0.35"
+         x="18.171898"
+         y="9.0693321">3'</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:2.11667px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#ffffff;stroke:none;stroke-width:0.349999"
+       x="61.400661"
+       y="9.0693321"
+       id="text21706"><tspan
+         sodipodi:role="line"
+         id="tspan21704"
+         style="font-size:2.11667px;fill:#ffffff;stroke:none;stroke-width:0.35"
+         x="61.400661"
+         y="9.0693321">5'</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:2.11667px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#00ffff;stroke:none;stroke-width:0.349999"
+       x="9.2640057"
+       y="11.801143"
+       id="text20987-3"><tspan
+         sodipodi:role="line"
+         id="tspan20985-6"
+         style="font-size:2.11667px;fill:#00ffff;stroke:none;stroke-width:0.35"
+         x="9.2640057"
+         y="11.801143">Fwd primer (5 bp)</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:2.11667px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#ff0000;stroke:none;stroke-width:0.349999"
+       x="54.43882"
+       y="4.6484594"
+       id="text21743"><tspan
+         sodipodi:role="line"
+         id="tspan21741"
+         style="font-size:2.11667px;fill:#ff0000;stroke:none;stroke-width:0.35"
+         x="54.43882"
+         y="4.6484594">Rev primer (5 bp)</tspan></text>
+    <path
+       style="fill:#ff0000;stroke:#ffffff;stroke-width:0.25;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#TriangleStart)"
+       d="M 20.507346,4.8143979 H 47.155901"
+       id="path22661" />
+    <path
+       style="fill:#ff0000;stroke:#ffffff;stroke-width:0.25;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#TriangleStart)"
+       d="M 60.590569,10.126679 H 33.942014"
+       id="path22970" />
+    <text
+       xml:space="preserve"
+       style="font-size:2.11667px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#ffffff;stroke:none;stroke-width:0.349999"
+       x="31.001633"
+       y="3.6259332"
+       id="text20987-7"><tspan
+         sodipodi:role="line"
+         id="tspan20985-2"
+         style="font-size:2.11667px;fill:#ffffff;stroke:none;stroke-width:0.35"
+         x="31.001633"
+         y="3.6259332">20 bp</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:2.11667px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#ffffff;stroke:none;stroke-width:0.349999"
+       x="44.003624"
+       y="12.621767"
+       id="text23117"><tspan
+         sodipodi:role="line"
+         id="tspan23115"
+         style="font-size:2.11667px;fill:#ffffff;stroke:none;stroke-width:0.35"
+         x="44.003624"
+         y="12.621767">20 bp</tspan></text>
+    <path
+       style="fill:#ff0000;stroke:#ffffff;stroke-width:1.15;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#TriangleStart)"
+       d="m 39.690893,15.772616 v 5.481889"
+       id="path23305"
+       sodipodi:nodetypes="cc" />
+  </g>
+</svg>

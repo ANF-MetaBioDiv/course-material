@@ -1,36 +1,47 @@
 ---
-title: "Analysing metabarcoding data with dada2"
-author: "Nicolas Henry"
+title: "Analysing metabarcoding data using dada2"
+author:
+  - name: Nicolas Henry
+    affiliations:
+    orcid: 0000-0002-7702-1382
+    email: nicolas.henry@cnrs.fr
 format:
   revealjs:
     slide-number: true
-    footer: "[{{< fa house >}}](/index.html)"
-    theme: ../simple_nico.scss
-editor: visual
+    theme: night
+    embed-resources: true
+bibliography: ../references.bib
 ---
 
 # Introduction
 
-## I received data 
+## Metabarcoding at the lab
 
-```{r echo=TRUE}
-here::here("data","raw") |>
-    list.files()
-```
+![](../img/metaB_lab_1.png)
 
-## What am I going to do with that?
+## Sequencing generations
 
-```{r echo=TRUE}
-here::here("data","raw","S11B_R1.fastq.gz") |>
-    gzfile() |>
-    readLines(n = 4) |>
-    cat(sep="\n")
-```
+<br>
 
-We need a bioinformatic pipeline to:
+![](../img/sequencing.png)
 
-* Filter out wrong sequences, such as sequencing errors
-* Get a format suitable for diversity and community composition analyses of our samples
+## Paired-end sequencing
+
+<br>
+
+![](../img/paired_end_seq.png)
+
+::: aside
+Short reads: from 2\*150 bp to 2\*300 bp, often 2\*250 bp
+:::
+
+## Next steps until an ASV table
+
+::: r-stack
+![](../img/metaB_lab_2.png)
+
+![](../img/metaB_lab_3.png){.fragment}
+:::
 
 # FASTQ records
 
@@ -63,33 +74,13 @@ Per record: identifier, sequence, quality
 
 ## Identifier
 
-```{r}
-here::here("data","raw","S11B_R1.fastq.gz") |>
-    gzfile() |>
-    readLines(n = 1) |>
-    cat()
-```
-
-
-| Value           | Description                              |
-|-----------------|------------------------------------------|
-| M05074          | the unique instrument id                 |
-| 31              | the run id                               |
-| 000000000-BC3R3 | the flowcell id                          |
-| 1               | flowcell lane                            |
-| 1101            | tile number within the flowcell lane     |
-| 13622           | 'x'-coordinate within the tile           |
-| 1477            | 'y'-coordinate within the tile           |
-| 1               | the member of a pair                     |
-| N               | Y if the read is filtered (did not pass) |
-| 0               | 0: none of the control bits are on       |
-| 1               | index sequence                           |
+![](../img/fastq_id.png)
 
 ## Sequence
 
 <br>
 
-![](../img/read_example_1.svg)
+![](../img/read_example_1.png)
 
 -   The tag informs you from which sample the read come from
 
@@ -99,92 +90,135 @@ here::here("data","raw","S11B_R1.fastq.gz") |>
 
 ## Quality
 
-Quality score encoded using ASCII characters:
+Phred quality score (Q) encoded using ASCII characters:
 
-::: columns
-::: {.column width="50%"}
-| ASCII character | Quality score |
-|:---------------:|:-------------:|
-| !               | 0             |
-| "               | 1             |
-| \#              | 2             |
-:::
+<br>
 
-::: {.column width="50%"}
-| ASCII character | Quality score |
-|:---------------:|:-------------:|
-| G               | 38            |
-| H               | 39            |
-| I               | 40            |
-:::
-:::
+![](../img/score_encoding.png)
 
-The Phred quality score Q is related to the base calling error probability P according to the following formula:
+<br>
+
+$Q$ is related to the base calling error probability ($P$):
 
 $$Q = -10\log_{10}P$$
 
 $$P=10^{Q/-10}$$
 
-::: {.notes}
+::: notes
 In raw data reads, the quality score rarely exceed 40, but higher scores are possible when different raw reads are assembled
 :::
 
-# Bioinformatic pipeline
+## Quality: $P$ as a function of $Q$
 
-## Strategies
+```{r}
+library(ggplot2)
+library(patchwork)
+
+score_table <- data.frame(
+  a = rawToChar(as.raw(0:40+33), multiple = TRUE),
+  b = 10^((0:40)/-10)
+)
+
+score_table$a <- factor(score_table$a, levels = score_table$a)
+
+p1 <- ggplot(score_table, aes(x=a,y=b))+
+  geom_line(group = 1) +
+  scale_x_discrete("ASCII encoded Phred quality score") +
+  scale_y_continuous(labels = scales::label_percent(), "Base calling error probability") +
+  theme_bw()
+
+p2 <- ggplot(score_table, aes(x=a,y=b))+
+  geom_line(group = 1) +
+  scale_x_discrete("ASCII encoded Phred quality score") +
+  scale_y_log10(labels = scales::label_percent(), "Base calling error probability") +
+  theme_bw()
+
+p1 + p2
+
+```
+
+# Bioinformatic pipelines
+
+## Main strategies
+
+::: r-stack
+![](../img/clust_denois_1.png)
+
+![](../img/clust_denois_2.png){.fragment}
+
+![](../img/clust_denois_3.png){.fragment}
+
+![](../img/clust_denois_4.png){.fragment}
+:::
+
+::: aside
+<small> adapted from [@antich2021denoise] </small>
+:::
+
+## Some tools
 
 <br>
 
-* Genetic clustering based approaches producing OTUs:
-    * [UPARSE](https://doi.org/10.1038/nmeth.2604)
-    * [Swarm](https://doi.org/10.1093/bioinformatics/btab493) (could be seen as denoising too)
+-   Genetic clustering based approaches producing OTUs:
+    -   [UPARSE](https://doi.org/10.1038/nmeth.2604)
+    -   [Swarm](https://doi.org/10.1093/bioinformatics/btab493) (could be seen as denoising too)
+-   Denoising approaches producing ESVs:
+    -   [Deblur](https://doi.org/10.1128/mSystems.00191-16) (sOTUs)
+    -   [DADA2](https://doi.org/10.1038%2Fnmeth.3869) (ASVs)
 
-* Denoising approaches producing ASVs:
-    * [Deblur](https://doi.org/10.1128/mSystems.00191-16)
-    * [DADA2](https://doi.org/10.1038%2Fnmeth.3869)
+## Many tools
+
+![](../img/many_tools.png){height="500" fig-pos="center"}
+
+::: aside
+<small> Extracted from [@hakimzadeh2023pile] </small>
+:::
+
+## Workflow manager
+
+[Nextflow](https://www.nextflow.io/index.html) and [Snakemake](https://snakemake.github.io/) are the most popular
+
+![](https://raw.githubusercontent.com/nf-core/ampliseq/2.6.1//docs/images/ampliseq_workflow.png){height="500" fig-pos="center"}
 
 ## DADA2, qu'est-ce que c'est?
 
 <br>
 
-* DADA (Divisive Amplicon Denoising Algorithm) an algorithm to denoise Roche's 454 platform errors (<a href="https://doi.org/10.1186/1471-2105-13-283" target="_blank">Rosen et al. 2012</a>)
+-   DADA (Divisive Amplicon Denoising Algorithm) an algorithm to denoise Roche's 454 platform errors [@rosen2012denoising]
 
-* DADA2 implements a new quality-aware model of Illumina amplicon errors (<a href="https://doi.org/10.1038/nmeth.3869" target="_blank">Callahan et al. 2016</a>)
+-   DADA2 implements a new quality-aware model of Illumina amplicon errors [@callahan2016dada2]
 
-* DADA2 is an open-source R package [https://github.com/benjjneb/dada2](https://github.com/benjjneb/dada2)
+-   DADA2 is an open-source R package <https://github.com/benjjneb/dada2>
 
-## DADA2, the full amplicon workflow
+## DADA2, the full workflow
 
-* Quality assessment &rarr; `plotQualityProfile()`
-* Length trimming &rarr; `filterAndTrim()`
-* Quality filtering &rarr; `filterAndTrim()`
-* Denoising &rarr; `dada()`
-* Merging pair-end reads &rarr; `mergePairs()`
-* Chimera identification &rarr; `removeBimeraDenovo()`
-* Taxonomic assignment &rarr; `assignTaxonomy()`
-
-But some preliminary steps are missing...
+-   Quality assessment → `plotQualityProfile()`
+-   Length trimming → `filterAndTrim()`
+-   Quality filtering → `filterAndTrim()`
+-   Denoising → `dada()`
+-   Merging pair-end reads → `mergePairs()`
+-   Chimera identification → `removeBimeraDenovo()`
+-   Taxonomic assignment → `assignTaxonomy()`
 
 # Before using Dada2
 
-## Artificial sequences
+## Tags and primers
 
-![](../img/read_example_1.svg)
+![](../img/read_example_1.png)
 
 **Tags** are used to encode the sample provenance of the reads. Reads need to be grouped by sample provenance (demultiplexing)
 
 **Primer** sequences will bias the error model built by DADA2 and need to be removed (primer trimming).
 
-Both task can be achieved using **Cutadapt**, a command line-tool to find and remove error-tolerantly adapters from reads (<a href="https://doi.org/10.14806/ej.17.1.200" target="_blank">Martin et al. 2011</a>).
+Both task can be achieved using **Cutadapt**, a command line-tool to find and remove error-tolerantly adapters from reads [@martin2011cutadapt].
 
 ## Demultiplexing using cutadapt
 
 If your tags are in a fasta file with corresponding sample names as header, you can use this command-line:
 
-:::: {.columns}
-
+::: columns
 ::: {.column width="50%"}
-```bash
+``` bash
 cutadapt \
     -g file:${BARCODES} \
     -o {name}_R1.fastq.gz \
@@ -195,8 +229,7 @@ cutadapt \
 :::
 
 ::: {.column width="50%"}
-
-```bash
+``` bash
 # 
 # tags to look for at the beginning (5') of R1 files. ${BARCODES} is a fasta file containing the tags
 # demultiplexed R1 file output. name will be replace by the name of the tag
@@ -205,13 +238,13 @@ cutadapt \
 # input R2 file
 ```
 :::
+:::
 
-::::
+As many R1 and R2 files as samples you have
 
-You end up with as many R1 and R2 files as samples you have 
-
-:::{.callout-warning}
+::: callout-warning
 ## Help! My reads are mixed-orientated
+
 Run `cutadapt` a second time, looking for tags in R2.
 
 Keep the outputs of the two rounds separated for the rest of the workflow.
@@ -219,31 +252,28 @@ Keep the outputs of the two rounds separated for the rest of the workflow.
 
 ## Primer removal using cutadapt
 
-To remove forward and reverse primer sequences form pair-end read files:
+To remove forward and reverse primer sequences from pair-end read files:
 
-:::: {.columns}
-
+::: columns
 ::: {.column width="50%"}
-```bash
+``` bash
 cutadapt \
     -e 0.1 \
-	-g ${PRIMER_FORWARD} \
-	-G ${PRIMER_REVERSE} \
-	--report=minimal \
-	--discard-untrimmed \
-	--minimum-length ${MIN_LENGTH} \
-	--no-indels \
+    -g ${PRIMER_FORWARD} \
+    -G ${PRIMER_REVERSE} \
+    --report=minimal \
+    --discard-untrimmed \
+    --minimum-length ${MIN_LENGTH} \
+    --no-indels \
     -o ${FORWARD} \
-	-p ${REVERSE} \
-	${R1_FILE} \
-	${R2_FILE} 1> ${LOG}
-
+    -p ${REVERSE} \
+    ${R1_FILE} \
+    ${R2_FILE} 1> ${LOG}
 ```
 :::
 
 ::: {.column width="50%"}
-
-```bash
+``` bash
 # 
 # error tolerance (default value)
 # forward primer
@@ -258,49 +288,43 @@ cutadapt \
 # R2 input; 1> ${LOG} export the report in the file ${LOG}
 ```
 :::
-
-::::
+:::
 
 As for demultiplexing, if reads are mix-orientated, run `cutadapt` twice
 
-# DADA2 workflow: read preparation
+# DADA2 workflow: reads preparation
 
-## Check reads quality 
+## Check reads quality
 
-
-
-:::: {.columns}
-
+::: columns
 ::: {.column width="50%"}
-
 Check the overall quality of a sequencing run using `plotQualityProfile()`
 
 Outside of DADA2, you can also use <a href="https://github.com/s-andrews/FastQC" target="_blank">FASTQC</a>
 
 If the overall quality is too low, you will probably have to resequence your samples
-
 :::
 
 ::: {.column width="50%"}
 ![](../img/quality_plot_example.svg)
 :::
-
-::::
+:::
 
 A quality drop is often observed in the end of the reads
 
-::: {.notes}
-* green line: mean
-* orange line (plain): median
-* orange line (dashed): 25th and 75th quantiles
+::: notes
+-   green line: mean
+-   orange line (plain): median
+-   orange line (dashed): 25th and 75th quantiles
 :::
 
 ## Trimming and filtering
 
 Trimming, at a given length, will improve the overall read quality
 
-::: {.callout-caution}
+::: callout-caution
 # Danger zone
+
 After trimming, make sure that forward and reverse reads are still long enough to overlap
 :::
 
@@ -314,13 +338,12 @@ Both length trimming and quality filtering are achieved using the function `filt
 
 Is sequence $i$ generated by sequence $j$ because of sequencing errors?
 
-![](../img/alignment_example_1.svg)
-
+![](../img/alignment_example_1.png)
 
 In order to define if $i$ is an error of $j$ and perform denoising using DADA2, we need to compute:
 
-* the error rate $\lambda_{ji}$
-* the abundance p-value $p_A(j \rightarrow i)$
+-   the error rate $\lambda_{ji}$
+-   the abundance p-value $p_A(j \rightarrow i)$
 
 ## Error rate
 
@@ -328,28 +351,53 @@ In order to define if $i$ is an error of $j$ and perform denoising using DADA2, 
 
 $$\lambda_{ji} = \prod_{l=0}^L p(j(l) \rightarrow i(l),q_i(l))$$
 
-
 ## The abundance p-value
 
-The abundance p-value ($p_A$) is the probability of all reads of $i$ ($a_i$) or more being produced from $j$ during amplification ore sequencing.
+The abundance p-value ($p_A$) is the probability of all reads of $i$ ($a_i$) or more being produced from $j$ during amplification or sequencing.
 
 $$p_A(j \rightarrow i) = \frac{1}{1- \rho_{\mathrm{pois}}(n_j\lambda_{ji},0)} \sum_{a=a_i}^\infty \rho_{\mathrm{pois}}(n_j\lambda_{ji},a)$$
 
 A low p-value indicate that it is unlikely that $i$ is noise from amplifying and sequencing $j$
 
-::: {.notes}
+::: notes
 The discrete nature of the Poisson distribution is also why this is a probability mass function and not a density function
 :::
 
-## The divisive partitioning algorithm
+## The divisive partitioning algorithm: step 1
 
-1. all unique sequences into a single partition
-2. $p_A$ of all sequences against most abundant sequence (center)
-3. if smallest p-value below $\Omega_A$: new partition
-4. $p_A$ of all sequences against center of new partition
-5. every sequence join the partition most likely to have produced it
+![](../img/dada_algo_1.png){fig-pos="center" height="400"}
 
-Repeat steps 3 to 5 until all abundance p-values are greater than $\Omega_A$
+## The divisive partitioning algorithm: step 2
+
+![](../img/dada_algo_2.png){fig-pos="center" height="400"}
+
+::: aside
+$p_A$ of all sequences against most abundant sequence (center)
+:::
+
+## The divisive partitioning algorithm: step 3
+
+![](../img/dada_algo_3.png){fig-pos="center" height="400"}
+
+::: aside
+if smallest p-value below $\Omega_A$: new partition
+:::
+
+## The divisive partitioning algorithm: step 4
+
+![](../img/dada_algo_4.png){fig-pos="center" height="400"}
+
+::: aside
+$p_A$ of all sequences against center of new partition
+:::
+
+## The divisive partitioning algorithm: step 5
+
+![](../img/dada_algo_5.png){fig-pos="center" height="400"}
+
+::: aside
+Every sequence join the partition most likely to have produced it. Repeat steps 3 to 5 until all abundance p-values are greater than $\Omega_A$
+:::
 
 # DADA2 workflow: denoising in practice
 
@@ -359,7 +407,7 @@ How do we compute $\lambda_{ji}$ if we don't know the error rate for each possib
 
 The error rates will be learned from the data using `learnErrors()`
 
->The learnErrors method learns this error model from the data, by alternating estimation of the error rates and inference of sample composition until they converge on a jointly consistent solution
+> The learnErrors method learns this error model from the data, by alternating estimation of the error rates and inference of sample composition until they converge on a jointly consistent solution
 
 ## Visualise the error model
 
@@ -369,13 +417,13 @@ You can visualise the estimated error rates using the function `plotErrors()`
 
 ## Run the DADA2 algorithm
 
-* After dereplicating your sequences (`derepFastq()`), denoise using the function `dada()`
+-   After dereplicating your sequences (`derepFastq()`), denoise using the function `dada()`
 
-* By default sample inference is performed on each sample individually (`pool = FALSE`).
+-   By default sample inference is performed on each sample individually (`pool = FALSE`).
 
-* If you are interested in rare variants present in several samples use `pool = TRUE`
+-   If you are interested in rare variants present in several samples use `pool = TRUE`
 
-* When working on big data, `pool = "pseudo"` is an interesting alternative to `pool = TRUE`
+-   When working on big data, `pool = "pseudo"` is an interesting alternative to `pool = TRUE`
 
 # DADA2 workflow: build the ASV table
 
@@ -383,43 +431,118 @@ You can visualise the estimated error rates using the function `plotErrors()`
 
 Merge forward and reverse reads using `mergePairs()`
 
-![](../img/merging_example.svg)
+![](../img/merging_example.png)
 
-* `minOverlap`: minimum size of overlap
-* `maxMismatch`: maximum number of mismatches
-* `justConcatenate`: in case your reads don't overlap
+-   `minOverlap`: minimum size of overlap
+-   `maxMismatch`: maximum number of mismatches
+-   `justConcatenate`: in case your reads don't overlap
 
-## Remove chimeras
+## Chimeras
 
-* Chimeras are artifact sequences formed by two or more biological sequences incorrectly joined together.
+Chimeric sequences are identified if they can be exactly reconstructed by combining a left-segment and a right-segment from two more abundant "parent" sequences.
 
-* We find and remove bimeras (two-parent chimeras) using the function `removeBimeraDenovo()`
+![](../img/chimeras.png)
 
-* Chimeric sequences are identified if they can be exactly reconstructed by combining a left-segment and a right-segment from two more abundant “parent” sequences.
+::: aside
+Find and remove bimeras (two-parent chimeras) using the function `removeBimeraDenovo()`, per sample (`method="per-sample"`), for the entire dataset (`method="pooled"`) or in a consensus way (`method="consensus"`)
+:::
 
-* Can be done per sample (`method="per-sample"`), for the entire dataset (`method="pooled"`) or in a consensus way (`method="consensus"`)
-
-
-:::{.notes}
+::: notes
 Chimeras are artifact sequences formed by two or more biological sequences incorrectly joined together. This often occurs during PCR reactions using mixed templates (i.e., uncultured environmental samples). Incomplete extensions during PCR allow subsequent PCR cycles to use a partially extended strand to bind to the template of a different, but similar, sequence. This partially extended strand then acts as a primer to extend and form a chimeric sequence. Once created, the chimeric sequence is then further amplified in subsequent cycles. The end result is a PCR artifact that does not represent a sequence that exists in nature.
 :::
 
-## Taxonomic assignment
+# Assign taxonomy
 
-* Taxonomic assignment within DADA2 workflow, `assignTaxonomy()`, is achieved using a native implementation of the naive Bayesian classifier method (<a href="https://doi.org/10.1128/aem.00062-07" target="_blank">Wang et al. 2007</a>).
+## Reference sequence database
 
-* Reference fastas for the three most common 16S databases: Silva, RDP and GreenGenes are maintained by dada2's team.
+Make the link in between nucleic sequences and taxonomic
 
-* For eukaryotes, a dada2 formatted version of PR2 can be found <a href="https://doi.org/10.1128/aem.00062-07" target="_blank">here</a>.
+Broad reference database: [GenBank](https://www.ncbi.nlm.nih.gov/genbank/)
 
-## Extra filtering steps
+-   Some specialised references databases:
+    -   [Silva](https://www.arb-silva.de/) (SSU and LSU)
+    -   [PR2](https://pr2-database.org/) (18S eukaryotes and 16S Chloroplastes)
+    -   [MIDORI2](https://www.reference-midori.info/) (mitochondrial DNA)
+    -   [Barcode Of Life Data](https://boldsystems.org/) (COI / ITS / rbcL & matK)
+    -   [UNITE](https://unite.ut.ee/) (ITS)
 
-<br>
+## BLAST like approaches
 
-ASVs can be filtered out if:
+Looking for the closest reference sequences to inherit their taxonomy
 
-* sequence has an unexpected length
-* not assigned to the desired taxonomic group
-* considered as contaminant (present in negative controls)
+Best hits or LCA approaches
+
+Recommand global alignment (usearch_global [VSEARCH](https://github.com/torognes/vsearch) command) with specialised reference database
+
+::: columns
+::: {.column width="50%"}
+``` bash
+vsearch \
+  --usearch_global ${INPUT} \
+  -db ${REFDB} \
+  --id 0.80 \
+  --maxaccepts 0 \
+  --top_hits_only \
+  --userout ${TMP} \
+  --userfields "query+id1+target"
+```
+:::
+
+::: {.column width="50%"}
+``` bash
+# 
+# sequences to assign fasta file
+# reference database reference database
+# lower similarity threshold
+# maximum hits (0 = unlimited)
+# keep only best hits
+# output file
+# fields to export
+```
+:::
+:::
+
+## Classifiers (machine learning)
+
+-   Sequence taxonomic classification based on k-mers composition.
+-   No sequence similarity threshold but a confidence score instead.
+-   RDP classifier (naïve Bayes method) is very popular, give good results at least for 16S/18S
+-   IDTAXA, more recent, would tend to less overclassify
+
+::: aside
+DADA2 function `assignTaxonomy()` use a native implementation of the naïve Bayesian classifier method (<a href="https://doi.org/10.1128/aem.00062-07" target="_blank">Wang et al. 2007</a>).
+:::
+
+## Phylogenetic placement
+
+![](../img/placements.png){height="500" fig-pos="center"}
+
+::: aside
+<small> Figure from https://itol.embl.de/ </small>
+:::
+
+# Extra steps
+
+## Post-clustering with LULU
+
+Abundance aware clustering:
+
+![](../img/lulu.png)
+
+::: aside
+<small> Figure from [@froslev2017algorithm]. For a C++ implementation, have a look at [MUMU](https://github.com/frederic-mahe/mumu)</small>
+:::
+
+## Decontamination
+
+Frequency-based contaminant identification with the R package [decontam](https://github.com/benjjneb/decontam):
+
+![](../img/decontam.png)
+
+::: aside
+<small> Decontamination can also be achieved with the R package [metabaR](https://github.com/metabaRfactory/metabaR) and the function `contaslayer()`</small>
+:::
 
 # Now it is your turn!
+
+# References
