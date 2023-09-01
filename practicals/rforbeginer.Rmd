@@ -190,11 +190,11 @@ x[c(3, 5)]
 
 # get value more than 20.
 
-x[x > 20]
+x[x > 5]
 
 # get value of  x where x is equal to 21.
 
-x[x == 21]
+x[x == 5]
 
 # return elements form x the the value different from 5
 
