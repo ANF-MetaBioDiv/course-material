@@ -1,5 +1,5 @@
+# ANF MetaBioDiv course material
 
+This repository contains courses and practicals for the ANF MetaBioDiv.
 
-```
-quarto install extension quarto-ext/fontawesome
-```
+The website of the course is here: https://anf-metabiodiv.github.io/course-material/
