@@ -1346,7 +1346,9 @@ mm_lefse_table <- data.frame(mm_lefse@marker_table)
 mm_lefse_table
 
 p_LDAsc <- microbiomeMarker::plot_ef_bar(mm_lefse)
-p_abd <- microbiomeMarker::plot_abundance(mm_lefse, group = "Geo")
+y_labs <- ggplot_build(p_LDAsc)$layout$panel_params[[1]]$y$get_labels()
+p_abd <- microbiomeMarker::plot_abundance(mm_lefse, group = "Geo") +
+  scale_y_discrete(limits = y_labs)
 gridExtra::grid.arrange(p_LDAsc, p_abd, nrow = 1)
 ```
 
@@ -1358,16 +1360,21 @@ The ANCOM-BC [methodology](https://www.nature.com/articles/s41467-020-17041-7){t
 
 ```{r message=FALSE, warning=FALSE}
 #ancomBC
-mm_ancombc <- run_ancombc_patched(physeq, group = "Geo",
-                                            taxa_rank = "none",
-                                            pvalue_cutoff = 0.001,
-                                            p_adjust = "fdr")
+mm_ancombc <- run_ancombc_patched(
+  physeq,
+  group = "Geo",
+  taxa_rank = "none",
+  pvalue_cutoff = 0.001,
+  p_adjust = "fdr"
+)
 
 mm_ancombc_table <- data.frame(mm_ancombc@marker_table)
 mm_ancombc_table
 
 an_ef <- microbiomeMarker::plot_ef_bar(mm_ancombc)
-an_abd <- microbiomeMarker::plot_abundance(mm_ancombc, group = "Geo")
+y_labs <- ggplot_build(an_ef)$layout$panel_params[[1]]$y$get_labels()
+an_abd <- microbiomeMarker::plot_abundance(mm_ancombc, group = "Geo") +
+  scale_y_discrete(limits = y_labs)
 gridExtra::grid.arrange(an_ef, an_abd, nrow = 1)
 ```
 
