@@ -33,7 +33,7 @@ devtools::load_all()
 
 ```{r}
 output_alpha <- here::here("outputs", "alpha_diversity")
-if (!dir.exists(output_alpha)) dir.create(output_alpha)
+if (!dir.exists(output_alpha)) dir.create(output_alpha, recursive = TRUE)
 ```
 
 ### Load the data and inspect the phyloseq object

@@ -15,7 +15,7 @@ click on the .exe, .dmg, .pkg, .deb, respectively for Windows, MacOS and Linux-d
 
 And click on follow... until to reach successful installation
 Then download and install the IDE Rstudio
-[https://www.rstudio.com/products/rstudio/](https://www.rstudio.com/products/rstudio/).
+[https://posit.co/download/rstudio-desktop/](https://posit.co/download/rstudio-desktop/).
 
 *Everything is free to download*
 
@@ -123,9 +123,12 @@ a
 b
 ```
 
-```{r eval=FALSE}
+```{r}
 a <- 10
 b <- "5"
+```
+
+```{r eval=FALSE}
 somme <- a + b
 ```
 
@@ -431,7 +434,7 @@ myline <- c(22, 38, 120) # I build a vector containing the line that I want
 dplyr::slice(iris,myline)
 ```
 ##### Bonus : to pipe many function serval function together
-The pipe <span style="color: steelblue;"> **>|** </span>, or <span style="color: steelblue;">**%>%**</span>, is one of the useful elements of the tidyverse. It allows to structure sequences of operations by minimizing the creation of intermediate objects and by facilitating the addition of a step anywhere in this sequence.
+The pipe <span style="color: steelblue;"> **|>** </span>, or <span style="color: steelblue;">**%>%**</span>, is one of the useful elements of the tidyverse. It allows to structure sequences of operations by minimizing the creation of intermediate objects and by facilitating the addition of a step anywhere in this sequence.
 
 The useful command to manage data frame : 1) select() to select vector or variable from a data frame ; 2) filter() is used to subset a data frame, retaining all rows that satisfy your conditions ; mutate() adds new variables and preserves existing ones.
 

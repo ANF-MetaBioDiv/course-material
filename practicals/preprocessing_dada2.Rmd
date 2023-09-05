@@ -57,7 +57,7 @@ here::here()
 Now, let's create the folder directly from R:
 
 ```{r}
-if (!dir.exists(refdb_folder)) dir.create(refdb_folder)
+if (!dir.exists(refdb_folder)) dir.create(refdb_folder, recursive = TRUE)
 ```
 
 You can also create the folder from RStudio in the `Files` window
@@ -235,7 +235,7 @@ path_to_trimmed_reads <- here::here(
   "trimmed"
 )
 
-if (!dir.exists(path_to_trimmed_reads)) dir.create(path_to_trimmed_reads)
+if (!dir.exists(path_to_trimmed_reads)) dir.create(path_to_trimmed_reads, recursive = TRUE)
 ```
 
 ### Remove primers
@@ -302,7 +302,7 @@ Same as before, create a folder
 
 ```{r}
 path_to_filtered_reads <- here::here("outputs", "dada2", "filtered")
-if (!dir.exists(path_to_filtered_reads)) dir.create(path_to_filtered_reads)
+if (!dir.exists(path_to_filtered_reads)) dir.create(path_to_filtered_reads, recursive = TRUE)
 ```
 
 and list paths:
@@ -477,7 +477,7 @@ The results can be exported as a R objects, one object for the ASV table and ano
 ```{r}
 export_folder <- here::here("outputs", "dada2", "asv_table")
 
-if (!dir.exists(export_folder)) dir.create(export_folder)
+if (!dir.exists(export_folder)) dir.create(export_folder, recursive = TRUE)
 
 saveRDS(object = seqtab_nochim,
         file = file.path(export_folder, "seqtab_nochim.rds"))
