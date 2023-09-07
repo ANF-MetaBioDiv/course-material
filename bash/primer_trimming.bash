@@ -11,7 +11,7 @@ LOG_DIR=$7
 FORWARD_OUT="${OUT_DIR}/$(basename ${FORWARD_IN})"
 REVERSE_OUT="${OUT_DIR}/$(basename ${REVERSE_IN})"
 
-SAMPLE=$(basename ${FORWARD_IN/_R[12].fastq.gz/})
+SAMPLE=$(basename ${FORWARD_IN/_R[12]*.fastq.gz/})
 
 LOG="${LOG_DIR}/${SAMPLE}_primer_trimming.log"
 TMP_LOG=$(mktemp --tmpdir=".")

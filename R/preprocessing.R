@@ -36,8 +36,8 @@ primer_trim <- function(forward_files, reverse_files,
                         primer_fwd, primer_rev,
                         output_dir, min_size) {
 
-  a <- sub("_R[12].fastq.gz", "", forward_files)
-  b <- sub("_R[12].fastq.gz", "", reverse_files)
+  a <- sub("_R[12].+fastq.gz", "", forward_files)
+  b <- sub("_R[12].+fastq.gz", "", reverse_files)
 
   if (!identical(a, b)) {
     stop("forward_files and reverse_files are not matching")
