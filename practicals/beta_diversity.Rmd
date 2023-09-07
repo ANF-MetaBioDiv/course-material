@@ -462,6 +462,8 @@ text(x = spe_upgma$height,
 From right to left, this first graph shows clear jumps after each fusion between 2 groups. We'll use the package NbClust which will compute, with a single function call, 24 indices for confirming the right number of clusters in the dataset:
 
 ```{r}
+install.packages("NbClust", lib = ".")
+library("NbClust", lib.loc = ".")
 nclust <- nb_clust_all(data = t(physeq_clr_asv), seed = 1000)
 ```
 

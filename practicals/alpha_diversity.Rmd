@@ -898,8 +898,6 @@ colnames(sub_North@tax_table)[1]
 
 #### Add the lowest taxonomy classification
 
-https://rdrr.io/github/microbiome/microbiome/man/add_besthit.html
-
 ```{r}
 sub_North <- microbiome::add_besthit(sub_North, sep = ":")
 ```
@@ -910,8 +908,6 @@ head(sub_North@tax_table)
 ```
 
 #### Identify Core microbiota
-
-https://rdrr.io/github/microbiome/microbiome/man/core_members.html
 
 ```{r}
 #North
