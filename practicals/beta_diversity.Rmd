@@ -108,9 +108,7 @@ physeq_rar
 
 A detailed discussion of compositional data analysis (CoDA) is beyond the scope of this session but just know that microbiome data is compositional since reads total is constrained by the sequencing depth. Relative abundances (proportions) are obviously constraint by a sum equal to one. This total constraint induces strong dependencies among the observed abundances of the different taxa. In fact, nor the absolute abundance (read counts) nor the relative abundance (proportion) of one taxon alone are informative of the real abundance of the taxon in the environment. Instead, they provide information on the relative measure of abundance when compared to the abundance of other taxa in the same sample. For this reason, these data fail to meet many of the assumptions of our favorite statistical methods developed for unconstrained random variables. Working with ratios of compositional elements lets us transform these data to the Euclidian space and apply our favorite methods. There are different types of log-ratio "transformations" including the additive log-ratio, centered log-ratio, and isometric log-ratio transforms. Find more information [here](https://academic.oup.com/bioinformatics/article/34/16/2870/4956011?login=false), [here](https://www.springer.com/us/book/9789811315336?gclid=Cj0KCQjw3uboBRDCARIsAO2XcYAphJ23am-AoIBh18HoW-WpAd8TwbQUEhc_DJV9gM-zWYtXe0-6l8saAkNHEALw_wcB) and [here](https://www.frontiersin.org/articles/10.3389/fmicb.2017.02224/full){target="_blank"}
 
-Let's perform the CLR transformation
-
-tmp
+Let's perform the CLR transformation:
 
 ```{r message=FALSE, warning=FALSE}
 
@@ -118,7 +116,8 @@ tmp
  # the Count Zero Multiplicative approach
 tmp <- zCompositions::cmultRepl(physeq@otu_table,
                                 method = "CZM",
-                                label = 0)
+                                label = 0,
+                                z.warning = 1)
 
 # generate the centered log-ratio transformed. ASVs are in rows!!!!!
 physeq_clr_asv <- apply(tmp, 1, function(x) log(x) - mean(log(x)))
@@ -129,7 +128,7 @@ physeq_clr_asv <- apply(tmp, 1, function(x) log(x) - mean(log(x)))
 physeq_clr <- physeq
 otu_table(physeq_clr) <- otu_table(t(physeq_clr_asv),
                                    taxa_are_rows = FALSE)
-data.frame(physeq_clr@otu_table@.Data[1:5,1:10])
+data.frame(physeq_clr@otu_table@.Data[1:5, 1:10])
 ```
 
 We can see that the values are now no longer counts, but rather the dominance (or lack thereof) for each taxa relative to the geometric mean of all taxa on the logarithmic scale. This centered log-ratio (CLR) transformed table can be used directly in a PCA or RDA to generate a beta diveristy ordination using the Aitchison distance.
@@ -161,6 +160,7 @@ Looking at the composition of the meta community with a treemap allow roughly to
 
 ```{r}
 #pdf(file="treemap.pdf", wi = 7, he = 7)
+
 treemap::treemap(physeq_phylum, index=c("Class", "Family"), vSize="Abundance", type="index",
         fontsize.labels=c(15,12),                # size of labels. Give the size per level of aggregation: size for group, size for subgroup, sub-subgroups...
         fontcolor.labels=c("white","black"),    # Color of labels
@@ -385,7 +385,7 @@ A cophenetic matrix is a matrix representing the cophenetic distances among all 
 Let us compute the cophenetic matrix and correlation of four clustering results presented above, by means of the function *cophenetic()* of package stats.
 
 ```{r echo=TRUE, message=FALSE, results=FALSE}
-#Cophenetic corrélation
+#Cophenetic correlation
 spe_single_coph <- cophenetic(spe_single)
 cor(physeq_clr_dist, spe_single_coph)
 spe_complete_coph <- cophenetic(spe_complete)
@@ -656,7 +656,7 @@ First, we will use a scree plot to examine the proportion of total variation exp
 
 ```{r warning=FALSE}
 #prepare the ASV table to add taxonomy
-tax_CLR <-  as.data.frame(tax_table(physeq_clr)) #get taxnomic table
+tax_CLR <-  as.data.frame(tax_table(physeq_clr)) # get taxnomic table
 #concatene ASV with Family & Genus names
 ASVname <- paste(rownames(tax_CLR), tax_CLR$Family, tax_CLR$Genus,sep="_")
 #apply 
@@ -665,10 +665,10 @@ p <- PCAtools::pca(physeq_clr_asv,
                    metadata = data.frame(sample_data(physeq_clr)))
 PCAtools::screeplot(p, axisLabSize = 18, titleLabSize = 22)
 #variance explained by each PC
-p$variance
+
 ```
 
-Here we see that the first PC really stands out with 31% of the variance explained and then we have a gradual decline for the remaining components. A scree plot on its own just shows the accumulative proportion of explained variation, but we want to determine the optimum number of PCs to retain.
+Here we see that the first PC really stands out with `r round(p$variance[1])`% of the variance explained and then we have a gradual decline for the remaining components. A scree plot on its own just shows the accumulative proportion of explained variation, but we want to determine the optimum number of PCs to retain.
 
 ```{r warning=FALSE}
 #Horn’s parallel analysis (Horn 1965) (Buja and Eyuboglu 1992)
