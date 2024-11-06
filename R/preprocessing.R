@@ -27,14 +27,16 @@ qualityprofile <- function(filefw, filerev, outfile) {
 #' @param output_dir folder name where to write trimmed sequences
 #' @param min_size sequences shorter than min_size after trimming are
 #' filtered out
-#' @details Input file names have to end with _R1.fastq.gz or _R2.fastq.gz.
-#' 
-#' Cutadapt need to be installed on your system. 
+#' @details Input file names have to end with .fastq.gz and contain _R1 or _R2.
+#'
+#' Cutadapt need to be installed on your system.
 #' @export
 
-primer_trim <- function(forward_files, reverse_files,
-                        primer_fwd, primer_rev,
-                        output_dir, min_size) {
+primer_trim <- function(
+  forward_files, reverse_files,
+  primer_fwd, primer_rev,
+  output_dir, min_size
+) {
 
   a <- sub("_R[12].+fastq.gz", "", forward_files)
   b <- sub("_R[12].+fastq.gz", "", reverse_files)
@@ -54,7 +56,15 @@ primer_trim <- function(forward_files, reverse_files,
   invisible(
     mapply(
       function(x, y) {
-        run_cutadapt_command(x, y, primer_fwd, primer_rev, output_dir, min_size, path_to_dada2_log)
+        run_cutadapt_command(
+          forward_file = x,
+          reverse_file = y,
+          primer_fwd = primer_fwd,
+          primer_rev = primer_rev,
+          output_dir = output_dir,
+          min_size = min_size,
+          log_dir = path_to_dada2_log
+        )
       },
       forward_files,
       reverse_files
@@ -71,28 +81,31 @@ primer_trim <- function(forward_files, reverse_files,
 
   all_logs <- Reduce("rbind", all_logs)
 
-  names(all_logs) <- c("sample", "status", "in_reads", "in_bp",
-                       "too_short", "too_long", "too_many_n",
-                       "out_reads", "w/adapters", "qualtrim_bp",
-                       "out_bp", "w/adapters2", "qualtrim2_bp", "out2_bp")
+  names(all_logs) <- c(
+    "sample", "status", "in_reads", "in_bp",
+    "too_short", "too_long", "too_many_n",
+    "out_reads", "w/adapters", "qualtrim_bp",
+    "out_bp", "w/adapters2", "qualtrim2_bp", "out2_bp"
+  )
 
   log_file_export <- file.path(path_to_dada2_log, "primer_trimming.log")
 
   write.table(all_logs, log_file_export, row.names = FALSE, quote = FALSE)
 
   invisible(file.remove(all_logs_names))
-  
+
   return(all_logs)
 }
 
-
-#' A function rather aimed at developers
-#' @description A function that does blabla, blabla.
+#' Run cutadapt (Unix)
+#' @description R function to call cutadapt on the system (Unix) to trim one sample
 #' @keywords internal
 
-run_cutadapt_command <- function(forward_file, reverse_file,
-                                 primer_fwd, primer_rev,
-                                 output_dir, min_size, log_dir) {
+run_cutadapt_command <- function(
+  forward_file, reverse_file,
+  primer_fwd, primer_rev,
+  output_dir, min_size, log_dir
+) {
 
   bash_script <- here::here("bash", "primer_trimming.bash")
 
@@ -110,33 +123,6 @@ run_cutadapt_command <- function(forward_file, reverse_file,
   system(command)
 }
 
-#' A function rather aimed at developers
-#' @description A function that does blabla, blabla.
-#' @keywords internal
-
-run_cutadapt_command_windows <- function(forward_file, reverse_file,
-                                 primer_fwd, primer_rev,
-                                 output_dir, min_size, log_dir, sample_name) {
-
-  command <- paste(
-  "py -m cutadapt",
-  "-g", primer_fwd,
-  "-G", primer_rev,
-	"--discard-untrimmed",
-	"--minimum-length", min_size,
-	"--no-indels",
-	"-o", here::here(output_dir, basename(forward_file)),
-	"-p", here::here(output_dir, basename(reverse_file)),
-	forward_file,
-  reverse_file,
-  "1>",
-  here::here(log_dir, paste0(sample_name, "_primer_trimming.log"))
-  )
-
-  system(command)
-
-}
-
 #' Primer trimming using cutadapt on windows
 #'
 #' @return pair of gunzipped fastq files (R1 and R2) of primer trimmed sequences
@@ -147,14 +133,16 @@ run_cutadapt_command_windows <- function(forward_file, reverse_file,
 #' @param output_dir folder name where to write trimmed sequences
 #' @param min_size sequences shorter than min_size after trimming are
 #' filtered out
-#' @details Input file names have to end with _R1.fastq.gz or _R2.fastq.gz.
-#' 
-#' Cutadapt need to be installed on your system. 
+#' @details Input file names have to end with .fastq.gz and contain _R1 or _R2
+#'
+#' Cutadapt has to be installed on your system.
 #' @export
 
-primer_trim_windows <- function(forward_files, reverse_files,
-                        primer_fwd, primer_rev,
-                        output_dir, min_size) {
+primer_trim_windows <- function(
+  forward_files, reverse_files,
+  primer_fwd, primer_rev,
+  output_dir, min_size
+) {
 
   a <- sub("_R[12].+fastq.gz", "", forward_files)
   b <- sub("_R[12].+fastq.gz", "", reverse_files)
@@ -174,7 +162,16 @@ primer_trim_windows <- function(forward_files, reverse_files,
   invisible(
     mapply(
       function(x, y) {
-        run_cutadapt_command_windows(x, y, primer_fwd, primer_rev, output_dir, min_size, path_to_dada2_log, a)
+        run_cutadapt_command_windows(
+          forward_file = x,
+          reverse_file = y,
+          primer_fwd = primer_fwd,
+          primer_rev = primer_rev,
+          output_dir = output_dir,
+          min_size = min_size,
+          log_dir = path_to_dada2_log,
+          sample_name = basename(sub("_R[12].+fastq.gz", "", x))
+        )
       },
       forward_files,
       reverse_files
@@ -187,7 +184,58 @@ primer_trim_windows <- function(forward_files, reverse_files,
     full.names = TRUE
   )
 
-  all_logs <- lapply(all_logs_names, read.table, sep = "\t", header = TRUE)
-  
+  all_logs <- lapply(all_logs_names, read.table, sep = "\t")
+
+  all_logs <- Reduce("rbind", all_logs)
+
+  names(all_logs) <- c(
+    "sample", "status", "in_reads", "in_bp",
+    "too_short", "too_long", "too_many_n",
+    "out_reads", "w/adapters", "qualtrim_bp",
+    "out_bp", "w/adapters2", "qualtrim2_bp", "out2_bp"
+  )
+
+  log_file_export <- file.path(path_to_dada2_log, "primer_trimming.log")
+
+  write.table(all_logs, log_file_export, row.names = FALSE, quote = FALSE)
+
+  invisible(file.remove(all_logs_names))
+
   return(all_logs)
+}
+
+#' Run cutadapt (Windows)
+#' @description R function to call cutadapt on the system (Windows) to trim one sample
+#' @keywords internal
+
+run_cutadapt_command_windows <- function(
+  forward_file, reverse_file,
+  primer_fwd, primer_rev,
+  output_dir, min_size, log_dir, sample_name
+) {
+
+  command <- paste(
+    "py -m cutadapt",
+    "-g", primer_fwd,
+    "-G", primer_rev,
+    "--report=minimal",
+    "--discard-untrimmed",
+    "--minimum-length", min_size,
+    "--no-indels",
+    "-o", here::here(output_dir, basename(forward_file)),
+    "-p", here::here(output_dir, basename(reverse_file)),
+    forward_file,
+    reverse_file
+  )
+
+  log <- system(command, intern = TRUE)
+
+  log <- paste(sample_name, log[2], sep = "\t")
+
+  cat(
+    log,
+    file = here::here(log_dir, paste0(sample_name, "_primer_trimming.log")),
+    sep = "\n"
+  )
+
 }
