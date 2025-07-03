@@ -1,0 +1,6 @@
+# Main arguments
+
+input: "practicals/ampliseq_files/samplesheet.tsv"
+FW_primer: "CCTACGGGNBGCASCAG"
+RV_primer: "GACTACNVGGGTATCTAAT"
+outdir: "outputs/ampliseq"

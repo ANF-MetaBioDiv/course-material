@@ -1,0 +1,60 @@
+---
+title: "Preprocessing with nf-core/ampliseq"
+---
+
+
+Prepare sample_sheet
+
+```{r}
+library(tidyverse)
+
+sample_sheet <- 
+  list.files(
+    here::here("data/raw"),
+    full.names = TRUE
+  ) |>
+  str_remove(str_c(here::here(), "/")) |>
+  matrix(
+    ncol=2,
+    byrow = TRUE,
+    dimnames = list(NULL,c("forwardReads", "reverseReads"))
+  ) |>
+  data.frame() |>
+  mutate(
+    sampleID = basename(forwardReads) |> str_remove("_R1.fastq.gz"),
+    run = "run_01"
+  )
+
+write_tsv(sample_sheet, "practicals/ampliseq_files/samplesheet.tsv")
+
+```
+
+
+Copy and paste in the terminal
+
+```bash
+nextflow run nf-core/ampliseq \
+  -r 2.14.0 \
+  -profile docker \
+  -c "practicals/ampliseq_files/ampliseq_laptop.config" \
+  -params-file practicals/ampliseq_files/ampliseq_parameters_simple.yaml
+```
+
+```{r}
+read_table(here::here("data/context/mapfileFA.txt")) |>
+  mutate(depth = str_remove(SampName,"S\\d+")) |>
+  select(ID = SampName, Geo, depth) |>
+  write_tsv("practicals/ampliseq_files/ampliseq_metadata.tsv")
+```
+
+
+If you change a parameter like for example the reference database or trimming length you don't need torerun everything, you can use the option `-resume`.
+
+```bash
+nextflow run nf-core/ampliseq \
+  -r 2.14.0 \
+  -profile docker \
+  -c "practicals/ampliseq_files/ampliseq_laptop.config" \
+  -params-file practicals/ampliseq_files/ampliseq_parameters_extra.yaml \
+  -resume
+```
