@@ -2,59 +2,194 @@
 title: "Preprocessing with nf-core/ampliseq"
 ---
 
+## List files to analyse
 
-Prepare sample_sheet
+First of of all, you need a table listing all the samples you want to analyse and their corresponding fastq files (forward and reverse in case of paired-end sequencing). In case your samples are coming from multiple runs, the run id will be indicated in a fourth column. Below a bash command to generate such a file for the practical:
 
-```{r}
-library(tidyverse)
+```{bash}
+ls data/raw/ | \
+  paste - - | \
+  awk '
+    BEGIN {OFS = FS = "\t"; print "sampleID","run","forwardReads","reverseReads"}
+    {
+      sample = $1; sub(/_.+$/,"",sample)
+      run = "run_01"
+      fw_file = "data/raw/" $1
+      rv_file = "data/raw/" $2
+      print sample, run, fw_file, rv_file
+    }
+  ' > practicals/ampliseq_files/samplesheet.tsv
+```
 
-sample_sheet <- 
-  list.files(
-    here::here("data/raw"),
-    full.names = TRUE
-  ) |>
-  str_remove(str_c(here::here(), "/")) |>
-  matrix(
-    ncol=2,
-    byrow = TRUE,
-    dimnames = list(NULL,c("forwardReads", "reverseReads"))
-  ) |>
-  data.frame() |>
-  mutate(
-    sampleID = basename(forwardReads) |> str_remove("_R1.fastq.gz"),
-    run = "run_01"
-  )
+and an overview of the generated file
 
-write_tsv(sample_sheet, "practicals/ampliseq_files/samplesheet.tsv")
+| sampleID |  run   |       forwardReads        |       reverseReads        |
+| -------- | ------ | ------------------------- | ------------------------- |
+|   S11B   | run_01 | data/raw/S11B_R1.fastq.gz	| data/raw/S11B_R2.fastq.gz |
+|   S1B    | run_01 | data/raw/S1B_R1.fastq.gz  | data/raw/S1B_R2.fastq.gz  |
+|   S2B    | run_01 | data/raw/S2B_R1.fastq.gz  | data/raw/S2B_R2.fastq.gz  |
+|   S2S    | run_01 | data/raw/S2S_R1.fastq.gz  | data/raw/S2S_R2.fastq.gz  |
+|   S3B    | run_01 | data/raw/S3B_R1.fastq.gz  | data/raw/S3B_R2.fastq.gz  |
+|   S3S    | run_01 | data/raw/S3S_R1.fastq.gz  | data/raw/S3S_R2.fastq.gz  |
+|   S4B    | run_01 | data/raw/S4B_R1.fastq.gz  | data/raw/S4B_R2.fastq.gz  |
+|   S4S    | run_01 | data/raw/S4S_R1.fastq.gz  | data/raw/S4S_R2.fastq.gz  |
+|   S5B    | run_01 | data/raw/S5B_R1.fastq.gz  | data/raw/S5B_R2.fastq.gz  |
+|   S5S    | run_01 | data/raw/S5S_R1.fastq.gz  | data/raw/S5S_R2.fastq.gz  |
+|   S6B    | run_01 | data/raw/S6B_R1.fastq.gz  | data/raw/S6B_R2.fastq.gz  |
+|   S6S    | run_01 | data/raw/S6S_R1.fastq.gz  | data/raw/S6S_R2.fastq.gz  |
+|   S7B    | run_01 | data/raw/S7B_R1.fastq.gz  | data/raw/S7B_R2.fastq.gz  |
+|   S7S    | run_01 | data/raw/S7S_R1.fastq.gz  | data/raw/S7S_R2.fastq.gz  |
+|   S8B    | run_01 | data/raw/S8B_R1.fastq.gz  | data/raw/S8B_R2.fastq.gz  |
+|   S8S    | run_01 | data/raw/S8S_R1.fastq.gz  | data/raw/S8S_R2.fastq.gz  |
+|   S9B    | run_01 | data/raw/S9B_R1.fastq.gz  | data/raw/S9B_R2.fastq.gz  |
+|   S9S    | run_01 | data/raw/S9S_R1.fastq.gz  | data/raw/S9S_R2.fastq.gz  |
 
+## Make nextflow available
+
+
+If first time connecting to the ampliseq_vm
+
+```bash
+conda init
+```
+
+Then, each time you're opening a terminal
+
+```bash
+conda activate nextflow
 ```
 
 
-Copy and paste in the terminal
+## Run nf-core/ampliseq
+
+This is an example of a command to launch nf-core/ampliseq:
 
 ```bash
 nextflow run nf-core/ampliseq \
+  -bg \
   -r 2.14.0 \
   -profile docker \
-  -c "practicals/ampliseq_files/ampliseq_laptop.config" \
+  -c "practicals/ampliseq_files/ampliseq_vm.config" \
   -params-file practicals/ampliseq_files/ampliseq_parameters_simple.yaml
 ```
 
-```{r}
-read_table(here::here("data/context/mapfileFA.txt")) |>
-  mutate(depth = str_remove(SampName,"S\\d+")) |>
-  select(ID = SampName, Geo, depth) |>
-  write_tsv("practicals/ampliseq_files/ampliseq_metadata.tsv")
+With `run` you specify the workflow you want to use.
+The option `-bg` allows you to run the workflow as a background job, meaning that you can close your ssh connection, connect later to your VM, the workflow will still be running as long as the VM is running. Remove this option if you want to visualise progress bars. With `-r` you can call a specific version of the workflow you want to use, this is highly recommended for reproducibility purpose. With `-profile` you can call lists of pre set parameters. In our case we are calling the profile `docker` telling nextflow to download and use docker images of the tools needed for our workflow. With -c you can call a file with workflow execution configurations. Here we use configurations from `practicals/ampliseq_files/ampliseq_vm.config` to specify the maximum amount of ressources allocated to our workflow. Finally we are calling the parameters file `practicals/ampliseq_files/ampliseq_parameters_simple.yaml`. This where you will for exemple specify the primers used for the amplification. Let's have a closer look at this file:
+
+```yaml
+# Main arguments
+
+input: "practicals/ampliseq_files/samplesheet.tsv"
+FW_primer: "CCTACGGGNBGCASCAG"
+RV_primer: "GACTACNVGGGTATCTAAT"
+outdir: "outputs/ampliseq"
 ```
 
+These are required parameters you need to specify on order to be able to run nf-core/ampliseq. The parameter `input` is the path the the table listing all the files you want to analyse. Primers are specified with `FW_primer` and `RV_primer` and the output directory with `outdir`. But as you will see later there are many more parameters to fine tune your workflow, for a complete list have a look [here](https://nf-co.re/ampliseq/2.14.0/parameters/).
 
-If you change a parameter like for example the reference database or trimming length you don't need torerun everything, you can use the option `-resume`.
+
+## Main outputs
+
+Main outputs are...
+
+## Tune an rerun
+
+You can decide later to rerun your workflow with different parameters. An example of a more detailed parameter file:
+
+```yaml
+# Main arguments
+
+input: "practicals/ampliseq_files/samplesheet.tsv"
+FW_primer: "CCTACGGGNBGCASCAG"
+RV_primer: "GACTACNVGGGTATCTAAT"
+outdir: "outputs/ampliseq"
+
+# Read trimming and quality filtering
+
+trunclenf: 250
+trunclenr: 220
+maxee: 3
+
+# Amplicon Sequence Variants (ASV) calculation
+
+sample_inference: "pooled"
+
+# ASV post processing
+
+min_len_asv: 200
+
+# Taxonomic database
+
+dada_ref_taxonomy: "greengenes2=2024.09"
+
+# ASV filtering
+
+exclude_taxa: mitochondria,chloroplast # default values
+min_frequency: 10
+min_samples: 2
+```
+
+Add the option `-resume` to avoid redoing analyses already done during the previous run:
 
 ```bash
 nextflow run nf-core/ampliseq \
+  -resume \
+  -bg \
   -r 2.14.0 \
   -profile docker \
-  -c "practicals/ampliseq_files/ampliseq_laptop.config" \
-  -params-file practicals/ampliseq_files/ampliseq_parameters_extra.yaml \
-  -resume
+  -c "practicals/ampliseq_files/ampliseq_vm.config" \
+  -params-file practicals/ampliseq_files/ampliseq_parameters_tuned.yaml
+```
+## Add metadata for postprocessing
+
+nf-core/ampliseq allows you to run some alpha and beta diversity analyses on your ASV table. To do so you need to provide a table with the metadata. This table will contain the sample ids in the column `ID` and as many columns as descriptors you want to specify. These descriptors have to be categorical, you can't for example add continuous values such as temperature measurements for example.
+
+So let's create such a table
+
+```bash
+cat data/context/mapfileFA.txt | \
+  tr '\r' '\n' | \
+  awk '
+    BEGIN {FS=OFS="\t"; print "ID", "geo", "depth"}
+    NR > 1 {
+      sample = $1
+      geo = $2
+      depth = $1; sub(/S[0-9]+/, "", depth)
+      print sample, geo, depth
+    }
+  ' > practicals/ampliseq_files/ampliseq_metadata.tsv
+```
+
+| ID   | Geo   | depth |
+|------|-------|-------|
+| S1B  | North |   B   |
+| S2B  | North |   B   |
+| S2S  | North |   S   |
+| S3B  | North |   B   |
+| S3S  | North |   S   |
+| S4B  | North |   B   |
+| S4S  | North |   S   |
+| S5B  | North |   B   |
+| S5S  | North |   S   |
+| S6B  | South |   B   |
+| S6S  | South |   S   |
+| S7B  | South |   B   |
+| S7S  | South |   S   |
+| S8B  | South |   B   |
+| S8S  | South |   S   |
+| S9B  | South |   B   |
+| S9S  | South |   S   |
+| S11B | South |   B   |
+
+
+Now your metada table have been created you can refer to it in the parameter file and rerun ampliseq with the `-resume` option
+
+```bash
+nextflow run nf-core/ampliseq \
+  -resume \
+  -bg \
+  -r 2.14.0 \
+  -profile docker \
+  -c "practicals/ampliseq_files/ampliseq_vm.config" \
+  -params-file practicals/ampliseq_files/ampliseq_parameters_tuned_with_metadata.yaml
 ```
