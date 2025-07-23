@@ -90,7 +90,37 @@ These are required parameters you need to specify on order to be able to run nf-
 
 ## Main outputs
 
-Main outputs are...
+Here is a simplified tree structure illustrating the key output files and directories produced by the `nf-core/ampliseq` pipeline:
+
+```{bash}
+outputs/ampliseq/
+├── summary_report/
+│   └── summary_report.html         # Pipeline summary report: overview of read counts, stats, and key results
+├── multiqc/
+│   └── multiqc_report.html         # Aggregated QC report for all samples
+├── qiime2/
+│   ├── abundance_tables/           # Exported ASV abundance tables (e.g. BIOM, TSV formats)
+│   └── input/
+│       ├── table.qza               # QIIME 2 feature table (ASV counts per sample)
+│       └── taxonomy.qza            # QIIME 2 artifact with taxonomy assignment per ASV
+├── barrnap/
+│   └── summary.tsv                 # Summary of rRNA detection (e.g. 16S) by Barrnap for each sample
+├── cutadapt/
+│   └── cutadapt_summary.tsv        # Adapter trimming statistics: read counts before/after trimming
+├── dada2/
+│   ├── ASV_seqs.fasta              # Representative ASV sequences in FASTA format
+│   ├── ASV_table.tsv               # Tab-separated ASV abundance table (samples × ASVs)
+│   ├── ASV_tax.silva_138_2.tsv     # ASVs annotated with taxonomy from SILVA 138.2 database
+│   └── DADA2_stats.tsv             # Read filtering and denoising stats per sample
+├── fastqc/                         # Contains raw and trimmed read quality reports (per-sample)
+├── input/
+│   └── samplesheet.tsv             # Metadata table listing input samples and file paths
+├── phyloseq/
+│   └── dada2_phyloseq.rds          # RDS object containing full phyloseq object (ASVs, taxonomy, metadata)
+└── pipeline_info/                  # Nextflow logs, execution reports, and trace info
+
+.nextflow.log                       # Nextflow log file (useful for debugging)
+```
 
 ## Tune an rerun
 
