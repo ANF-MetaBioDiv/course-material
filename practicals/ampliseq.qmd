@@ -7,14 +7,9 @@ title: "Preprocessing with nf-core/ampliseq"
 Connect to	BioPipes VM using ifb.m4.2xlarge (8 vCPU, 32Go GB RAM, 200Go GB local disk) and then:
 
 ```{bash}
-cd data/mydatalocal/
-
-wget https://github.com/ANF-MetaBioDiv/course-material/archive/refs/heads/add-ampliseq_practical.zip
-
-sudo apt install unzip
-unzip add-ampliseq_practical.zip
-
-cd course-material-add-ampliseq_practical/
+wget https://github.com/ANF-MetaBioDiv/course-material/archive/refs/tags/v2.tar.gz
+tar -xzf v2.tar.gz
+cd course-material-2/
 ```
 
 ## List files to analyse
