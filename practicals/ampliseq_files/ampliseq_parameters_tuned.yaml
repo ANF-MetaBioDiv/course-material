@@ -9,7 +9,7 @@ outdir: "outputs/ampliseq"
 
 trunclenf: 250
 trunclenr: 220
-maxee: 3
+max_ee: 3
 
 # Amplicon Sequence Variants (ASV) calculation
 
