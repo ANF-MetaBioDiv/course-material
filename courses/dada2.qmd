@@ -5,11 +5,19 @@ author:
     affiliations:
     orcid: 0000-0002-7702-1382
     email: nicolas.henry@cnrs.fr
+  - name: Charlotte Berthelier
+    affiliations:
+    orcid: 0000-0002-9349-7233
+    email: cberthelier@sb-roscoff.fr
+date: "2025-09-30"
+date-format: long
 format:
   revealjs:
+    transition: slide
     slide-number: true
     theme: night
     embed-resources: true
+    
 bibliography: ../references.bib
 ---
 
@@ -42,6 +50,10 @@ Short reads: from 2\*150 bp to 2\*300 bp, often 2\*250 bp
 
 ![](../img/metaB_lab_3.png){.fragment}
 :::
+
+## Many markers for metabarcoding
+
+![](../img/many_marker_genes.png)
 
 # FASTQ records
 
@@ -152,7 +164,9 @@ p1 + p2
 :::
 
 ::: aside
-<small> adapted from [@antich2021denoise] </small>
+<small> Adapted from [@antich2021denoise]:
+By combining **denoising** and **clustering** approaches, it allows to **better capture the natural variability of the COI gene** while reducing errors introduced during sequencing and analysis.
+</small>
 :::
 
 ## Some tools
@@ -162,7 +176,7 @@ p1 + p2
 -   Genetic clustering based approaches producing OTUs:
     -   [UPARSE](https://doi.org/10.1038/nmeth.2604)
     -   [Swarm](https://doi.org/10.1093/bioinformatics/btab493) (could be seen as denoising too)
--   Denoising approaches producing ESVs:
+-   Denoising approaches producing exact sequence variants (**ESVs**):
     -   [Deblur](https://doi.org/10.1128/mSystems.00191-16) (sOTUs)
     -   [DADA2](https://doi.org/10.1038%2Fnmeth.3869) (ASVs)
 
@@ -204,13 +218,18 @@ p1 + p2
 
 ## Tags and primers
 
-![](../img/read_example_1.png)
+![](../img/read_example_1.png){fig-align="center" height="80"}
 
-**Tags** are used to encode the sample provenance of the reads. Reads need to be grouped by sample provenance (demultiplexing)
+**Tags** are used to encode the sample provenance of the reads. Reads need to be grouped by sample provenance (`demultiplexing`).
 
-**Primer** sequences will bias the error model built by DADA2 and need to be removed (primer trimming).
+::: {.fragment}
+**Primer** sequences will bias the error model built by DADA2 and need to be removed (`primer trimming`).
+:::
 
+::: {.fragment}
+`Demultiplexing` and `primer trimming` : 
 Both task can be achieved using **Cutadapt**, a command line-tool to find and remove error-tolerantly adapters from reads [@martin2011cutadapt].
+:::
 
 ## Demultiplexing using cutadapt
 
@@ -290,7 +309,7 @@ cutadapt \
 :::
 :::
 
-As for demultiplexing, if reads are mix-orientated, run `cutadapt` twice
+As for demultiplexing, if reads are mix-orientated, run `cutadapt` twice.
 
 # DADA2 workflow: reads preparation
 
@@ -460,11 +479,11 @@ Make the link in between nucleic sequences and taxonomic
 Broad reference database: [GenBank](https://www.ncbi.nlm.nih.gov/genbank/)
 
 -   Some specialised references databases:
-    -   [Silva](https://www.arb-silva.de/) (SSU and LSU)
+    -   [Silva](https://www.arb-silva.de/) (16S rRNA (bacteria and archaea))
     -   [PR2](https://pr2-database.org/) (18S eukaryotes and 16S Chloroplastes)
     -   [MIDORI2](https://www.reference-midori.info/) (mitochondrial DNA)
-    -   [Barcode Of Life Data](https://boldsystems.org/) (COI / ITS / rbcL & matK)
-    -   [UNITE](https://unite.ut.ee/) (ITS)
+    -   [BOLD / Barcode Of Life Data](https://boldsystems.org/) (COI / ITS / rbcL & matK)
+    -   [UNITE](https://unite.ut.ee/) (ITS 🍄)
 
 ## BLAST like approaches
 
@@ -506,8 +525,8 @@ vsearch \
 
 -   Sequence taxonomic classification based on k-mers composition.
 -   No sequence similarity threshold but a confidence score instead.
--   RDP classifier (naïve Bayes method) is very popular, give good results at least for 16S/18S
--   IDTAXA, more recent, would tend to less overclassify
+-   RDP classifier (naïve Bayes method) is very popular, give good results at least for 16S/18S.
+-   IDTAXA, more recent, would tend to less overclassify.
 
 ::: aside
 DADA2 function `assignTaxonomy()` use a native implementation of the naïve Bayesian classifier method (<a href="https://doi.org/10.1128/aem.00062-07" target="_blank">Wang et al. 2007</a>).
