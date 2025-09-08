@@ -1,11 +1,12 @@
 ---
 title: "Preprocessing : phyloseq"
-date: "September 2023"
+date: "September 2025"
 output: html_document
 author:
   - "Fabrice Armougom, MIO"
   - "Marc Garel, MIO"
   - "Nicolas Henry, ABiMS"
+  - "Charlotte Berthelier, ABiMS"
 editor_options: 
   chunk_output_type: inline
 ---
