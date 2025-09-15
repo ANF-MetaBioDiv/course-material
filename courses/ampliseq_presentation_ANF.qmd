@@ -1,0 +1,360 @@
+---
+title: "My experience using the <br> nf-core/ampliseq pipeline <br> for metabarcoding analysis "
+include-in-header:
+  - text: |
+      <style>
+      #title-slide .title {
+        font-size: 2em;
+        color: #000000;
+      }
+      </style>
+author: 
+  - name: Charlotte Berthelier
+    affiliations:
+    orcid: 0000-0002-9349-7233
+    email: cberthelier@sb-roscoff.fr
+date: "2025-09-30"
+date-format: long
+format:
+  revealjs:
+    logo: ../img/abims-v2.1.10-black-orange-HD.png
+    slide-number: true
+    theme: ../img/theme.scss
+    embed-resources: true
+    include-in-header:
+      - text: |
+          <style>
+          .reveal .slides section {
+            font-size: 0.9em; /* Adjust the value as needed */
+          }
+          </style>
+title-slide-attributes:
+  data-background-size: contain
+execute:
+  echo: true
+  eval: false
+from: markdown+emoji
+---
+
+
+## Overview of Metabarcoding
+
+
+`Metabarcoding` is a molecular technique used to **identify and quantify the diversity of organisms in environmental samples** by amplifying and sequencing specific genetic markers (**barcodes**) from environmental DNA (**eDNA**).
+
+![](../img/metabarcoding0.PNG){fig-align="center"}
+
+
+## Metabarcoding Workflow
+
+![](../img/metabarcoding.png){fig-align="center"}
+
+
+::: {.callout-tip}
+## Environmental genomics
+1) **Collect samples** (water, sediment, tissue) containing eDNA from various organisms. 
+2) **Extract environmental DNA** from the samples. 
+3) PCR Amplification of specific **genetic markers** (e.g., 16S rRNA for bacteria, 18S rRNA for eukaryotes, COI for animals). 
+4) **High-throughput sequencing technologies** (e.g., Illumina, PacBio) to sequence the amplified DNA. 
+5) Process **sequencing data** to identify and quantify different species.
+:::
+
+
+## Advantages of using `nf-core pipelines`
+
+* [Standardized Workflows:]{style="text-decoration: underline;"}
+
+  Nf-core provides standardized, **community-curated workflows** for analyzing data, ensuring **consistency and reproducibility**.
+
+::: {.fragment}
+
+* [Nextflow Integration:]{style="text-decoration: underline;"}
+
+  Built on **`Nextflow`**, a powerful workflow management system, allowing for scalable and portable data analysis.
+  
+:::
+
+## Why `nf-core/ampliseq?`
+
+![](https://raw.githubusercontent.com/nf-core/ampliseq/2.12.0//docs/images/ampliseq_workflow.png){fig-align="center" width=70%}
+
+::: {.fragment}
+<span style="font-size: 0.8em;">* **Pre-configured bioinformatics analysis workflow for amplicon sequencing**, supporting multiple input formats.</span>
+:::
+
+::: {.fragment}
+<span style="font-size: 0.8em;">* Developed and maintained by a global community of researchers and bioinformaticians, ensuring continuous **improvement and updates**.</span>
+:::
+
+::: {.fragment}
+<span style="font-size: 0.8em;">* Comprehensive **documentation and tutorials** make it accessible for users of all skill levels.</span>
+:::
+
+
+## Setting up the pipeline
+
+::: {.callout-tip}
+## Relative requirements to launch ampliseq on the BioPipes VM
+
+* Software dependencies: Nextflow
+* VM config nextflow file: `ampliseq_vm.config` *(or your own `nextflow.config`)* to define parameters specific to the compute environment of the **BioPipes VM** for nf-core pipelines (such as resourceLimits and partitions).
+* Need 8 CPU minimum to run
+:::
+        
+::: {.fragment}
+
+::: {.callout-note}
+## Files needed:
+
+- **FastQ raw files** `.fastq.gz`
+- **Samplesheet** `.tsv`, `.csv` or `.yml` file listing samples and paths to FastQ files.
+- **Parameters file** `.yml` file containing pipeline specific configurations (genomic references, tools, etc.).
+- **Bash script** `.sh` to submit the ampliseq pipeline to a SLURM cluster.
+
+:::
+
+:::
+
+## Samplesheet input
+
+The sample sheet file can be tab-separated (`.tsv`), comma-separated (`.csv`), or in YAML format (`.yml`/`.yaml`) and can have two to four columns/entries with the following headers:
+
+::: {style="font-size: 90%;"}
+
+| `sampleID` | `forwardReads` | `reverseReads` | `run` |
+|------------|----------------|----------------|-------|
+| required  | required  | *optional*  | *optional*  |
+| Unique sample identifiers  | Paths to (forward) reads zipped FastQ files  | Paths to reverse reads zipped FastQ files, required if the data is paired-end  | If the data was produced by multiple sequencing runs  |
+
+:::
+
+## Samplesheet input *(example)*
+
+`samplesheet.tsv`
+
+::: {style="font-size: 85%;"}
+
+| `sampleID` | `run` | `forwardReads` | `reverseReads` |
+|--------|------------------------|------------------------|--------|
+| S11B | run_01 | data/raw/S11B_R1.fastq.gz | data/raw/S11B_R2.fastq.gz |
+| S1B | run_01 | data/raw/S1B_R1.fastq.gz | data/raw/S1B_R2.fastq.gz |
+| S2B | run_01 | data/raw/S2B_R1.fastq.gz | data/raw/S2B_R2.fastq.gz |
+| S2S | run_01 | data/raw/S2S_R1.fastq.gz | data/raw/S2S_R2.fastq.gz |
+| ... | ... | ... | ... |
+
+:::
+
+## Parameter file *(example)*
+
+`params_ampliseq.yaml`
+
+:::: {.columns}
+::: {.column}
+```yaml
+input: "input/samplesheet.tsv"
+FW_primer: "GTGYCAGCMGCCGCGGTAA"
+RV_primer: "CCGYCAATTYMTTTRAGTTT"
+outdir: "output/ampliseq"
+
+# Read trimming and quality filtering
+max_ee: 2
+trunclenf: 200
+trunclenr: 200
+trunc_qmin: 2
+
+# Amplicon Sequence Variants (ASV) calculation
+sample_inference: "pooled"
+
+# Taxonomic db
+dada_ref_taxonomy: "pr2=5.0.0"
+
+# Asv filtering
+min_frequency: 2
+min_samples: 3
+
+# Generic options
+# Max job request
+max_cpus: 32
+max_memory: "100.GB"
+max_time: "720.h"
+```
+:::
+
+::: {.column}
+<span style="font-size: 0.6em;">[https:/nf-co.re/ampliseq/2.14.0/parameters](https://nf-co.re/ampliseq/2.14.0/parameters)</span>
+
+![](../img/ampliseq_params.PNG)
+:::
+
+::::
+
+## Submit the ampliseq pipeline to a slurm cluster *(example)*
+
+Using bash script: `ampliseq.sh`
+
+```bash
+#!/bin/bash
+
+nextflow run nf-core/ampliseq \
+  -bg \
+  -r 2.14.0 \
+  -profile docker \
+  -c "practicals/ampliseq_files/ampliseq_vm.config" \
+  -params-file practicals/ampliseq_files/ampliseq_parameters_simple.yaml
+```
+<br>
+```
+# Path to files: 
+# ├── ampliseq.sh
+# ├── practicals
+# │   └── ampliseq_files
+# │      ├── samplesheet.tsv
+# │      ├── ampliseq_vm.config
+# │      └── ampliseq_parameters_simple.yaml
+```
+
+## Running time
+
+Approximately 30 minutes for ANF training data
+
+The longest step being the taxonomic assignment!
+
+![](https://cdn-icons-png.flaticon.com/512/4269/4269887.png){fig-align="center" width=200 height=200}
+
+## Output files (1)
+
+* `summary_report.html`: pipeline summary report as standalone HTML file that can be viewed in your web browser. *Example [here](https://nf-core-awsmegatests.s3-eu-west-1.amazonaws.com/ampliseq/results-9c52c22f17179b9bd5cb2621c05ec3a931adcb02/summary_report/summary_report.html).*
+
+![](../img/ampliseq_report.PNG){fig-align="center"}
+    
+## Output files (2)
+
+* `ASV_tax.*.tsv`: Taxonomic classification for each ASV sequence. 
+
+::: {style="font-size: 0.9em;"}
+**ASV_tax.pr2_5_0_0** in our *example*
+:::
+
+::: {style="font-size: 0.6em;"}
+
+| `ASV_ID` | `Domain` | `Supergroup` | `Division` | `Subdivision` | `Class` | `Order` |
+|--------|--------|------------|----------|-------------|-------|-------|
+| b7db   | Bacteria | PANNAM    | Proteobacteria | Proteobacteria_X | Gammaproteobacteria | Alteromonadales |
+| e01e   | Bacteria | FCB       | Bacteroidetes | Bacteroidetes_X | Bacteroidia | Flavobacteriales |
+
+
+
+| `Family` | `Genus` | `Species` | `Confidence` | `Sequence` |
+|--------|-------|---------|------------|----------|
+| Marinobacteraceae | Marinobacter | Marinobacter_sp. | 1 | TACGGAGGGTGCAA... |
+| Flavobacteriaceae | Flavobacterium | Flavobacterium_sp. | 0.99 | TACGGAGGATCCAAGCG... |
+:::
+
+
+## Output files (3)
+
+* `ASV_table.tsv`: summary of the Amplicon Sequence Variants (ASVs) detected in each of your sample.
+
+::: {style="font-size: 0.8em;"}
+| `ASV_ID` | `A120_A` | `A120_B` | `A141_A` | `A141_B` | `...` |
+|----------|----------|----------|----------|----------|-------|
+| b7db | 2841 | 1118 | 614 | 442 | ... |
+| bab5 | 9163 | 7036 | 19075 | 13799 | ... |
+:::
+
+
+
+
+## Output files (4)
+
+After preprocessing (primer trimming, QC) & ASV inference with DADA2, the **QIIME2 analysis** goals are : 
+
+  1. Taxonomic profiling
+  2. Diversity (α & β)
+  3. Differential abundance 
+  4. Visual summaries (barplots, rarefaction curves, etc.)
+
+---
+
+## Output files (4.1) - Abundance and relative abundance
+
+The abundance tables are the final data for further downstream analysis and visualisations. 
+
+| Output | Description |
+|---|---|
+| **Absolute abundance table** | Raw ASV counts per sample |
+| **Relative abundance table** | Normalized counts (e.g. proportions per sample) |
+
+- Useful for comparing taxa abundances across samples (.tsv)
+- These tables feed into plots & statistical tests
+
+---
+
+## Output files (4.2) - Alpha diversity & rarefaction curves
+
+Alpha diversity measures the species diversity within samples.
+
+- **Rarefaction curves**: check sampling depth sufficiency; plot number of observed features vs sequencing depth per sample  
+- **Alpha diversity indices**: metrics like Observed ASVs, Shannon, Simpson, Faith’s PD etc.  
+- Purpose: evaluate within-sample diversity; check outliers, effect of filtering  
+
+---
+
+## Output files (4.2) - Beta diversity & ordination
+
+Beta diversity measures the species community differences between samples.
+
+- **Distance metrics** (e.g. Bray-Curtis, UniFrac if phylogenetic tree available)  
+- **Ordination plots** (PCoA, NMDS) to visualise differences between samples/groups  
+- Permutational tests (e.g. PERMANOVA / Adonis) to assess significance of grouping  
+---
+
+## Output files (4.4) - Interactive barplots
+
+- Barplots of taxonomic composition (e.g. phylum, genus) per sample or group  
+- Interactive version: allows zooming, selection of taxa, collapsing taxonomic levels  
+- Helps visually assess major community members and compare across conditions  
+
+---
+
+## Output files (4.5) - Differential abundance
+
+- Methods used: e.g. **ANCOM** (Analysis of Composition of Microbiomes) or **ANCOM-BC** (with Bias Correction)
+- Aim: identify taxa (ASVs or higher level) with significantly different abundance between groups  
+
+::: {.fragment}
+
+::: {.callout-note}
+There are many others output files, I let you investigate them!
+
+Complete list [here](https://nf-co.re/ampliseq/2.14.0/docs/output)
+:::
+
+:::
+
+## Useful links
+
+::: {.callout-tip}
+## There's no shame in getting help!
+
+* [nf-core/ampliseq website](https://nf-co.re/ampliseq/2.12.0/)
+
+* [ABiMS Cluster Documentation - SLURM user guide](https://abims-sbr.gitlab.io/cluster/doc/slurm/slurm_user_guide/)
+
+* [nf-core/configs: ABiMS Configuration](https://github.com/nf-core/configs/blob/master/docs/abims.md)
+:::
+
+
+
+## {auto-animate=true}
+
+::: {style="margin-top: 100px;"}
+**Thank you for your attention!**
+:::
+
+## {auto-animate=true}
+
+::: {style="margin-top: 200px; font-size: 2em; color: black;"}
+**Thank you for your attention!**
+:::
+
