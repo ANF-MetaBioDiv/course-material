@@ -5,6 +5,10 @@ author:
     affiliations:
     orcid: 0000-0002-7702-1382
     email: nicolas.henry@cnrs.fr
+  - name: Charlotte Berthelier
+    affiliations:
+    orcid: 0000-0002-9349-7233
+    email: cberthelier@sb-roscoff.fr
 format:
   revealjs:
     slide-number: true
