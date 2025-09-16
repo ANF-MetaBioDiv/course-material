@@ -8,6 +8,7 @@ project:
     - "/practicals/preprocessing_phyloseq.Rmd"
     - "/practicals/alpha_diversity.Rmd"
     - "/practicals/beta_diversity.Rmd"
+    - "/practicals/ampliseq.qmd"
 execute:
   freeze: auto  # re-render only when source changes
 website:
@@ -51,6 +52,8 @@ website:
         - text: "Practicals"
         - text: "Alpha diversity"
           href: practicals/alpha_diversity.html
+        - text: "Workflow Ampliseq"
+          href: practicals/ampliseq.html
       - text: Day 4
         menu:
         - text: "Courses"
