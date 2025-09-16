@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.353">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>ANF MetaBioDiv - Preprocessing with nf-core/ampliseq</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">ANF MetaBioDiv</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html" rel="" target="">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-day-1" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+ <span class="menu-text">Day 1</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-day-1">    
+        <li class="dropdown-header">Practicals</li>
+        <li>
+    <a class="dropdown-item" href="../practicals/rforbeginer.html" rel="" target="">
+ <span class="dropdown-text">R for beginners</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-day-2" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+ <span class="menu-text">Day 2</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-day-2">    
+        <li class="dropdown-header">Courses</li>
+        <li>
+    <a class="dropdown-item" href="../courses/introduction.pdf" rel="" target="">
+ <span class="dropdown-text">Introduction</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../courses/dada2.html" rel="" target="_blank">
+ <span class="dropdown-text">Analysing metabarcoding data with dada2</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../courses/phyloseq.html" rel="" target="_blank">
+ <span class="dropdown-text">Introduction to phyloseq</span></a>
+  </li>  
+        <li class="dropdown-header">Practicals</li>
+        <li>
+    <a class="dropdown-item" href="../practicals/preprocessing_dada2.html" rel="" target="">
+ <span class="dropdown-text">Preprocessing: dada2</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../practicals/preprocessing_phyloseq.html" rel="" target="">
+ <span class="dropdown-text">Preprocessing: phyloseq</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-day-3" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+ <span class="menu-text">Day 3</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-day-3">    
+        <li class="dropdown-header">Courses</li>
+        <li>
+    <a class="dropdown-item" href="../courses/alpha_diversity.pdf" rel="" target="_blank">
+ <span class="dropdown-text">Alpha diversity</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../courses/stat_mean_comparison.pdf" rel="" target="_blank">
+ <span class="dropdown-text">Introduction to univariate statistics</span></a>
+  </li>  
+        <li class="dropdown-header">Practicals</li>
+        <li>
+    <a class="dropdown-item" href="../practicals/alpha_diversity.html" rel="" target="">
+ <span class="dropdown-text">Alpha diversity</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../practicals/ampliseq.html" rel="" target="">
+ <span class="dropdown-text">Workflow Ampliseq</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-day-4" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+ <span class="menu-text">Day 4</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-day-4">    
+        <li class="dropdown-header">Courses</li>
+        <li>
+    <a class="dropdown-item" href="../courses/beta_diversity.pdf" rel="" target="_blank">
+ <span class="dropdown-text">Beta diversity</span></a>
+  </li>  
+        <li class="dropdown-header">Practicals</li>
+        <li>
+    <a class="dropdown-item" href="../practicals/beta_diversity.html" rel="" target="">
+ <span class="dropdown-text">Beta diversity</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../about.html" rel="" target="">
+ <span class="menu-text">About</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/ANF-MetaBioDiv/course-material" rel="" target="_blank"><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#prepare-workspace" id="toc-prepare-workspace" class="nav-link active" data-scroll-target="#prepare-workspace"><span class="header-section-number">1</span> Prepare workspace</a></li>
+  <li><a href="#list-files-to-analyse" id="toc-list-files-to-analyse" class="nav-link" data-scroll-target="#list-files-to-analyse"><span class="header-section-number">2</span> List files to analyse</a></li>
+  <li><a href="#make-nextflow-available" id="toc-make-nextflow-available" class="nav-link" data-scroll-target="#make-nextflow-available"><span class="header-section-number">3</span> Make nextflow available</a></li>
+  <li><a href="#run-nf-coreampliseq" id="toc-run-nf-coreampliseq" class="nav-link" data-scroll-target="#run-nf-coreampliseq"><span class="header-section-number">4</span> Run nf-core/ampliseq</a></li>
+  <li><a href="#main-outputs" id="toc-main-outputs" class="nav-link" data-scroll-target="#main-outputs"><span class="header-section-number">5</span> Main outputs</a></li>
+  <li><a href="#tune-an-rerun" id="toc-tune-an-rerun" class="nav-link" data-scroll-target="#tune-an-rerun"><span class="header-section-number">6</span> Tune an rerun</a></li>
+  <li><a href="#add-metadata-for-postprocessing" id="toc-add-metadata-for-postprocessing" class="nav-link" data-scroll-target="#add-metadata-for-postprocessing"><span class="header-section-number">7</span> Add metadata for postprocessing</a></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/ANF-MetaBioDiv/course-material/edit/main/practicals/ampliseq.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/ANF-MetaBioDiv/course-material/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Preprocessing with nf-core/ampliseq</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="sourceCode" id="cb1"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">execute</span><span class="kw">:</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">eval</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="prepare-workspace" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Prepare workspace</h1>
+<p>Connect to BioPipes VM using ifb.m4.2xlarge (8 vCPU, 32Go GB RAM, 200Go GB local disk) and then:</p>
+<p><code>{ #| eval: false wget https://github.com/ANF-MetaBioDiv/course-material/archive/refs/tags/v2.tar.gz tar -xzf v2.tar.gz cd course-material-2/</code></p>
+</section>
+<section id="list-files-to-analyse" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> List files to analyse</h1>
+<p>First of of all, you need a table listing all the samples you want to analyse and their corresponding fastq files (forward and reverse in case of paired-end sequencing). In case your samples are coming from multiple runs, the run id will be indicated in a fourth column. Below a bash command to generate such a file for the practical:</p>
+<pre><code>#| eval: false 
+ls data/raw/ | \
+  paste - - | \
+  awk '
+    BEGIN {OFS = FS = "\t"; print "sampleID","run","forwardReads","reverseReads"}
+    {
+      sample = $1; sub(/_.+$/,"",sample)
+      run = "run_01"
+      fw_file = "data/raw/" $1
+      rv_file = "data/raw/" $2
+      print sample, run, fw_file, rv_file
+    }
+  ' &gt; practicals/ampliseq_files/samplesheet.tsv</code></pre>
+<p>and an overview of the generated file</p>
+<table class="table">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 11%">
+<col style="width: 37%">
+<col style="width: 37%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>sampleID</th>
+<th>run</th>
+<th>forwardReads</th>
+<th>reverseReads</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>S11B</td>
+<td>run_01</td>
+<td>data/raw/S11B_R1.fastq.gz</td>
+<td>data/raw/S11B_R2.fastq.gz</td>
+</tr>
+<tr class="even">
+<td>S1B</td>
+<td>run_01</td>
+<td>data/raw/S1B_R1.fastq.gz</td>
+<td>data/raw/S1B_R2.fastq.gz</td>
+</tr>
+<tr class="odd">
+<td>S2B</td>
+<td>run_01</td>
+<td>data/raw/S2B_R1.fastq.gz</td>
+<td>data/raw/S2B_R2.fastq.gz</td>
+</tr>
+<tr class="even">
+<td>S2S</td>
+<td>run_01</td>
+<td>data/raw/S2S_R1.fastq.gz</td>
+<td>data/raw/S2S_R2.fastq.gz</td>
+</tr>
+<tr class="odd">
+<td>S3B</td>
+<td>run_01</td>
+<td>data/raw/S3B_R1.fastq.gz</td>
+<td>data/raw/S3B_R2.fastq.gz</td>
+</tr>
+<tr class="even">
+<td>S3S</td>
+<td>run_01</td>
+<td>data/raw/S3S_R1.fastq.gz</td>
+<td>data/raw/S3S_R2.fastq.gz</td>
+</tr>
+<tr class="odd">
+<td>S4B</td>
+<td>run_01</td>
+<td>data/raw/S4B_R1.fastq.gz</td>
+<td>data/raw/S4B_R2.fastq.gz</td>
+</tr>
+<tr class="even">
+<td>S4S</td>
+<td>run_01</td>
+<td>data/raw/S4S_R1.fastq.gz</td>
+<td>data/raw/S4S_R2.fastq.gz</td>
+</tr>
+<tr class="odd">
+<td>S5B</td>
+<td>run_01</td>
+<td>data/raw/S5B_R1.fastq.gz</td>
+<td>data/raw/S5B_R2.fastq.gz</td>
+</tr>
+<tr class="even">
+<td>S5S</td>
+<td>run_01</td>
+<td>data/raw/S5S_R1.fastq.gz</td>
+<td>data/raw/S5S_R2.fastq.gz</td>
+</tr>
+<tr class="odd">
+<td>S6B</td>
+<td>run_01</td>
+<td>data/raw/S6B_R1.fastq.gz</td>
+<td>data/raw/S6B_R2.fastq.gz</td>
+</tr>
+<tr class="even">
+<td>S6S</td>
+<td>run_01</td>
+<td>data/raw/S6S_R1.fastq.gz</td>
+<td>data/raw/S6S_R2.fastq.gz</td>
+</tr>
+<tr class="odd">
+<td>S7B</td>
+<td>run_01</td>
+<td>data/raw/S7B_R1.fastq.gz</td>
+<td>data/raw/S7B_R2.fastq.gz</td>
+</tr>
+<tr class="even">
+<td>S7S</td>
+<td>run_01</td>
+<td>data/raw/S7S_R1.fastq.gz</td>
+<td>data/raw/S7S_R2.fastq.gz</td>
+</tr>
+<tr class="odd">
+<td>S8B</td>
+<td>run_01</td>
+<td>data/raw/S8B_R1.fastq.gz</td>
+<td>data/raw/S8B_R2.fastq.gz</td>
+</tr>
+<tr class="even">
+<td>S8S</td>
+<td>run_01</td>
+<td>data/raw/S8S_R1.fastq.gz</td>
+<td>data/raw/S8S_R2.fastq.gz</td>
+</tr>
+<tr class="odd">
+<td>S9B</td>
+<td>run_01</td>
+<td>data/raw/S9B_R1.fastq.gz</td>
+<td>data/raw/S9B_R2.fastq.gz</td>
+</tr>
+<tr class="even">
+<td>S9S</td>
+<td>run_01</td>
+<td>data/raw/S9S_R1.fastq.gz</td>
+<td>data/raw/S9S_R2.fastq.gz</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="make-nextflow-available" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Make nextflow available</h1>
+<p>If first time connecting to the ampliseq_vm</p>
+<pre><code>conda init</code></pre>
+<p>Then, each time you’re opening a terminal</p>
+<pre><code>conda activate nextflow</code></pre>
+</section>
+<section id="run-nf-coreampliseq" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Run nf-core/ampliseq</h1>
+<p>This is an example of a command to launch nf-core/ampliseq:</p>
+<pre><code>nextflow run nf-core/ampliseq \
+  -bg \
+  -r 2.14.0 \
+  -profile docker \
+  -c "practicals/ampliseq_files/ampliseq_vm.config" \
+  -params-file practicals/ampliseq_files/ampliseq_parameters_simple.yaml</code></pre>
+<p>With <code>run</code> you specify the workflow you want to use. The option <code>-bg</code> allows you to run the workflow as a background job, meaning that you can close your ssh connection, connect later to your VM, the workflow will still be running as long as the VM is running. Remove this option if you want to visualise progress bars. With <code>-r</code> you can call a specific version of the workflow you want to use, this is highly recommended for reproducibility purpose. With <code>-profile</code> you can call lists of pre set parameters. In our case we are calling the profile <code>docker</code> telling nextflow to download and use docker images of the tools needed for our workflow. With -c you can call a file with workflow execution configurations. Here we use configurations from <code>practicals/ampliseq_files/ampliseq_vm.config</code> to specify the maximum amount of ressources allocated to our workflow. Finally we are calling the parameters file <code>practicals/ampliseq_files/ampliseq_parameters_simple.yaml</code>. This where you will for exemple specify the primers used for the amplification. Let’s have a closer look at this file:</p>
+<pre><code># Main arguments
+
+input: "practicals/ampliseq_files/samplesheet.tsv"
+FW_primer: "CCTACGGGNBGCASCAG"
+RV_primer: "GACTACNVGGGTATCTAAT"
+outdir: "outputs/ampliseq"</code></pre>
+<p>These are required parameters you need to specify on order to be able to run nf-core/ampliseq. The parameter <code>input</code> is the path the the table listing all the files you want to analyse. Primers are specified with <code>FW_primer</code> and <code>RV_primer</code> and the output directory with <code>outdir</code>. But as you will see later there are many more parameters to fine tune your workflow, for a complete list have a look <a href="https://nf-co.re/ampliseq/2.14.0/parameters/">here</a>.</p>
+</section>
+<section id="main-outputs" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Main outputs</h1>
+<p>Here is a simplified tree structure illustrating the key output files and directories produced by the <code>nf-core/ampliseq</code> pipeline:</p>
+<pre><code>outputs/ampliseq/
+├── summary_report/
+│   └── summary_report.html         # Pipeline summary report: overview of read counts, stats, and key results
+├── multiqc/
+│   └── multiqc_report.html         # Aggregated QC report for all samples
+├── qiime2/
+│   ├── abundance_tables/           # Exported ASV abundance tables (e.g. BIOM, TSV formats)
+│   └── input/
+│       ├── table.qza               # QIIME 2 feature table (ASV counts per sample)
+│       └── taxonomy.qza            # QIIME 2 artifact with taxonomy assignment per ASV
+├── barrnap/
+│   └── summary.tsv                 # Summary of rRNA detection (e.g. 16S) by Barrnap for each sample
+├── cutadapt/
+│   └── cutadapt_summary.tsv        # Adapter trimming statistics: read counts before/after trimming
+├── dada2/
+│   ├── ASV_seqs.fasta              # Representative ASV sequences in FASTA format
+│   ├── ASV_table.tsv               # Tab-separated ASV abundance table (samples × ASVs)
+│   ├── ASV_tax.silva_138_2.tsv     # ASVs annotated with taxonomy from SILVA 138.2 database
+│   └── DADA2_stats.tsv             # Read filtering and denoising stats per sample
+├── fastqc/                         # Contains raw and trimmed read quality reports (per-sample)
+├── input/
+│   └── samplesheet.tsv             # Metadata table listing input samples and file paths
+├── phyloseq/
+│   └── dada2_phyloseq.rds          # RDS object containing full phyloseq object (ASVs, taxonomy, metadata)
+└── pipeline_info/                  # Nextflow logs, execution reports, and trace info
+
+.nextflow.log                       # Nextflow log file (useful for debugging)</code></pre>
+</section>
+<section id="tune-an-rerun" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Tune an rerun</h1>
+<p>You can decide later to rerun your workflow with different parameters. An example of a more detailed parameter file:</p>
+<pre><code># Main arguments
+
+input: "practicals/ampliseq_files/samplesheet.tsv"
+FW_primer: "CCTACGGGNBGCASCAG"
+RV_primer: "GACTACNVGGGTATCTAAT"
+outdir: "outputs/ampliseq"
+
+# Read trimming and quality filtering
+
+trunclenf: 250
+trunclenr: 220
+maxee: 3
+
+# Amplicon Sequence Variants (ASV) calculation
+
+sample_inference: "pooled"
+
+# ASV post processing
+
+min_len_asv: 200
+
+# Taxonomic database
+
+dada_ref_taxonomy: "greengenes2=2024.09"
+
+# ASV filtering
+
+exclude_taxa: mitochondria,chloroplast # default values
+min_frequency: 10
+min_samples: 2</code></pre>
+<p>Add the option <code>-resume</code> to avoid redoing analyses already done during the previous run:</p>
+<pre><code>nextflow run nf-core/ampliseq \
+  -resume \
+  -bg \
+  -r 2.14.0 \
+  -profile docker \
+  -c "practicals/ampliseq_files/ampliseq_vm.config" \
+  -params-file practicals/ampliseq_files/ampliseq_parameters_tuned.yaml</code></pre>
+</section>
+<section id="add-metadata-for-postprocessing" class="level1" data-number="7">
+<h1 data-number="7"><span class="header-section-number">7</span> Add metadata for postprocessing</h1>
+<p>nf-core/ampliseq allows you to run some alpha and beta diversity analyses on your ASV table. To do so you need to provide a table with the metadata. This table will contain the sample ids in the column <code>ID</code> and as many columns as descriptors you want to specify. These descriptors have to be categorical, you can’t for example add continuous values such as temperature measurements for example.</p>
+<p>So let’s create such a table</p>
+<pre><code>
+cat data/context/mapfileFA.txt | \
+  tr '\r' '\n' | \
+  awk '
+    BEGIN {FS=OFS="\t"; print "ID", "geo", "depth"}
+    NR &gt; 1 {
+      sample = $1
+      geo = $2
+      depth = $1; sub(/S[0-9]+/, "", depth)
+      print sample, geo, depth
+    }
+  ' &gt; practicals/ampliseq_files/ampliseq_metadata.tsv</code></pre>
+<table class="table">
+<thead>
+<tr class="header">
+<th>ID</th>
+<th>Geo</th>
+<th>depth</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>S1B</td>
+<td>North</td>
+<td>B</td>
+</tr>
+<tr class="even">
+<td>S2B</td>
+<td>North</td>
+<td>B</td>
+</tr>
+<tr class="odd">
+<td>S2S</td>
+<td>North</td>
+<td>S</td>
+</tr>
+<tr class="even">
+<td>S3B</td>
+<td>North</td>
+<td>B</td>
+</tr>
+<tr class="odd">
+<td>S3S</td>
+<td>North</td>
+<td>S</td>
+</tr>
+<tr class="even">
+<td>S4B</td>
+<td>North</td>
+<td>B</td>
+</tr>
+<tr class="odd">
+<td>S4S</td>
+<td>North</td>
+<td>S</td>
+</tr>
+<tr class="even">
+<td>S5B</td>
+<td>North</td>
+<td>B</td>
+</tr>
+<tr class="odd">
+<td>S5S</td>
+<td>North</td>
+<td>S</td>
+</tr>
+<tr class="even">
+<td>S6B</td>
+<td>South</td>
+<td>B</td>
+</tr>
+<tr class="odd">
+<td>S6S</td>
+<td>South</td>
+<td>S</td>
+</tr>
+<tr class="even">
+<td>S7B</td>
+<td>South</td>
+<td>B</td>
+</tr>
+<tr class="odd">
+<td>S7S</td>
+<td>South</td>
+<td>S</td>
+</tr>
+<tr class="even">
+<td>S8B</td>
+<td>South</td>
+<td>B</td>
+</tr>
+<tr class="odd">
+<td>S8S</td>
+<td>South</td>
+<td>S</td>
+</tr>
+<tr class="even">
+<td>S9B</td>
+<td>South</td>
+<td>B</td>
+</tr>
+<tr class="odd">
+<td>S9S</td>
+<td>South</td>
+<td>S</td>
+</tr>
+<tr class="even">
+<td>S11B</td>
+<td>South</td>
+<td>B</td>
+</tr>
+</tbody>
+</table>
+<p>Now your metada table have been created you can refer to it in the parameter file and rerun ampliseq with the <code>-resume</code> option</p>
+<pre><code>nextflow run nf-core/ampliseq \
+  -resume \
+  -bg \
+  -r 2.14.0 \
+  -profile docker \
+  -c "practicals/ampliseq_files/ampliseq_vm.config" \
+  -params-file practicals/ampliseq_files/ampliseq_parameters_tuned_with_metadata.yaml</code></pre>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var filterRegex = new RegExp("https:\/\/ANF-MetaBioDiv\.github\.io\/course-material\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+      }
+    }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center"><a href="http://abims.sb-roscoff.fr/"><img src="../img/logo_abims.png" alt="ABiMS" height="35"></a> <a href="https://www.umr-beep.fr/"><img src="../img/logo_beep.png" alt="beep" height="40"></a> <a href="https://www.france-bioinformatique.fr/"><img src="../img/logo_ifb.png" alt="IFB" height="40"></a> <a href="https://www.cnrs.fr//"><img src="../img/logo_cnrs.svg" alt="CNRS" height="40"></a> <a href="https://www.ird.fr/"><img src="../img/logo_ird.png" alt="IRD" height="40"></a> <a href="https://www.mio.osupytheas.fr/"><img src="../img/logo_mio.png" alt="MIO" height="40"></a> <a href="https://umr-marbec.fr/"><img src="../img/logo_marbec.jpeg" alt="marbec" height="40"></a> <a href="https://umr-marbec.fr/"><img src="../img/logo_tara.png" alt="marbec" height="30"></a></div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+</body></html>
