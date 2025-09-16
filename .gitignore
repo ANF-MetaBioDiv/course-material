@@ -3,6 +3,7 @@
 .RData
 .Ruserdata
 *.pdf
+.nextflow.log*
 
 /.vscode/
 /.quarto/
@@ -13,3 +14,5 @@
 /outputs/
 /data/refdb/
 /.luarc.json
+/work/
+/.nextflow/

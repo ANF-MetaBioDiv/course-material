@@ -1,0 +1,34 @@
+# Main arguments
+
+input: "practicals/ampliseq_files/samplesheet.tsv"
+FW_primer: "CCTACGGGNBGCASCAG"
+RV_primer: "GACTACNVGGGTATCTAAT"
+outdir: "outputs/ampliseq"
+metadata: "practicals/ampliseq_files/ampliseq_metadata.tsv"
+
+# Read trimming and quality filtering
+
+trunclenf: 250
+trunclenr: 220
+maxee: 3
+
+# Amplicon Sequence Variants (ASV) calculation
+
+sample_inference: "pooled"
+
+# ASV post processing
+
+min_len_asv: 200
+
+# Taxonomic database
+
+dada_ref_taxonomy: "greengenes2=2024.09"
+
+# ASV filtering
+
+exclude_taxa: mitochondria,chloroplast # default values
+min_frequency: 10
+min_samples: 2
+
+# Differential abundance analysis
+ancombc: true
