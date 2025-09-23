@@ -9,8 +9,11 @@ author:
     affiliations:
     orcid: 0000-0002-9349-7233
     email: cberthelier@sb-roscoff.fr
+date: "2025-09-30"
+date-format: long
 format:
   revealjs:
+    transition: slide
     slide-number: true
     theme: night
     embed-resources: true
@@ -56,7 +59,8 @@ head(asv_table, n = 20) |>
 
 ## Information about one ASV
 
-* Taxonomy
+-   Taxonomy
+
 ```{r}
 #| echo: true
 #| eval: false
@@ -69,7 +73,8 @@ taxonomy[1,] |>
   kableExtra::kable_styling(font_size = 16)
 ```
 
-* Sequence
+-   Sequence
+
 ```{r}
 #| echo: true
 asv_seq[["ASV_001"]]
@@ -95,7 +100,7 @@ south_context <- subset(context, Geo == "South")
 
 <br>
 
-:::{.fragment}
+::: fragment
 ```{r}
 south_context <- subset(context, Geo == "South")
 
@@ -107,7 +112,7 @@ south_context |>
 
 <br>
 
-:::{.fragment}
+::: fragment
 ```{r}
 #| echo: true
 #| eval: false
@@ -138,7 +143,7 @@ cyano_taxo |>
 
 <br>
 
-:::{.fragment}
+::: fragment
 ```{r}
 #| echo: true
 cyano_asvs <- row.names(cyano_taxo)
@@ -146,6 +151,7 @@ cyano_asvs <- row.names(cyano_taxo)
 :::
 
 ## Subset asv table
+
 ```{r}
 #| echo: true
 #| eval: false
@@ -292,7 +298,7 @@ physeq <- phyloseq(
 physeq
 ```
 
-## Redo our selection{auto-animate="true"}
+## Redo our selection {auto-animate="true"}
 
 ```{r}
 physeq
@@ -312,7 +318,7 @@ subset_taxa(physeq,Phylum == "Cyanobacteria")
 subset_taxa(physeq,Phylum == "Cyanobacteria")
 ```
 
-## Redo our selection{auto-animate="true"}
+## Redo our selection {auto-animate="true"}
 
 ```{r}
 physeq
@@ -334,7 +340,7 @@ subset_taxa(physeq,Phylum == "Cyanobacteria") |>
   subset_samples(Geo == "South")
 ```
 
-## Redo our selection{auto-animate="true"}
+## Redo our selection {auto-animate="true"}
 
 ```{r}
 physeq
@@ -358,7 +364,7 @@ subset_taxa(physeq,Phylum == "Cyanobacteria") |>
   filter_taxa(function(x) sum(x) > 0, prune = TRUE)
 ```
 
-## Redo our selection{auto-animate="true"}
+## Redo our selection {auto-animate="true"}
 
 ```{r}
 #| echo: true
@@ -382,9 +388,9 @@ subset_taxa(physeq,Phylum == "Cyanobacteria") |>
 
 ## phyloseq in this course
 
-* [Create](/practicals/preprocessing_phyloseq.html) a phyloseq object from your data
-* [Explore](/practicals/alpha_diversity.html#taxonomy-barplot-graph) the taxonomic composition of your communities
-* [Compare](/practicals/beta_diversity.html#visualisation) communities composition with ordinations
+-   [Create](/practicals/preprocessing_phyloseq.html) a phyloseq object from your data
+-   [Explore](/practicals/alpha_diversity.html#taxonomy-barplot-graph) the taxonomic composition of your communities
+-   [Compare](/practicals/beta_diversity.html#visualisation) communities composition with ordinations
 
 # Now it is your turn!
 
