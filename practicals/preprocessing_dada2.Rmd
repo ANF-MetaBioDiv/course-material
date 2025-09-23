@@ -26,13 +26,17 @@ To do so, visit the ([ANF-metabarcoding](https://github.com/ANF-MetaBioDiv/cours
 
 You can also download the repository directly from the terminal using this commmand:
 
-```bash
+``` bash
 wget https://github.com/ANF-MetaBioDiv/course-material/archive/refs/heads/main.zip
 ```
 
-Once on your machine, unzip the file and place the resulting folder in the most convenient location (`~/Documents/` for example).
+Once on your machine, unzip the file and go to the resulting folder or place the resulting folder in the most convenient location (`setwd("~/course-material-main")` for example).
 
-### Dowload the reference database
+::: tip
+💡 **Tip:** Work within an **RStudio project**. Open your course-material-main folder as an RStudio project (create or use a `.Rproj` file inside it). Then here::here("data", "refdb") will correctly point to `/home/rstudio/Documents/course-material-main/data/refdb`.
+:::
+
+### Download the reference database
 
 Save as a variable the path to the folder where you will place the references databases.
 
@@ -63,7 +67,9 @@ if (!dir.exists(refdb_folder)) dir.create(refdb_folder, recursive = TRUE)
 
 You can also create the folder from RStudio in the `Files` window
 
-**Tip:** You can access the documentation of any R function using `?` in the console. If you to know everything about the function `dir.create()`, simply run `?dir.create()`
+::: tip
+💡 **Tip:** You can access the documentation of any R function using `?` in the console. If you to know everything about the function `dir.create()`, simply run `?dir.create()`
+:::
 
 The Silva reference database, commonly used to assign 16S metabarcoding data, will be used in practical.
 
@@ -121,7 +127,7 @@ devtools::load_all()
 
 ### Locate the sequencing files
 
-Save the path to the directory containing your raw data (paired-end sequencing fastq files) in a variable named `path_to_fastqs`
+Save the path to the directory containing your raw data (paired-end sequencing fastq files) in a variable named `path_to_fastqs`.
 
 ```{r}
 path_to_fastqs <- here::here("data", "raw")
@@ -290,7 +296,6 @@ nopFw <- sort(list.files(path_to_trimmed_reads, pattern = "R1", full.names = TRU
 nopRv <- sort(list.files(path_to_trimmed_reads, pattern = "R2", full.names = TRUE))
 ```
 
-
 ### For more complex situations
 
 If you have to deal with mix-orientated paired-end reads, you may find inspiration [here](https://gitlab.sb-roscoff.fr/nhenry/abims-metabarcoding-pipeline-dada2){target="_blank"}
@@ -342,16 +347,7 @@ Let's run the function.
 
 **What happened?**
 
-Details about the function arguments:
-* **nopFw** : input, where the forward reads without primers are (path)
-* **filtFs** : output, where forward filtered reads are written (path)
-* **nopRv** and **filRs** : same as above, but wiht reverse reads
-* **TruncLen** : truncate reads after truncLen bases. Reads shorter than that are discarded (TruncLen=c(200,150), means forward and reverse reads are cut at 200 bp and 150 bp respectively)
-* **TrimLeft** : number of nucleotides to remove from the start
-* **Trimright** : number of nucleotides to remove from the end
-* **maxN** : max number of ambiguous bases accepted
-* **maxEE** : read expected errors (EE) threshold. The EE of a read is the sum of the error probability of each base composing it. Increase that value to accept more low quality reads. The first value refers to the forward reads and the second to the reverse reads.
-* **TruncQ=2**: truncate reads at the first instance of a quality score less than or equal to truncQ.
+Details about the function arguments: \* **nopFw** : input, where the forward reads without primers are (path) \* **filtFs** : output, where forward filtered reads are written (path) \* **nopRv** and **filRs** : same as above, but wiht reverse reads \* **TruncLen** : truncate reads after truncLen bases. Reads shorter than that are discarded (TruncLen=c(200,150), means forward and reverse reads are cut at 200 bp and 150 bp respectively) \* **TrimLeft** : number of nucleotides to remove from the start \* **Trimright** : number of nucleotides to remove from the end \* **maxN** : max number of ambiguous bases accepted \* **maxEE** : read expected errors (EE) threshold. The EE of a read is the sum of the error probability of each base composing it. Increase that value to accept more low quality reads. The first value refers to the forward reads and the second to the reverse reads. \* **TruncQ=2**: truncate reads at the first instance of a quality score less than or equal to truncQ.
 
 ## Denoising
 
