@@ -48,7 +48,7 @@ website:
         - text: "Introduction to univariate statistics"
           href: courses/stat_mean_comparison.pdf
         - text: "Introduction to Ampliseq"
-          href: courses/ampliseq_presention_ANF.html
+          href: courses/ampliseq_presentation_ANF.html
           target: "_blank"
         - text: "Practicals"
         - text: "Alpha diversity"
