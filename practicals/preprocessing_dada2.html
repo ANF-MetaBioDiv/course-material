@@ -178,7 +178,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="dropdown-text">Introduction to univariate statistics</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../courses/ampliseq_presention_ANF.html" rel="" target="_blank">
+    <a class="dropdown-item" href="../courses/ampliseq_presentation_ANF.html" rel="" target="_blank">
  <span class="dropdown-text">Introduction to Ampliseq</span></a>
   </li>  
         <li class="dropdown-header">Practicals</li>
@@ -239,7 +239,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#prepare-your-working-directory" id="toc-prepare-your-working-directory" class="nav-link active" data-scroll-target="#prepare-your-working-directory"><span class="header-section-number">1</span> Prepare your working directory</a>
   <ul class="collapse">
   <li><a href="#get-the-repository-files" id="toc-get-the-repository-files" class="nav-link" data-scroll-target="#get-the-repository-files"><span class="header-section-number">1.1</span> Get the repository files</a></li>
-  <li><a href="#dowload-the-reference-database" id="toc-dowload-the-reference-database" class="nav-link" data-scroll-target="#dowload-the-reference-database"><span class="header-section-number">1.2</span> Dowload the reference database</a></li>
+  <li><a href="#download-the-reference-database" id="toc-download-the-reference-database" class="nav-link" data-scroll-target="#download-the-reference-database"><span class="header-section-number">1.2</span> Download the reference database</a></li>
   <li><a href="#attach-custom-functions" id="toc-attach-custom-functions" class="nav-link" data-scroll-target="#attach-custom-functions"><span class="header-section-number">1.3</span> Attach custom functions</a></li>
   </ul></li>
   <li><a href="#inputs-files" id="toc-inputs-files" class="nav-link" data-scroll-target="#inputs-files"><span class="header-section-number">2</span> Inputs files</a>
@@ -321,10 +321,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>To do so, visit the (<a href="https://github.com/ANF-MetaBioDiv/course-material" target="_blank">ANF-metabarcoding</a>) repository on github and download it as a zip file.</p>
 <p>You can also download the repository directly from the terminal using this commmand:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> https://github.com/ANF-MetaBioDiv/course-material/archive/refs/heads/main.zip</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Once on your machine, unzip the file and place the resulting folder in the most convenient location (<code>~/Documents/</code> for example).</p>
+<p>Once on your machine, unzip the file and go to the resulting folder or place the resulting folder in the most convenient location (<code>setwd("~/course-material-main")</code> for example).</p>
+<div class="tip">
+<p>💡 <strong>Tip:</strong> Work within an <strong>RStudio project</strong>. Open your course-material-main folder as an RStudio project (create or use a <code>.Rproj</code> file inside it). Then here::here(“data”, “refdb”) will correctly point to <code>/home/rstudio/Documents/course-material-main/data/refdb</code>.</p>
+</div>
 </section>
-<section id="dowload-the-reference-database" class="level2" data-number="1.2">
-<h2 data-number="1.2" class="anchored" data-anchor-id="dowload-the-reference-database"><span class="header-section-number">1.2</span> Dowload the reference database</h2>
+<section id="download-the-reference-database" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="download-the-reference-database"><span class="header-section-number">1.2</span> Download the reference database</h2>
 <p>Save as a variable the path to the folder where you will place the references databases.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>refdb_folder <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"refdb"</span>)</span>
@@ -347,7 +350,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">dir.exists</span>(refdb_folder)) <span class="fu">dir.create</span>(refdb_folder, <span class="at">recursive =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>You can also create the folder from RStudio in the <code>Files</code> window</p>
-<p><strong>Tip:</strong> You can access the documentation of any R function using <code>?</code> in the console. If you to know everything about the function <code>dir.create()</code>, simply run <code>?dir.create()</code></p>
+<div class="tip">
+<p>💡 <strong>Tip:</strong> You can access the documentation of any R function using <code>?</code> in the console. If you to know everything about the function <code>dir.create()</code>, simply run <code>?dir.create()</code></p>
+</div>
 <p>The Silva reference database, commonly used to assign 16S metabarcoding data, will be used in practical.</p>
 <p>In case you are working with 18S sequences, you will have better assignments using <a href="https://pr2-database.org/" target="_blank">PR2</a> or <a href="https://doi.org/10.5281/zenodo.6327891" target="_blank">EukRibo</a> especially if you are interested in protists.</p>
 <p>The following code downloads dada2 formatted silva reference databases. If you are not comfortable with it, you can simply download the reference database files from your web browser <a href="https://zenodo.org/record/4587955/files/silva_nr99_v138.1_train_set.fa.gz%22">here</a> and <a href="&quot;https://zenodo.org/record/4587955/files/silva_species_assignment_v138.1.fa.gz" target="_blank">here</a>.</p>
@@ -401,7 +406,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h1 data-number="2"><span class="header-section-number">2</span> Inputs files</h1>
 <section id="locate-the-sequencing-files" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="locate-the-sequencing-files"><span class="header-section-number">2.1</span> Locate the sequencing files</h2>
-<p>Save the path to the directory containing your raw data (paired-end sequencing fastq files) in a variable named <code>path_to_fastqs</code></p>
+<p>Save the path to the directory containing your raw data (paired-end sequencing fastq files) in a variable named <code>path_to_fastqs</code>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>path_to_fastqs <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"raw"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>

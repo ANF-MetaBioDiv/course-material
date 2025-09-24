@@ -173,7 +173,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="dropdown-text">Introduction to univariate statistics</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../courses/ampliseq_presention_ANF.html" rel="" target="_blank">
+    <a class="dropdown-item" href="../courses/ampliseq_presentation_ANF.html" rel="" target="_blank">
  <span class="dropdown-text">Introduction to Ampliseq</span></a>
   </li>  
         <li class="dropdown-header">Practicals</li>
@@ -261,29 +261,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<div class="sourceCode" id="cb1"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">execute</span><span class="kw">:</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">eval</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <section id="prepare-workspace" class="level1" data-number="1">
 <h1 data-number="1"><span class="header-section-number">1</span> Prepare workspace</h1>
 <p>Connect to BioPipes VM using ifb.m4.2xlarge (8 vCPU, 32Go GB RAM, 200Go GB local disk) and then:</p>
-<p><code>{ #| eval: false wget https://github.com/ANF-MetaBioDiv/course-material/archive/refs/tags/v2.tar.gz tar -xzf v2.tar.gz cd course-material-2/</code></p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> https://github.com/ANF-MetaBioDiv/course-material/archive/refs/tags/v2.tar.gz</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tar</span> <span class="at">-xzf</span> v2.tar.gz</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> course-material-2/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="list-files-to-analyse" class="level1" data-number="2">
 <h1 data-number="2"><span class="header-section-number">2</span> List files to analyse</h1>
 <p>First of of all, you need a table listing all the samples you want to analyse and their corresponding fastq files (forward and reverse in case of paired-end sequencing). In case your samples are coming from multiple runs, the run id will be indicated in a fourth column. Below a bash command to generate such a file for the practical:</p>
-<pre><code>#| eval: false 
-ls data/raw/ | \
-  paste - - | \
-  awk '
-    BEGIN {OFS = FS = "\t"; print "sampleID","run","forwardReads","reverseReads"}
-    {
-      sample = $1; sub(/_.+$/,"",sample)
-      run = "run_01"
-      fw_file = "data/raw/" $1
-      rv_file = "data/raw/" $2
-      print sample, run, fw_file, rv_file
-    }
-  ' &gt; practicals/ampliseq_files/samplesheet.tsv</code></pre>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> data/raw/ <span class="kw">|</span> <span class="dt">\</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste</span> <span class="at">-</span> <span class="at">-</span> <span class="kw">|</span> <span class="dt">\</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">awk</span> <span class="st">'</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="st">    BEGIN {OFS = FS = "\t"; print "sampleID","run","forwardReads","reverseReads"}</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="st">    {</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="st">      sample = $1; sub(/_.+$/,"",sample)</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="st">      run = "run_01"</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="st">      fw_file = "data/raw/" $1</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="st">      rv_file = "data/raw/" $2</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="st">      print sample, run, fw_file, rv_file</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="st">    }</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="st">  '</span> <span class="op">&gt;</span> practicals/ampliseq_files/samplesheet.tsv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>and an overview of the generated file</p>
 <table class="table">
 <colgroup>
@@ -415,117 +414,116 @@ ls data/raw/ | \
 <section id="make-nextflow-available" class="level1" data-number="3">
 <h1 data-number="3"><span class="header-section-number">3</span> Make nextflow available</h1>
 <p>If first time connecting to the ampliseq_vm</p>
-<pre><code>conda init</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> init</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Then, each time you’re opening a terminal</p>
-<pre><code>conda activate nextflow</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate nextflow</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="run-nf-coreampliseq" class="level1" data-number="4">
 <h1 data-number="4"><span class="header-section-number">4</span> Run nf-core/ampliseq</h1>
 <p>This is an example of a command to launch nf-core/ampliseq:</p>
-<pre><code>nextflow run nf-core/ampliseq \
-  -bg \
-  -r 2.14.0 \
-  -profile docker \
-  -c "practicals/ampliseq_files/ampliseq_vm.config" \
-  -params-file practicals/ampliseq_files/ampliseq_parameters_simple.yaml</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> run nf-core/ampliseq <span class="dt">\</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-bg</span> <span class="dt">\</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-r</span> 2.14.0 <span class="dt">\</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">-profile</span> docker <span class="dt">\</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">-c</span> <span class="st">"practicals/ampliseq_files/ampliseq_vm.config"</span> <span class="dt">\</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">-params-file</span> practicals/ampliseq_files/ampliseq_parameters_simple.yaml</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>With <code>run</code> you specify the workflow you want to use. The option <code>-bg</code> allows you to run the workflow as a background job, meaning that you can close your ssh connection, connect later to your VM, the workflow will still be running as long as the VM is running. Remove this option if you want to visualise progress bars. With <code>-r</code> you can call a specific version of the workflow you want to use, this is highly recommended for reproducibility purpose. With <code>-profile</code> you can call lists of pre set parameters. In our case we are calling the profile <code>docker</code> telling nextflow to download and use docker images of the tools needed for our workflow. With -c you can call a file with workflow execution configurations. Here we use configurations from <code>practicals/ampliseq_files/ampliseq_vm.config</code> to specify the maximum amount of ressources allocated to our workflow. Finally we are calling the parameters file <code>practicals/ampliseq_files/ampliseq_parameters_simple.yaml</code>. This where you will for exemple specify the primers used for the amplification. Let’s have a closer look at this file:</p>
-<pre><code># Main arguments
-
-input: "practicals/ampliseq_files/samplesheet.tsv"
-FW_primer: "CCTACGGGNBGCASCAG"
-RV_primer: "GACTACNVGGGTATCTAAT"
-outdir: "outputs/ampliseq"</code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Main arguments</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">input</span><span class="kw">:</span><span class="at"> </span><span class="st">"practicals/ampliseq_files/samplesheet.tsv"</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">FW_primer</span><span class="kw">:</span><span class="at"> </span><span class="st">"CCTACGGGNBGCASCAG"</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">RV_primer</span><span class="kw">:</span><span class="at"> </span><span class="st">"GACTACNVGGGTATCTAAT"</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="fu">outdir</span><span class="kw">:</span><span class="at"> </span><span class="st">"outputs/ampliseq"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>These are required parameters you need to specify on order to be able to run nf-core/ampliseq. The parameter <code>input</code> is the path the the table listing all the files you want to analyse. Primers are specified with <code>FW_primer</code> and <code>RV_primer</code> and the output directory with <code>outdir</code>. But as you will see later there are many more parameters to fine tune your workflow, for a complete list have a look <a href="https://nf-co.re/ampliseq/2.14.0/parameters/">here</a>.</p>
 </section>
 <section id="main-outputs" class="level1" data-number="5">
 <h1 data-number="5"><span class="header-section-number">5</span> Main outputs</h1>
 <p>Here is a simplified tree structure illustrating the key output files and directories produced by the <code>nf-core/ampliseq</code> pipeline:</p>
-<pre><code>outputs/ampliseq/
-├── summary_report/
-│   └── summary_report.html         # Pipeline summary report: overview of read counts, stats, and key results
-├── multiqc/
-│   └── multiqc_report.html         # Aggregated QC report for all samples
-├── qiime2/
-│   ├── abundance_tables/           # Exported ASV abundance tables (e.g. BIOM, TSV formats)
-│   └── input/
-│       ├── table.qza               # QIIME 2 feature table (ASV counts per sample)
-│       └── taxonomy.qza            # QIIME 2 artifact with taxonomy assignment per ASV
-├── barrnap/
-│   └── summary.tsv                 # Summary of rRNA detection (e.g. 16S) by Barrnap for each sample
-├── cutadapt/
-│   └── cutadapt_summary.tsv        # Adapter trimming statistics: read counts before/after trimming
-├── dada2/
-│   ├── ASV_seqs.fasta              # Representative ASV sequences in FASTA format
-│   ├── ASV_table.tsv               # Tab-separated ASV abundance table (samples × ASVs)
-│   ├── ASV_tax.silva_138_2.tsv     # ASVs annotated with taxonomy from SILVA 138.2 database
-│   └── DADA2_stats.tsv             # Read filtering and denoising stats per sample
-├── fastqc/                         # Contains raw and trimmed read quality reports (per-sample)
-├── input/
-│   └── samplesheet.tsv             # Metadata table listing input samples and file paths
-├── phyloseq/
-│   └── dada2_phyloseq.rds          # RDS object containing full phyloseq object (ASVs, taxonomy, metadata)
-└── pipeline_info/                  # Nextflow logs, execution reports, and trace info
-
-.nextflow.log                       # Nextflow log file (useful for debugging)</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">outputs/ampliseq/</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> summary_report/</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   └── summary_report.html         <span class="co"># Pipeline summary report: overview of read counts, stats, and key results</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> multiqc/</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   └── multiqc_report.html         <span class="co"># Aggregated QC report for all samples</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> qiime2/</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   ├── abundance_tables/           <span class="co"># Exported ASV abundance tables (e.g. BIOM, TSV formats)</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   └── input/</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>       ├── table.qza               <span class="co"># QIIME 2 feature table (ASV counts per sample)</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>       └── taxonomy.qza            <span class="co"># QIIME 2 artifact with taxonomy assignment per ASV</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> barrnap/</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   └── summary.tsv                 <span class="co"># Summary of rRNA detection (e.g. 16S) by Barrnap for each sample</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> cutadapt/</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   └── cutadapt_summary.tsv        <span class="co"># Adapter trimming statistics: read counts before/after trimming</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> dada2/</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   ├── ASV_seqs.fasta              <span class="co"># Representative ASV sequences in FASTA format</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   ├── ASV_table.tsv               <span class="co"># Tab-separated ASV abundance table (samples × ASVs)</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   ├── ASV_tax.silva_138_2.tsv     <span class="co"># ASVs annotated with taxonomy from SILVA 138.2 database</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   └── DADA2_stats.tsv             <span class="co"># Read filtering and denoising stats per sample</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> fastqc/                         <span class="co"># Contains raw and trimmed read quality reports (per-sample)</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> input/</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   └── samplesheet.tsv             <span class="co"># Metadata table listing input samples and file paths</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> phyloseq/</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   └── dada2_phyloseq.rds          <span class="co"># RDS object containing full phyloseq object (ASVs, taxonomy, metadata)</span></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="ex">└──</span> pipeline_info/                  <span class="co"># Nextflow logs, execution reports, and trace info</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a><span class="ex">.nextflow.log</span>                       <span class="co"># Nextflow log file (useful for debugging)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="tune-an-rerun" class="level1" data-number="6">
 <h1 data-number="6"><span class="header-section-number">6</span> Tune an rerun</h1>
 <p>You can decide later to rerun your workflow with different parameters. An example of a more detailed parameter file:</p>
-<pre><code># Main arguments
-
-input: "practicals/ampliseq_files/samplesheet.tsv"
-FW_primer: "CCTACGGGNBGCASCAG"
-RV_primer: "GACTACNVGGGTATCTAAT"
-outdir: "outputs/ampliseq"
-
-# Read trimming and quality filtering
-
-trunclenf: 250
-trunclenr: 220
-maxee: 3
-
-# Amplicon Sequence Variants (ASV) calculation
-
-sample_inference: "pooled"
-
-# ASV post processing
-
-min_len_asv: 200
-
-# Taxonomic database
-
-dada_ref_taxonomy: "greengenes2=2024.09"
-
-# ASV filtering
-
-exclude_taxa: mitochondria,chloroplast # default values
-min_frequency: 10
-min_samples: 2</code></pre>
+<div class="sourceCode" id="cb8"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Main arguments</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">input</span><span class="kw">:</span><span class="at"> </span><span class="st">"practicals/ampliseq_files/samplesheet.tsv"</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">FW_primer</span><span class="kw">:</span><span class="at"> </span><span class="st">"CCTACGGGNBGCASCAG"</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">RV_primer</span><span class="kw">:</span><span class="at"> </span><span class="st">"GACTACNVGGGTATCTAAT"</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="fu">outdir</span><span class="kw">:</span><span class="at"> </span><span class="st">"outputs/ampliseq"</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Read trimming and quality filtering</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="fu">trunclenf</span><span class="kw">:</span><span class="at"> </span><span class="dv">250</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="fu">trunclenr</span><span class="kw">:</span><span class="at"> </span><span class="dv">220</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="fu">maxee</span><span class="kw">:</span><span class="at"> </span><span class="dv">3</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Amplicon Sequence Variants (ASV) calculation</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="fu">sample_inference</span><span class="kw">:</span><span class="at"> </span><span class="st">"pooled"</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="co"># ASV post processing</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="fu">min_len_asv</span><span class="kw">:</span><span class="at"> </span><span class="dv">200</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Taxonomic database</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a><span class="fu">dada_ref_taxonomy</span><span class="kw">:</span><span class="at"> </span><span class="st">"greengenes2=2024.09"</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a><span class="co"># ASV filtering</span></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a><span class="fu">exclude_taxa</span><span class="kw">:</span><span class="at"> mitochondria,chloroplast</span><span class="co"> # default values</span></span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a><span class="fu">min_frequency</span><span class="kw">:</span><span class="at"> </span><span class="dv">10</span></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a><span class="fu">min_samples</span><span class="kw">:</span><span class="at"> </span><span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Add the option <code>-resume</code> to avoid redoing analyses already done during the previous run:</p>
-<pre><code>nextflow run nf-core/ampliseq \
-  -resume \
-  -bg \
-  -r 2.14.0 \
-  -profile docker \
-  -c "practicals/ampliseq_files/ampliseq_vm.config" \
-  -params-file practicals/ampliseq_files/ampliseq_parameters_tuned.yaml</code></pre>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> run nf-core/ampliseq <span class="dt">\</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-resume</span> <span class="dt">\</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-bg</span> <span class="dt">\</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">-r</span> 2.14.0 <span class="dt">\</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">-profile</span> docker <span class="dt">\</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">-c</span> <span class="st">"practicals/ampliseq_files/ampliseq_vm.config"</span> <span class="dt">\</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">-params-file</span> practicals/ampliseq_files/ampliseq_parameters_tuned.yaml</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="add-metadata-for-postprocessing" class="level1" data-number="7">
 <h1 data-number="7"><span class="header-section-number">7</span> Add metadata for postprocessing</h1>
 <p>nf-core/ampliseq allows you to run some alpha and beta diversity analyses on your ASV table. To do so you need to provide a table with the metadata. This table will contain the sample ids in the column <code>ID</code> and as many columns as descriptors you want to specify. These descriptors have to be categorical, you can’t for example add continuous values such as temperature measurements for example.</p>
 <p>So let’s create such a table</p>
-<pre><code>
-cat data/context/mapfileFA.txt | \
-  tr '\r' '\n' | \
-  awk '
-    BEGIN {FS=OFS="\t"; print "ID", "geo", "depth"}
-    NR &gt; 1 {
-      sample = $1
-      geo = $2
-      depth = $1; sub(/S[0-9]+/, "", depth)
-      print sample, geo, depth
-    }
-  ' &gt; practicals/ampliseq_files/ampliseq_metadata.tsv</code></pre>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> data/context/mapfileFA.txt <span class="kw">|</span> <span class="dt">\</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tr</span> <span class="st">'\r'</span> <span class="st">'\n'</span> <span class="kw">|</span> <span class="dt">\</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">awk</span> <span class="st">'</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="st">    BEGIN {FS=OFS="\t"; print "ID", "geo", "depth"}</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="st">    NR &gt; 1 {</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="st">      sample = $1</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="st">      geo = $2</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="st">      depth = $1; sub(/S[0-9]+/, "", depth)</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="st">      print sample, geo, depth</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="st">    }</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="st">  '</span> <span class="op">&gt;</span> practicals/ampliseq_files/ampliseq_metadata.tsv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <table class="table">
 <thead>
 <tr class="header">
@@ -628,13 +626,13 @@ cat data/context/mapfileFA.txt | \
 </tbody>
 </table>
 <p>Now your metada table have been created you can refer to it in the parameter file and rerun ampliseq with the <code>-resume</code> option</p>
-<pre><code>nextflow run nf-core/ampliseq \
-  -resume \
-  -bg \
-  -r 2.14.0 \
-  -profile docker \
-  -c "practicals/ampliseq_files/ampliseq_vm.config" \
-  -params-file practicals/ampliseq_files/ampliseq_parameters_tuned_with_metadata.yaml</code></pre>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> run nf-core/ampliseq <span class="dt">\</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-resume</span> <span class="dt">\</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-bg</span> <span class="dt">\</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">-r</span> 2.14.0 <span class="dt">\</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">-profile</span> docker <span class="dt">\</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">-c</span> <span class="st">"practicals/ampliseq_files/ampliseq_vm.config"</span> <span class="dt">\</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">-params-file</span> practicals/ampliseq_files/ampliseq_parameters_tuned_with_metadata.yaml</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 </section>
