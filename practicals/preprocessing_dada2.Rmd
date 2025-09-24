@@ -245,6 +245,15 @@ path_to_trimmed_reads <- here::here(
 if (!dir.exists(path_to_trimmed_reads)) dir.create(path_to_trimmed_reads, recursive = TRUE)
 ```
 
+Then we prepare a list of paths where to save the results (*e.g.* sequences without primers)
+
+```{r}
+nopFw <- file.path(path_to_trimmed_reads, basename(fnFs))
+nopRv <- file.path(path_to_trimmed_reads, basename(fnRs))
+
+head(nopFw)
+```
+
 ### Remove primers
 
 The data you are working with correspond to the V3-V4 region using the primers Pro341F (`CCTACGGGNBGCASCAG`) and Pro805R (`GACTACNVGGGTATCTAAT`). Save into variables the forward and reverse primers:
@@ -276,29 +285,25 @@ Biostrings::readDNAStringSet(
 )
 ```
 
-We use a custom function, `primer_trim()`, implemented in `R/preprocessing.R` to remove the primers using cutadapt. To work, `primer_trim()` needs cutadapt to be installed on your computer.
-
-Run `?primer_trim` to know more about this function.
+Use the function `dada2::removePrimers()` twice to remove the primers from forward `fnFs` and reverse `fnRs` reads and save the results in `nopFs` and `nopRs` respectively.
 
 ```{r}
-(primer_log <- primer_trim(
-  forward_files = fnFs,
-  reverse_files = fnRs,
-  primer_fwd = primer_fwd,
-  primer_rev = primer_rev,
-  output_dir = path_to_trimmed_reads,
-  min_size = 200
-))
-```
+dada2::removePrimers(fn = fnFs,
+                     fout = nopFw,
+                     primer.fwd = primer_fwd,
+                     max.mismatch = 1,
+                     verbose = TRUE)
 
-```{r}
-nopFw <- sort(list.files(path_to_trimmed_reads, pattern = "R1", full.names = TRUE))
-nopRv <- sort(list.files(path_to_trimmed_reads, pattern = "R2", full.names = TRUE))
+dada2::removePrimers(fn = fnRs,
+                     fout = nopRv,
+                     primer.fwd = primer_rev,
+                     max.mismatch = 1,
+                     verbose = TRUE)
 ```
 
 ### For more complex situations
 
-If you have to deal with mix-orientated paired-end reads, you may find inspiration [here](https://gitlab.sb-roscoff.fr/nhenry/abims-metabarcoding-pipeline-dada2){target="_blank"}
+If you have to deal with a lot of samples and/or mixed orientated reads, we would recommend using dedicated tools such as [cutadapt](https://github.com/marcelm/cutadapt). We will see later during the course how to use cutadapt from the nextflow workflow nf-core/ampliseq.
 
 ## Trimming and quality filtering
 
@@ -555,10 +560,7 @@ First this table need to be assembled:
 getN <- function(x) sum(dada2::getUniques(x))
 
 log_table <- data.frame(
-  input = primer_log$in_reads,
-  with_fwd_primer = primer_log$`w/adapters`,
-  with_rev_primer = primer_log$`w/adapters2` ,
-  with_both_primers = out[, 1],
+  input = out[, 1],
   filtered = out[, 2],
   denoisedF = sapply(dadaFs, getN),
   denoisedR = sapply(dadaRs, getN),
