@@ -75,11 +75,10 @@ website:
       [![](/img/logo_abims.png){fig-alt="ABiMS" height=35px}](http://abims.sb-roscoff.fr/)
       [![](/img/logo_beep.png){fig-alt="beep" height=40px}](https://www.umr-beep.fr/)
       [![](/img/logo_ifb.png){fig-alt="IFB" height=40px}](https://www.france-bioinformatique.fr/)
-      [![](/img/logo_cnrs.svg){fig-alt="CNRS" height=40px}](https://www.cnrs.fr//)
+      [![](/img/logo_cnrs.png){fig-alt="CNRS" height=40px}](https://www.cnrs.fr//)
       [![](/img/logo_ird.png){fig-alt="IRD" height=40px}](https://www.ird.fr/)
       [![](/img/logo_mio.png){fig-alt="MIO" height=40px}](https://www.mio.osupytheas.fr/)
       [![](/img/logo_marbec.jpeg){fig-alt="marbec" height=40px}](https://umr-marbec.fr/)
-      [![](/img/logo_tara.png){fig-alt="marbec" height=30px}](https://umr-marbec.fr/)
 
 format:
   html:
