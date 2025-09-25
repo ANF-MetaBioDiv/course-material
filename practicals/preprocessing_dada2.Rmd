@@ -298,7 +298,7 @@ nopRv <- sort(list.files(path_to_trimmed_reads, pattern = "R2", full.names = TRU
 
 ### For more complex situations
 
-If you have to deal with mix-orientated paired-end reads, you may find inspiration [here](https://gitlab.sb-roscoff.fr/nhenry/abims-metabarcoding-pipeline-dada2){target="_blank"}
+If you have to deal with mix-orientated paired-end reads, you may find inspiration [here](https://nf-co.re/ampliseq/2.14.0/parameters/#primer-removal{target="_blank"}
 
 ## Trimming and quality filtering
 
@@ -578,4 +578,10 @@ df_export(log_table, new_rn = "sample") |>
               quote = FALSE,
               sep = "\t",
               row.names = FALSE)
+```
+
+The `sessionInfo()` function in R provides a quick summary of your R environment, including the version of R, loaded packages, and their versions---useful for debugging, reproducibility, and sharing your setup with others.
+
+```{r}
+sessionInfo()
 ```
