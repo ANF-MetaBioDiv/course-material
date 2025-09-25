@@ -342,6 +342,7 @@ Let's run the function.
   filt = filtFs,
   rev = nopRv,
   filt.rev = filtRs,
+  TruncLen = c(250,220),
   minLen = 150,
   matchIDs = TRUE,
   maxN = 0,
@@ -352,7 +353,7 @@ Let's run the function.
 
 **What happened?**
 
-Details about the function arguments: \* **nopFw** : input, where the forward reads without primers are (path) \* **filtFs** : output, where forward filtered reads are written (path) \* **nopRv** and **filRs** : same as above, but wiht reverse reads \* **TruncLen** : truncate reads after truncLen bases. Reads shorter than that are discarded (TruncLen=c(200,150), means forward and reverse reads are cut at 200 bp and 150 bp respectively) \* **TrimLeft** : number of nucleotides to remove from the start \* **Trimright** : number of nucleotides to remove from the end \* **maxN** : max number of ambiguous bases accepted \* **maxEE** : read expected errors (EE) threshold. The EE of a read is the sum of the error probability of each base composing it. Increase that value to accept more low quality reads. The first value refers to the forward reads and the second to the reverse reads. \* **TruncQ=2**: truncate reads at the first instance of a quality score less than or equal to truncQ.
+Details about the function arguments: \* **nopFw** : input, where the forward reads without primers are (path) \* **filtFs** : output, where forward filtered reads are written (path) \* **nopRv** and **filRs** : same as above, but with reverse reads \* **TruncLen** : truncate reads after truncLen bases. Reads shorter than that are discarded (TruncLen=c(200,150), means forward and reverse reads are cut at 200 bp and 150 bp respectively) \* **trimLeft** : number of nucleotides to remove from the start \* **trimright** : number of nucleotides to remove from the end \* **maxN** : maximum number of ambiguous bases accepted \* **maxEE** : read expected errors (EE) threshold. The EE of a read is the sum of the error probability of each base composing it. Increase that value to accept more low quality reads. The first value refers to the forward reads and the second to the reverse reads. \* **truncQ=2**: truncate reads at the first instance of a quality score less than or equal to truncQ.
 
 ## Denoising
 
