@@ -6,11 +6,11 @@ title: "About"
 
 ### English {.unnumbered}
 
-The Action Nationale de Formation CNRS-INSU MetaBioDiv, led by the Mediterranean Institut of Oceanography (Armougom F., MIO) and the Délégation Régionale Côte d’Azur CNRS (DR20, Pierrette Finsac), offers to the scientific community a formation to learn how to characterize microbial ecosystems biodiversity with R analysing data from high-throughput Illumina (Miseq) sequencing.
+The Action Nationale de Formation CNRS-INSU MetaBioDiv, led by the Mediterranean Institut of Oceanography (Armougom F., MIO) and the Délégation Régionale Côte d'Azur CNRS (DR20, Pierrette Finsac), offers to the scientific community a formation to learn how to characterize microbial ecosystems biodiversity with R analysing data from high-throughput Illumina (Miseq) sequencing.
 
 ### French {.unnumbered}
 
-L’Action Nationale de Formation CNRS-INSU MetaBioDiv, portée par l’Institut Méditerranéen d’Océanologie (Armougom F., MIO) et la Délégation Régionale Côte d’Azur CNRS (DR20, Pierrette Finsac), propose à la communauté scientifique une formation sur la caractérisation de la biodiversité taxonomique d’écosystèmes (procaryotes et micro-eucaryotes) par le prisme du séquençage haut-débit Illumina (Miseq) et du traitement bio-informatique associé (outils R sous Rstudio).
+L'Action Nationale de Formation CNRS-INSU MetaBioDiv, portée par l'Institut Méditerranéen d'Océanologie (Armougom F., MIO) et la Délégation Régionale Côte d'Azur CNRS (DR20, Pierrette Finsac), propose à la communauté scientifique une formation sur la caractérisation de la biodiversité taxonomique d'écosystèmes (procaryotes et micro-eucaryotes) par le prisme du séquençage haut-débit Illumina (Miseq) et du traitement bio-informatique associé (outils R sous Rstudio).
 
 ## Organisation committee and intervenants {.unnumbered}
 
@@ -18,13 +18,13 @@ Fabrice Armougom, MIO, Marseille
 
 Jean-Christophe Auguet, Marbec, Montpellier
 
-Erwan Corre, ABiMS, Station Biologique de Roscoff
+Charlotte Berthelier, Adaptation et Diversité en Milieu Marin Station Biologique de Roscoff
 
 Marc Garel, MIO, Marseille
 
 Nicolas Henry, ABiMS & FR2022 Tara GOSEE, Station Biologique de Roscoff
 
-Pauline Lecoq, MIO, Marseille
+Elsa Mendes, MIO, Marseille
 
 Lois Maignien, BEEP, Université de Brest
 
@@ -36,26 +36,20 @@ Société Française de Bio-Informatique
 
 Institut Français de Bioinformatique
 
-Thanks the French Institute of Bioinformatics – IFB CNRS UAR3601 – for providing life science data and tools, storage and computing resources.
+Thanks the French Institute of Bioinformatics -- IFB CNRS UAR3601 -- for providing life science data and tools, storage and computing resources.
 
 ## Partners {.unnumbered}
 
-<div style="text-align: center;">
+::: {style="text-align: center;"}
+[![](/img/logo_abims.png){fig-alt="ABiMS" height="90px" fig-align="center"}](http://abims.sb-roscoff.fr/) [![](/img/logo_beep.png){fig-alt="beep" height="120px" fig-align="center"}](https://www.umr-beep.fr/) [![](/img/logo_marbec.jpeg){fig-alt="marbec" height="120px" fig-align="center"}](https://umr-marbec.fr/) [![](/img/logo_mio.png){fig-alt="MIO" height="120px" fig-align="center"}](https://www.mio.osupytheas.fr/)
 
-[![](/img/logo_abims.png){fig-alt="ABiMS" height=90px fig-align="center"}](http://abims.sb-roscoff.fr/)
-[![](/img/logo_beep.png){fig-alt="beep" height=120px fig-align="center"}](https://www.umr-beep.fr/)
-[![](/img/logo_marbec.jpeg){fig-alt="marbec" height=120px fig-align="center"}](https://umr-marbec.fr/)
-[![](/img/logo_mio.png){fig-alt="MIO" height=120px fig-align="center"}](https://www.mio.osupytheas.fr/)
+[![](/img/logo_ifb.svg){fig-alt="IFB" height="120px" fig-align="center"}](https://www.france-bioinformatique.fr/) [![](/img/logo_tara.png){fig-alt="Tara Océan" height="80px"}](https://fondationtaraocean.org/)
 
-[![](/img/logo_ifb.svg){fig-alt="IFB" height=120px fig-align="center"}](https://www.france-bioinformatique.fr/)
-[![](/img/logo_tara.png){fig-alt="Tara Océan" height=80px}](https://fondationtaraocean.org/)
-
-[![](/img/logo_cnrs.svg){fig-alt="CNRS" height=150px fig-align="center"}](https://www.cnrs.fr//)
-[![](/img/logo_ird.png){fig-alt="IRD" height=120px fig-align="center"}](https://www.ird.fr/)
-
-</div>
+[![](/img/logo_cnrs.svg){fig-alt="CNRS" height="150px" fig-align="center"}](https://www.cnrs.fr//) [![](/img/logo_ird.png){fig-alt="IRD" height="120px" fig-align="center"}](https://www.ird.fr/)
+:::
 
 ## Libraries used in this course {.unnumbered}
+
 ```{r}
 renv::dependencies() |> 
     dplyr::pull(Package) |>
