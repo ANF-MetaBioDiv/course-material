@@ -24,8 +24,7 @@ Load `phyloseq`
 library(phyloseq)
 ```
 
-We import the ASV table, the taxonomic assignment results and the sequences from the text files
-we exported in the [dada2 practical](/practicals/preprocessing_dada2.html#export-asv-table).
+We import the ASV table, the taxonomic assignment results and the sequences from the text files we exported in the [dada2 practical](/practicals/preprocessing_dada2.html#export-asv-table).
 
 Define where the previous practical outputs are located:
 
@@ -86,8 +85,7 @@ match sample table ids.
 row.names(context) |> sort()
 ```
 
-You can do it in a more formal way using the function `setdiff()`.
-This function returns the elements of `x` not present in `y`.
+You can do it in a more formal way using the function `setdiff()`. This function returns the elements of `x` not present in `y`.
 
 ```{r}
 setdiff(x = colnames(asv_table),
@@ -98,10 +96,7 @@ Perfect! The ASV table sample names match with the contextual data table.
 
 ### Assemble ASV table, taxonomy and contextual data
 
-Use the `phyloseq::phyloseq()` function to create a phyloseq object.
-A phyloseq object is usualy composed by an ASV table, a taxonomy table and 
-a table describing the samples. You can also add ASV sequences and a [phylogenetic
-tree](#add-phylogenetic-tree-optional)
+Use the `phyloseq::phyloseq()` function to create a phyloseq object. A phyloseq object is usualy composed by an ASV table, a taxonomy table and a table describing the samples. You can also add ASV sequences and a [phylogenetic tree](#add-phylogenetic-tree-optional)
 
 ```{r}
 physeq <- phyloseq::phyloseq(
@@ -116,15 +111,13 @@ physeq <- phyloseq::phyloseq(
 
 ### Why?
 
-Knowing the ASVs phylogenetic relatedness will help you to have a better understanding
-of the communities your studying.
+Knowing the ASVs phylogenetic relatedness will help you to have a better understanding of the communities your studying.
 
 To quote the evolutionary biologist Theodosius Dobzhansky:
 
 > Nothing in Biology Makes Sense Except in the Light of Evolution.
 
-A phylogenetic tree reconstructed from the ASV sequences will be used to measure their
-relatedness.
+A phylogenetic tree reconstructed from the ASV sequences will be used to measure their relatedness.
 
 ### Alignment using DECIPHER
 
@@ -151,24 +144,21 @@ First, let's convert our `DNAStringSet` alignment to the `phangorn` `phyDat` for
 phang_align <- as.matrix(aln) |> phangorn::phyDat(type = "DNA")
 ```
 
-Then, we compute pairwise distances of our aligned sequences
-using equal base frequencies (JC69 model used by default).
+Then, we compute pairwise distances of our aligned sequences using equal base frequencies (JC69 model used by default).
 
 ```{r}
 dm <- phangorn::dist.ml(phang_align, model = "JC69")
 ```
 
-Finally, we reconstruct a neighbour joining tree. 
+Finally, we reconstruct a neighbour joining tree.
+
 ```{r}
 treeNJ <- phangorn::NJ(dm)
 ```
 
-Other approaches to reconstruct a phylogenetic tree exist.
-If you want to try them with `phangorn`, have a look
-[here](https://cran.r-project.org/web/packages/phangorn/vignettes/Trees.html){target="_blank"}
+Other approaches to reconstruct a phylogenetic tree exist. If you want to try them with `phangorn`, have a look [here](https://cran.r-project.org/web/packages/phangorn/vignettes/Trees.html){target="_blank"}
 
-We need the tree to be rooted for future analysis.
-We can do that using the function `phangorn::midpoint()`
+We need the tree to be rooted for future analysis. We can do that using the function `phangorn::midpoint()`
 
 ```{r}
 treeNJ <- phangorn::midpoint(tree = treeNJ)
@@ -182,99 +172,101 @@ physeq <- phyloseq::merge_phyloseq(physeq,treeNJ)
 
 ### If I do not have a tree
 
-For some reasons, it is sometimes not relevant or not possible to infer a tree
-from our data.
+For some reasons, it is sometimes not relevant or not possible to infer a tree from our data.
 
-For example, the metabarcode you are using is not carrying enough
-phylogenetic information to reconstruct a tree.
+For example, the metabarcode you are using is not carrying enough phylogenetic information to reconstruct a tree.
 
-Or you have so many ASVs that infering a tree would require more computational
-ressource that what you can afford.
+Or you have so many ASVs that infering a tree would require more computational ressource that what you can afford.
 
-In that case, it is fine. You will still be able to perform most of the analyses
-introduced in the [alpha](/practicals/alpha_diversity.html) and
-[beta diversity](/practicals/beta_diversity.html) practicals.
+In that case, it is fine. You will still be able to perform most of the analyses introduced in the [alpha](/practicals/alpha_diversity.html) and [beta diversity](/practicals/beta_diversity.html) practicals.
 
 ## Extract information from a phyloseq object
 
-Here a list of `phyloseq` functions to extract diverse information
-from your `phyloseq` object.
+Here a list of `phyloseq` functions to extract diverse information from your `phyloseq` object.
 
-* **Get the total number of ASVs**
+-   **Get the total number of ASVs**
 
 ```{r}
 phyloseq::ntaxa(physeq)
 ```
 
-* **Get the total number of samples**
+-   **Get the total number of samples**
 
 ```{r}
 phyloseq::nsamples(physeq)
 ```
 
-* **Get sample names**
+-   **Get sample names**
+
 ```{r}
 phyloseq::sample_names(physeq)
 ```
 
-* **Get ASV identification**
+-   **Get ASV identification**
+
 ```{r}
 phyloseq::taxa_names(physeq) |> head()
 ```
 
-* **Get the names of variables in sam_data**
+-   **Get the names of variables in sam_data**
+
 ```{r}
 phyloseq::sample_variables(physeq)
 ```
 
-* **Display all variables with values**
+-   **Display all variables with values**
+
 ```{r}
 phyloseq::get_variable(physeq)
 ```
 
-* **Sum the reads by sample**
+-   **Sum the reads by sample**
+
 ```{r}
 phyloseq::sample_sums(physeq)
 ```
 
-* **Sum the reads by species/taxa/OTUs (for all samples)**
+-   **Sum the reads by species/taxa/OTUs (for all samples)**
+
 ```{r}
 phyloseq::taxa_sums(physeq) |> head()
 ```
 
-* **Sort species/taxa/OTUs by number of reads**
+-   **Sort species/taxa/OTUs by number of reads**
+
 ```{r}
 phyloseq::taxa_sums(physeq) |>
   sort(decreasing = TRUE) |>
   head()
 ```
 
-* **Get taxonomic ranks (useful for other commands)**
+-   **Get taxonomic ranks (useful for other commands)**
 
 ```{r}
 phyloseq::rank_names(physeq)
 ```
 
-* **Show abundance of a given ASV**
+-   **Show abundance of a given ASV**
+
 ```{r}
 phyloseq::get_sample(physeq, i = "ASV_001")
 ```
 
-* **Show ASVs and abundance for a given sample**
+-   **Show ASVs and abundance for a given sample**
+
 ```{r}
 phyloseq::get_taxa(physeq, i = "S2B") |> head()
 ```
 
-* **Get phyla detected in your samples**
+-   **Get phyla detected in your samples**
 
 ```{r}
 phyloseq::get_taxa_unique(physeq, taxonomic.rank = "Phylum")
 ```
 
-If you do not remember the name of the taxonomic ranks in your
-phyloseq object use `phyloseq::rank_names(physeq)`
+If you do not remember the name of the taxonomic ranks in your phyloseq object use `phyloseq::rank_names(physeq)`
 
-* **Number of ASVs per phylum**
+-   **Number of ASVs per phylum**
 
 ```{r}
 table(phyloseq::tax_table(physeq)[, "Phylum"])
@@ -287,3 +279,10 @@ plot_bar(physeq, fill = "Phylum")
 ```
 
 More about plots in the alpha and beta diversity practicals.
+
+The `sessionInfo()` function in R provides a quick summary of your R environment, including the version of R, loaded packages, and their versions---useful for debugging, reproducibility, and sharing your setup with others.
+
+```{r}
+sessionInfo()
+```
+

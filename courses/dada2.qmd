@@ -31,7 +31,7 @@ bibliography: ../references.bib
 
 <br>
 
-![](../img/sequencing.png)
+![](https://cdn-ileaamc.nitrocdn.com/saCGjhfsnHihUCILLZSxgfOXwdfXxtMy/assets/images/optimized/rev-2ae3e48/www.pacb.com/wp-content/uploads/img_evolution_of_sequencing_technology-2.png)
 
 ## Paired-end sequencing
 
@@ -164,9 +164,7 @@ p1 + p2
 :::
 
 ::: aside
-<small> Adapted from [@antich2021denoise]:
-By combining **denoising** and **clustering** approaches, it allows to **better capture the natural variability of the COI gene** while reducing errors introduced during sequencing and analysis.
-</small>
+<small> Adapted from [@antich2021denoise]: By combining **denoising** and **clustering** approaches, it allows to **better capture the natural variability of the COI gene** while reducing errors introduced during sequencing and analysis. </small>
 :::
 
 ## Some tools
@@ -192,7 +190,7 @@ By combining **denoising** and **clustering** approaches, it allows to **better 
 
 [Nextflow](https://www.nextflow.io/index.html) and [Snakemake](https://snakemake.github.io/) are the most popular
 
-![](https://raw.githubusercontent.com/nf-core/ampliseq/2.6.1//docs/images/ampliseq_workflow.png){height="500" fig-pos="center"}
+![](https://raw.githubusercontent.com/nf-core/ampliseq/2.14.0/docs/images/ampliseq_workflow.png){height="500" fig-pos="center"}
 
 ## DADA2, qu'est-ce que c'est?
 
@@ -222,13 +220,12 @@ By combining **denoising** and **clustering** approaches, it allows to **better 
 
 **Tags** are used to encode the sample provenance of the reads. Reads need to be grouped by sample provenance (`demultiplexing`).
 
-::: {.fragment}
+::: fragment
 **Primer** sequences will bias the error model built by DADA2 and need to be removed (`primer trimming`).
 :::
 
-::: {.fragment}
-`Demultiplexing` and `primer trimming` : 
-Both task can be achieved using **Cutadapt**, a command line-tool to find and remove error-tolerantly adapters from reads [@martin2011cutadapt].
+::: fragment
+`Demultiplexing` and `primer trimming` : Both task can be achieved using **Cutadapt**, a command line-tool to find and remove error-tolerantly adapters from reads [@martin2011cutadapt].
 :::
 
 ## Demultiplexing using cutadapt
@@ -261,13 +258,6 @@ cutadapt \
 
 As many R1 and R2 files as samples you have
 
-::: callout-warning
-## Help! My reads are mixed-orientated
-
-Run `cutadapt` a second time, looking for tags in R2.
-
-Keep the outputs of the two rounds separated for the rest of the workflow.
-:::
 
 ## Primer removal using cutadapt
 
