@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://ANF-MetaBioDiv.github.io/course-material/index.html</loc>
-    <lastmod>2025-09-24T15:31:41.613Z</lastmod>
-  </url>
-  <url>
-    <loc>https://ANF-MetaBioDiv.github.io/course-material/about.html</loc>
-    <lastmod>2025-09-24T15:31:42.805Z</lastmod>
-  </url>
-  <url>
-    <loc>https://ANF-MetaBioDiv.github.io/course-material/practicals/rforbeginer.html</loc>
-    <lastmod>2025-09-24T15:31:45.647Z</lastmod>
-  </url>
-  <url>
-    <loc>https://ANF-MetaBioDiv.github.io/course-material/practicals/preprocessing_dada2.html</loc>
-    <lastmod>2025-09-24T15:31:48.311Z</lastmod>
+    <loc>https://ANF-MetaBioDiv.github.io/course-material/practicals/ampliseq.html</loc>
+    <lastmod>2025-09-24T14:55:11.575Z</lastmod>
   </url>
   <url>
     <loc>https://ANF-MetaBioDiv.github.io/course-material/practicals/preprocessing_phyloseq.html</loc>
-    <lastmod>2025-09-24T15:31:50.203Z</lastmod>
+    <lastmod>2025-09-26T16:36:47.197Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ANF-MetaBioDiv.github.io/course-material/practicals/rforbeginer.html</loc>
+    <lastmod>2023-09-04T15:38:11.024Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ANF-MetaBioDiv.github.io/course-material/index.html</loc>
+    <lastmod>2025-09-26T16:36:47.197Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ANF-MetaBioDiv.github.io/course-material/about.html</loc>
+    <lastmod>2025-09-24T11:21:38.291Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ANF-MetaBioDiv.github.io/course-material/practicals/preprocessing_dada2.html</loc>
+    <lastmod>2025-09-26T16:47:07.350Z</lastmod>
   </url>
   <url>
     <loc>https://ANF-MetaBioDiv.github.io/course-material/practicals/beta_diversity.html</loc>
-    <lastmod>2025-09-24T15:31:55.549Z</lastmod>
-  </url>
-  <url>
-    <loc>https://ANF-MetaBioDiv.github.io/course-material/practicals/ampliseq.html</loc>
-    <lastmod>2025-09-24T15:31:56.978Z</lastmod>
+    <lastmod>2023-09-07T13:11:54.396Z</lastmod>
   </url>
 </urlset>
