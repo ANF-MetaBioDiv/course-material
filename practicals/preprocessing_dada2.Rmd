@@ -75,7 +75,7 @@ The Silva reference database, commonly used to assign 16S metabarcoding data, wi
 
 In case you are working with 18S sequences, you will have better assignments using [PR2](https://pr2-database.org/){target="_blank"} or [EukRibo](https://doi.org/10.5281/zenodo.6327891){target="_blank"} especially if you are interested in protists.
 
-The following code downloads dada2 formatted silva reference databases. If you are not comfortable with it, you can simply download the reference database files from your web browser [here](https://zenodo.org/record/4587955/files/silva_nr99_v138.1_train_set.fa.gz%22) and [here](%22https://zenodo.org/record/4587955/files/silva_species_assignment_v138.1.fa.gz){target="_blank"}.
+The following code downloads dada2 formatted silva reference databases. If you are not comfortable with it, you can simply download the reference database files from your web browser [here](https://doi.org/10.5281/zenodo.14169025){target="_blank"}.
 
 ```{r}
 # R stop downloading after timeout which is
@@ -87,17 +87,23 @@ options(timeout = 1200)
 
 # we save in variable the path to the refdb
 # in the working space
-silva_train_set <- file.path(refdb_folder,
-                             "silva_nr99_v138.1_train_set.fa.gz")
+silva_train_set <- 
+  file.path(
+    refdb_folder,
+    "silva_nr99_v138.2_toGenus_trainset.fa.gz"
+  )
 
-silva_species_assignment <- file.path(refdb_folder,
-                                      "silva_species_assignment_v138.1.fa.gz")
+silva_species_assignment <- 
+  file.path(
+    refdb_folder,
+    "silva_v138.2_assignSpecies.fa.gz"
+  )
 
 # then we download the files if they don't already exist
 
 if (!file.exists(silva_train_set)) {
   download.file(
-    "https://zenodo.org/record/4587955/files/silva_nr99_v138.1_train_set.fa.gz",
+    "https://zenodo.org/records/14169026/files/silva_nr99_v138.2_toGenus_trainset.fa.gz",
     silva_train_set,
     quiet = TRUE
   )
@@ -105,7 +111,7 @@ if (!file.exists(silva_train_set)) {
 
 if (!file.exists(silva_species_assignment)) {
   download.file(
-    "https://zenodo.org/record/4587955/files/silva_species_assignment_v138.1.fa.gz",
+    "https://zenodo.org/records/14169026/files/silva_v138.2_assignSpecies.fa.gz",
     silva_species_assignment,
     quiet = TRUE
   )
@@ -342,7 +348,7 @@ Let's run the function.
   filt = filtFs,
   rev = nopRv,
   filt.rev = filtRs,
-  TruncLen = c(250,220),
+  truncLen = c(250,220),
   minLen = 150,
   matchIDs = TRUE,
   maxN = 0,
@@ -353,7 +359,7 @@ Let's run the function.
 
 **What happened?**
 
-Details about the function arguments: \* **nopFw** : input, where the forward reads without primers are (path) \* **filtFs** : output, where forward filtered reads are written (path) \* **nopRv** and **filRs** : same as above, but with reverse reads \* **TruncLen** : truncate reads after truncLen bases. Reads shorter than that are discarded (TruncLen=c(200,150), means forward and reverse reads are cut at 200 bp and 150 bp respectively) \* **trimLeft** : number of nucleotides to remove from the start \* **trimright** : number of nucleotides to remove from the end \* **maxN** : maximum number of ambiguous bases accepted \* **maxEE** : read expected errors (EE) threshold. The EE of a read is the sum of the error probability of each base composing it. Increase that value to accept more low quality reads. The first value refers to the forward reads and the second to the reverse reads. \* **truncQ=2**: truncate reads at the first instance of a quality score less than or equal to truncQ.
+Details about the function arguments: \* **nopFw** : input, where the forward reads without primers are (path) \* **filtFs** : output, where forward filtered reads are written (path) \* **nopRv** and **filRs** : same as above, but with reverse reads \* **truncLen** : truncate reads after truncLen bases. Reads shorter than that are discarded (`truncLen=c(200,150)` means forward and reverse reads are cut at 200 bp and 150 bp respectively) \* **trimLeft** : number of nucleotides to remove from the start \* **trimright** : number of nucleotides to remove from the end \* **maxN** : maximum number of ambiguous bases accepted \* **maxEE** : read expected errors (EE) threshold. The EE of a read is the sum of the error probability of each base composing it. Increase that value to accept more low quality reads. The first value refers to the forward reads and the second to the reverse reads. \* **truncQ=2**: truncate reads at the first instance of a quality score less than or equal to truncQ.
 
 ## Denoising
 
@@ -376,7 +382,7 @@ errR <- dada2::learnErrors(filtRs,
 You can visualise the resulting error model using the function `dada2::plotErrors()`
 
 ```{r}
-dada2::plotErrors(errF, nominalQ=TRUE)
+dada2::plotErrors(errF, nominalQ = TRUE)
 ```
 
 ### Dereplication
@@ -441,23 +447,27 @@ The ASV table is ready. But without a clue about the ASVs taxonomic identity, we
 
 The taxonomic assignment is done in two steps.
 
-First, each ASV is assigned to a taxonomy using the RDP Naive Bayesian Classifier algorithm described in [Wang et al. 2007](https://doi.org/10.1128/aem.00062-07){target="_blank"} called by the function `dada2::assignTaxonomy()`.
+First, each ASV is assigned to a taxonomy up to the genus level using the RDP Naive Bayesian Classifier algorithm described in [Wang et al. 2007](https://doi.org/10.1128/aem.00062-07){target="_blank"} called by the function `dada2::assignTaxonomy()`. We decided to assign at the genus level only because we consider the amplified 16S fragment   not having a good enough resolution to assign at species level, except for perfect matches (see below).
 
 ```{r}
 taxonomy <- dada2::assignTaxonomy(
   seqs = seqtab_nochim,
   refFasta = silva_train_set,
-  taxLevels = c("Kingdom", "Phylum", "Class",
-                "Order", "Family", "Genus",
-                "Species"),
+  taxLevels = c(
+    "Kingdom",
+    "Phylum",
+    "Class",
+    "Order",
+    "Family",
+    "Genus",
+    "Species"
+  ),
   multithread = TRUE,
   minBoot = 60
 )
 ```
 
-The method is robust, however, it often fails to assign at the species level.
-
-If you consider that in case an ASV is 100% similar to a reference sequence, it belongs to the same species, then you can use `dada2::addSpecies()`
+If you consider that in case an ASV is 100% similar to a reference sequence, it belongs to the same species, then you can use `dada2::addSpecies()` to add the species level.
 
 ```{r}
 taxonomy <- dada2::addSpecies(
