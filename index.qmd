@@ -36,7 +36,7 @@ You can also find a pdf version of the program [here](courses/RROGRAMME_ANF META
     -   10h15: {{< fa mug-hot >}}
     -   10h30: [Alpha diversity practical](practicals/alpha_diversity.html) by Fabrice Armougom and Elsa Mendes
     -   12h30: {{< fa utensils >}}
-    -   14h00: Séminaire [metabarcoding worklows](coures/ampliseq_presentation_ANF.html) by Charlotte Berthelier
+    -   14h00: Séminaire [metabarcoding worklows](courses/ampliseq_presentation_ANF.html) by Charlotte Berthelier
     -   15h00: [Ampliseq configuration workflow](practicals/ampliseq.html) by Charlotte Berthelier and Marc Garel
     -   16h00: {{< fa mug-hot >}}
     -   16h15: [Ampliseq configuration workflow](practicals/ampliseq.html) by Charlotte Berthelier and Marc Garel

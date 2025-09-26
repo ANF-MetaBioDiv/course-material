@@ -592,3 +592,9 @@ df_export(log_table, new_rn = "sample") |>
               sep = "\t",
               row.names = FALSE)
 ```
+
+The `sessionInfo()` function in R provides a quick summary of your R environment, including the version of R, loaded packages, and their versions---useful for debugging, reproducibility, and sharing your setup with others.
+
+```{r}
+sessionInfo()
+```
