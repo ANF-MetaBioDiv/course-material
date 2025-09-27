@@ -8,20 +8,20 @@ Welcome to the third edition of the ANF Exploration de la Diversité Taxonomique
 
 ### Program {.unnumbered}
 
-You can also find a pdf version of the program [here](courses/RROGRAMME_ANF METABIODIV_2025.pdf){target="_blank"}
+You can also find a pdf version of the program [here](courses/PROGRAMME_ANF_METABIODIV_2025.pdf){target="_blank"}
 
 -   Monday 29<sup>th</sup>:
     -   09h00: Participants arrival and installation
     -   12h30: {{< fa utensils >}}
-    -   14h00: Training introduction  I
+    -   14h00: Training introduction I
     -   14h15: Introduction and [R practical](practicals/rforbeginer.html) by Marc Garel + check technical issues
     -   16h00: {{< fa mug-hot >}}
     -   16h15: [R practical](practicals/rforbeginer.html) by Marc Garel + check technical issues
-    -   18h00: Seminar "Introduction bonne pratique" - – i.e dépôt github, FAIR principles by M. Garel
+    -   18h00: Seminar "Introduction bonne pratique" - -- i.e dépôt github, FAIR principles by M. Garel
     -   19h30: {{< fa utensils >}} Ice breack, apéritif and diner
 -   Tuesday 30<sup>th</sup>:
     -   08h30: [Introduction Metabarcoding](courses/introduction.pdf){target="_blank"} to metabarcoding by Loïs Maignien
-    -   08h30: [Analysing metabarcoding data with dada2](courses/dada2.html){target="_blank"} by Charlotte Berthelier
+    -   09h30: [Analysing metabarcoding data with dada2](courses/dada2.html){target="_blank"} by Charlotte Berthelier
     -   10h15: {{< fa mug-hot >}}
     -   10h30: [Preprocessing: dada2](practicals/preprocessing_dada2.html) by Charlotte Berthelier
     -   12h30: {{< fa utensils >}}

@@ -44,9 +44,9 @@ physeq <- readRDS(here::here("data",
                              "phyloseq_object_alpha_beta_div.rds"))
 ```
 
-## Data Structure 
+## Data Structure
 
-- **<span style="color: steelblue;"><font size="5"> Phyloseq object </font></span>**
+-   [<font size="5"> Phyloseq object </font>]{style="color: steelblue;"}
 
 ```{r}
 physeq
@@ -86,12 +86,11 @@ physeq@phy_tree
 physeq@refseq
 ```
 
-##  Subsampling normalization
+## Subsampling normalization
 
 ### Rarefaction Curves
 
-Before normalization by sub-sampling, let's have a look at rarefaction curves,
-evaluate your sequencing effort and make decisions
+Before normalization by sub-sampling, let's have a look at rarefaction curves, evaluate your sequencing effort and make decisions
 
 #### Identify your minimum sample size
 
@@ -100,7 +99,6 @@ phyloseq::sample_sums(physeq)
 ```
 
 **What is the minimum sample size?**
-
 
 #### Run rarefaction curves using our custom function `ggrare()` (defined in `R/alpha_diversity.R`)
 
@@ -135,12 +133,11 @@ p0 <- ggrare(physeq_rar, step = 10, color = "Description", se = TRUE)
 p0 + facet_wrap(~Geo, ncol = 2)
 ```
 
-
-##  IV-Alpha Diversity 
+## IV-Alpha Diversity
 
 ### Indices
 
-####  Get taxonomy-based diversity indices
+#### Get taxonomy-based diversity indices
 
 ```{r}
 #Get indices with alpha function (NB: index="all" if you want all the indices)
@@ -187,17 +184,13 @@ physeq_rar <- phyloseq::merge_phyloseq(physeq_rar, alpha_indices)
 sample_data(physeq_rar)
 ```
 
+### Alpha diversity representations
 
-
-### Alpha diversity representations 
-
-*This section will show you how to plot by different ways the alpha diversity and its customization.*
-*Understand how it works!*
+*This section will show you how to plot by different ways the alpha diversity and its customization.* *Understand how it works!*
 
 #### Alpha representations using phyloseq::plot_richness()
 
-*You are limited to the indices calculated by the phyloseq::estimate_richness function*
-*(i.e."Observed", "Chao1", "ACE", "Shannon", "Simpson", "InvSimpson", "Fisher").*
+*You are limited to the indices calculated by the phyloseq::estimate_richness function* *(i.e."Observed", "Chao1", "ACE", "Shannon", "Simpson", "InvSimpson", "Fisher").*
 
 ##### Selected indices + SampName
 
@@ -210,8 +203,7 @@ phyloseq::plot_richness(physeq_rar, x = "SampName",
 
 #### Color by group: `color = Geo` & change sample name
 
-For color option pass the column of `sample_data(physeq_rar)` that you want.
-Here different colors is applied depending on `Geo` (which is North and South, so 2 different colors)
+For color option pass the column of `sample_data(physeq_rar)` that you want. Here different colors is applied depending on `Geo` (which is North and South, so 2 different colors)
 
 ```{r}
 phyloseq::plot_richness(physeq_rar,
@@ -251,7 +243,6 @@ Interest: Freedom!! you can use ANY indices that you have calculated from differ
 #Before : Change your phyloseq class oject sample_data as a dataframe
 metadata <- data.frame(sample_data(physeq_rar))
 ```
-
 
 ##### Boxplot, color control, points and Mean SD: `stat_summary()`
 
@@ -299,20 +290,19 @@ p1 + p2 + p3 +
 
 ```
 
-## Statistical hypothesis for alpha diversity 
+## Statistical hypothesis for alpha diversity
 
 #### Normality test: Check the Normal or not normal distribution of your data to choose the right test!
 
 ##### Shapiro test: H0 Null Hypothesis: follows Normal distribution!
 
-Means if p<0.05 -> reject the H0 (so does not follow a normal distribution)
+Means if p\<0.05 -\> reject the H0 (so does not follow a normal distribution)
 
 ##### Q-Qplots: Compare your distribution with a theoretical normal distribution
 
 If your data follow a normal distribution, you're expecting a linear relationship theoritical vs. experimental
 
-Our custom function `indices_normality()` (defined in `R/alpha_diversity.R`) plots the results
-of Shapiro test as well as Q-Qplots.
+Our custom function `indices_normality()` (defined in `R/alpha_diversity.R`) plots the results of Shapiro test as well as Q-Qplots.
 
 #### Select indices to test & run normality check
 
@@ -336,7 +326,7 @@ metadata |>
 factor(metadata$groupe)
 ```
 
-#####  Variance
+##### Variance
 
 ```{r}
 # Check homogeneity of variance between groups
@@ -345,7 +335,7 @@ factor(metadata$groupe)
 stats::bartlett.test(observed ~ groupe, metadata)
 ```
 
-**Conclusion?** 
+**Conclusion?**
 
 #### Alternative to Bartlett : Levene test (package `car`), less sensitive to normality deviation
 
@@ -356,7 +346,7 @@ aov_observed <- stats::aov(observed ~ groupe, metadata)
 summary(aov_observed)
 ```
 
-##### Which pairs of groups are different? -> Post-hoc test: Tukey multiple pairwise-comparisons
+##### Which pairs of groups are different? -\> Post-hoc test: Tukey multiple pairwise-comparisons
 
 ```{r}
 signif_pairgroups <- stats::TukeyHSD(aov_observed, method = "bh")
@@ -431,8 +421,6 @@ graph_shan + ggpubr::stat_pvalue_manual(
 )
 ```
 
-
-
 ## Taxonomy: barplot graph
 
 ### Abundance Transformation
@@ -444,6 +432,7 @@ pourcentS <- phyloseq::transform_sample_counts(physeq_rar, function(x) x/sum(x) 
 ```
 
 See plot:
+
 ```{r}
 phyloseq::plot_bar(pourcentS)
 ```
@@ -472,6 +461,7 @@ phyloseq::plot_bar(Phylum_glom, fill = "Phylum")
 #### Filter phylum (mean of the line): `phyloseq::filter_taxa()`
 
 Let's filter out the phylums with a mean relative abundance inferior to 1%
+
 ```{r, results='hide'}
 Phylum_1 <- phyloseq::filter_taxa(Phylum_glom,
                                   flist = function(x) mean(x) >= 1,
@@ -540,20 +530,18 @@ p_order_groupe
 
 #### Interactive barplot with `plotly::ggplotly()`
 
-```{r}
+```{r, eval=FALSE}
 plotly::ggplotly(p_order)
 ```
 
-
 #### How to manage colors in barplots
 
-With the number of Phyla, Order etc a barplot can become very confusing...
-Need to have distinct color for each taxonomic groups.
+With the number of Phyla, Order etc a barplot can become very confusing... Need to have distinct color for each taxonomic groups.
 
-Use the library `RColorBrewer` et `scale_fill_manual()`
-See [here](https://www.nceas.ucsb.edu/sites/default/files/2020-04/colorPaletteCheatsheet.pdf) to understand the possibilities
+Use the library `RColorBrewer` et `scale_fill_manual()` See [here](https://www.nceas.ucsb.edu/sites/default/files/2020-04/colorPaletteCheatsheet.pdf) to understand the possibilities
 
 You can visualise `RColorBrewer`'s palettes with the following command:
+
 ```{r fig.height=8}
 RColorBrewer::display.brewer.all()
 ```
@@ -561,6 +549,7 @@ RColorBrewer::display.brewer.all()
 #### Build your own palette
 
 Let's assemble from two RColorBrewer's palettes a single 13 colors palette
+
 ```{r}
 #See Set2 colors
 (col1 <- RColorBrewer::brewer.pal(name = "Set2", n = 8))
@@ -582,7 +571,7 @@ p_order +
         legend.text = element_text(size=8))
 ```
 
-#### To go even further in chosing colors 
+#### To go even further in chosing colors
 
 ```{r}
 order_color <- c(
@@ -604,7 +593,6 @@ p_order +
   theme(legend.position = "right",
         legend.text = element_text(size=8))
 ```
-
 
 ### Other data Manipulation : select specific taxa, merge samples
 
@@ -630,11 +618,11 @@ myselection2 <- phyloseq::subset_taxa(physeq, Class != "Thermoplasmata" | is.na(
 
 #### Understand:
 
-<span style="color: red;">!</span> <span style="color: steelblue;">__= means  IS NOT__</span>
+[!]{style="color: red;"} [**= means IS NOT**]{style="color: steelblue;"}
 
-<span style="color: red;">|</span> <span style="color: steelblue;">__= AND__</span>
+[\|]{style="color: red;"} [**= AND**]{style="color: steelblue;"}
 
-<span style="color: red;">Is.na</span> <span style="color: steelblue;"> __= do not remove the NA (Not Assigned at the Class rank), by default it will be removed. be careful__!</span>
+[Is.na]{style="color: red;"} [ **= do not remove the NA (Not Assigned at the Class rank), by default it will be removed. be careful**!]{style="color: steelblue;"}
 
 #### Merge samples (groups, duplicates etc)
 
@@ -645,11 +633,13 @@ Use a column from metadata to group/merge samples (North & South)
 ```
 
 #### Sample selection: `phyloseq::subset_samples()`
+
 ```{r}
 (sub_North <- phyloseq::subset_samples(pourcentS, Geo == "North"))
 ```
 
 #### Alternative way: `phyloseq::prune_samples`
+
 Define what you want to keep
 
 ```{r}
@@ -657,6 +647,7 @@ keep <- c("S1B", "S2S")
 ```
 
 Then extract these samples from pourcentS phyloseq object
+
 ```{r}
 keep2samples <- phyloseq::prune_samples(keep, pourcentS)
 sample_names(keep2samples)
@@ -665,6 +656,7 @@ sample_names(keep2samples)
 ### Retrieve sequences from a phyloseq object
 
 #### One sequence:
+
 ```{r}
 Biostrings::writeXStringSet(physeq_rar@refseq["ASV1"],
                             filepath = file.path(output_alpha,"ASV1.fasta"),
@@ -672,6 +664,7 @@ Biostrings::writeXStringSet(physeq_rar@refseq["ASV1"],
 ```
 
 #### By name
+
 ```{r}
 listASV <- c("ASV2", "ASV8", "ASV32", "ASV58")
 ```
@@ -684,8 +677,7 @@ Biostrings::writeXStringSet(physeq_rar@refseq[listASV],
 
 #### From a selection
 
-Let's export a fasta files of all ASVs with a maximum relative abundance
-superior to 10% in North samples:
+Let's export a fasta files of all ASVs with a maximum relative abundance superior to 10% in North samples:
 
 ```{r}
 phyloseq::subset_samples(pourcentS, Geo == "North") |>
@@ -742,6 +734,7 @@ sub_North <- microbiome::add_besthit(sub_North, sep = ":")
 ```
 
 #### See the transformation of tax_table
+
 ```{r}
 head(sub_North@tax_table)
 ```
@@ -759,6 +752,7 @@ head(sub_North@tax_table)
 #### Get core microbiota phyloseq object
 
 Get the phyloseq object with also sequences, phylo tree etc.
+
 ```{r}
 (phyloseq_core_north <- microbiome::core(sub_North,
                                         detection = 0.0001,
@@ -766,6 +760,7 @@ Get the phyloseq object with also sequences, phylo tree etc.
 ```
 
 See full taxanomy of core members
+
 ```{r}
 (tax_mat <- as.data.frame(phyloseq::tax_table(phyloseq_core_north)))
 ```
@@ -773,6 +768,7 @@ See full taxanomy of core members
 #### Visualise core microbiome with `microbiome::plot_core()`
 
 Visualise the core microbiome of North samples
+
 ```{r,fig.height = 6, fig.width = 8, results='hide'}
 microbiome::plot_core(phyloseq_core_north,
                       plot.type = "heatmap",
@@ -784,12 +780,6 @@ microbiome::plot_core(phyloseq_core_north,
   ylab("ASVs")
 ```
 
-
 Do the same for the South samples .. please!
 
 What are your conclusions about the comparison between North & South core micobiota at the ASV level?
-
-
-
-
-
