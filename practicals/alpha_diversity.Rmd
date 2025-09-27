@@ -81,6 +81,7 @@ physeq@phy_tree
 ```
 
 #### A table with the ASV sequences
+
 ```{r}
 physeq@refseq
 ```
@@ -134,14 +135,6 @@ p0 <- ggrare(physeq_rar, step = 10, color = "Description", se = TRUE)
 p0 + facet_wrap(~Geo, ncol = 2)
 ```
 
-### Rank Abundance Curves
-
-```{r}
-tableASV <- data.frame(phyloseq::otu_table(physeq_rar))
-metadonnees <- data.frame(physeq_rar@sam_data)
-metadonnees$Geo <- factor(metadonnees$Geo)
-ab_ranktab <- rankabuncomp(tableASV, y=metadonnees, factor='Geo',scale='logabun', legend="topright")
-```
 
 ##  IV-Alpha Diversity 
 
@@ -177,6 +170,7 @@ alpha_indices
 **How to show this graphically?**
 
 #### Add the alpha indices result to your metadata (sample_data) phyloseq object
+
 Important because many times you will probably want to add new variables in the phyloseq class object!!!
 
 ```{r}
@@ -194,34 +188,6 @@ sample_data(physeq_rar)
 ```
 
 
-#### Get phylogeny based diversity indices: get_NRI_NTI function
-
-```{r}
-#CalculateNRI,NTI,PD...: get_NRI_NTI function
-ind_comp <- MicrobiotaProcess::get_NRI_NTI(physeq_rar,
-                                           abundance.weighted = FALSE,
-                                           metric = "all",
-                                           seed = 123)
-
-#Retrieve only those of interest :select function, results are in ind_comp@alpha
-indi_comp <- as.data.frame(ind_comp@alpha)
-NRI_NTI_PB <- dplyr::select(indi_comp, NRI:PD)
-#see
-NRI_NTI_PB
-```
-
-#### Again!!! Add the phylogenetic indices to your metadata (sample_data) phyloseq object
-
-```{r,results='hide'}
-#Turn into sample_data object : sample_data function
-NRI_NTI_PB <- phyloseq::sample_data(NRI_NTI_PB)
-#Add alpha_indices to phyloseq sample_data object: merge_phyloseq function!
-physeq_rar <- phyloseq::merge_phyloseq(physeq_rar, NRI_NTI_PB)
-#See the result with all the indices included
-sample_data(physeq_rar)
-```
-
-**Can you give me one of the most diversified sample based on Simpson/Shannon/Richness/Pielou/PD values observed?**
 
 ### Alpha diversity representations 
 
@@ -286,48 +252,6 @@ Interest: Freedom!! you can use ANY indices that you have calculated from differ
 metadata <- data.frame(sample_data(physeq_rar))
 ```
 
-##### basic: points & color
-
-```{r}
-#You use the columns of the metadata (Geo, observed, groupe etc)
-ggplot(metadata, aes(x = Geo, y = observed)) +
-  geom_point(aes(color = groupe, fill = groupe))
-```
-
-##### Deals with superposed points: `geom_dotplot()`
-
-```{r,results='hide',warning=FALSE}
-ggplot(metadata, aes(x = Geo, y = observed)) +
-  geom_dotplot(binaxis = "y", stackdir = "center", stackgroups = TRUE,
-               binwidth = 0.5, aes(color = groupe, fill = groupe)) +
-  xlab("Geographic position") +
-  ylab("Number of Observed ASVs") 
-```
-
-##### Boxplot & color control : `scale_fill` & `scale_color`
-
-```{r}
-ggplot(metadata, aes(x = Geo, y = observed)) +
-  geom_boxplot(alpha = 0.7, aes(color = Geo, fill = Geo)) +
-  scale_fill_manual(values = c("#00AFBB", "#E7B800"))
-```
-
-```{r}
-ggplot(metadata, aes(x = Geo, y = observed)) + 
-  geom_boxplot(alpha = 0.7, aes(color = Geo, fill = Geo)) +
-  scale_fill_manual(values = c("#00AFBB", "#E7B800")) +
-  scale_color_manual(values = c("#00AFBB", "#E7B800"))
-```
-
-##### Boxplot, color control & points: `geom_jitter()`
-
-```{r}
-ggplot(metadata, aes(x = Geo, y = observed)) +
-  geom_boxplot(alpha = 0.6,
-               fill = c("#00AFBB", "#E7B800"),
-               color = c("#00AFBB", "#E7B800"))+
-  geom_jitter(aes(colour = groupe), position = position_jitter(0.07), cex = 2.2)
-```
 
 ##### Boxplot, color control, points and Mean SD: `stat_summary()`
 
@@ -397,8 +321,7 @@ metadata |>
   dplyr::select(observed,
                 diversity_gini_simpson,
                 diversity_shannon,
-                evenness_pielou,
-                PD) |>
+                evenness_pielou) |>
   indices_normality(nrow = 3, ncol = 2)
 ```
 
@@ -461,6 +384,7 @@ signifgroup
 ```
 
 ### T-test: parametric, 2 groups (*i.e* North Vs. Sud)
+
 ```{r}
 stats::bartlett.test(observed ~ Geo, metadata)
 ```
@@ -508,116 +432,6 @@ graph_shan + ggpubr::stat_pvalue_manual(
 ```
 
 
-## Correlation & linear Regression
-
-### Correlation analysis
-
-Methods available are `spearman`, `kendall` and `pearson`.
-Correlation coefficient r is **independent of change of origin and scale (So no data transformation!!)**.
-Correlation analysis describes the nature (strength (0->1) and direction +/-) of the relationship between two variables (r),
-whatever the range and the measurement units of them.
-
-Considerations for statistical tests (test of the value being zero):
-* Pearson's test is parametric (normal distribution required)
-* Spearman's and Kendall's tests are non-parametric
-
-#### Select variables
-```{r}
-#Select variables for bivariate correlation
-myvariables <- dplyr::select(metadata, SiOH4:PO4,diversity_shannon)
-#see
-myvariables
-```
-
-#### Apply the method
-
-```{r}
-#Apply method pearson
-matrixCor <- stats::cor(myvariables, method = "pearson")
-#see
-matrixCor
-
-# we use a function defined in R/utils.R
-# to move the row names content to a new column
-
-df_export(matrixCor, new_rn = "variable")
-
-# we can now export
-
-write.table(df_export(matrixCor, new_rn = "variable"),
-            file.path(output_alpha, "correlation_matrix.tsv"),
-            row.names = FALSE,
-            sep = "\t",
-            quote = FALSE)
-```
-
-
-####	Plot results: corrplot function
-
-```{r}
-corrplot::corrplot(
-  matrixCor,
-  method="circle",
-  type="lower",
-  order='hclust',
-  tl.col = "black",
-  tl.srt = 45,
-  tl.cex=0.9,
-  diag = FALSE
-)
-```
-
-####	Is the correlation is due to chance? Significance test!
-
-The idea: Test the correlation at the population scale (=Rho) and compare to r (your samples). 
-HO is : there is not a significant linear correlation between x and y in the population.
-For instance t-test allows to use sample data to generalize an assumption to an entire population.
-
-```{r}
-#Test stats
-ptest <- corrplot::cor.mtest(matrixCor, conf.level = .95)
-#The p-value are stored in ptest$p
-#see
-ptest$p
-```
-
-#### Show only correlations with significant p-values
-```{r}
-corrplot::corrplot(
-  matrixCor,
-  p.mat = ptest$p,
-  sig.level = .05,
-  method = "circle",
-  type = "lower",
-  order = 'hclust',
-  tl.col = "black",
-  tl.srt = 45,
-  tl.cex = 0.7,
-  diag = FALSE
-)
-```
-
-### Linear regression
-
-Determination coefficient R<sup>2</sup> provides percentage variation in y which is explained by all the x together.
-Its value is (usually) between 0 and 1 and it indicates strength of Linear Regression model.
-Higher the R<sup>2</sup> value, data points are less scattered so it is a good model. Lesser the R<sup>2</sup> value is more scattered the data points.
-
-####  Shannon ~ Observed
-
-```{r,results='hide'}
-ggplot(metadata, aes(x = observed, y = diversity_shannon)) +
-  geom_point() +
-  stat_smooth(method = "lm", col = "red") +
-  ggpmisc::stat_poly_eq(aes(label = paste(after_stat(rr.label),
-                                          after_stat(p.value.label),
-                                          sep = "*\", \"*")))
-```
-
-
-What should be your conclusions...be careful...
-
-What is the r value?
 
 ## Taxonomy: barplot graph
 
@@ -725,6 +539,7 @@ p_order_groupe
 ```
 
 #### Interactive barplot with `plotly::ggplotly()`
+
 ```{r}
 plotly::ggplotly(p_order)
 ```
@@ -766,6 +581,30 @@ p_order +
   theme(legend.position = "right",
         legend.text = element_text(size=8))
 ```
+
+#### To go even further in chosing colors 
+
+```{r}
+order_color <- c(
+  "SAR11 clade" = "cyan3",
+  "Enterobacterales" = "#33A02C",      # lime green
+  "Synechococcales" = "#8DA0CB",       # light steel blue
+  "Rhodospirillales"="pink",
+  "Marine Group II"="red",
+  "Actinomarinales"="purple",
+  "Pseudomonadales" = "#8B0000",       # dark red
+  "Unknown"="#B3B3B3",
+  "Flavobacteriales" = "gold2",
+  "Chloroplast" = "#FDBF6F",       # light orange
+  "Rhodobacterales" = "darkorange1"    # dark orange
+)
+
+p_order +
+  ggplot2::scale_fill_manual("Order", values = order_color) +
+  theme(legend.position = "right",
+        legend.text = element_text(size=8))
+```
+
 
 ### Other data Manipulation : select specific taxa, merge samples
 
