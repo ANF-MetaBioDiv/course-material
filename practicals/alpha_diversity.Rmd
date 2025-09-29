@@ -530,7 +530,7 @@ p_order_groupe
 
 #### Interactive barplot with `plotly::ggplotly()`
 
-```{r, eval=FALSE}
+```{r}
 plotly::ggplotly(p_order)
 ```
 
