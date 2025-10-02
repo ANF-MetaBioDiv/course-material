@@ -7,9 +7,8 @@ title: "Preprocessing with nf-core/ampliseq"
 Connect to BioPipes VM using ifb.m4.2xlarge (8 vCPU, 32Go GB RAM, 200Go GB local disk) and then:
 
 ```bash
-wget https://github.com/ANF-MetaBioDiv/course-material/archive/refs/tags/v2.tar.gz
-tar -xzf v2.tar.gz
-cd course-material-2/
+git clone https://github.com/ANF-MetaBioDiv/course-material.git
+cd course-material/
 ```
 
 ## List files to analyse
@@ -60,6 +59,13 @@ If first time connecting to the ampliseq_vm
 
 ``` bash
 conda init
+```
+
+In case conda doesn’t want to activate it must first be done with:
+
+``` bash
+source ~/.bashrc
+conda activate base
 ```
 
 Then, each time you're opening a terminal
