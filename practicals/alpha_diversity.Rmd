@@ -530,7 +530,7 @@ p_order_groupe
 
 #### Interactive barplot with `plotly::ggplotly()`
 
-```{r}
+```{r eval=FALSE}
 plotly::ggplotly(p_order)
 ```
 
@@ -622,7 +622,7 @@ myselection2 <- phyloseq::subset_taxa(physeq, Class != "Thermoplasmata" | is.na(
 
 [\|]{style="color: red;"} [**= AND**]{style="color: steelblue;"}
 
-[Is.na]{style="color: red;"} [ **= do not remove the NA (Not Assigned at the Class rank), by default it will be removed. be careful**!]{style="color: steelblue;"}
+[Is.na]{style="color: red;"} [**= do not remove the NA (Not Assigned at the Class rank), by default it will be removed. be careful**!]{style="color: steelblue;"}
 
 #### Merge samples (groups, duplicates etc)
 

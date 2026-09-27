@@ -447,7 +447,7 @@ The ASV table is ready. But without a clue about the ASVs taxonomic identity, we
 
 The taxonomic assignment is done in two steps.
 
-First, each ASV is assigned to a taxonomy up to the genus level using the RDP Naive Bayesian Classifier algorithm described in [Wang et al. 2007](https://doi.org/10.1128/aem.00062-07){target="_blank"} called by the function `dada2::assignTaxonomy()`. We decided to assign at the genus level only because we consider the amplified 16S fragment   not having a good enough resolution to assign at species level, except for perfect matches (see below).
+First, each ASV is assigned to a taxonomy up to the genus level using the RDP Naive Bayesian Classifier algorithm described in [Wang et al. 2007](https://doi.org/10.1128/aem.00062-07){target="_blank"} called by the function `dada2::assignTaxonomy()`. We decided to assign at the genus level only because we consider the amplified 16S fragment not having a good enough resolution to assign at species level, except for perfect matches (see below).
 
 ```{r}
 taxonomy <- dada2::assignTaxonomy(
