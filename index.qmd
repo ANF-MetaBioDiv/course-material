@@ -29,7 +29,7 @@ You can also find a pdf version of the program [here](https://anfmetabiodiv.mio.
     -   15h15: {{< fa mug-hot >}}
     -   15h30: Séminaire [metabarcoding worklows](courses/ampliseq_presentation_ANF.html) by Charlotte Berthelier/Nicolas Henry
     -   16h30: [Ampliseq configuration workflow](practicals/ampliseq.html) by Charlotte Berthelier and Nicolas Henry
-    -   18h00: Mise en place des repos de données perso pour ceux qu'il le souhaite outemps libre
+    -   18h00: Set up personal data backups for those who wish to do so in their free time
     -   19h30: {{< fa utensils >}}
 -   Wednesday 30<sup>st</sup>:
     -   08h45: Course on ONT long read metabarcoding by Fabrice Armougom
@@ -39,7 +39,7 @@ You can also find a pdf version of the program [here](https://anfmetabiodiv.mio.
     -   12h30: {{< fa utensils >}}
     -   13h45: Course on [alpha diversity](courses/alpha_diversity.pdf){target="_blank"} Elsa Mendes
     -   14h15: [Alpha diversity practical](practicals/alpha_diversity.html) by Elsa Mendes/Marc Garel
-    -   18h00: Mise en place des repos de données perso pour ceux qu'il le souhaite outemps libre
+    -   18h00: Set up personal data backups for those who wish to do so in their free time
     -   19h30: {{< fa utensils >}}
 -   Thursday 1<sup>st</sup>:
     -   08h45: Course on [beta diversity](courses/beta_diversity.pdf){target="_blank"} 1/2 by Jean-Christophe Auguet
