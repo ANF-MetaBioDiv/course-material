@@ -1,6 +1,6 @@
 ---
 title: "Preprocessing : phyloseq"
-date: "September 2025"
+date: "September 2026"
 output: html_document
 author:
   - "Fabrice Armougom, MIO"
@@ -285,4 +285,3 @@ The `sessionInfo()` function in R provides a quick summary of your R environment
 ```{r}
 sessionInfo()
 ```
-

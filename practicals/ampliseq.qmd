@@ -6,7 +6,7 @@ title: "Preprocessing with nf-core/ampliseq"
 
 Connect to BioPipes VM using ifb.m4.2xlarge (8 vCPU, 32Go GB RAM, 200Go GB local disk) and then:
 
-```bash
+``` bash
 git clone https://github.com/ANF-MetaBioDiv/course-material.git
 cd course-material/
 ```
@@ -15,7 +15,7 @@ cd course-material/
 
 First of of all, you need a table listing all the samples you want to analyse and their corresponding fastq files (forward and reverse in case of paired-end sequencing). In case your samples are coming from multiple runs, the run id will be indicated in a fourth column. Below a bash command to generate such a file for the practical:
 
-```bash
+``` bash
 ls data/raw/ | \
   paste - - | \
   awk '
@@ -61,7 +61,7 @@ If first time connecting to the ampliseq_vm
 conda init
 ```
 
-In case conda doesn’t want to activate it must first be done with:
+In case conda doesn't want to activate it must first be done with:
 
 ``` bash
 source ~/.bashrc
@@ -104,7 +104,7 @@ These are required parameters you need to specify on order to be able to run nf-
 
 Here is a simplified tree structure illustrating the key output files and directories produced by the `nf-core/ampliseq` pipeline:
 
-```bash
+``` bash
 outputs/ampliseq/
 ├── summary_report/
 │   └── summary_report.html         # Pipeline summary report: overview of read counts, stats, and key results
