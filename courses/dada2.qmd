@@ -9,7 +9,7 @@ author:
     affiliations:
     orcid: 0000-0002-9349-7233
     email: cberthelier@sb-roscoff.fr
-date: "2025-09-30"
+date: "2026-09-29"
 date-format: long
 format:
   revealjs:
@@ -31,7 +31,7 @@ bibliography: ../references.bib
 
 <br>
 
-![](https://cdn-ileaamc.nitrocdn.com/saCGjhfsnHihUCILLZSxgfOXwdfXxtMy/assets/images/optimized/rev-2ae3e48/www.pacb.com/wp-content/uploads/img_evolution_of_sequencing_technology-2.png)
+![](https://www.mdpi.com/life/life-12-00030/article_deploy/html/images/life-12-00030-g001.png)
 
 ## Paired-end sequencing
 
@@ -94,11 +94,11 @@ Per record: identifier, sequence, quality
 
 ![](../img/read_example_1.png)
 
--   The tag informs you from which sample the read come from
+- The tag informs you from which sample the read come from
 
--   The primer used for the amplification
+- The primer used for the amplification
 
--   The targeted sequence (metabarcode)
+- The targeted sequence (metabarcode)
 
 ## Quality
 
@@ -120,34 +120,6 @@ $$P=10^{Q/-10}$$
 In raw data reads, the quality score rarely exceed 40, but higher scores are possible when different raw reads are assembled
 :::
 
-## Quality: $P$ as a function of $Q$
-
-```{r}
-library(ggplot2)
-library(patchwork)
-
-score_table <- data.frame(
-  a = rawToChar(as.raw(0:40+33), multiple = TRUE),
-  b = 10^((0:40)/-10)
-)
-
-score_table$a <- factor(score_table$a, levels = score_table$a)
-
-p1 <- ggplot(score_table, aes(x=a,y=b))+
-  geom_line(group = 1) +
-  scale_x_discrete("ASCII encoded Phred quality score") +
-  scale_y_continuous(labels = scales::label_percent(), "Base calling error probability") +
-  theme_bw()
-
-p2 <- ggplot(score_table, aes(x=a,y=b))+
-  geom_line(group = 1) +
-  scale_x_discrete("ASCII encoded Phred quality score") +
-  scale_y_log10(labels = scales::label_percent(), "Base calling error probability") +
-  theme_bw()
-
-p1 + p2
-
-```
 
 # Bioinformatic pipelines
 
@@ -167,17 +139,6 @@ p1 + p2
 <small> Adapted from [@antich2021denoise]: By combining **denoising** and **clustering** approaches, it allows to **better capture the natural variability of the COI gene** while reducing errors introduced during sequencing and analysis. </small>
 :::
 
-## Some tools
-
-<br>
-
--   Genetic clustering based approaches producing OTUs:
-    -   [UPARSE](https://doi.org/10.1038/nmeth.2604)
-    -   [Swarm](https://doi.org/10.1093/bioinformatics/btab493) (could be seen as denoising too)
--   Denoising approaches producing exact sequence variants (**ESVs**):
-    -   [Deblur](https://doi.org/10.1128/mSystems.00191-16) (sOTUs)
-    -   [DADA2](https://doi.org/10.1038%2Fnmeth.3869) (ASVs)
-
 ## Many tools
 
 ![](../img/many_tools.png){height="500" fig-pos="center"}
@@ -190,27 +151,27 @@ p1 + p2
 
 [Nextflow](https://www.nextflow.io/index.html) and [Snakemake](https://snakemake.github.io/) are the most popular
 
-![](https://raw.githubusercontent.com/nf-core/ampliseq/2.14.0/docs/images/ampliseq_workflow.png){height="500" fig-pos="center"}
+![](https://raw.githubusercontent.com/nf-core/ampliseq/2.18.0//docs/images/ampliseq_workflow.png){height="500" fig-pos="center"}
 
 ## DADA2, qu'est-ce que c'est?
 
 <br>
 
--   DADA (Divisive Amplicon Denoising Algorithm) an algorithm to denoise Roche's 454 platform errors [@rosen2012denoising]
+- DADA (Divisive Amplicon Denoising Algorithm) an algorithm to denoise Roche's 454 platform errors [@rosen2012denoising]
 
--   DADA2 implements a new quality-aware model of Illumina amplicon errors [@callahan2016dada2]
+- DADA2 implements a new quality-aware model of Illumina amplicon errors [@callahan2016dada2]
 
--   DADA2 is an open-source R package <https://github.com/benjjneb/dada2>
+- DADA2 is an open-source R package <https://github.com/benjjneb/dada2>
 
 ## DADA2, the full workflow
 
--   Quality assessment → `plotQualityProfile()`
--   Length trimming → `filterAndTrim()`
--   Quality filtering → `filterAndTrim()`
--   Denoising → `dada()`
--   Merging pair-end reads → `mergePairs()`
--   Chimera identification → `removeBimeraDenovo()`
--   Taxonomic assignment → `assignTaxonomy()`
+- Quality assessment → `plotQualityProfile()`
+- Length trimming → `filterAndTrim()`
+- Quality filtering → `filterAndTrim()`
+- Denoising → `dada()`
+- Merging pair-end reads → `mergePairs()`
+- Chimera identification → `removeBimeraDenovo()`
+- Taxonomic assignment → `assignTaxonomy()`
 
 # Before using Dada2
 
@@ -232,7 +193,7 @@ p1 + p2
 
 If your tags are in a fasta file with corresponding sample names as header, you can use this command-line:
 
-::: columns
+::::: columns
 ::: {.column width="50%"}
 ``` bash
 cutadapt \
@@ -254,16 +215,15 @@ cutadapt \
 # input R2 file
 ```
 :::
-:::
+:::::
 
 As many R1 and R2 files as samples you have
-
 
 ## Primer removal using cutadapt
 
 To remove forward and reverse primer sequences from pair-end read files:
 
-::: columns
+::::: columns
 ::: {.column width="50%"}
 ``` bash
 cutadapt \
@@ -297,7 +257,7 @@ cutadapt \
 # R2 input; 1> ${LOG} export the report in the file ${LOG}
 ```
 :::
-:::
+:::::
 
 As for demultiplexing, if reads are mix-orientated, run `cutadapt` twice.
 
@@ -305,7 +265,7 @@ As for demultiplexing, if reads are mix-orientated, run `cutadapt` twice.
 
 ## Check reads quality
 
-::: columns
+::::: columns
 ::: {.column width="50%"}
 Check the overall quality of a sequencing run using `plotQualityProfile()`
 
@@ -317,14 +277,14 @@ If the overall quality is too low, you will probably have to resequence your sam
 ::: {.column width="50%"}
 ![](../img/quality_plot_example.svg)
 :::
-:::
+:::::
 
 A quality drop is often observed in the end of the reads
 
 ::: notes
--   green line: mean
--   orange line (plain): median
--   orange line (dashed): 25th and 75th quantiles
+- green line: mean
+- orange line (plain): median
+- orange line (dashed): 25th and 75th quantiles
 :::
 
 ## Trimming and filtering
@@ -351,8 +311,8 @@ Is sequence $i$ generated by sequence $j$ because of sequencing errors?
 
 In order to define if $i$ is an error of $j$ and perform denoising using DADA2, we need to compute:
 
--   the error rate $\lambda_{ji}$
--   the abundance p-value $p_A(j \rightarrow i)$
+- the error rate $\lambda_{ji}$
+- the abundance p-value $p_A(j \rightarrow i)$
 
 ## Error rate
 
@@ -426,13 +386,13 @@ You can visualise the estimated error rates using the function `plotErrors()`
 
 ## Run the DADA2 algorithm
 
--   After dereplicating your sequences (`derepFastq()`), denoise using the function `dada()`
+- After dereplicating your sequences (`derepFastq()`), denoise using the function `dada()`
 
--   By default sample inference is performed on each sample individually (`pool = FALSE`).
+- By default sample inference is performed on each sample individually (`pool = FALSE`).
 
--   If you are interested in rare variants present in several samples use `pool = TRUE`
+- If you are interested in rare variants present in several samples use `pool = TRUE`
 
--   When working on big data, `pool = "pseudo"` is an interesting alternative to `pool = TRUE`
+- When working on big data, `pool = "pseudo"` is an interesting alternative to `pool = TRUE`
 
 # DADA2 workflow: build the ASV table
 
@@ -442,9 +402,9 @@ Merge forward and reverse reads using `mergePairs()`
 
 ![](../img/merging_example.png)
 
--   `minOverlap`: minimum size of overlap
--   `maxMismatch`: maximum number of mismatches
--   `justConcatenate`: in case your reads don't overlap
+- `minOverlap`: minimum size of overlap
+- `maxMismatch`: maximum number of mismatches
+- `justConcatenate`: in case your reads don't overlap
 
 ## Chimeras
 
@@ -468,12 +428,23 @@ Make the link in between nucleic sequences and taxonomic
 
 Broad reference database: [GenBank](https://www.ncbi.nlm.nih.gov/genbank/)
 
--   Some specialised references databases:
-    -   [Silva](https://www.arb-silva.de/) (16S rRNA (bacteria and archaea))
-    -   [PR2](https://pr2-database.org/) (18S eukaryotes and 16S Chloroplastes)
-    -   [MIDORI2](https://www.reference-midori.info/) (mitochondrial DNA)
-    -   [BOLD / Barcode Of Life Data](https://boldsystems.org/) (COI / ITS / rbcL & matK)
-    -   [UNITE](https://unite.ut.ee/) (ITS 🍄)
+- Some specialised references databases:
+  - [Silva](https://www.arb-silva.de/) (16S rRNA (bacteria and archaea))
+  - [PR2](https://pr2-database.org/) (18S eukaryotes and 16S Chloroplastes)
+  - [MIDORI2](https://www.reference-midori.info/) (mitochondrial DNA)
+  - [BOLD / Barcode Of Life Data](https://boldsystems.org/) (COI / ITS / rbcL & matK)
+  - [UNITE](https://unite.ut.ee/) (ITS 🍄)
+
+## Classifiers (machine learning)
+
+- Sequence taxonomic classification based on k-mers composition.
+- No sequence similarity threshold but a confidence score instead.
+- RDP classifier (naïve Bayes method) is very popular, give good results at least for 16S/18S.
+- IDTAXA, more recent, would tend to less overclassify.
+
+::: aside
+DADA2 function `assignTaxonomy()` use a native implementation of the naïve Bayesian classifier method (<a href="https://doi.org/10.1128/aem.00062-07" target="_blank">Wang et al. 2007</a>).
+:::
 
 ## BLAST like approaches
 
@@ -483,7 +454,7 @@ Best hits or LCA approaches
 
 Recommand global alignment (usearch_global [VSEARCH](https://github.com/torognes/vsearch) command) with specialised reference database
 
-::: columns
+::::: columns
 ::: {.column width="50%"}
 ``` bash
 vsearch \
@@ -509,18 +480,9 @@ vsearch \
 # fields to export
 ```
 :::
-:::
+:::::
 
-## Classifiers (machine learning)
-
--   Sequence taxonomic classification based on k-mers composition.
--   No sequence similarity threshold but a confidence score instead.
--   RDP classifier (naïve Bayes method) is very popular, give good results at least for 16S/18S.
--   IDTAXA, more recent, would tend to less overclassify.
-
-::: aside
-DADA2 function `assignTaxonomy()` use a native implementation of the naïve Bayesian classifier method (<a href="https://doi.org/10.1128/aem.00062-07" target="_blank">Wang et al. 2007</a>).
-:::
+# Extra steps
 
 ## Phylogenetic placement
 
@@ -529,8 +491,6 @@ DADA2 function `assignTaxonomy()` use a native implementation of the naïve Baye
 ::: aside
 <small> Figure from https://itol.embl.de/ </small>
 :::
-
-# Extra steps
 
 ## Post-clustering with LULU
 
